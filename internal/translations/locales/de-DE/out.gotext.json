@@ -1,0 +1,30 @@
+{
+    "language": "de-DE",
+    "messages": [
+        {
+            "id": "Hi there!",
+            "message": "Hi there!",
+            "translation": "Guten tag!"
+        },
+        {
+            "id": "Here is a list of available commands:\n/start\n/language",
+            "message": "Here is a list of available commands:\n/start\n/language",
+            "translation": "Hier ist eine Liste von auswahelen:\n/start\n/language"
+        },
+        {
+            "id": "The language has been set to English.",
+            "message": "The language has been set to English.",
+            "translation": "Die Sprache ist jetzt Deutsch."
+        },
+        {
+            "id": "Here is a list of your events:",
+            "message": "Here is a list of your events:",
+            "translation": "Hier ist eine Liste von Ihren Events:"
+        },
+        {
+            "id": "I don't understand that command. Send /help for help.",
+            "message": "I don't understand that command. Send /help for help.",
+            "translation": "Das habe Ich nicht verstanden.  Bitte schicken Sie /help fur hilfe."
+        }
+    ]
+}

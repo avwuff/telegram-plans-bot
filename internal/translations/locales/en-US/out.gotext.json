@@ -1,0 +1,40 @@
+{
+    "language": "en-US",
+    "messages": [
+        {
+            "id": "Hi there!",
+            "message": "Hi there!",
+            "translation": "Hi there!",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Here is a list of available commands:\n/start\n/language",
+            "message": "Here is a list of available commands:\n/start\n/language",
+            "translation": "Here is a list of available commands:\n/start\n/language",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "The language has been set to English.",
+            "message": "The language has been set to English.",
+            "translation": "The language has been set to English.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Here is a list of your events:",
+            "message": "Here is a list of your events:",
+            "translation": "Here is a list of your events:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "I don't understand that command. Send /help for help.",
+            "message": "I don't understand that command. Send /help for help.",
+            "translation": "I don't understand that command. Send /help for help.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        }
+    ]
+}

@@ -40,39 +40,176 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"Here is a list of available commands:\n/start\n/language": 1,
-	"Here is a list of your events:":                           3,
-	"Hi there!":                                                0,
-	"I don't understand that command. Send /help for help.":    4,
-	"The language has been set to English.":                    2,
+	"A general error occurred.": 54,
+	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n": 47,
+	"Choose the display language for this event.":                                                            52,
+	"Continue with Date: %v": 7,
+	"Continue with Time: %v": 8,
+	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 41,
+	"Could not parse the time you provided. Please send it in the format 22:03.":      44,
+	"Date selected: %v":        40,
+	"Date:":                    17,
+	"Error listing events: %v": 58,
+	"Event not found":          57,
+	"Fr":                       5,
+	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 39,
+	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    42,
+	"Here is a list of available commands:\n/start\n/language":                                           25,
+	"Here is a list of your events:": 26,
+	"Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.": 24,
+	"Hosted By:": 19,
+	"I don't understand that command. Send /help for help.": 27,
+	"Location:":                      18,
+	"Max Attendees:":                 21,
+	"Mo":                             1,
+	"Name:":                          16,
+	"No":                             30,
+	"Notes:":                         22,
+	"Please provide a valid number":  56,
+	"Sa":                             6,
+	"Select an event to edit:\n%v":   59,
+	"Share these plans in a chat ✅🔜": 9,
+	"Specify any additional notes you'd like to show about the event.":                                                                                                50,
+	"Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.": 51,
+	"Specify the name of the event.":                    48,
+	"Specify the name of the person hosting the event.": 49,
+	"Su":                                    0,
+	"Suitwalk:":                             20,
+	"Th":                                    4,
+	"The language has been set to English.": 23,
+	"The value you provided is not one of the choices.": 55,
+	"Time selected: %v":        43,
+	"Tu":                       2,
+	"Unable to parse event ID": 60,
+	"We":                       3,
+	"Where does the event take place?  Specify the name or address as you might type into Google Maps.": 45,
+	"Yes":                      31,
+	"error creating event: %v": 46,
+	"error updating event: %v": 53,
+	"⌚ Time Zone":              37,
+	"⏰ Edit Time":              12,
+	"⚙ ADVANCED OPTIONS ⚙":     34,
+	"⚙ Advanced Options...":    33,
+	"🏆 Edit Name":              10,
+	"🐕 Suitwalk: %v":           35,
+	"👫 Set Max Attendees":      28,
+	"💔 Allow Maybe: %v":        29,
+	"📆 Edit Date":              11,
+	"📍 Edit Location":          13,
+	"📝 Add Notes":              15,
+	"📩 Allow Sharing: %v":      32,
+	"🔙 Back":                   38,
+	"🔠 Language":               36,
+	"🕴 Edit Hosted By":         14,
 }
 
-var de_DEIndex = []uint32{ // 6 elements
-	0x00000000, 0x0000000b, 0x00000040, 0x0000005f,
-	0x00000085, 0x000000c9,
-} // Size: 48 bytes
+var de_DEIndex = []uint32{ // 62 elements
+	// Entry 0 - 1F
+	0x00000000, 0x00000003, 0x00000006, 0x00000009,
+	0x0000000c, 0x0000000f, 0x00000012, 0x00000015,
+	0x0000002e, 0x00000046, 0x0000005f, 0x00000072,
+	0x00000085, 0x00000096, 0x000000ae, 0x000000c3,
+	0x000000d1, 0x000000d8, 0x000000df, 0x000000eb,
+	0x000000f5, 0x000000ff, 0x0000010a, 0x00000114,
+	0x00000133, 0x000001b1, 0x000001e6, 0x0000020c,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	// Entry 20 - 3F
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x00000250, 0x00000250,
+} // Size: 272 bytes
 
-const de_DEData string = "" + // Size: 201 bytes
-	"\x02Guten tag!\x02Hier ist eine Liste von auswahelen:\x0a/start\x0a/lang" +
-	"uage\x02Die Sprache ist jetzt Deutsch.\x02Hier ist eine Liste von Ihren " +
-	"Events:\x02Das habe Ich nicht verstanden.  Bitte schicken Sie /help fur " +
-	"hilfe."
+const de_DEData string = "" + // Size: 592 bytes
+	"\x02So\x02Mo\x02Di\x02Mi\x02Do\x02Fr\x02Sa\x02Datum akzeptieren: %[1]v" +
+	"\x02Zeit Akzeptieren: %[1]v\x02Plane jetzt weiter geben\x02🏆 Namen ander" +
+	"en\x02📆 Daten anderen\x02⏰ Zeit anderen\x02📍 Treffpunkt anderen\x02🕴 Ang" +
+	"eber anderen\x02📝 Hinweise\x02Namen:\x02Datum:\x02Treffpunkt:\x02Besitze" +
+	"r:\x02Suitwalk:\x02Max Leute:\x02Hinweise:\x02Die Sprache ist jetzt Deut" +
+	"sch.\x02Hallo! Ich bin die Furry Plans Bot.  Lassen Sie uns neue plaene " +
+	"machen.  Zuerst, bitte sagen Sie mir den Namen von dem Event.\x02Hier is" +
+	"t eine Liste von auswahelen:\x0a/start\x0a/language\x02Hier ist eine Lis" +
+	"te von Ihren Events:\x02Das habe Ich nicht verstanden.  Bitte schicken S" +
+	"ie /help fur hilfe."
 
-var en_USIndex = []uint32{ // 6 elements
-	0x00000000, 0x0000000a, 0x00000041, 0x00000067,
-	0x00000086, 0x000000bc,
-} // Size: 48 bytes
+var en_USIndex = []uint32{ // 62 elements
+	// Entry 0 - 1F
+	0x00000000, 0x00000003, 0x00000006, 0x00000009,
+	0x0000000c, 0x0000000f, 0x00000012, 0x00000015,
+	0x0000002f, 0x00000049, 0x0000006d, 0x0000007c,
+	0x0000008b, 0x00000099, 0x000000ac, 0x000000c0,
+	0x000000cf, 0x000000d5, 0x000000db, 0x000000e5,
+	0x000000f0, 0x000000fa, 0x00000109, 0x00000110,
+	0x00000136, 0x00000198, 0x000001cf, 0x000001ee,
+	0x00000224, 0x0000023b, 0x00000253, 0x00000256,
+	// Entry 20 - 3F
+	0x0000025a, 0x00000274, 0x0000028c, 0x000002a5,
+	0x000002ba, 0x000002c8, 0x000002d6, 0x000002e0,
+	0x00000343, 0x00000358, 0x000003a8, 0x00000408,
+	0x0000041d, 0x00000468, 0x000004ca, 0x000004e6,
+	0x0000054f, 0x0000056e, 0x000005a0, 0x000005e1,
+	0x0000067f, 0x000006ab, 0x000006c7, 0x000006e1,
+	0x00000713, 0x00000731, 0x00000741, 0x0000075d,
+	0x0000077c, 0x00000795,
+} // Size: 272 bytes
 
-const en_USData string = "" + // Size: 188 bytes
-	"\x02Hi there!\x02Here is a list of available commands:\x0a/start\x0a/lan" +
-	"guage\x02The language has been set to English.\x02Here is a list of your" +
-	" events:\x02I don't understand that command. Send /help for help."
+const en_USData string = "" + // Size: 1941 bytes
+	"\x02Su\x02Mo\x02Tu\x02We\x02Th\x02Fr\x02Sa\x02Continue with Date: %[1]v" +
+	"\x02Continue with Time: %[1]v\x02Share these plans in a chat ✅🔜\x02🏆 Edi" +
+	"t Name\x02📆 Edit Date\x02⏰ Edit Time\x02📍 Edit Location\x02🕴 Edit Hosted" +
+	" By\x02📝 Add Notes\x02Name:\x02Date:\x02Location:\x02Hosted By:\x02Suitw" +
+	"alk:\x02Max Attendees:\x02Notes:\x02The language has been set to English" +
+	".\x02Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, " +
+	"send me the name of the event.\x02Here is a list of available commands:" +
+	"\x0a/start\x0a/language\x02Here is a list of your events:\x02I don't und" +
+	"erstand that command. Send /help for help.\x02👫 Set Max Attendees\x02💔 A" +
+	"llow Maybe: %[1]v\x02No\x02Yes\x02📩 Allow Sharing: %[1]v\x02⚙ Advanced O" +
+	"ptions...\x02⚙ ADVANCED OPTIONS ⚙\x02🐕 Suitwalk: %[1]v\x02🔠 Language\x02" +
+	"⌚ Time Zone\x02🔙 Back\x02Got it.  Choose a Date for the event by click" +
+	"ing on the Calendar below and then clicking Continue.\x02Date selected: " +
+	"%[1]v\x02Could not parse the date you provided. Please send it in the fo" +
+	"rmat YYYY-MM-DD.\x02Got it.  Choose a Time for the event by clicking on " +
+	"the times below and then clicking Continue.\x02Time selected: %[1]v\x02C" +
+	"ould not parse the time you provided. Please send it in the format 22:03" +
+	".\x02Where does the event take place?  Specify the name or address as yo" +
+	"u might type into Google Maps.\x02error creating event: %[1]v\x04\x00" +
+	"\x02\x0a\x0ac\x02Alright, I've created your event! You can now add addit" +
+	"ional content, or share it to another chat.\x02Specify the name of the e" +
+	"vent.\x02Specify the name of the person hosting the event.\x02Specify an" +
+	"y additional notes you'd like to show about the event.\x02Specify the ma" +
+	"ximum number of people that can attend.  Once the maximum is reached, us" +
+	"ers will no longer be able to click 'I'm Going'.\x0a\x0aTo disable, send" +
+	" a 0.\x02Choose the display language for this event.\x02error updating e" +
+	"vent: %[1]v\x02A general error occurred.\x02The value you provided is no" +
+	"t one of the choices.\x02Please provide a valid number\x02Event not foun" +
+	"d\x02Error listing events: %[1]v\x02Select an event to edit:\x0a%[1]v" +
+	"\x02Unable to parse event ID"
 
-var fr_CHIndex = []uint32{ // 6 elements
+var fr_CHIndex = []uint32{ // 62 elements
+	// Entry 0 - 1F
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	// Entry 20 - 3F
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000,
-} // Size: 48 bytes
+} // Size: 272 bytes
 
 const fr_CHData string = ""
 
-// Total table size 533 bytes (0KiB); checksum: EFCA5855
+// Total table size 3349 bytes (3KiB); checksum: F28FC765

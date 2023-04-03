@@ -73,7 +73,7 @@ func createCalendar(startDate time.Time, loc *localizer.Localizer, selDate time.
 	// the CONTINUE button
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
 	// January 2, 15:04:05, 2006
-	row[0] = quickButton(loc.Sprintf("Continue with Selection: %v", selDate.Format("January 2")), "calen:finish")
+	row[0] = quickButton(loc.Sprintf("Continue with Date: %v", selDate.Format("January 2")), "calen:finish")
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{
@@ -101,15 +101,15 @@ func processDateClicks(selDate time.Time, cmd string) (outDate time.Time, finish
 
 		switch data[2] {
 		case "P": // previous month
-			selDate = time.Date(selDate.Year(), selDate.Month(), 1, 0, 0, 0, 0, time.Local)
+			selDate = time.Date(selDate.Year(), selDate.Month(), 1, 0, 0, 0, 0, selDate.Location())
 			selDate = selDate.AddDate(0, -1, 0)
 		case "N": // next month
-			selDate = time.Date(selDate.Year(), selDate.Month(), 1, 0, 0, 0, 0, time.Local)
+			selDate = time.Date(selDate.Year(), selDate.Month(), 1, 0, 0, 0, 0, selDate.Location())
 			selDate = selDate.AddDate(0, 1, 0)
 		}
 		return selDate, false
 	case "sel": // a day has been selected
-		selDate, _ = time.Parse(layoutISO, data[2])
+		selDate, _ = time.ParseInLocation(layoutISO, data[2], selDate.Location())
 		return selDate, false
 	case "finish":
 		return selDate, true
@@ -179,7 +179,7 @@ func createTimeSelection(selTime time.Time, loc *localizer.Localizer) tgbotapi.I
 	// the CONTINUE button
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
 	// January 2, 15:04:05, 2006
-	row[0] = quickButton(loc.Sprintf("Continue with Selection: %v", selTime.Format("15:04")), "time:finish")
+	row[0] = quickButton(loc.Sprintf("Continue with Time: %v", selTime.Format("15:04")), "time:finish")
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{
@@ -200,14 +200,14 @@ func processTimeClicks(selTime time.Time, cmd string) (outTime time.Time, finish
 		if err != nil {
 			return
 		}
-		selTime = time.Date(selTime.Year(), selTime.Month(), 1, h, selTime.Minute(), 0, 0, time.Local)
+		selTime = time.Date(selTime.Year(), selTime.Month(), 1, h, selTime.Minute(), 0, 0, selTime.Location())
 		return selTime, false
 	case "minute": // a day has been selected
 		m, err := strconv.Atoi(data[2])
 		if err != nil {
 			return
 		}
-		selTime = time.Date(selTime.Year(), selTime.Month(), 1, selTime.Hour(), m, 0, 0, time.Local)
+		selTime = time.Date(selTime.Year(), selTime.Month(), 1, selTime.Hour(), m, 0, 0, selTime.Location())
 		return selTime, false
 	case "finish":
 		return selTime, true
@@ -258,8 +258,35 @@ func eventEditButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbo
 	row[1] = quickButton(loc.Sprintf("💔 Allow Maybe: %v", iif(event.DisableMaybe == 1, loc.Sprintf("No"), loc.Sprintf("Yes"))), fmt.Sprintf("edit:%v:setmaybe", event.EventID))
 	buttons = append(buttons, row)
 
-	row = make([]tgbotapi.InlineKeyboardButton, 1)
+	row = make([]tgbotapi.InlineKeyboardButton, 2)
 	row[0] = quickButton(loc.Sprintf("📩 Allow Sharing: %v", iif(event.AllowShare == 1, loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:sharing", event.EventID))
+	row[1] = quickButton(loc.Sprintf("⚙ Advanced Options..."), fmt.Sprintf("edit:%v:advanced", event.EventID))
+	buttons = append(buttons, row)
+
+	return tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: buttons,
+	}
+}
+
+// eventAdvancedButtons creates the buttons with extra options
+func eventAdvancedButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
+
+	var buttons [][]tgbotapi.InlineKeyboardButton
+	row := make([]tgbotapi.InlineKeyboardButton, 1)
+	row[0] = quickButton(loc.Sprintf("⚙ ADVANCED OPTIONS ⚙"), fmt.Sprintf("edit:%v:back", event.EventID))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 1)
+	row[0] = quickButton(loc.Sprintf("🐕 Suitwalk: %v", iif(event.Suitwalk == 1, loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:suitwalk", event.EventID))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 2)
+	row[0] = quickButton(loc.Sprintf("🔠 Language"), fmt.Sprintf("edit:%v:language", event.EventID))
+	row[1] = quickButton(loc.Sprintf("⌚ Time Zone"), fmt.Sprintf("edit:%v:timezone", event.EventID))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 1)
+	row[0] = quickButton(loc.Sprintf("🔙 Back"), fmt.Sprintf("edit:%v:back", event.EventID))
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{

@@ -25,22 +25,32 @@ func initEventCommands(cmds *tgCommands.CommandList) {
 	// Edit commands
 	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_STRING, Handler: edit_setString})
 	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_NUMBER, Handler: edit_setNumber})
+	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_CHOICE, Handler: edit_setChoice})
+	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_DATE, Handler: edit_setDate})
+	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_TIME, Handler: edit_setTime})
 
 	cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_CREATE_EVENTDATE, Handler: create_ClickDate})
 	cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_CREATE_EVENTTIME, Handler: create_ClickTime})
+	cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_EDIT_DATE, Handler: edit_ClickDate})
+	cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_EDIT_TIME, Handler: edit_ClickTime})
 	cmds.AddCB(tgCommands.Callback{DataPrefix: "edit", Handler: manage_clickEdit})
 }
 
 // eventDetails displays the details about the event to the user.
 // This lets them edit properties of the event, or share it out.
-func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, eventId uint, topMsg string, editInPlace int) {
+func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, eventId uint, topMsg string, editInPlace int, showAdvancedButtons bool) {
 
 	// Load the details about the event from the database.
-	event, err := dbHelper.GetEvent(eventId, chatId)
+	event, locOverride, err := dbHelper.GetEvent(eventId, chatId)
 	if err != nil {
 		mObj := tgbotapi.NewMessage(chatId, usrInfo.Locale.Sprintf("Event not found"))
 		_, _ = tg.Send(mObj)
 		return
+	}
+
+	// Override the locale if the event specifies a different one
+	if locOverride != nil {
+		usrInfo.Locale = locOverride
 	}
 
 	// Start with an optional message at the top.
@@ -56,22 +66,30 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 	if event.MaxAttendees > 0 {
 		t += "<b>" + usrInfo.Locale.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
 	}
+	if event.LanguageOverride != "" {
+		t += "<b>" + usrInfo.Locale.Sprintf("Language:") + "</b> " + fmt.Sprintf("%v", event.LanguageOverride) + "\n"
+	}
 	if event.Notes != "" {
-		t += "<b>" + usrInfo.Locale.Sprintf("Notes:") + "</b> " + event.Notes + "\n"
+		t += "<b>" + usrInfo.Locale.Sprintf("Notes:") + "</b>\n" + event.Notes + "\n"
 	}
 
 	var mObj tgbotapi.Chattable
 
+	var buttons tgbotapi.InlineKeyboardMarkup
+	if showAdvancedButtons {
+		buttons = eventAdvancedButtons(event, usrInfo.Locale)
+	} else {
+		buttons = eventEditButtons(event, usrInfo.Locale)
+	}
 	if editInPlace != 0 {
 		mObj2 := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
 		mObj2.ParseMode = "HTML"
-		buttons := eventEditButtons(event, usrInfo.Locale)
 		mObj2.ReplyMarkup = &buttons
 		mObj = mObj2
 	} else {
 		mObj2 := tgbotapi.NewMessage(chatId, t)
 		mObj2.ParseMode = "HTML"
-		mObj2.ReplyMarkup = eventEditButtons(event, usrInfo.Locale)
+		mObj2.ReplyMarkup = buttons
 		mObj = mObj2
 	}
 
@@ -110,5 +128,5 @@ func selectEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgb
 	}
 
 	// Display the event information now.
-	eventDetails(tg, usrInfo, msg.Chat.ID, uint(eventId), "", 0)
+	eventDetails(tg, usrInfo, msg.Chat.ID, uint(eventId), "", 0, false)
 }

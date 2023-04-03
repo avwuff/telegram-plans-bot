@@ -2,19 +2,154 @@
     "language": "de-DE",
     "messages": [
         {
-            "id": "Hi there!",
-            "message": "Hi there!",
-            "translation": "Guten tag!"
+            "id": "Su",
+            "message": "Su",
+            "translation": "So"
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/language",
-            "message": "Here is a list of available commands:\n/start\n/language",
-            "translation": "Hier ist eine Liste von auswahelen:\n/start\n/language"
+            "id": "Mo",
+            "message": "Mo",
+            "translation": "Mo"
+        },
+        {
+            "id": "Tu",
+            "message": "Tu",
+            "translation": "Di"
+        },
+        {
+            "id": "We",
+            "message": "We",
+            "translation": "Mi"
+        },
+        {
+            "id": "Th",
+            "message": "Th",
+            "translation": "Do"
+        },
+        {
+            "id": "Fr",
+            "message": "Fr",
+            "translation": "Fr"
+        },
+        {
+            "id": "Sa",
+            "message": "Sa",
+            "translation": "Sa"
+        },
+        {
+            "id": "Continue with Date: {FormatJanuary_2}",
+            "message": "Continue with Date: {FormatJanuary_2}",
+            "translation": "Datum akzeptieren: {FormatJanuary_2}",
+            "placeholders": [
+                {
+                    "id": "FormatJanuary_2",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "selDate.Format(\"January 2\")"
+                }
+            ]
+        },
+        {
+            "id": "Continue with Time: {Format1504}",
+            "message": "Continue with Time: {Format1504}",
+            "translation": "Zeit Akzeptieren: {Format1504}",
+            "placeholders": [
+                {
+                    "id": "Format1504",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "selTime.Format(\"15:04\")"
+                }
+            ]
+        },
+        {
+            "id": "Share these plans in a chat ✅🔜",
+            "message": "Share these plans in a chat ✅🔜",
+            "translation": "Plane jetzt weiter geben"
+        },
+        {
+            "id": "🏆 Edit Name",
+            "message": "🏆 Edit Name",
+            "translation": "\uD83C\uDFC6 Namen anderen"
+        },
+        {
+            "id": "📆 Edit Date",
+            "message": "📆 Edit Date",
+            "translation": "\uD83D\uDCC6 Daten anderen"
+        },
+        {
+            "id": "⏰ Edit Time",
+            "message": "⏰ Edit Time",
+            "translation": "⏰ Zeit anderen"
+        },
+        {
+            "id": "📍 Edit Location",
+            "message": "📍 Edit Location",
+            "translation": "\uD83D\uDCCD Treffpunkt anderen"
+        },
+        {
+            "id": "🕴 Edit Hosted By",
+            "message": "🕴 Edit Hosted By",
+            "translation": "\uD83D\uDD74 Angeber anderen"
+        },
+        {
+            "id": "📝 Add Notes",
+            "message": "📝 Add Notes",
+            "translation": "\uD83D\uDCDD Hinweise"
+        },
+        {
+            "id": "Name:",
+            "message": "Name:",
+            "translation": "Namen:"
+        },
+        {
+            "id": "Date:",
+            "message": "Date:",
+            "translation": "Datum:"
+        },
+        {
+            "id": "Location:",
+            "message": "Location:",
+            "translation": "Treffpunkt:"
+        },
+        {
+            "id": "Hosted By:",
+            "message": "Hosted By:",
+            "translation": "Besitzer:"
+        },
+        {
+            "id": "Suitwalk:",
+            "message": "Suitwalk:",
+            "translation": "Suitwalk:"
+        },
+        {
+            "id": "Max Attendees:",
+            "message": "Max Attendees:",
+            "translation": "Max Leute:"
+        },
+        {
+            "id": "Notes:",
+            "message": "Notes:",
+            "translation": "Hinweise:"
         },
         {
             "id": "The language has been set to English.",
             "message": "The language has been set to English.",
             "translation": "Die Sprache ist jetzt Deutsch."
+        },
+        {
+            "id": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
+            "message": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
+            "translation": "Hallo! Ich bin die Furry Plans Bot.  Lassen Sie uns neue plaene machen.  Zuerst, bitte sagen Sie mir den Namen von dem Event."
+        },
+        {
+            "id": "Here is a list of available commands:\n/start\n/language",
+            "message": "Here is a list of available commands:\n/start\n/language",
+            "translation": "Hier ist eine Liste von auswahelen:\n/start\n/language"
         },
         {
             "id": "Here is a list of your events:",

@@ -4,15 +4,16 @@ import (
 	"context"
 	"furryplansbot.avbrand.com/dbHelper"
 	_ "furryplansbot.avbrand.com/internal/translations"
+	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgPlansBot"
 	"log"
 	"time"
 )
 
-//go:generate gotext -srclang=en update -out=catalog/catalog.go -lang=en,el
-
 func main() {
 	log.Println("== Furry Plans Bot Startup ==")
+	// Initialize the language list -- this must be called here since the translations package is now initialized.
+	localizer.InitLang()
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()

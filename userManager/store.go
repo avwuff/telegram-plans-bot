@@ -3,6 +3,7 @@ package userManager
 import (
 	"furryplansbot.avbrand.com/dbHelper"
 	"furryplansbot.avbrand.com/localizer"
+	"time"
 )
 
 // User Modes handles keeping track of what mode a user is in.
@@ -18,9 +19,10 @@ type UserEphemeral struct {
 }
 
 type UserInfo struct {
-	Eph    *UserEphemeral
-	Prefs  dbHelper.UserPrefs
-	Locale *localizer.Localizer
+	Eph      *UserEphemeral
+	Prefs    dbHelper.UserPrefs
+	Locale   *localizer.Localizer
+	TimeZone *time.Location
 }
 
 var userEph = make(map[int64]*UserEphemeral)
@@ -32,6 +34,7 @@ func Get(userid int64) *UserInfo {
 		Prefs: dbHelper.GetPrefs(userid),
 	}
 	usrData.Locale = localizer.FromLanguage(usrData.Prefs.Language)
+	usrData.TimeZone = localizer.FromTimeZone(usrData.Prefs.TimeZone)
 
 	// Find and attach the ephemeral object
 	usrEph, ok := userEph[userid]

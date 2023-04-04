@@ -27,7 +27,6 @@ func initCommands() {
 	cmds.Add(tgCommands.Command{Command: "/start", Handler: startHandler})
 	cmds.Add(tgCommands.Command{Command: "/help", Handler: helpHandler})
 	cmds.Add(tgCommands.Command{Command: "/language", Handler: languageHandler})
-	cmds.Add(tgCommands.Command{Command: "/list", Handler: listHandler})
 	cmds.Add(tgCommands.Command{Command: "/404", Handler: unknownHandler})
 
 	// These handlers respond to any message, as long as we are in the right mode.
@@ -36,25 +35,29 @@ func initCommands() {
 
 	// EVENTS
 	initEventCommands(cmds)
+	initSetupCommands(cmds)
+	initUICommands(cmds)
 }
 
 func startHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	// Has the user completed the setup process?
+	if !usrInfo.Prefs.SetupComplete {
+		startSetup(tg, usrInfo, msg)
+		return
+	}
+
 	// Reset the user back to the default mode.
 	usrInfo.SetMode(userManager.MODE_CREATE_EVENTNAME)
-	// TODO: Check privacy policy
-
-	quickReply(tg, msg, usrInfo.Locale.Sprintf("Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event."))
+	quickReply(tg, msg, usrInfo.Locale.Sprintf("Let's create some new plans.  First, send me the name of the event."))
 }
 
 func helpHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// TODO: This should be generated automatically based on the command list.
 	quickReply(tg, msg, usrInfo.Locale.Sprintf(`Here is a list of available commands:
 /start
+/myevents
 /language`))
-}
-
-func listHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	_ = quickReply(tg, msg, usrInfo.Locale.Sprintf("Here is a list of your events:"))
 }
 
 func unknownHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
@@ -81,6 +84,8 @@ func handleUpdate(tg *tgWrapper.Telegram, update tgbotapi.Update) {
 		handleMsg(tg, update.Message)
 	} else if update.CallbackQuery != nil {
 		handleCallback(tg, update.CallbackQuery)
+	} else if update.InlineQuery != nil {
+		handleInline(tg, update.InlineQuery)
 	}
 
 }
@@ -94,13 +99,10 @@ func handleMsg(tg *tgWrapper.Telegram, msg *tgbotapi.Message) {
 }
 
 func handleCallback(tg *tgWrapper.Telegram, callback *tgbotapi.CallbackQuery) {
-	// Is this one of the buttons on the global messages?
-	// Those get handled separately.
-	// TODO
-
 	// Get the mode the user is in
 	usrInfo := userManager.Get(int64(callback.From.ID))
 
+	// See if this callback is one of the ones we can handle.
 	cmds.ProcessCallback(tg, usrInfo, callback)
 }
 

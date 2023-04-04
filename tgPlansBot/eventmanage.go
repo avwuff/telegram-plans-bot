@@ -85,11 +85,13 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 		mObj2 := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
 		mObj2.ParseMode = "HTML"
 		mObj2.ReplyMarkup = &buttons
+		mObj2.DisableWebPagePreview = true
 		mObj = mObj2
 	} else {
 		mObj2 := tgbotapi.NewMessage(chatId, t)
 		mObj2.ParseMode = "HTML"
 		mObj2.ReplyMarkup = buttons
+		mObj2.DisableWebPagePreview = true
 		mObj = mObj2
 	}
 

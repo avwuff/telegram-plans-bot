@@ -68,7 +68,6 @@ func (t *Telegram) Listen(ctx context.Context, handler func(t *Telegram, update 
 			// send it to the handler
 			// TODO: Do we want to do a multithreaded pool of handlers for these?  So one update doens't block.
 			// TODO: Maybe later.
-			log.Println("Got update", update)
 			handler(t, update)
 		}
 	}
@@ -77,6 +76,13 @@ func (t *Telegram) Listen(ctx context.Context, handler func(t *Telegram, update 
 // Send just wraps the send function of the TGBotApi
 func (t *Telegram) Send(c tgbotapi.Chattable) (tgbotapi.Message, error) {
 	return t.bot.Send(c)
+}
+
+func (t *Telegram) AnswerInlineQuery(c tgbotapi.InlineConfig) (tgbotapi.APIResponse, error) {
+	return t.bot.AnswerInlineQuery(c)
+}
+func (t *Telegram) AnswerCallbackQuery(c tgbotapi.CallbackConfig) (tgbotapi.APIResponse, error) {
+	return t.bot.AnswerCallbackQuery(c)
 }
 
 func (t *Telegram) ConvertEntitiesToHTML(inputText string, entities *[]tgbotapi.MessageEntity) string {

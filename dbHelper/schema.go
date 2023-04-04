@@ -7,7 +7,12 @@ import (
 
 type UserPrefs struct {
 	gorm.Model
-	UserID   int64  // the ID of the user these prefs are being stored for
+	UserID int64 // the ID of the user these prefs are being stored for
+
+	// General data about this user
+	SetupComplete bool // Has the user completed the setup process?
+
+	// User preferences
 	Language string // The language code the user prefers
 	TimeZone string // The user's default time zone
 }
@@ -34,4 +39,17 @@ type FurryPlans struct {
 // TableName is used to override Gorm's default table naming
 func (FurryPlans) TableName() string {
 	return "furryplans"
+}
+
+type FurryPlansAttend struct {
+	EventID   uint   `gorm:"primarykey;column:eventID"`
+	UserID    int64  `gorm:"primarykey;column:userID"`
+	UserName  string `gorm:"column:UserName"`
+	CanAttend int    `gorm:"column:canAttend"`
+	PlusMany  int    `gorm:"column:plusMany"`
+}
+
+// TableName is used to override Gorm's default table naming
+func (FurryPlansAttend) TableName() string {
+	return "furryplansattend"
 }

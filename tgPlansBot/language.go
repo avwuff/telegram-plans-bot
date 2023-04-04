@@ -24,6 +24,7 @@ func languageHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg 
 	}
 }
 
+// TODO get rid of this function
 func setLanguageHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// See if this is one of the languages we support.
@@ -34,10 +35,8 @@ func setLanguageHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, m
 	}
 
 	// Set the language.
-	prefs := dbHelper.GetPrefs(msg.Chat.ID)
-	prefs.Language = lang
-	dbHelper.SavePrefs(msg.Chat.ID, prefs)
-
+	usrInfo.Prefs.Language = lang
+	dbHelper.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 
 	// Replace the localizer since the language has been changed

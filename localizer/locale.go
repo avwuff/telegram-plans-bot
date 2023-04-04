@@ -102,10 +102,10 @@ func GetLanguageChoicesMap() map[string]string {
 	return out
 }
 
-func GetTimeZoneChoicesMap() map[string]string {
-	out := make(map[string]string)
-	for key := range timezones {
-		out[key] = key
+func GetTimeZoneChoicesMap() map[string]*time.Location {
+	out := make(map[string]*time.Location)
+	for key, loc := range timezones {
+		out[key] = loc
 	}
 	return out
 }

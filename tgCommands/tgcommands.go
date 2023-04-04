@@ -28,6 +28,10 @@ type Callback struct {
 	// The first bit of the callback data, before the first colon
 	DataPrefix string
 
+	// Public callbacks are buttons that appear on the main UI of the event
+	// These don't require any user data, and work all the time.
+	Public bool
+
 	// The mode in which the command is available.  Blank is available in all modes.
 	Mode userManager.Mode
 
@@ -102,7 +106,7 @@ func (c *CommandList) ProcessCallback(tg *tgWrapper.Telegram, usrInfo *userManag
 	// See if this is one of our current commands
 	for _, cmd := range c.cblist {
 		// Normal commands
-		if (cmd.DataPrefix == sp[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode) {
+		if (cmd.DataPrefix == sp[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode || cmd.Public) {
 			cmd.Handler(tg, usrInfo, cb)
 			return
 		}

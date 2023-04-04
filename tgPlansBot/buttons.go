@@ -234,7 +234,7 @@ func eventEditButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbo
 	var buttons [][]tgbotapi.InlineKeyboardButton
 	row := make([]tgbotapi.InlineKeyboardButton, 0)
 
-	postButton := fmt.Sprintf("POST:%v", event.EventID)
+	postButton := fmt.Sprintf("%v%v", POST_PREFIX, event.EventID) // Example: POST:1234
 	row = append(row, tgbotapi.InlineKeyboardButton{
 		Text:              loc.Sprintf("Share these plans in a chat ✅🔜"),
 		SwitchInlineQuery: &postButton,

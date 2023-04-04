@@ -19,6 +19,7 @@ const (
 	ATTEND_MAYBE
 	ATTEND_REMOVED
 	ATTEND_FULL
+	ATTEND_ACTIVE
 )
 
 type CanAttend int
@@ -84,10 +85,7 @@ func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, e
 		return nil, nil, fmt.Errorf("event not found")
 	}
 
-	var loc *localizer.Localizer
-	if event.LanguageOverride != "" {
-		loc = localizer.FromLanguage(event.LanguageOverride)
-	}
+	loc := localizer.FromLanguage(event.Language)
 
 	// Update the time on the event to match the time zone.
 	if event.TimeZone != "" {
@@ -96,10 +94,6 @@ func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, e
 	}
 
 	return &event, loc, nil
-}
-
-func UpdateEvent(eventId uint, event *FurryPlans, column string) error {
-	return db.Where(&FurryPlans{EventID: eventId}).Select(column).Updates(event).Error
 }
 
 func GetEvents(ownerId int64, includeOld bool) ([]FurryPlans, error) {
@@ -116,8 +110,22 @@ func GetEvents(ownerId int64, includeOld bool) ([]FurryPlans, error) {
 	return events, nil
 }
 
+func (event *FurryPlans) UpdateEvent(column string) error {
+	return db.Where(&FurryPlans{EventID: event.EventID}).Select(column).Updates(event).Error
+}
+
+func (event *FurryPlans) GetAttending() ([]FurryPlansAttend, error) {
+	var attend []FurryPlansAttend
+	query := db.Where(&FurryPlansAttend{EventID: event.EventID}).Order("UCASE(UserName) DESC")
+	err := query.Find(&attend).Error
+	if err != nil {
+		return nil, err
+	}
+	return attend, nil
+}
+
 // Attending marks (or unmarks) a person as attending this event.
-func Attending(event *FurryPlans, userId int64, name string, attendType CanAttend, plusPeople int) AttendMsgs {
+func (event *FurryPlans) Attending(userId int64, name string, attendType CanAttend, plusPeople int) AttendMsgs {
 	// Does this event have a cap?
 
 	if attendType == CANATTEND_MAYBE || attendType == CANATTEND_NO {
@@ -152,7 +160,7 @@ func Attending(event *FurryPlans, userId int64, name string, attendType CanAtten
 
 		}
 	}
-	updateAttendTable(event, userId, name, attendType, plusPeople)
+	event.updateAttendTable(userId, name, attendType, plusPeople)
 	if attendType == CANATTEND_YES {
 		return ATTEND_ADDED
 	}
@@ -165,7 +173,7 @@ func Attending(event *FurryPlans, userId int64, name string, attendType CanAtten
 	return ATTEND_ERROR
 }
 
-func updateAttendTable(event *FurryPlans, userId int64, name string, attendVal CanAttend, plusPeople int) {
+func (event *FurryPlans) updateAttendTable(userId int64, name string, attendVal CanAttend, plusPeople int) {
 	// Instead of using REPLACE INTO, we use GORM's UPDATE/CREATE workflow.
 	attend := FurryPlansAttend{
 		EventID:   event.EventID,
@@ -178,4 +186,32 @@ func updateAttendTable(event *FurryPlans, userId int64, name string, attendVal C
 	if db.Model(&FurryPlansAttend{}).Where(&FurryPlansAttend{EventID: event.EventID, UserID: userId}).Select("*").Updates(&attend).RowsAffected == 0 {
 		db.Create(&attend)
 	}
+}
+
+// SavePosting stores the inline message ID of the posting so the event can be refreshed later
+func (event *FurryPlans) SavePosting(MessageID string) {
+	posting := &FurryPlansPosted{
+		EventID:   event.EventID,
+		MessageID: MessageID,
+	}
+	if db.Model(&FurryPlansPosted{}).Updates(&posting).RowsAffected == 0 {
+		db.Create(&posting)
+	}
+}
+
+func (event *FurryPlans) Postings() ([]FurryPlansPosted, error) {
+	var posted []FurryPlansPosted
+	query := db.Where(&FurryPlansPosted{EventID: event.EventID})
+	err := query.Find(&posted).Error
+	if err != nil {
+		return nil, err
+	}
+	return posted, nil
+}
+
+func (event *FurryPlans) DeletePosting(MessageID string) error {
+	return db.Model(&FurryPlansPosted{}).Unscoped().Delete(&FurryPlansPosted{
+		EventID:   event.EventID,
+		MessageID: MessageID,
+	}).Error
 }

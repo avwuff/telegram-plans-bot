@@ -9,39 +9,17 @@ import (
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"log"
+	"net/url"
 	"strconv"
 	"strings"
 )
 
 func initUICommands(cmds *tgCommands.CommandList) {
 
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "use", Public: true, Handler: ui_Activate})
+	cmds.AddCB(tgCommands.Callback{DataPrefix: "use", Public: true, Handler: ui_Attending})
 	cmds.AddCB(tgCommands.Callback{DataPrefix: "attending", Public: true, Handler: ui_Attending})
 	cmds.AddCB(tgCommands.Callback{DataPrefix: "maybe", Public: true, Handler: ui_Attending})
 	cmds.AddCB(tgCommands.Callback{DataPrefix: "cancel", Public: true, Handler: ui_Attending})
-
-}
-
-func ui_Activate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
-	// note that usrInfo may represent a user who has never used the bot.
-
-	// Update the message with info about the event.
-	// Command is use:<event id>:activate
-	data := strings.Split(cb.Data, ":")
-	eventId, err := strconv.Atoi(data[1])
-	if err != nil {
-		return
-	}
-
-	event, loc, err := dbHelper.GetEvent(uint(eventId), int64(cb.From.ID))
-	if err != nil {
-		return
-	}
-	if loc == nil {
-		loc = usrInfo.Locale
-	}
-
-	makeEventUI(tg, int64(cb.From.ID), event, loc, cb.InlineMessageID)
 
 }
 
@@ -61,21 +39,30 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 		loc = usrInfo.Locale
 	}
 
+	// Save where this was posted
+	// We can use a Gofunc here since it isn't important to have this saved before we continue
+	go event.SavePosting(cb.InlineMessageID)
+
+	// HTML format the name so it works properly.
+	name := tg.ConvertEntitiesToHTML(cb.From.FirstName, nil)
+
 	// Update the attending data about the event.
 	var reply dbHelper.AttendMsgs
 	switch data[0] {
+	case "use": // Event activated
+		reply = dbHelper.ATTEND_ACTIVE
 	case "attending":
 		// How many people are they bringing?
 		people, err := strconv.Atoi(data[2])
 		if err != nil {
 			return
 		}
-		reply = dbHelper.Attending(event, int64(cb.From.ID), cb.From.FirstName, dbHelper.CANATTEND_YES, people)
+		reply = event.Attending(int64(cb.From.ID), name, dbHelper.CANATTEND_YES, people)
 
 	case "maybe":
-		reply = dbHelper.Attending(event, int64(cb.From.ID), cb.From.FirstName, dbHelper.CANATTEND_MAYBE, 0)
+		reply = event.Attending(int64(cb.From.ID), name, dbHelper.CANATTEND_MAYBE, 0)
 	case "cancel":
-		reply = dbHelper.Attending(event, int64(cb.From.ID), cb.From.FirstName, dbHelper.CANATTEND_NO, 0)
+		reply = event.Attending(int64(cb.From.ID), name, dbHelper.CANATTEND_NO, 0)
 	}
 
 	// Send the reply.
@@ -89,12 +76,51 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 		txt = loc.Sprintf("Sorry, this event is currently full!")
 	case dbHelper.ATTEND_REMOVED:
 		txt = loc.Sprintf("Alright, you've been marked as unable to attend.")
+	case dbHelper.ATTEND_ACTIVE:
+		txt = loc.Sprintf("Event is ready to be used!")
 	default:
 		txt = loc.Sprintf(GENERAL_ERROR)
 	}
-	answerCallback(tg, cb, txt)
+	// Answer the callback in a Gofunc
+	go answerCallback(tg, cb, txt)
+	err = makeEventUI(tg, int64(cb.From.ID), event, loc, cb.InlineMessageID)
+	if err != nil {
+		log.Println(err)
+	}
 
-	makeEventUI(tg, int64(cb.From.ID), event, loc, cb.InlineMessageID)
+	// Also update the event in all the places
+	updateEventUIAllPostings(tg, event, cb.InlineMessageID)
+}
+
+// Every time the event UI needs to be updated, do it in all the places.
+func updateEventUIAllPostings(tg *tgWrapper.Telegram, event *dbHelper.FurryPlans, skipPosting string) {
+
+	// Use the localizer from the event.
+	loc := localizer.FromLanguage(event.Language)
+
+	postings, err := event.Postings()
+	if err != nil {
+		return
+	}
+
+	for i := range postings {
+		if postings[i].MessageID != skipPosting {
+			// We do this as a Gofunc so that they can all be updated at once.
+			go func(msgId string) {
+				// Update this one.
+				err := makeEventUI(tg, 0, event, loc, msgId)
+				if err != nil {
+					//log.Println("Failed on ID", msgId, err)
+					if strings.Contains(err.Error(), "MESSAGE_ID_INVALID") {
+						// The message where this once was, was probably deleted.
+						// So we delete the posting, so we don't try it again.
+						event.DeletePosting(msgId)
+					}
+				}
+			}(postings[i].MessageID)
+		}
+	}
+
 }
 
 func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text string) {
@@ -108,13 +134,96 @@ func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text 
 }
 
 // makeEventUI displays the main event UI.
-func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlans, loc *localizer.Localizer, inlineId string) {
+func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlans, loc *localizer.Localizer, inlineId string) error {
 
-	t := "TODO NOT YET FINISHED"
-	t += "<b>" + loc.Sprintf("Name:") + "</b> " + event.Name + "\n"
+	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(stripHtmlRegex(event.Location)))
+
+	// TODO: Localization
+	t := "<b>" + event.Name + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName + "\n"
 	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDate(event.DateTime.Time) + "\n"
-	t += "<b>" + loc.Sprintf("Location:") + "</b> " + event.Location + "\n"
-	t += "<b>" + loc.Sprintf("Hosted By:") + "</b> " + event.OwnerName + "\n"
+	t += "<b>" + loc.Sprintf("Location:") + "</b><a href=\"" + URL + "\">" + event.Location + "</a>" + "\n"
+	if event.MaxAttendees > 0 {
+		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
+	}
+	if event.Notes != "" {
+		t += "<b>Notes:</b>\n" + event.Notes + "\n"
+	}
+
+	// Get the list of people attending
+	attending, err := event.GetAttending()
+
+	var cGoing int
+	var tGoing, tMaybe, tNot []string
+
+	if err != nil {
+		t += "Unable to get list of attending people."
+	} else {
+
+		for _, attend := range attending {
+
+			switch dbHelper.CanAttend(attend.CanAttend) {
+			case dbHelper.CANATTEND_YES: // Going / Spotting
+
+				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
+				if attend.PlusMany > 0 {
+					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
+				}
+				tGoing = append(tGoing, txt)
+				cGoing += 1 + attend.PlusMany
+
+			/*case 20 ' Suiting
+				tSuiting = tSuiting & " - " & "<a href="
+				"tg://user?id=" & RS("userID") & ""
+				">" & RS("UserName") & "</a>"
+				if clng(RS("plusMany")) > 0 then
+				tSuiting = tSuiting & " <b>+" & clng(RS("plusMany")) & "</b>"
+				tSuiting = tSuiting & vbcrlf
+
+				cSuiting = cSuiting + 1 + clng(RS("plusMany"))
+
+			case 30 ' Photo
+				tPhoto = tPhoto & " - " & "<a href="
+				"tg://user?id=" & RS("userID") & ""
+				">" & RS("UserName") & "</a>"
+				if clng(RS("plusMany")) > 0 then
+				tPhoto = tPhoto & " <b>+" & clng(RS("plusMany")) & "</b>"
+				tPhoto = tPhoto & vbcrlf
+
+				cPhoto = cPhoto + 1 + clng(RS("plusMany"))*/
+
+			case 2: // Maybe
+
+				txt := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
+				tMaybe = append(tMaybe, txt)
+			default: // Not going
+
+				txt := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
+				tNot = append(tNot, txt)
+			}
+		}
+	}
+
+	if event.Suitwalk == 1 {
+		// TODO
+
+	} else {
+		if len(tGoing) > 0 {
+			t += "\n" + "<b>" + loc.Sprintf("Attending: %v", cGoing) + "</b>\n"
+			t += strings.Join(tGoing, "\n")
+		}
+	}
+
+	if len(tMaybe) > 0 {
+		t += "\n" + "<b>" + loc.Sprintf("Maybe: %v", len(tMaybe)) + "</b>\n"
+		t += strings.Join(tMaybe, ", ")
+	}
+
+	if len(tNot) > 0 {
+		t += "\n" + "<b>" + loc.Sprintf("Can't make it: %v", len(tNot)) + "</b>\n"
+		t += strings.Join(tNot, ", ")
+	}
+
+	t += "\n<i>" + loc.Sprintf("Can you go? Use the buttons below.") + "</i>"
 
 	var mObj tgbotapi.Chattable
 
@@ -127,10 +236,11 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 	mObj2.DisableWebPagePreview = true
 	mObj = mObj2
 
-	_, err := tg.Send(mObj)
+	_, err = tg.Send(mObj)
 	if err != nil {
-		log.Println(err)
+		return err
 	}
+	return nil
 }
 
 // eventEditButtons creates the buttons that help you edit an event.

@@ -78,7 +78,7 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 
 	// CHOICE
 	case "language":
-		editChoiceItem(tg, usrInfo, int64(cb.From.ID), &event.LanguageOverride, "Language", usrInfo.Locale.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesMap())
+		editChoiceItem(tg, usrInfo, int64(cb.From.ID), &event.Language, "Language", usrInfo.Locale.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesMap())
 
 	// TOGGLES
 	case "sharing":
@@ -148,7 +148,7 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", editTime.Format("15:04")) // TODO switch to AM/PM
 
 		// Save the value
-		err := dbHelper.UpdateEvent(event.EventID, event, colName)
+		err := event.UpdateEvent(colName)
 		if err != nil {
 			mObj := tgbotapi.NewMessage(int64(cb.From.ID), usrInfo.Locale.Sprintf("error updating event: %v", err))
 			_, _ = tg.Send(mObj)
@@ -158,6 +158,7 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		// switch back to normal mode and display the event details
 		usrInfo.SetMode(userManager.MODE_DEFAULT)
 		eventDetails(tg, usrInfo, int64(cb.From.ID), event.EventID, "", 0, false)
+		updateEventUIAllPostings(tg, event, "")
 	}
 
 	_, err := tg.Send(edit)
@@ -195,7 +196,7 @@ func edit_setTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	*editTime = changeJustTime(*editTime, selTime)
 
 	// Save the changes to the string.
-	err = dbHelper.UpdateEvent(event.EventID, event, colName)
+	err = event.UpdateEvent(colName)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
@@ -204,6 +205,7 @@ func edit_setTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event.EventID, "", 0, false)
+	updateEventUIAllPostings(tg, event, "")
 }
 
 // editDateItem displays the date select calendar.
@@ -257,7 +259,7 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", editDate.Format("January 2, 2006"))
 
 		// Save the value
-		err := dbHelper.UpdateEvent(event.EventID, event, colName)
+		err := event.UpdateEvent(colName)
 		if err != nil {
 			mObj := tgbotapi.NewMessage(int64(cb.From.ID), usrInfo.Locale.Sprintf("error updating event: %v", err))
 			_, _ = tg.Send(mObj)
@@ -267,6 +269,7 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		// switch back to normal mode and display the event details
 		usrInfo.SetMode(userManager.MODE_DEFAULT)
 		eventDetails(tg, usrInfo, int64(cb.From.ID), event.EventID, "", 0, false)
+		updateEventUIAllPostings(tg, event, "")
 	}
 	_, err := tg.Send(edit)
 	if err != nil {
@@ -305,7 +308,7 @@ func edit_setDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	*editDate = changeJustDate(*editDate, selDate)
 
 	// Save the changes to the string.
-	err = dbHelper.UpdateEvent(event.EventID, event, colName)
+	err = event.UpdateEvent(colName)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
@@ -314,6 +317,7 @@ func edit_setDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event.EventID, "", 0, false)
+	updateEventUIAllPostings(tg, event, "")
 }
 
 func changeJustDate(fullDate time.Time, newDate time.Time) time.Time {
@@ -334,7 +338,7 @@ func toggleItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbot
 	*iValue = 1 - *iValue
 
 	// Save the changes
-	err := dbHelper.UpdateEvent(event.EventID, event, columnName)
+	err := event.UpdateEvent(columnName)
 	if err != nil {
 		mObj := tgbotapi.NewMessage(int64(cb.From.ID), usrInfo.Locale.Sprintf("error updating event: %v", err))
 		_, _ = tg.Send(mObj)
@@ -342,7 +346,7 @@ func toggleItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbot
 	}
 
 	eventDetails(tg, usrInfo, int64(cb.From.ID), event.EventID, "", cb.Message.MessageID, false)
-
+	updateEventUIAllPostings(tg, event, "")
 }
 
 func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem *string, columnName string, prompt string, choices map[string]string) {
@@ -419,7 +423,7 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	*editString = found
 
 	// Save the changes to the string.
-	err := dbHelper.UpdateEvent(event.EventID, event, colName)
+	err := event.UpdateEvent(colName)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
@@ -428,6 +432,7 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event.EventID, "", 0, false)
+	updateEventUIAllPostings(tg, event, "")
 }
 
 // editStringItem puts them into a mode where they are editing a text item
@@ -476,7 +481,7 @@ func edit_setString(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	//fmt.Printf("Entities: %#v\n", msg.Entities)
 
 	// Save the changes to the string.
-	err := dbHelper.UpdateEvent(event.EventID, event, colName)
+	err := event.UpdateEvent(colName)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
@@ -485,6 +490,7 @@ func edit_setString(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event.EventID, "", 0, false)
+	updateEventUIAllPostings(tg, event, "")
 }
 
 // editNumberItem puts them into a mode where they are editing a number item
@@ -532,7 +538,7 @@ func edit_setNumber(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	*editNumber = num
 
 	// Save the changes to the string.
-	err = dbHelper.UpdateEvent(event.EventID, event, colName)
+	err = event.UpdateEvent(colName)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
@@ -541,4 +547,5 @@ func edit_setNumber(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event.EventID, "", 0, false)
+	updateEventUIAllPostings(tg, event, "")
 }

@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 )
 
+// UserPrefs stores per-user preferences
 type UserPrefs struct {
 	gorm.Model
 	UserID int64 // the ID of the user these prefs are being stored for
@@ -18,16 +19,16 @@ type UserPrefs struct {
 }
 
 type FurryPlans struct {
-	EventID          uint         `gorm:"primarykey;column:eventID"`
-	OwnerID          string       `gorm:"column:ownerID"` // Should be an int64
-	Name             string       `gorm:"column:EventName"`
-	DateTime         sql.NullTime `gorm:"column:EventDateTime"`
-	TimeZone         string       `gorm:"column:TimeZone"`
-	CreatedAt        sql.NullTime `gorm:"column:CreatedAt"`
-	OwnerName        string       `gorm:"column:ownerName"`
-	Location         string       `gorm:"column:EventLocation"`
-	Notes            string       `gorm:"column:Notes"`
-	LanguageOverride string       `gorm:"column:Language"`
+	EventID   uint         `gorm:"primarykey;column:eventID"`
+	OwnerID   string       `gorm:"column:ownerID"` // Should be an int64
+	Name      string       `gorm:"column:EventName"`
+	DateTime  sql.NullTime `gorm:"column:EventDateTime"`
+	TimeZone  string       `gorm:"column:TimeZone"`
+	CreatedAt sql.NullTime `gorm:"column:CreatedAt"`
+	OwnerName string       `gorm:"column:ownerName"`
+	Location  string       `gorm:"column:EventLocation"`
+	Notes     string       `gorm:"column:Notes"`
+	Language  string       `gorm:"column:Language"`
 
 	// Should really have been BOOLs
 	Suitwalk     int `gorm:"column:Suitwalk"`
@@ -37,10 +38,11 @@ type FurryPlans struct {
 }
 
 // TableName is used to override Gorm's default table naming
-func (FurryPlans) TableName() string {
+func (*FurryPlans) TableName() string {
 	return "furryplans"
 }
 
+// FurryPlansAttend keeps track of who has marked themselves as able to attend an event.
 type FurryPlansAttend struct {
 	EventID   uint   `gorm:"primarykey;column:eventID"`
 	UserID    int64  `gorm:"primarykey;column:userID"`
@@ -49,7 +51,17 @@ type FurryPlansAttend struct {
 	PlusMany  int    `gorm:"column:plusMany"`
 }
 
-// TableName is used to override Gorm's default table naming
 func (FurryPlansAttend) TableName() string {
 	return "furryplansattend"
+}
+
+// FurryPlansPosted tracks where the event has been posted and the message ID there.
+// This allows all the places where it has been posted to be updated at once.
+type FurryPlansPosted struct {
+	EventID   uint   `gorm:"primarykey;column:event_id"`
+	MessageID string `gorm:"primarykey;column:message_id"`
+}
+
+func (FurryPlansPosted) TableName() string {
+	return "furryplansposted"
 }

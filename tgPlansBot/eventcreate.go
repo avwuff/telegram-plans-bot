@@ -169,7 +169,7 @@ func create_SetLocation(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, m
 	selName := usrInfo.GetData(CREATE_NAME).(string)
 
 	// Now finish the event
-	eventId, err := createNewEvent(tg, usrInfo, msg.Chat.ID, getOwnerName(msg.Chat), selName, selDate, tg.ConvertEntitiesToHTML(text, msg.Entities))
+	eventId, err := createNewEvent(tg, usrInfo, msg.Chat.ID, tg.ConvertEntitiesToHTML(getOwnerName(msg.Chat), nil), selName, selDate, tg.ConvertEntitiesToHTML(text, msg.Entities))
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error creating event: %v", err))
 		return
@@ -196,6 +196,7 @@ func createNewEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatI
 		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
 		OwnerName: ownerName,
 		Location:  loc,
+		Language:  usrInfo.Prefs.Language, // By default, events pick up the language of their creators
 	}
 	return dbHelper.CreateEvent(&event)
 }

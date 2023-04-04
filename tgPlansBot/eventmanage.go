@@ -66,8 +66,8 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 	if event.MaxAttendees > 0 {
 		t += "<b>" + usrInfo.Locale.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
 	}
-	if event.LanguageOverride != "" {
-		t += "<b>" + usrInfo.Locale.Sprintf("Language:") + "</b> " + fmt.Sprintf("%v", event.LanguageOverride) + "\n"
+	if event.Language != "" {
+		t += "<b>" + usrInfo.Locale.Sprintf("Language:") + "</b> " + fmt.Sprintf("%v", event.Language) + "\n"
 	}
 	if event.Notes != "" {
 		t += "<b>" + usrInfo.Locale.Sprintf("Notes:") + "</b>\n" + event.Notes + "\n"

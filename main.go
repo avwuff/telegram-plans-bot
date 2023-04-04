@@ -7,6 +7,7 @@ import (
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgPlansBot"
 	"log"
+	"os"
 	"time"
 )
 
@@ -18,15 +19,20 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	saltValue, err := os.ReadFile("salt.txt")
+	if err != nil {
+		panic(err)
+	}
+
 	log.Println("Connecting to database...")
-	err := dbHelper.InitDB("dsn.txt")
+	err = dbHelper.InitDB("dsn.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println("Connected.")
 
 	log.Println("Starting telegram bot...")
-	go tgPlansBot.StartTG(ctx)
+	go tgPlansBot.StartTG(ctx, string(saltValue))
 
 	// Wait until the application exits now
 	log.Println("Listening for updates.")

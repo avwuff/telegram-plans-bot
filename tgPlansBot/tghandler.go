@@ -11,7 +11,11 @@ import (
 
 var cmds *tgCommands.CommandList
 
-func StartTG(ctx context.Context) {
+var saltValue string
+
+func StartTG(ctx context.Context, salt string) {
+	saltValue = salt
+
 	// Create the tgWrapper object
 	tg := initTg()
 
@@ -26,6 +30,7 @@ func initCommands() {
 	cmds = tgCommands.NewList()
 	cmds.Add(tgCommands.Command{Command: "/start", Handler: startHandler})
 	cmds.Add(tgCommands.Command{Command: "/help", Handler: helpHandler})
+	cmds.Add(tgCommands.Command{Command: "/feed", Handler: calendarFeed})
 	cmds.Add(tgCommands.Command{Command: "/language", Handler: languageHandler})
 	cmds.Add(tgCommands.Command{Command: "/404", Handler: unknownHandler})
 

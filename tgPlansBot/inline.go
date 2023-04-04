@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-const SHARE_PREFIX = "FPBSHARE:"
+const SHARE_PREFIX = "FPBSHARE-"
 const POST_PREFIX = "POST:"
 
 // handleInline comes from the user typing @furryplansbot followed by a query
@@ -32,7 +32,18 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 		// There are several ways the inline mode can be used.
 		// Mode 1: Sharing from another chat.
 		if strings.HasPrefix(query.Query, SHARE_PREFIX) {
-			// TODO
+
+			// Find a match for this one.
+			hash := query.Query[len(SHARE_PREFIX):] // strip off the post prefix
+			event, _, err := dbHelper.GetEventByHash(hash, saltValue)
+			if err != nil {
+				answerWithList(tg, query, nil)
+				return
+			}
+
+			// Give the list here
+			events = []*dbHelper.FurryPlans{event}
+
 		} else if strings.HasPrefix(query.Query, POST_PREFIX) {
 			// Find just this one event.
 			eventId := query.Query[len(POST_PREFIX):] // strip off the post prefix

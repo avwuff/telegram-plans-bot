@@ -108,6 +108,33 @@ func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, e
 	return &event, loc, nil
 }
 
+// GetEventByHash searches for this event by the hash.
+func GetEventByHash(hash string, saltValue string) (*FurryPlans, *localizer.Localizer, error) {
+
+	// TODO: This whole sharing mechanism needs to be overhauled.
+	sql := `SELECT * FROM furryplans WHERE 
+            CONCAT('', MD5(CONCAT(eventID, ?))) = ? AND 
+            EventDateTime > NOW() - INTERVAL 2 DAY AND 
+            AllowShare=1`
+
+	var event FurryPlans
+	res := db.Raw(sql, saltValue, hash).Scan(&event)
+	if res.Error != nil {
+		return nil, nil, res.Error
+	}
+
+	// Clean up the old syntax from the previous event bot
+	event.cleanOldSyntax()
+	loc := localizer.FromLanguage(event.Language)
+
+	// Update the time on the event to match the time zone.
+	if event.TimeZone != "" {
+		tz := localizer.FromTimeZone(event.TimeZone)
+		event.DateTime.Time = event.DateTime.Time.In(tz)
+	}
+	return &event, loc, nil
+}
+
 func SearchEvents(ownerId int64, searchText string) ([]*FurryPlans, error) {
 	var events []*FurryPlans
 	query := db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Where("EventName LIKE ?", "%"+searchText+"%").Order("EventDateTime DESC")
@@ -205,13 +232,10 @@ func (event *FurryPlans) Attending(userId int64, name string, attendType CanAtte
 		FROM furryplansattend WHERE EventID=?
 		AND CanAttend IN (1, 20, 30) AND userID <> ?`
 
-			res := db.Raw(sql, event.EventID, userId)
-			if res.Error != nil {
-				return ATTEND_ERROR
-			}
+			// TODO make sure this is working
 			var count *int
-			err := res.Row().Scan(&count)
-			if err != nil {
+			res := db.Raw(sql, event.EventID, userId).Scan(&count)
+			if res.Error != nil {
 				return ATTEND_ERROR
 			}
 

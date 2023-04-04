@@ -273,8 +273,11 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 
 	if event.AllowShare == 1 {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
-		// TODO FINISH THIS ONE
-		row = append(row, quickButton(loc.Sprintf("📩 Share to another chat..."), fmt.Sprintf("attending:%v:0", event.EventID)))
+		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, calenFeedMD5(int64(event.EventID))) // Example: POST:1234
+		row = append(row, tgbotapi.InlineKeyboardButton{
+			Text:              loc.Sprintf("📩 Share to another chat..."),
+			SwitchInlineQuery: &shareButton,
+		})
 		buttons = append(buttons, row)
 	}
 

@@ -40,156 +40,220 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"A general error occurred.": 54,
-	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n": 47,
-	"Choose the display language for this event.":                                                            52,
-	"Continue with Date: %v": 7,
-	"Continue with Time: %v": 8,
-	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 41,
-	"Could not parse the time you provided. Please send it in the format 22:03.":      44,
-	"Date selected: %v":        40,
-	"Date:":                    17,
-	"Error listing events: %v": 58,
-	"Event not found":          57,
-	"Fr":                       5,
-	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 39,
-	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    42,
-	"Here is a list of available commands:\n/start\n/language":                                           25,
-	"Here is a list of your events:": 26,
-	"Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.": 24,
-	"Hosted By:": 19,
-	"I don't understand that command. Send /help for help.": 27,
-	"Location:":                      18,
-	"Max Attendees:":                 21,
-	"Mo":                             1,
-	"Name:":                          16,
-	"No":                             30,
-	"Notes:":                         22,
-	"Please provide a valid number":  56,
-	"Sa":                             6,
-	"Select an event to edit:\n%v":   59,
-	"Share these plans in a chat ✅🔜": 9,
-	"Specify any additional notes you'd like to show about the event.":                                                                                                50,
-	"Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.": 51,
-	"Specify the name of the event.":                    48,
-	"Specify the name of the person hosting the event.": 49,
-	"Su":                                    0,
-	"Suitwalk:":                             20,
-	"Th":                                    4,
-	"The language has been set to English.": 23,
-	"The value you provided is not one of the choices.": 55,
-	"Time selected: %v":        43,
-	"Tu":                       2,
-	"Unable to parse event ID": 60,
-	"We":                       3,
-	"Where does the event take place?  Specify the name or address as you might type into Google Maps.": 45,
-	"Yes":                      31,
-	"error creating event: %v": 46,
-	"error updating event: %v": 53,
-	"⌚ Time Zone":              37,
-	"⏰ Edit Time":              12,
-	"⚙ ADVANCED OPTIONS ⚙":     34,
-	"⚙ Advanced Options...":    33,
-	"🏆 Edit Name":              10,
-	"🐕 Suitwalk: %v":           35,
-	"👫 Set Max Attendees":      28,
-	"💔 Allow Maybe: %v":        29,
-	"📆 Edit Date":              11,
-	"📍 Edit Location":          13,
-	"📝 Add Notes":              15,
-	"📩 Allow Sharing: %v":      32,
-	"🔙 Back":                   38,
-	"🔠 Language":               36,
-	"🕴 Edit Hosted By":         14,
+	"A general error occurred.": 31,
+	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n": 74,
+	"Alright, you've been marked as attending.":                                                              41,
+	"Alright, you've been marked as maybe.":                                                                  42,
+	"Alright, you've been marked as unable to attend.":                                                       44,
+	"Attending: %v": 47,
+	"Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.": 82,
+	"Can you go? Use the buttons below.":             50,
+	"Can't make it: %v":                              49,
+	"Choose the display language for this event.":    30,
+	"Click the button below to activate this event.": 59,
+	"Continue with Date: %v":                         7,
+	"Continue with Time: %v":                         8,
+	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 68,
+	"Could not parse the time you provided. Please send it in the format 22:03.":      71,
+	"Date selected: %v":          23,
+	"Date:":                      33,
+	"Error listing events: %v":   79,
+	"Event is ready to be used!": 45,
+	"Event not found":            78,
+	"Fr":                         5,
+	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 22,
+	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    69,
+	"Here is a list of available commands:\n/start\n/myevents\n/language":                                86,
+	"Hosted By:": 35,
+	"I don't understand that command. Send /help for help.": 62,
+	"In which time zone do you live?":                       61,
+	"Language:":                                             38,
+	"Let's create some new plans.  First, send me the name of the event.": 85,
+	"Location:":      34,
+	"Max Attendees:": 37,
+	"Maybe: %v":      48,
+	"Mo":             1,
+	"Name:":          32,
+	"No":             16,
+	"Notes:":         39,
+	"Please check the policy again to see how to finish.": 83,
+	"Please provide a valid number":                       77,
+	"Sa":                                                  6,
+	"Select an event to edit:\n%v":                        40,
+	"Share these plans in a chat ✅🔜":                      9,
+	"Sorry, this event is currently full!":                43,
+	"Specified Time Zone not found.":                      81,
+	"Specify any additional notes you'd like to show about the event.": 26,
+	"Specify the date on which this event takes place:":                27,
+	"Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.": 29,
+	"Specify the name of the event.":                    24,
+	"Specify the name of the person hosting the event.": 25,
+	"Specify the time at which this event takes place:": 28,
+	"Su":        0,
+	"Suitwalk:": 36,
+	"Th":        4,
+	"Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.": 84,
+	"The language has been set to English.":             60,
+	"The value you provided is not one of the choices.": 76,
+	"Time selected: %v":                                 70,
+	"Tu":                                                2,
+	"Unable to parse event ID":                          80,
+	"We":                                                3,
+	"Where does the event take place?  Specify the name or address as you might type into Google Maps.": 72,
+	"Yes":                         17,
+	"error creating event: %v":    73,
+	"error updating event: %v":    75,
+	"hosted by":                   46,
+	"⌚ Time Zone":                 20,
+	"⏰ Edit Time":                 12,
+	"⚙ ADVANCED OPTIONS ⚙":        66,
+	"⚙ Advanced Options...":       65,
+	"❌️ I can't make it":          55,
+	"🏆 Edit Name":                 10,
+	"🐕 Suitwalk: %v":              67,
+	"👉 CLICK TO ACTIVATE EVENT 👈": 58,
+	"👫 Set Max Attendees":         63,
+	"👭 Me +1":                     52,
+	"💔 Allow Maybe: %v":           64,
+	"📆 Add to Calendar":           56,
+	"📆 Edit Date":                 11,
+	"📍 Edit Location":             13,
+	"📝 Add Notes":                 15,
+	"📩 Allow Sharing: %v":         18,
+	"📩 Share to another chat...":  57,
+	"🔙 Back":                      21,
+	"🔠 Language":                  19,
+	"🕴 Edit Hosted By":            14,
+	"🙋\u200d♂️ I'm going!":        51,
+	"🙋\u200d♂️👭 Me +2":            53,
+	"🤔️ Maybe":                    54,
 }
 
-var de_DEIndex = []uint32{ // 62 elements
+var de_DEIndex = []uint32{ // 88 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000003, 0x00000006, 0x00000009,
 	0x0000000c, 0x0000000f, 0x00000012, 0x00000015,
 	0x0000002e, 0x00000046, 0x0000005f, 0x00000072,
 	0x00000085, 0x00000096, 0x000000ae, 0x000000c3,
-	0x000000d1, 0x000000d8, 0x000000df, 0x000000eb,
-	0x000000f5, 0x000000ff, 0x0000010a, 0x00000114,
-	0x00000133, 0x000001b1, 0x000001e6, 0x0000020c,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
+	0x000000d1, 0x000000d6, 0x000000d9, 0x000000f2,
+	0x000000ff, 0x0000010f, 0x0000011b, 0x0000013d,
+	0x0000014a, 0x00000168, 0x00000188, 0x0000019e,
+	0x000001b0, 0x000001c1, 0x000001e0, 0x000001f7,
 	// Entry 20 - 3F
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250, 0x00000250, 0x00000250,
-	0x00000250, 0x00000250,
-} // Size: 272 bytes
+	0x0000021b, 0x00000222, 0x00000229, 0x00000235,
+	0x0000023f, 0x00000249, 0x00000254, 0x0000025d,
+	0x00000267, 0x0000028b, 0x000002b5, 0x000002e0,
+	0x000002fd, 0x00000329, 0x0000033e, 0x0000034a,
+	0x0000035a, 0x0000036c, 0x00000380, 0x000003a6,
+	0x000003be, 0x000003ca, 0x000003e3, 0x000003f6,
+	0x00000408, 0x00000419, 0x0000042d, 0x0000044b,
+	0x00000477, 0x00000496, 0x000004b2, 0x000004f6,
+	// Entry 40 - 5F
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+} // Size: 376 bytes
 
-const de_DEData string = "" + // Size: 592 bytes
+const de_DEData string = "" + // Size: 1270 bytes
 	"\x02So\x02Mo\x02Di\x02Mi\x02Do\x02Fr\x02Sa\x02Datum akzeptieren: %[1]v" +
 	"\x02Zeit Akzeptieren: %[1]v\x02Plane jetzt weiter geben\x02🏆 Namen ander" +
 	"en\x02📆 Daten anderen\x02⏰ Zeit anderen\x02📍 Treffpunkt anderen\x02🕴 Ang" +
-	"eber anderen\x02📝 Hinweise\x02Namen:\x02Datum:\x02Treffpunkt:\x02Besitze" +
-	"r:\x02Suitwalk:\x02Max Leute:\x02Hinweise:\x02Die Sprache ist jetzt Deut" +
-	"sch.\x02Hallo! Ich bin die Furry Plans Bot.  Lassen Sie uns neue plaene " +
-	"machen.  Zuerst, bitte sagen Sie mir den Namen von dem Event.\x02Hier is" +
-	"t eine Liste von auswahelen:\x0a/start\x0a/language\x02Hier ist eine Lis" +
-	"te von Ihren Events:\x02Das habe Ich nicht verstanden.  Bitte schicken S" +
-	"ie /help fur hilfe."
+	"eber anderen\x02📝 Hinweise\x02Nein\x02Ja\x02📩 Weitergeben Erlaubt\x02🔠 S" +
+	"prache\x02⌚ Zeit Berect\x02🔙 Zuruck\x02Hab es. Wahlen Sie ein Datum aus." +
+	"\x02Datum: %[1]v\x02Geben Sie den Namen vom Event\x02Geben Sie den Namen" +
+	" vom Angeber\x02Geben Sie Hinweise an\x02An welchem Datum?\x02Zu welcher" +
+	" Zeit?\x02Die maximale nummer von Leute?\x02Die Sprache des Event?\x02Ei" +
+	"n generales Problem hat passiert.\x02Namen:\x02Datum:\x02Treffpunkt:\x02" +
+	"Besitzer:\x02Suitwalk:\x02Max Leute:\x02Sprache:\x02Hinweise:\x02Wahlen " +
+	"Sie ein Event zum editieren:\x02OK, Sie sind jetzt markiert als Mitgeher" +
+	".\x02OK, Sie sind jetzt markiert als Vielleicht\x02Leider ist diese Even" +
+	"t voll.\x02OK, Sie sind jetzt markiert als Nicht Gehen\x02Das Event ist " +
+	"ready!\x02angeben von\x02Mitgehen: %[1]v\x02Veilleicht: %[1]v\x02Konnen " +
+	"nicht: %[1]v\x02Konnen Sie gehen? Benutze die Knopfe:\x02🙋\u200d♂️ Ich g" +
+	"ehe!\x02👭 Ich +1\x02🙋\u200d♂️👭 Ich +2\x02🤔️ Vielleicht\x02❌️ Kann Nicht" +
+	"\x02📆 An Kalendar\x02📩 Weitergeben...\x02👉 CLICK UM AKTIVIEREN 👈\x02Clic" +
+	"k dem Knopf um das Event zu aktievieren\x02Die Sprache ist jetzt Deutsch" +
+	".\x02In welcher Zeit wohnen Sie?\x02Das habe Ich nicht verstanden.  Bitt" +
+	"e schicken Sie /help fur hilfe."
 
-var en_USIndex = []uint32{ // 62 elements
+var en_USIndex = []uint32{ // 88 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000003, 0x00000006, 0x00000009,
 	0x0000000c, 0x0000000f, 0x00000012, 0x00000015,
 	0x0000002f, 0x00000049, 0x0000006d, 0x0000007c,
 	0x0000008b, 0x00000099, 0x000000ac, 0x000000c0,
-	0x000000cf, 0x000000d5, 0x000000db, 0x000000e5,
-	0x000000f0, 0x000000fa, 0x00000109, 0x00000110,
-	0x00000136, 0x00000198, 0x000001cf, 0x000001ee,
-	0x00000224, 0x0000023b, 0x00000253, 0x00000256,
+	0x000000cf, 0x000000d2, 0x000000d6, 0x000000f0,
+	0x000000fe, 0x0000010c, 0x00000116, 0x00000179,
+	0x0000018e, 0x000001ad, 0x000001df, 0x00000220,
+	0x00000252, 0x00000284, 0x00000322, 0x0000034e,
 	// Entry 20 - 3F
-	0x0000025a, 0x00000274, 0x0000028c, 0x000002a5,
-	0x000002ba, 0x000002c8, 0x000002d6, 0x000002e0,
-	0x00000343, 0x00000358, 0x000003a8, 0x00000408,
-	0x0000041d, 0x00000468, 0x000004ca, 0x000004e6,
-	0x0000054f, 0x0000056e, 0x000005a0, 0x000005e1,
-	0x0000067f, 0x000006ab, 0x000006c7, 0x000006e1,
-	0x00000713, 0x00000731, 0x00000741, 0x0000075d,
-	0x0000077c, 0x00000795,
-} // Size: 272 bytes
+	0x00000368, 0x0000036e, 0x00000374, 0x0000037e,
+	0x00000389, 0x00000393, 0x000003a2, 0x000003ac,
+	0x000003b3, 0x000003d2, 0x000003fc, 0x00000422,
+	0x00000447, 0x00000478, 0x00000493, 0x0000049d,
+	0x000004ae, 0x000004bb, 0x000004d0, 0x000004f3,
+	0x0000050c, 0x00000517, 0x0000052f, 0x0000053d,
+	0x00000554, 0x00000569, 0x00000587, 0x000005a9,
+	0x000005d8, 0x000005fe, 0x0000061e, 0x00000654,
+	// Entry 40 - 5F
+	0x0000066b, 0x00000683, 0x0000069b, 0x000006b4,
+	0x000006c9, 0x00000719, 0x00000779, 0x0000078e,
+	0x000007d9, 0x0000083b, 0x00000857, 0x000008c0,
+	0x000008dc, 0x0000090e, 0x0000092c, 0x0000093c,
+	0x00000958, 0x00000971, 0x00000990, 0x00000a56,
+	0x00000a8a, 0x00000af1, 0x00000b35, 0x00000b76,
+} // Size: 376 bytes
 
-const en_USData string = "" + // Size: 1941 bytes
+const en_USData string = "" + // Size: 2934 bytes
 	"\x02Su\x02Mo\x02Tu\x02We\x02Th\x02Fr\x02Sa\x02Continue with Date: %[1]v" +
 	"\x02Continue with Time: %[1]v\x02Share these plans in a chat ✅🔜\x02🏆 Edi" +
 	"t Name\x02📆 Edit Date\x02⏰ Edit Time\x02📍 Edit Location\x02🕴 Edit Hosted" +
-	" By\x02📝 Add Notes\x02Name:\x02Date:\x02Location:\x02Hosted By:\x02Suitw" +
-	"alk:\x02Max Attendees:\x02Notes:\x02The language has been set to English" +
-	".\x02Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, " +
-	"send me the name of the event.\x02Here is a list of available commands:" +
-	"\x0a/start\x0a/language\x02Here is a list of your events:\x02I don't und" +
-	"erstand that command. Send /help for help.\x02👫 Set Max Attendees\x02💔 A" +
-	"llow Maybe: %[1]v\x02No\x02Yes\x02📩 Allow Sharing: %[1]v\x02⚙ Advanced O" +
-	"ptions...\x02⚙ ADVANCED OPTIONS ⚙\x02🐕 Suitwalk: %[1]v\x02🔠 Language\x02" +
-	"⌚ Time Zone\x02🔙 Back\x02Got it.  Choose a Date for the event by click" +
-	"ing on the Calendar below and then clicking Continue.\x02Date selected: " +
-	"%[1]v\x02Could not parse the date you provided. Please send it in the fo" +
-	"rmat YYYY-MM-DD.\x02Got it.  Choose a Time for the event by clicking on " +
-	"the times below and then clicking Continue.\x02Time selected: %[1]v\x02C" +
-	"ould not parse the time you provided. Please send it in the format 22:03" +
-	".\x02Where does the event take place?  Specify the name or address as yo" +
-	"u might type into Google Maps.\x02error creating event: %[1]v\x04\x00" +
-	"\x02\x0a\x0ac\x02Alright, I've created your event! You can now add addit" +
-	"ional content, or share it to another chat.\x02Specify the name of the e" +
-	"vent.\x02Specify the name of the person hosting the event.\x02Specify an" +
-	"y additional notes you'd like to show about the event.\x02Specify the ma" +
-	"ximum number of people that can attend.  Once the maximum is reached, us" +
-	"ers will no longer be able to click 'I'm Going'.\x0a\x0aTo disable, send" +
-	" a 0.\x02Choose the display language for this event.\x02error updating e" +
-	"vent: %[1]v\x02A general error occurred.\x02The value you provided is no" +
-	"t one of the choices.\x02Please provide a valid number\x02Event not foun" +
-	"d\x02Error listing events: %[1]v\x02Select an event to edit:\x0a%[1]v" +
-	"\x02Unable to parse event ID"
+	" By\x02📝 Add Notes\x02No\x02Yes\x02📩 Allow Sharing: %[1]v\x02🔠 Language" +
+	"\x02⌚ Time Zone\x02🔙 Back\x02Got it.  Choose a Date for the event by cli" +
+	"cking on the Calendar below and then clicking Continue.\x02Date selected" +
+	": %[1]v\x02Specify the name of the event.\x02Specify the name of the per" +
+	"son hosting the event.\x02Specify any additional notes you'd like to sho" +
+	"w about the event.\x02Specify the date on which this event takes place:" +
+	"\x02Specify the time at which this event takes place:\x02Specify the max" +
+	"imum number of people that can attend.  Once the maximum is reached, use" +
+	"rs will no longer be able to click 'I'm Going'.\x0a\x0aTo disable, send " +
+	"a 0.\x02Choose the display language for this event.\x02A general error o" +
+	"ccurred.\x02Name:\x02Date:\x02Location:\x02Hosted By:\x02Suitwalk:\x02Ma" +
+	"x Attendees:\x02Language:\x02Notes:\x02Select an event to edit:\x0a%[1]v" +
+	"\x02Alright, you've been marked as attending.\x02Alright, you've been ma" +
+	"rked as maybe.\x02Sorry, this event is currently full!\x02Alright, you'v" +
+	"e been marked as unable to attend.\x02Event is ready to be used!\x02host" +
+	"ed by\x02Attending: %[1]v\x02Maybe: %[1]v\x02Can't make it: %[1]v\x02Can" +
+	" you go? Use the buttons below.\x02🙋\u200d♂️ I'm going!\x02👭 Me +1\x02🙋" +
+	"\u200d♂️👭 Me +2\x02🤔️ Maybe\x02❌️ I can't make it\x02📆 Add to Calendar" +
+	"\x02📩 Share to another chat...\x02👉 CLICK TO ACTIVATE EVENT 👈\x02Click t" +
+	"he button below to activate this event.\x02The language has been set to " +
+	"English.\x02In which time zone do you live?\x02I don't understand that c" +
+	"ommand. Send /help for help.\x02👫 Set Max Attendees\x02💔 Allow Maybe: %[" +
+	"1]v\x02⚙ Advanced Options...\x02⚙ ADVANCED OPTIONS ⚙\x02🐕 Suitwalk: %[1]" +
+	"v\x02Could not parse the date you provided. Please send it in the format" +
+	" YYYY-MM-DD.\x02Got it.  Choose a Time for the event by clicking on the " +
+	"times below and then clicking Continue.\x02Time selected: %[1]v\x02Could" +
+	" not parse the time you provided. Please send it in the format 22:03." +
+	"\x02Where does the event take place?  Specify the name or address as you" +
+	" might type into Google Maps.\x02error creating event: %[1]v\x04\x00\x02" +
+	"\x0a\x0ac\x02Alright, I've created your event! You can now add additiona" +
+	"l content, or share it to another chat.\x02error updating event: %[1]v" +
+	"\x02The value you provided is not one of the choices.\x02Please provide " +
+	"a valid number\x02Event not found\x02Error listing events: %[1]v\x02Unab" +
+	"le to parse event ID\x02Specified Time Zone not found.\x02Before you con" +
+	"tinue, please read and accept our privacy policy.\x0a\x0ahttps://telegra" +
+	".ph/Furry-Plans-Bot-Privacy-Policy-06-29\x0a\x0aYou'll find the instruct" +
+	"ions on how to continue at the bottom of that page.\x02Please check the " +
+	"policy again to see how to finish.\x02Thanks!  You're all set to start u" +
+	"sing the Furry Plans Bot!  Type /start to create a new set of plans.\x02" +
+	"Let's create some new plans.  First, send me the name of the event.\x02H" +
+	"ere is a list of available commands:\x0a/start\x0a/myevents\x0a/language"
 
-var fr_CHIndex = []uint32{ // 62 elements
+var fr_CHIndex = []uint32{ // 88 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -207,9 +271,16 @@ var fr_CHIndex = []uint32{ // 62 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-	0x00000000, 0x00000000,
-} // Size: 272 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	// Entry 40 - 5F
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 376 bytes
 
 const fr_CHData string = ""
 
-// Total table size 3349 bytes (3KiB); checksum: F28FC765
+// Total table size 5332 bytes (5KiB); checksum: 39B54195

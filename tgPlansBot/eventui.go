@@ -79,7 +79,7 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	case dbHelper.ATTEND_ACTIVE:
 		txt = loc.Sprintf("Event is ready to be used!")
 	default:
-		txt = loc.Sprintf(GENERAL_ERROR)
+		txt = loc.Sprintf("A general error occurred.") // Can't use the CONST here because it crashes GOTEXT.
 	}
 	// Answer the callback in a Gofunc
 	go answerCallback(tg, cb, txt)
@@ -141,7 +141,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 	// TODO: Localization
 	t := "<b>" + event.Name + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName + "\n"
 	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDate(event.DateTime.Time) + "\n"
-	t += "<b>" + loc.Sprintf("Location:") + "</b><a href=\"" + URL + "\">" + event.Location + "</a>" + "\n"
+	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location + "</a>" + "\n"
 	if event.MaxAttendees > 0 {
 		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
 	}

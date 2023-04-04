@@ -286,6 +286,16 @@
             "translation": ""
         },
         {
+            "id": "Specify the date on which this event takes place:",
+            "message": "Specify the date on which this event takes place:",
+            "translation": ""
+        },
+        {
+            "id": "Specify the time at which this event takes place:",
+            "message": "Specify the time at which this event takes place:",
+            "translation": ""
+        },
+        {
             "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "translation": ""
@@ -293,6 +303,14 @@
         {
             "id": "Choose the display language for this event.",
             "message": "Choose the display language for this event.",
+            "translation": ""
+        },
+        {
+            "id": [
+                "GENERAL_ERROR",
+                "A general error occurred."
+            ],
+            "message": "A general error occurred.",
             "translation": ""
         },
         {
@@ -309,14 +327,6 @@
                     "expr": "err"
                 }
             ]
-        },
-        {
-            "id": [
-                "GENERAL_ERROR",
-                "A general error occurred."
-            ],
-            "message": "A general error occurred.",
-            "translation": ""
         },
         {
             "id": "The value you provided is not one of the choices.",
@@ -361,6 +371,11 @@
         {
             "id": "Max Attendees:",
             "message": "Max Attendees:",
+            "translation": ""
+        },
+        {
+            "id": "Language:",
+            "message": "Language:",
             "translation": ""
         },
         {
@@ -414,23 +429,168 @@
             ]
         },
         {
+            "id": "Alright, you've been marked as attending.",
+            "message": "Alright, you've been marked as attending.",
+            "translation": ""
+        },
+        {
+            "id": "Alright, you've been marked as maybe.",
+            "message": "Alright, you've been marked as maybe.",
+            "translation": ""
+        },
+        {
+            "id": "Sorry, this event is currently full!",
+            "message": "Sorry, this event is currently full!",
+            "translation": ""
+        },
+        {
+            "id": "Alright, you've been marked as unable to attend.",
+            "message": "Alright, you've been marked as unable to attend.",
+            "translation": ""
+        },
+        {
+            "id": "Event is ready to be used!",
+            "message": "Event is ready to be used!",
+            "translation": ""
+        },
+        {
+            "id": "hosted by",
+            "message": "hosted by",
+            "translation": ""
+        },
+        {
+            "id": "Attending: {CGoing}",
+            "message": "Attending: {CGoing}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CGoing",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cGoing"
+                }
+            ]
+        },
+        {
+            "id": "Maybe: {LentMaybe}",
+            "message": "Maybe: {LentMaybe}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "LentMaybe",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "len(tMaybe)"
+                }
+            ]
+        },
+        {
+            "id": "Can't make it: {LentNot}",
+            "message": "Can't make it: {LentNot}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "LentNot",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "len(tNot)"
+                }
+            ]
+        },
+        {
+            "id": "Can you go? Use the buttons below.",
+            "message": "Can you go? Use the buttons below.",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️ I'm going!",
+            "message": "🙋‍♂️ I'm going!",
+            "translation": ""
+        },
+        {
+            "id": "👭 Me +1",
+            "message": "👭 Me +1",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️👭 Me +2",
+            "message": "🙋‍♂️👭 Me +2",
+            "translation": ""
+        },
+        {
+            "id": "🤔️ Maybe",
+            "message": "🤔️ Maybe",
+            "translation": ""
+        },
+        {
+            "id": "❌️ I can't make it",
+            "message": "❌️ I can't make it",
+            "translation": ""
+        },
+        {
+            "id": "📆 Add to Calendar",
+            "message": "📆 Add to Calendar",
+            "translation": ""
+        },
+        {
+            "id": "📩 Share to another chat...",
+            "message": "📩 Share to another chat...",
+            "translation": ""
+        },
+        {
+            "id": "👉 CLICK TO ACTIVATE EVENT 👈",
+            "message": "👉 CLICK TO ACTIVATE EVENT 👈",
+            "translation": ""
+        },
+        {
+            "id": "Click the button below to activate this event.",
+            "message": "Click the button below to activate this event.",
+            "translation": ""
+        },
+        {
             "id": "The language has been set to English.",
             "message": "The language has been set to English.",
             "translation": ""
         },
         {
-            "id": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
-            "message": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
+            "id": "In which time zone do you live?",
+            "message": "In which time zone do you live?",
             "translation": ""
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/language",
-            "message": "Here is a list of available commands:\n/start\n/language",
+            "id": "Specified Time Zone not found.",
+            "message": "Specified Time Zone not found.",
             "translation": ""
         },
         {
-            "id": "Here is a list of your events:",
-            "message": "Here is a list of your events:",
+            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "translation": ""
+        },
+        {
+            "id": "Please check the policy again to see how to finish.",
+            "message": "Please check the policy again to see how to finish.",
+            "translation": ""
+        },
+        {
+            "id": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
+            "message": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
+            "translation": ""
+        },
+        {
+            "id": "Let's create some new plans.  First, send me the name of the event.",
+            "message": "Let's create some new plans.  First, send me the name of the event.",
+            "translation": ""
+        },
+        {
+            "id": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "message": "Here is a list of available commands:\n/start\n/myevents\n/language",
             "translation": ""
         },
         {

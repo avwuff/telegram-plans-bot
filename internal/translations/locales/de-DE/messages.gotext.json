@@ -74,12 +74,12 @@
         {
             "id": "🏆 Edit Name",
             "message": "🏆 Edit Name",
-            "translation": "\uD83C\uDFC6 Namen anderen"
+            "translation": "🏆 Namen anderen"
         },
         {
             "id": "📆 Edit Date",
             "message": "📆 Edit Date",
-            "translation": "\uD83D\uDCC6 Daten anderen"
+            "translation": "📆 Daten anderen"
         },
         {
             "id": "⏰ Edit Time",
@@ -89,17 +89,259 @@
         {
             "id": "📍 Edit Location",
             "message": "📍 Edit Location",
-            "translation": "\uD83D\uDCCD Treffpunkt anderen"
+            "translation": "📍 Treffpunkt anderen"
         },
         {
             "id": "🕴 Edit Hosted By",
             "message": "🕴 Edit Hosted By",
-            "translation": "\uD83D\uDD74 Angeber anderen"
+            "translation": "🕴 Angeber anderen"
         },
         {
             "id": "📝 Add Notes",
             "message": "📝 Add Notes",
-            "translation": "\uD83D\uDCDD Hinweise"
+            "translation": "📝 Hinweise"
+        },
+        {
+            "id": "👫 Set Max Attendees",
+            "message": "👫 Set Max Attendees",
+            "translation": ""
+        },
+        {
+            "id": "💔 Allow Maybe: {SprintfYes}",
+            "message": "💔 Allow Maybe: {SprintfYes}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SprintfYes",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "iif(event.DisableMaybe == 1, loc.Sprintf(\"No\"), loc.Sprintf(\"Yes\"))"
+                }
+            ]
+        },
+        {
+            "id": "No",
+            "message": "No",
+            "translation": "Nein"
+        },
+        {
+            "id": "Yes",
+            "message": "Yes",
+            "translation": "Ja"
+        },
+        {
+            "id": "📩 Allow Sharing: {SprintfNo}",
+            "message": "📩 Allow Sharing: {SprintfNo}",
+            "translation": "\uD83D\uDCE9 Weitergeben Erlaubt",
+            "placeholders": [
+                {
+                    "id": "SprintfNo",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "iif(event.AllowShare == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                }
+            ]
+        },
+        {
+            "id": "⚙ Advanced Options...",
+            "message": "⚙ Advanced Options...",
+            "translation": ""
+        },
+        {
+            "id": "⚙ ADVANCED OPTIONS ⚙",
+            "message": "⚙ ADVANCED OPTIONS ⚙",
+            "translation": ""
+        },
+        {
+            "id": "🐕 Suitwalk: {SprintfNo}",
+            "message": "🐕 Suitwalk: {SprintfNo}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SprintfNo",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "iif(event.Suitwalk == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                }
+            ]
+        },
+        {
+            "id": "🔠 Language",
+            "message": "🔠 Language",
+            "translation": "\uD83D\uDD20 Sprache"
+        },
+        {
+            "id": "⌚ Time Zone",
+            "message": "⌚ Time Zone",
+            "translation": "⌚ Zeit Berect"
+        },
+        {
+            "id": "🔙 Back",
+            "message": "🔙 Back",
+            "translation": "\uD83D\uDD19 Zuruck"
+        },
+        {
+            "id": [
+                "CALEN_DATE_CHOOSE_TEXT",
+                "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
+            ],
+            "message": "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.",
+            "translation": "Hab es. Wahlen Sie ein Datum aus."
+        },
+        {
+            "id": "Date selected: {FormatJanuary_2_2006}",
+            "message": "Date selected: {FormatJanuary_2_2006}",
+            "translation": "Datum: {FormatJanuary_2_2006}",
+            "placeholders": [
+                {
+                    "id": "FormatJanuary_2_2006",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "selDate.Format(\"January 2, 2006\")"
+                }
+            ]
+        },
+        {
+            "id": "Could not parse the date you provided. Please send it in the format YYYY-MM-DD.",
+            "message": "Could not parse the date you provided. Please send it in the format YYYY-MM-DD.",
+            "translation": ""
+        },
+        {
+            "id": [
+                "CALEN_TIME_CHOOSE_TEXT",
+                "Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue."
+            ],
+            "message": "Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.",
+            "translation": ""
+        },
+        {
+            "id": "Time selected: {Format1504}",
+            "message": "Time selected: {Format1504}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Format1504",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "selTime.Format(\"15:04\")"
+                }
+            ]
+        },
+        {
+            "id": "Could not parse the time you provided. Please send it in the format 22:03.",
+            "message": "Could not parse the time you provided. Please send it in the format 22:03.",
+            "translation": ""
+        },
+        {
+            "id": [
+                "CHOOSE_LOCATION",
+                "Where does the event take place?  Specify the name or address as you might type into Google Maps."
+            ],
+            "message": "Where does the event take place?  Specify the name or address as you might type into Google Maps.",
+            "translation": ""
+        },
+        {
+            "id": "error creating event: {Err}",
+            "message": "error creating event: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
+            "message": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
+            "translation": ""
+        },
+        {
+            "id": "Specify the name of the event.",
+            "message": "Specify the name of the event.",
+            "translation": "Geben Sie den Namen vom Event"
+        },
+        {
+            "id": "Specify the name of the person hosting the event.",
+            "message": "Specify the name of the person hosting the event.",
+            "translation": "Geben Sie den Namen vom Angeber"
+        },
+        {
+            "id": "Specify any additional notes you'd like to show about the event.",
+            "message": "Specify any additional notes you'd like to show about the event.",
+            "translation": "Geben Sie Hinweise an"
+        },
+        {
+            "id": "Specify the date on which this event takes place:",
+            "message": "Specify the date on which this event takes place:",
+            "translation": "An welchem Datum?"
+        },
+        {
+            "id": "Specify the time at which this event takes place:",
+            "message": "Specify the time at which this event takes place:",
+            "translation": "Zu welcher Zeit?"
+        },
+        {
+            "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
+            "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
+            "translation": "Die maximale nummer von Leute?"
+        },
+        {
+            "id": "Choose the display language for this event.",
+            "message": "Choose the display language for this event.",
+            "translation": "Die Sprache des Event?"
+        },
+        {
+            "id": [
+                "GENERAL_ERROR",
+                "A general error occurred."
+            ],
+            "message": "A general error occurred.",
+            "translation": "Ein generales Problem hat passiert."
+        },
+        {
+            "id": "error updating event: {Err}",
+            "message": "error updating event: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "The value you provided is not one of the choices.",
+            "message": "The value you provided is not one of the choices.",
+            "translation": ""
+        },
+        {
+            "id": "Please provide a valid number",
+            "message": "Please provide a valid number",
+            "translation": ""
+        },
+        {
+            "id": "Event not found",
+            "message": "Event not found",
+            "translation": ""
         },
         {
             "id": "Name:",
@@ -132,9 +374,184 @@
             "translation": "Max Leute:"
         },
         {
+            "id": "Language:",
+            "message": "Language:",
+            "translation": "Sprache:"
+        },
+        {
             "id": "Notes:",
             "message": "Notes:",
             "translation": "Hinweise:"
+        },
+        {
+            "id": "Error listing events: {Err}",
+            "message": "Error listing events: {Err}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Select an event to edit:\n{T}",
+            "message": "Select an event to edit:\n{T}",
+            "translation": "Wahlen Sie ein Event zum editieren:",
+            "placeholders": [
+                {
+                    "id": "T",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "t"
+                }
+            ]
+        },
+        {
+            "id": "Unable to parse event ID",
+            "message": "Unable to parse event ID",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Err",
+                    "string": "%[1]v",
+                    "type": "error",
+                    "underlyingType": "interface{Error() string}",
+                    "argNum": 1,
+                    "expr": "err"
+                }
+            ]
+        },
+        {
+            "id": "Alright, you've been marked as attending.",
+            "message": "Alright, you've been marked as attending.",
+            "translation": "OK, Sie sind jetzt markiert als Mitgeher."
+        },
+        {
+            "id": "Alright, you've been marked as maybe.",
+            "message": "Alright, you've been marked as maybe.",
+            "translation": "OK, Sie sind jetzt markiert als Vielleicht"
+        },
+        {
+            "id": "Sorry, this event is currently full!",
+            "message": "Sorry, this event is currently full!",
+            "translation": "Leider ist diese Event voll."
+        },
+        {
+            "id": "Alright, you've been marked as unable to attend.",
+            "message": "Alright, you've been marked as unable to attend.",
+            "translation": "OK, Sie sind jetzt markiert als Nicht Gehen"
+        },
+        {
+            "id": "Event is ready to be used!",
+            "message": "Event is ready to be used!",
+            "translation": "Das Event ist ready!"
+        },
+        {
+            "id": "hosted by",
+            "message": "hosted by",
+            "translation": "angeben von"
+        },
+        {
+            "id": "Attending: {CGoing}",
+            "message": "Attending: {CGoing}",
+            "translation": "Mitgehen: {CGoing}",
+            "placeholders": [
+                {
+                    "id": "CGoing",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cGoing"
+                }
+            ]
+        },
+        {
+            "id": "Maybe: {LentMaybe}",
+            "message": "Maybe: {LentMaybe}",
+            "translation": "Veilleicht: {LentMaybe}",
+            "placeholders": [
+                {
+                    "id": "LentMaybe",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "len(tMaybe)"
+                }
+            ]
+        },
+        {
+            "id": "Can't make it: {LentNot}",
+            "message": "Can't make it: {LentNot}",
+            "translation": "Konnen nicht: {LentNot}",
+            "placeholders": [
+                {
+                    "id": "LentNot",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "len(tNot)"
+                }
+            ]
+        },
+        {
+            "id": "Can you go? Use the buttons below.",
+            "message": "Can you go? Use the buttons below.",
+            "translation": "Konnen Sie gehen? Benutze die Knopfe:"
+        },
+        {
+            "id": "🙋‍♂️ I'm going!",
+            "message": "🙋‍♂️ I'm going!",
+            "translation": "\uD83D\uDE4B\u200D♂️ Ich gehe!"
+        },
+        {
+            "id": "👭 Me +1",
+            "message": "👭 Me +1",
+            "translation": "\uD83D\uDC6D Ich +1"
+        },
+        {
+            "id": "🙋‍♂️👭 Me +2",
+            "message": "🙋‍♂️👭 Me +2",
+            "translation": "\uD83D\uDE4B\u200D♂️\uD83D\uDC6D Ich +2"
+        },
+        {
+            "id": "🤔️ Maybe",
+            "message": "🤔️ Maybe",
+            "translation": "\uD83E\uDD14️ Vielleicht"
+        },
+        {
+            "id": "❌️ I can't make it",
+            "message": "❌️ I can't make it",
+            "translation": "❌️ Kann Nicht"
+        },
+        {
+            "id": "📆 Add to Calendar",
+            "message": "📆 Add to Calendar",
+            "translation": "\uD83D\uDCC6 An Kalendar"
+        },
+        {
+            "id": "📩 Share to another chat...",
+            "message": "📩 Share to another chat...",
+            "translation": "\uD83D\uDCE9 Weitergeben..."
+        },
+        {
+            "id": "👉 CLICK TO ACTIVATE EVENT 👈",
+            "message": "👉 CLICK TO ACTIVATE EVENT 👈",
+            "translation": "\uD83D\uDC49 CLICK UM AKTIVIEREN \uD83D\uDC48"
+        },
+        {
+            "id": "Click the button below to activate this event.",
+            "message": "Click the button below to activate this event.",
+            "translation": "Click dem Knopf um das Event zu aktievieren"
         },
         {
             "id": "The language has been set to English.",
@@ -142,19 +559,39 @@
             "translation": "Die Sprache ist jetzt Deutsch."
         },
         {
-            "id": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
-            "message": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
-            "translation": "Hallo! Ich bin die Furry Plans Bot.  Lassen Sie uns neue plaene machen.  Zuerst, bitte sagen Sie mir den Namen von dem Event."
+            "id": "In which time zone do you live?",
+            "message": "In which time zone do you live?",
+            "translation": "In welcher Zeit wohnen Sie?"
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/language",
-            "message": "Here is a list of available commands:\n/start\n/language",
-            "translation": "Hier ist eine Liste von auswahelen:\n/start\n/language"
+            "id": "Specified Time Zone not found.",
+            "message": "Specified Time Zone not found.",
+            "translation": ""
         },
         {
-            "id": "Here is a list of your events:",
-            "message": "Here is a list of your events:",
-            "translation": "Hier ist eine Liste von Ihren Events:"
+            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "translation": ""
+        },
+        {
+            "id": "Please check the policy again to see how to finish.",
+            "message": "Please check the policy again to see how to finish.",
+            "translation": ""
+        },
+        {
+            "id": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
+            "message": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
+            "translation": ""
+        },
+        {
+            "id": "Let's create some new plans.  First, send me the name of the event.",
+            "message": "Let's create some new plans.  First, send me the name of the event.",
+            "translation": ""
+        },
+        {
+            "id": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "message": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "translation": ""
         },
         {
             "id": "I don't understand that command. Send /help for help.",

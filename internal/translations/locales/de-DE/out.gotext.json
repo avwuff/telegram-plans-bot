@@ -124,17 +124,17 @@
         {
             "id": "No",
             "message": "No",
-            "translation": ""
+            "translation": "Nein"
         },
         {
             "id": "Yes",
             "message": "Yes",
-            "translation": ""
+            "translation": "Ja"
         },
         {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
-            "translation": "",
+            "translation": "📩 Weitergeben Erlaubt",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -174,17 +174,17 @@
         {
             "id": "🔠 Language",
             "message": "🔠 Language",
-            "translation": ""
+            "translation": "🔠 Sprache"
         },
         {
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
-            "translation": ""
+            "translation": "⌚ Zeit Berect"
         },
         {
             "id": "🔙 Back",
             "message": "🔙 Back",
-            "translation": ""
+            "translation": "🔙 Zuruck"
         },
         {
             "id": [
@@ -192,12 +192,12 @@
                 "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
             ],
             "message": "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.",
-            "translation": ""
+            "translation": "Hab es. Wahlen Sie ein Datum aus."
         },
         {
             "id": "Date selected: {FormatJanuary_2_2006}",
             "message": "Date selected: {FormatJanuary_2_2006}",
-            "translation": "",
+            "translation": "Datum: {FormatJanuary_2_2006}",
             "placeholders": [
                 {
                     "id": "FormatJanuary_2_2006",
@@ -273,27 +273,45 @@
         {
             "id": "Specify the name of the event.",
             "message": "Specify the name of the event.",
-            "translation": ""
+            "translation": "Geben Sie den Namen vom Event"
         },
         {
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
-            "translation": ""
+            "translation": "Geben Sie den Namen vom Angeber"
         },
         {
             "id": "Specify any additional notes you'd like to show about the event.",
             "message": "Specify any additional notes you'd like to show about the event.",
-            "translation": ""
+            "translation": "Geben Sie Hinweise an"
+        },
+        {
+            "id": "Specify the date on which this event takes place:",
+            "message": "Specify the date on which this event takes place:",
+            "translation": "An welchem Datum?"
+        },
+        {
+            "id": "Specify the time at which this event takes place:",
+            "message": "Specify the time at which this event takes place:",
+            "translation": "Zu welcher Zeit?"
         },
         {
             "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
-            "translation": ""
+            "translation": "Die maximale nummer von Leute?"
         },
         {
             "id": "Choose the display language for this event.",
             "message": "Choose the display language for this event.",
-            "translation": ""
+            "translation": "Die Sprache des Event?"
+        },
+        {
+            "id": [
+                "GENERAL_ERROR",
+                "A general error occurred."
+            ],
+            "message": "A general error occurred.",
+            "translation": "Ein generales Problem hat passiert."
         },
         {
             "id": "error updating event: {Err}",
@@ -309,14 +327,6 @@
                     "expr": "err"
                 }
             ]
-        },
-        {
-            "id": [
-                "GENERAL_ERROR",
-                "A general error occurred."
-            ],
-            "message": "A general error occurred.",
-            "translation": ""
         },
         {
             "id": "The value you provided is not one of the choices.",
@@ -364,6 +374,11 @@
             "translation": "Max Leute:"
         },
         {
+            "id": "Language:",
+            "message": "Language:",
+            "translation": "Sprache:"
+        },
+        {
             "id": "Notes:",
             "message": "Notes:",
             "translation": "Hinweise:"
@@ -386,7 +401,7 @@
         {
             "id": "Select an event to edit:\n{T}",
             "message": "Select an event to edit:\n{T}",
-            "translation": "",
+            "translation": "Wahlen Sie ein Event zum editieren:",
             "placeholders": [
                 {
                     "id": "T",
@@ -414,24 +429,169 @@
             ]
         },
         {
+            "id": "Alright, you've been marked as attending.",
+            "message": "Alright, you've been marked as attending.",
+            "translation": "OK, Sie sind jetzt markiert als Mitgeher."
+        },
+        {
+            "id": "Alright, you've been marked as maybe.",
+            "message": "Alright, you've been marked as maybe.",
+            "translation": "OK, Sie sind jetzt markiert als Vielleicht"
+        },
+        {
+            "id": "Sorry, this event is currently full!",
+            "message": "Sorry, this event is currently full!",
+            "translation": "Leider ist diese Event voll."
+        },
+        {
+            "id": "Alright, you've been marked as unable to attend.",
+            "message": "Alright, you've been marked as unable to attend.",
+            "translation": "OK, Sie sind jetzt markiert als Nicht Gehen"
+        },
+        {
+            "id": "Event is ready to be used!",
+            "message": "Event is ready to be used!",
+            "translation": "Das Event ist ready!"
+        },
+        {
+            "id": "hosted by",
+            "message": "hosted by",
+            "translation": "angeben von"
+        },
+        {
+            "id": "Attending: {CGoing}",
+            "message": "Attending: {CGoing}",
+            "translation": "Mitgehen: {CGoing}",
+            "placeholders": [
+                {
+                    "id": "CGoing",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cGoing"
+                }
+            ]
+        },
+        {
+            "id": "Maybe: {LentMaybe}",
+            "message": "Maybe: {LentMaybe}",
+            "translation": "Veilleicht: {LentMaybe}",
+            "placeholders": [
+                {
+                    "id": "LentMaybe",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "len(tMaybe)"
+                }
+            ]
+        },
+        {
+            "id": "Can't make it: {LentNot}",
+            "message": "Can't make it: {LentNot}",
+            "translation": "Konnen nicht: {LentNot}",
+            "placeholders": [
+                {
+                    "id": "LentNot",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "len(tNot)"
+                }
+            ]
+        },
+        {
+            "id": "Can you go? Use the buttons below.",
+            "message": "Can you go? Use the buttons below.",
+            "translation": "Konnen Sie gehen? Benutze die Knopfe:"
+        },
+        {
+            "id": "🙋‍♂️ I'm going!",
+            "message": "🙋‍♂️ I'm going!",
+            "translation": "🙋‍♂️ Ich gehe!"
+        },
+        {
+            "id": "👭 Me +1",
+            "message": "👭 Me +1",
+            "translation": "👭 Ich +1"
+        },
+        {
+            "id": "🙋‍♂️👭 Me +2",
+            "message": "🙋‍♂️👭 Me +2",
+            "translation": "🙋‍♂️👭 Ich +2"
+        },
+        {
+            "id": "🤔️ Maybe",
+            "message": "🤔️ Maybe",
+            "translation": "🤔️ Vielleicht"
+        },
+        {
+            "id": "❌️ I can't make it",
+            "message": "❌️ I can't make it",
+            "translation": "❌️ Kann Nicht"
+        },
+        {
+            "id": "📆 Add to Calendar",
+            "message": "📆 Add to Calendar",
+            "translation": "📆 An Kalendar"
+        },
+        {
+            "id": "📩 Share to another chat...",
+            "message": "📩 Share to another chat...",
+            "translation": "📩 Weitergeben..."
+        },
+        {
+            "id": "👉 CLICK TO ACTIVATE EVENT 👈",
+            "message": "👉 CLICK TO ACTIVATE EVENT 👈",
+            "translation": "👉 CLICK UM AKTIVIEREN 👈"
+        },
+        {
+            "id": "Click the button below to activate this event.",
+            "message": "Click the button below to activate this event.",
+            "translation": "Click dem Knopf um das Event zu aktievieren"
+        },
+        {
             "id": "The language has been set to English.",
             "message": "The language has been set to English.",
             "translation": "Die Sprache ist jetzt Deutsch."
         },
         {
-            "id": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
-            "message": "Hi! I'm the Furry Plans Bot.  Let's create some new plans.  First, send me the name of the event.",
-            "translation": "Hallo! Ich bin die Furry Plans Bot.  Lassen Sie uns neue plaene machen.  Zuerst, bitte sagen Sie mir den Namen von dem Event."
+            "id": "In which time zone do you live?",
+            "message": "In which time zone do you live?",
+            "translation": "In welcher Zeit wohnen Sie?"
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/language",
-            "message": "Here is a list of available commands:\n/start\n/language",
-            "translation": "Hier ist eine Liste von auswahelen:\n/start\n/language"
+            "id": "Specified Time Zone not found.",
+            "message": "Specified Time Zone not found.",
+            "translation": ""
         },
         {
-            "id": "Here is a list of your events:",
-            "message": "Here is a list of your events:",
-            "translation": "Hier ist eine Liste von Ihren Events:"
+            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "translation": ""
+        },
+        {
+            "id": "Please check the policy again to see how to finish.",
+            "message": "Please check the policy again to see how to finish.",
+            "translation": ""
+        },
+        {
+            "id": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
+            "message": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
+            "translation": ""
+        },
+        {
+            "id": "Let's create some new plans.  First, send me the name of the event.",
+            "message": "Let's create some new plans.  First, send me the name of the event.",
+            "translation": ""
+        },
+        {
+            "id": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "message": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "translation": ""
         },
         {
             "id": "I don't understand that command. Send /help for help.",

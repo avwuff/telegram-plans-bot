@@ -52,7 +52,12 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 			events = []*dbHelper.FurryPlans{event}
 		} else {
 			// Normal search by text
-			//TODO
+			var err error
+			events, err = dbHelper.SearchEvents(int64(query.From.ID), query.Query)
+			if err != nil {
+				answerWithList(tg, query, nil)
+				return
+			}
 		}
 
 		// If there's results, display them

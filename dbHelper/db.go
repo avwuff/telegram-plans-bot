@@ -1,11 +1,15 @@
 package dbHelper
 
 import (
+	"encoding/json"
 	"fmt"
 	"furryplansbot.avbrand.com/localizer"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"html"
 	"os"
+	"regexp"
+	"strconv"
 )
 
 var db *gorm.DB
@@ -29,6 +33,11 @@ const (
 	CANATTEND_YES   CanAttend = 1
 	CANATTEND_MAYBE CanAttend = 2
 )
+
+// In the old version of the furry plans bot, for some reason, this syntax was used for special characters:
+// Hello /$\uabcd World
+// This regex helps clean that up.
+var oldSyntax = regexp.MustCompile(`/\$\\u`)
 
 func InitDB(dsnFile string) error {
 
@@ -85,6 +94,9 @@ func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, e
 		return nil, nil, fmt.Errorf("event not found")
 	}
 
+	// Clean up the old syntax from the previous event bot
+	event.cleanOldSyntax()
+
 	loc := localizer.FromLanguage(event.Language)
 
 	// Update the time on the event to match the time zone.
@@ -96,8 +108,23 @@ func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, e
 	return &event, loc, nil
 }
 
-func GetEvents(ownerId int64, includeOld bool) ([]FurryPlans, error) {
-	var events []FurryPlans
+func SearchEvents(ownerId int64, searchText string) ([]*FurryPlans, error) {
+	var events []*FurryPlans
+	query := db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Where("EventName LIKE ?", "%"+searchText+"%").Order("EventDateTime DESC")
+	// TODO: This query doesn't use time zones, it probably should.
+	query = query.Where("EventDateTime > NOW() - INTERVAL 2 DAY")
+	err := query.Find(&events).Error
+	if err != nil {
+		return nil, err
+	}
+	for _, event := range events {
+		event.cleanOldSyntax()
+	}
+	return events, nil
+}
+
+func GetEvents(ownerId int64, includeOld bool) ([]*FurryPlans, error) {
+	var events []*FurryPlans
 	query := db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Order("EventDateTime DESC").Limit(100)
 	if !includeOld {
 		// TODO: This query doesn't use time zones, it probably should.
@@ -107,19 +134,59 @@ func GetEvents(ownerId int64, includeOld bool) ([]FurryPlans, error) {
 	if err != nil {
 		return nil, err
 	}
+	for _, event := range events {
+		event.cleanOldSyntax()
+	}
 	return events, nil
+}
+
+func (event *FurryPlans) cleanOldSyntax() {
+	event.Name = cleanOldSyntaxText(event.Name)
+	event.OwnerName = cleanOldSyntaxText(event.OwnerName)
+	event.Notes = cleanOldSyntaxText(event.Notes)
+}
+
+func cleanOldSyntaxText(text string) string {
+
+	if !oldSyntax.MatchString(text) {
+		return text
+	}
+	fixed := oldSyntax.ReplaceAllString(text, "\\u")
+
+	// Use the json unmarshaler to fix it
+	var str string
+	_ = json.Unmarshal([]byte("\""+fixed+"\""), &str)
+	return htmlEntities(str)
+}
+
+func htmlEntities(str string) string {
+	str = html.EscapeString(str)
+	res := ""
+	runes := []rune(str)
+	for i := 0; i < len(runes); i++ {
+		r := runes[i]
+		if r < 128 {
+			res += string(r)
+		} else {
+			res += "&#" + strconv.FormatInt(int64(r), 10) + ";"
+		}
+	}
+	return res
 }
 
 func (event *FurryPlans) UpdateEvent(column string) error {
 	return db.Where(&FurryPlans{EventID: event.EventID}).Select(column).Updates(event).Error
 }
 
-func (event *FurryPlans) GetAttending() ([]FurryPlansAttend, error) {
-	var attend []FurryPlansAttend
+func (event *FurryPlans) GetAttending() ([]*FurryPlansAttend, error) {
+	var attend []*FurryPlansAttend
 	query := db.Where(&FurryPlansAttend{EventID: event.EventID}).Order("UCASE(UserName) DESC")
 	err := query.Find(&attend).Error
 	if err != nil {
 		return nil, err
+	}
+	for _, att := range attend {
+		att.UserName = cleanOldSyntaxText(att.UserName)
 	}
 	return attend, nil
 }

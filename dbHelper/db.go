@@ -32,6 +32,10 @@ const (
 	CANATTEND_NO    CanAttend = 0
 	CANATTEND_YES   CanAttend = 1
 	CANATTEND_MAYBE CanAttend = 2
+
+	CANATTEND_SUITING      CanAttend = 20
+	CANATTEND_PHOTOGRAPHER CanAttend = 30
+	CANATTEND_SPOTTING     CanAttend = 0
 )
 
 // In the old version of the furry plans bot, for some reason, this syntax was used for special characters:
@@ -287,7 +291,7 @@ func (event *FurryPlans) Attending(userId int64, name string, attendType CanAtte
 		}
 	}
 	event.updateAttendTable(userId, name, attendType, plusPeople)
-	if attendType == CANATTEND_YES {
+	if attendType == CANATTEND_YES || attendType == CANATTEND_SUITING || attendType == CANATTEND_PHOTOGRAPHER {
 		return ATTEND_ADDED
 	}
 	if attendType == CANATTEND_MAYBE {

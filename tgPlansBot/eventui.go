@@ -54,12 +54,23 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 		if err != nil {
 			return
 		}
-		reply = event.Attending(int64(cb.From.ID), name, dbHelper.CANATTEND_YES, people)
+
+		canAtt := dbHelper.CANATTEND_YES
+		if people >= int(dbHelper.CANATTEND_PHOTOGRAPHER) {
+			canAtt = dbHelper.CANATTEND_PHOTOGRAPHER
+			people -= int(dbHelper.CANATTEND_PHOTOGRAPHER)
+		}
+		if people >= int(dbHelper.CANATTEND_SUITING) {
+			canAtt = dbHelper.CANATTEND_SUITING
+			people -= int(dbHelper.CANATTEND_SUITING)
+		}
+
+		reply = event.Attending(cb.From.ID, name, canAtt, people)
 
 	case "maybe":
-		reply = event.Attending(int64(cb.From.ID), name, dbHelper.CANATTEND_MAYBE, 0)
+		reply = event.Attending(cb.From.ID, name, dbHelper.CANATTEND_MAYBE, 0)
 	case "cancel":
-		reply = event.Attending(int64(cb.From.ID), name, dbHelper.CANATTEND_NO, 0)
+		reply = event.Attending(cb.From.ID, name, dbHelper.CANATTEND_NO, 0)
 	}
 
 	// Send the reply.
@@ -148,8 +159,9 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 	// Get the list of people attending
 	attending, err := event.GetAttending()
 
-	var cGoing int
+	var cGoing, cSuiting, cPhoto int
 	var tGoing, tMaybe, tNot []string
+	var tSuiting, tPhoto []string
 
 	if err != nil {
 		t += "Unable to get list of attending people."
@@ -167,26 +179,23 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 				tGoing = append(tGoing, txt)
 				cGoing += 1 + attend.PlusMany
 
-				// TODO SUITWALK
-			/*case 20 ' Suiting
-				tSuiting = tSuiting & " - " & "<a href="
-				"tg://user?id=" & RS("userID") & ""
-				">" & RS("UserName") & "</a>"
-				if clng(RS("plusMany")) > 0 then
-				tSuiting = tSuiting & " <b>+" & clng(RS("plusMany")) & "</b>"
-				tSuiting = tSuiting & vbcrlf
+			case dbHelper.CANATTEND_SUITING:
 
-				cSuiting = cSuiting + 1 + clng(RS("plusMany"))
+				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
+				if attend.PlusMany > 0 {
+					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
+				}
+				tSuiting = append(tSuiting, txt)
+				cSuiting += 1 + attend.PlusMany
 
-			case 30 ' Photo
-				tPhoto = tPhoto & " - " & "<a href="
-				"tg://user?id=" & RS("userID") & ""
-				">" & RS("UserName") & "</a>"
-				if clng(RS("plusMany")) > 0 then
-				tPhoto = tPhoto & " <b>+" & clng(RS("plusMany")) & "</b>"
-				tPhoto = tPhoto & vbcrlf
+			case dbHelper.CANATTEND_PHOTOGRAPHER:
 
-				cPhoto = cPhoto + 1 + clng(RS("plusMany"))*/
+				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
+				if attend.PlusMany > 0 {
+					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
+				}
+				tPhoto = append(tPhoto, txt)
+				cPhoto += 1 + attend.PlusMany
 
 			case dbHelper.CANATTEND_MAYBE: // Maybe
 
@@ -200,8 +209,20 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 		}
 	}
 
+	// Fursuit walks display different event messages
 	if event.Suitwalk == 1 {
-		// TODO SUITWALK
+		if len(tSuiting) > 0 {
+			t += "\n" + "<b>" + loc.Sprintf("Suiting: %v", cSuiting) + "</b>\n"
+			t += strings.Join(tSuiting, "\n")
+		}
+		if len(tPhoto) > 0 {
+			t += "\n" + "<b>" + loc.Sprintf("Photographers: %v", cPhoto) + "</b>\n"
+			t += strings.Join(tPhoto, "\n")
+		}
+		if len(tGoing) > 0 {
+			t += "\n" + "<b>" + loc.Sprintf("Spotting: %v", cGoing) + "</b>\n"
+			t += strings.Join(tGoing, "\n")
+		}
 
 	} else {
 		if len(tGoing) > 0 {
@@ -246,12 +267,25 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 	var buttons [][]tgbotapi.InlineKeyboardButton
 
 	if event.Suitwalk == 1 {
-		//row := make([]tgbotapi.InlineKeyboardButton, 0)
-		// TODO SUITWALK
+		row := make([]tgbotapi.InlineKeyboardButton, 0)
+		row = append(row, quickButton(loc.Sprintf("🐕‍🦺 I'm Suiting"), fmt.Sprintf("attending:%v:20", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🐕‍🦺🐱 Suiting +1"), fmt.Sprintf("attending:%v:21", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🐕‍🦺🐾 Suiting +2"), fmt.Sprintf("attending:%v:22", event.EventID)))
+		buttons = append(buttons, row)
+		row = make([]tgbotapi.InlineKeyboardButton, 0)
+		row = append(row, quickButton(loc.Sprintf("📷 Photographer"), fmt.Sprintf("attending:%v:30", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("📷🎥 Photo +1"), fmt.Sprintf("attending:%v:31", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("📷🎞 Photo +2"), fmt.Sprintf("attending:%v:32", event.EventID)))
+		buttons = append(buttons, row)
+		row = make([]tgbotapi.InlineKeyboardButton, 0)
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ Spotting"), fmt.Sprintf("attending:%v:0", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Spotting +1"), fmt.Sprintf("attending:%v:1", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Spotting +2"), fmt.Sprintf("attending:%v:2", event.EventID)))
+		buttons = append(buttons, row)
 	} else {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
 		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ I'm going!"), fmt.Sprintf("attending:%v:0", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("👭 Me +1"), fmt.Sprintf("attending:%v:1", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Me +1"), fmt.Sprintf("attending:%v:1", event.EventID)))
 		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Me +2"), fmt.Sprintf("attending:%v:2", event.EventID)))
 		buttons = append(buttons, row)
 	}

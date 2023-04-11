@@ -124,6 +124,10 @@ func GetEventByHash(hash string, saltValue string) (*FurryPlans, *localizer.Loca
 		return nil, nil, res.Error
 	}
 
+	if event.EventID == 0 {
+		return nil, nil, fmt.Errorf("event not found")
+	}
+
 	// Clean up the old syntax from the previous event bot
 	event.cleanOldSyntax()
 	loc := localizer.FromLanguage(event.Language)

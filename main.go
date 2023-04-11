@@ -6,9 +6,9 @@ import (
 	_ "furryplansbot.avbrand.com/internal/translations"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgPlansBot"
+	"furryplansbot.avbrand.com/webserver"
 	"log"
 	"os"
-	"time"
 )
 
 func main() {
@@ -36,9 +36,8 @@ func main() {
 
 	// Wait until the application exits now
 	log.Println("Listening for updates.")
-	for {
-		// TODO replace this
-		time.Sleep(time.Second)
-	}
+
+	log.Println("Starting web server")
+	webserver.StartServer(string(saltValue))
 
 }

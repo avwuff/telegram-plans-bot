@@ -77,15 +77,15 @@ func (t *Telegram) Send(c tgbotapi.Chattable) (tgbotapi.Message, error) {
 	return t.bot.Send(c)
 }
 
-func (t *Telegram) AnswerInlineQuery(c tgbotapi.InlineConfig) (tgbotapi.Message, error) {
-	return t.bot.Send(c)
+func (t *Telegram) AnswerInlineQuery(c tgbotapi.InlineConfig) (*tgbotapi.APIResponse, error) {
+	return t.bot.Request(c)
 }
-func (t *Telegram) AnswerCallbackQuery(c tgbotapi.CallbackConfig) (tgbotapi.Message, error) {
-	return t.bot.Send(c)
+func (t *Telegram) AnswerCallbackQuery(c tgbotapi.CallbackConfig) (*tgbotapi.APIResponse, error) {
+	return t.bot.Request(c)
 }
 
-func (t *Telegram) SetMyCommands() {
-
+func (t *Telegram) SetMyCommands(cmds tgbotapi.SetMyCommandsConfig) (*tgbotapi.APIResponse, error) {
+	return t.bot.Request(cmds)
 }
 
 func (t *Telegram) ConvertEntitiesToHTML(inputText string, entities []tgbotapi.MessageEntity) string {

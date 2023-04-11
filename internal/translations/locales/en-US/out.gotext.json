@@ -752,6 +752,34 @@
             "fuzzy": true
         },
         {
+            "id": "Create a new set of plans",
+            "message": "Create a new set of plans",
+            "translation": "Create a new set of plans",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Display the help message",
+            "message": "Display the help message",
+            "translation": "Display the help message",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Get a custom calendar feed",
+            "message": "Get a custom calendar feed",
+            "translation": "Get a custom calendar feed",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Change the language",
+            "message": "Change the language",
+            "translation": "Change the language",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
             "translation": "Let's create some new plans.  First, send me the name of the event.",
@@ -759,9 +787,9 @@
             "fuzzy": true
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/myevents\n/language",
-            "message": "Here is a list of available commands:\n/start\n/myevents\n/language",
-            "translation": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "id": "Here is a list of available commands:",
+            "message": "Here is a list of available commands:",
+            "translation": "Here is a list of available commands:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

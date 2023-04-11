@@ -3,6 +3,7 @@ package tgPlansBot
 import (
 	"fmt"
 	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
@@ -12,8 +13,11 @@ import (
 )
 
 func initEventCommands(cmds *tgCommands.CommandList) {
+	loc := localizer.FromLanguage("default") // not a real locale
+
 	// General edit commands
-	cmds.Add(tgCommands.Command{Command: "/myevents", Handler: listEvents})
+	cmds.Add(tgCommands.Command{Command: "/myevents", Handler: listEvents, HelpText: loc.Sprintf("A list of your upcoming events")})
+	cmds.Add(tgCommands.Command{Command: "/oldevents", Handler: listEventsOld, HelpText: loc.Sprintf("A list of all your events, old and new")})
 	cmds.Add(tgCommands.Command{Command: "/edit", Handler: selectEvent, Underscore: true})
 
 	// Create commands
@@ -103,7 +107,16 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 
 // listEvents will list all the events the user has created that are not too far in the past.
 func listEvents(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	events, err := dbHelper.GetEvents(msg.Chat.ID, false)
+	listEventsReal(tg, usrInfo, msg, false)
+}
+
+// listEvents will list all the events the user has created that are not too far in the past.
+func listEventsOld(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	listEventsReal(tg, usrInfo, msg, true)
+}
+
+func listEventsReal(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, includeOld bool) {
+	events, err := dbHelper.GetEvents(msg.Chat.ID, includeOld)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("Error listing events: %v", err))
 		return

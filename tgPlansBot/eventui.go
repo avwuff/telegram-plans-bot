@@ -267,8 +267,13 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
-	// TODO FINISH THIS BUTTON
-	row = append(row, quickButton(loc.Sprintf("📆 Add to Calendar"), fmt.Sprintf("use:%v:activate", event.EventID)))
+	// TODO: This URL needs to be configurable
+	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", calenFeedMD5(int64(event.EventID)))
+	row = append(row, tgbotapi.InlineKeyboardButton{
+		Text: loc.Sprintf("📆 Add to Calendar"),
+		URL:  &addUrl,
+	})
+
 	buttons = append(buttons, row)
 
 	if event.AllowShare == 1 {

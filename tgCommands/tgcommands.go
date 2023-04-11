@@ -43,8 +43,9 @@ type Callback struct {
 }
 
 type CommandList struct {
-	list   []*Command
-	cblist []*Callback
+	commands []*Command
+	cblist   []*Callback
+	unknown  CommandHandler
 }
 
 func NewList() *CommandList {
@@ -52,11 +53,27 @@ func NewList() *CommandList {
 }
 
 func (c *CommandList) Add(command Command) {
-	c.list = append(c.list, &command)
+	c.commands = append(c.commands, &command)
 }
 
 func (c *CommandList) AddCB(cb Callback) {
 	c.cblist = append(c.cblist, &cb)
+}
+
+func (c *CommandList) SetUnknown(handler CommandHandler) {
+	c.unknown = handler
+}
+
+// BaseCommandList will return the base commands for the help menu and the main command commands
+func (c *CommandList) BaseCommandList() []Command {
+	var out []Command
+	for _, cmd := range c.commands {
+		if cmd.Mode == userManager.MODE_DEFAULT &&
+			cmd.Underscore == false {
+			out = append(out, *cmd)
+		}
+	}
+	return out
 }
 
 func (c *CommandList) Process(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
@@ -72,7 +89,7 @@ func (c *CommandList) Process(tg *tgWrapper.Telegram, usrInfo *userManager.UserI
 	text2 := strings.Join(sp2[1:], " ")
 
 	// See if this is one of our current commands
-	for _, cmd := range c.list {
+	for _, cmd := range c.commands {
 		// Normal commands
 		if !cmd.Underscore {
 			if (cmd.Command == sp[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode) {
@@ -94,9 +111,9 @@ func (c *CommandList) Process(tg *tgWrapper.Telegram, usrInfo *userManager.UserI
 		}
 	}
 
-	// No matching command?  Reply with an unknown.
-	msg.Text = "/404"
-	c.Process(tg, usrInfo, msg)
+	if c.unknown != nil {
+		c.unknown(tg, usrInfo, msg, msg.Text)
+	}
 }
 
 func (c *CommandList) ProcessCallback(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {

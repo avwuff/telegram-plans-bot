@@ -9,8 +9,9 @@ import (
 )
 
 type Localizer struct {
-	name    string
-	printer *message.Printer
+	name       string
+	iso639code string
+	printer    *message.Printer
 }
 
 var locales map[string]*Localizer
@@ -19,16 +20,19 @@ var timezones map[string]*time.Location
 func InitLang() {
 	locales = map[string]*Localizer{
 		"de-DE": { // Germany
-			name:    "Deutsch",
-			printer: message.NewPrinter(language.MustParse("de-DE")),
+			name:       "Deutsch",
+			iso639code: "de",
+			printer:    message.NewPrinter(language.MustParse("de-DE")),
 		},
 		"fr-CH": { // Switzerland (French speaking)
-			name:    "Francais",
-			printer: message.NewPrinter(language.MustParse("fr-CH")),
+			name:       "Francais",
+			iso639code: "fr",
+			printer:    message.NewPrinter(language.MustParse("fr-CH")),
 		},
 		"en-US": { // United States
-			name:    "English",
-			printer: message.NewPrinter(language.MustParse("en-US")),
+			name:       "English",
+			iso639code: "en",
+			printer:    message.NewPrinter(language.MustParse("en-US")),
 		},
 	}
 
@@ -98,6 +102,14 @@ func GetLanguageChoicesMap() map[string]string {
 	out := make(map[string]string)
 	for key, loc := range locales {
 		out[key] = loc.name
+	}
+	return out
+}
+
+func GetLanguageChoicesISO639() map[string]string {
+	out := make(map[string]string)
+	for key, loc := range locales {
+		out[key] = loc.iso639code
 	}
 	return out
 }

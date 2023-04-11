@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
+	github.com/gorilla/mux v1.8.0
 	golang.org/x/text v0.8.0
 	gorm.io/driver/mysql v1.4.7
 	gorm.io/gorm v1.24.6

@@ -2,6 +2,8 @@ package tgPlansBot
 
 import (
 	"context"
+	"fmt"
+	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
@@ -22,17 +24,22 @@ func StartTG(ctx context.Context, salt string) {
 	// Set up the initial set of commands and what each one does, and under which modes it is active.
 	initCommands()
 
+	// Set up the available commands in the bot
+	setMyCommands(tg)
+
 	// Start listening
 	go tg.Listen(ctx, handleUpdate)
 }
 
 func initCommands() {
+	loc := localizer.FromLanguage("default") // not a real locale
+
 	cmds = tgCommands.NewList()
-	cmds.Add(tgCommands.Command{Command: "/start", Handler: startHandler})
-	cmds.Add(tgCommands.Command{Command: "/help", Handler: helpHandler})
-	cmds.Add(tgCommands.Command{Command: "/feed", Handler: calendarFeed})
-	cmds.Add(tgCommands.Command{Command: "/language", Handler: languageHandler})
-	cmds.Add(tgCommands.Command{Command: "/404", Handler: unknownHandler})
+	cmds.Add(tgCommands.Command{Command: "/start", Handler: startHandler, HelpText: loc.Sprintf("Create a new set of plans")})
+	cmds.Add(tgCommands.Command{Command: "/help", Handler: helpHandler, HelpText: loc.Sprintf("Display the help message")})
+	cmds.Add(tgCommands.Command{Command: "/feed", Handler: calendarFeed, HelpText: loc.Sprintf("Get a custom calendar feed")})
+	cmds.Add(tgCommands.Command{Command: "/language", Handler: languageHandler, HelpText: loc.Sprintf("Change the language")})
+	cmds.SetUnknown(unknownHandler)
 
 	// These handlers respond to any message, as long as we are in the right mode.
 	// SETTINGS
@@ -43,7 +50,31 @@ func initCommands() {
 	initSetupCommands(cmds)
 	initUICommands(cmds)
 
+}
+
+func setMyCommands(tg *tgWrapper.Telegram) {
 	// Now add the commands to the command menu.
+	base := cmds.BaseCommandList()
+	// Do this for each language
+	langs := localizer.GetLanguageChoicesISO639()
+	for locale, isoCode := range langs {
+		// get a localizer for this language
+		loc := localizer.FromLanguage(locale)
+
+		var cmdList []tgbotapi.BotCommand
+
+		// build the command list
+		for _, cmd := range base {
+			cmdList = append(cmdList, tgbotapi.BotCommand{
+				Command:     cmd.Command,
+				Description: loc.Sprintf(cmd.HelpText),
+			})
+		}
+		_, err := tg.SetMyCommands(tgbotapi.SetMyCommandsConfig{Commands: cmdList, LanguageCode: isoCode})
+		if err != nil {
+			log.Println(err)
+		}
+	}
 }
 
 func startHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
@@ -60,11 +91,13 @@ func startHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 }
 
 func helpHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	// TODO: This should be generated automatically based on the command list.
-	quickReply(tg, msg, usrInfo.Locale.Sprintf(`Here is a list of available commands:
-/start
-/myevents
-/language`))
+	// Build the help message.
+	base := cmds.BaseCommandList()
+	txt := usrInfo.Locale.Sprintf("Here is a list of available commands:") + "\n\n"
+	for _, cmd := range base {
+		txt += fmt.Sprintf("<b>%v</b> - %v\n", cmd.Command, usrInfo.Locale.Sprintf(cmd.HelpText))
+	}
+	quickReply(tg, msg, txt)
 }
 
 func unknownHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
@@ -115,6 +148,7 @@ func handleCallback(tg *tgWrapper.Telegram, callback *tgbotapi.CallbackQuery) {
 
 func quickReply(tg *tgWrapper.Telegram, msg *tgbotapi.Message, text string) error {
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, text)
+	mObj.ParseMode = tgWrapper.ParseModeHtml
 	_, err := tg.Send(mObj)
 	if err != nil {
 		return err

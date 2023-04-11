@@ -584,13 +584,33 @@
             "translation": ""
         },
         {
+            "id": "Create a new set of plans",
+            "message": "Create a new set of plans",
+            "translation": ""
+        },
+        {
+            "id": "Display the help message",
+            "message": "Display the help message",
+            "translation": ""
+        },
+        {
+            "id": "Get a custom calendar feed",
+            "message": "Get a custom calendar feed",
+            "translation": ""
+        },
+        {
+            "id": "Change the language",
+            "message": "Change the language",
+            "translation": ""
+        },
+        {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
             "translation": ""
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/myevents\n/language",
-            "message": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "id": "Here is a list of available commands:",
+            "message": "Here is a list of available commands:",
             "translation": ""
         },
         {

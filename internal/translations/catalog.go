@@ -49,26 +49,30 @@ var messageKeyToIndex = map[string]int{
 	"Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.": 82,
 	"Can you go? Use the buttons below.":             50,
 	"Can't make it: %v":                              49,
+	"Change the language":                            88,
 	"Choose the display language for this event.":    30,
 	"Click the button below to activate this event.": 59,
 	"Continue with Date: %v":                         7,
 	"Continue with Time: %v":                         8,
 	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 68,
 	"Could not parse the time you provided. Please send it in the format 22:03.":      71,
+	"Create a new set of plans":  85,
 	"Date selected: %v":          23,
 	"Date:":                      33,
+	"Display the help message":   86,
 	"Error listing events: %v":   79,
 	"Event is ready to be used!": 45,
 	"Event not found":            78,
 	"Fr":                         5,
+	"Get a custom calendar feed": 87,
 	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 22,
 	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    69,
-	"Here is a list of available commands:\n/start\n/myevents\n/language":                                86,
-	"Hosted By:": 35,
+	"Here is a list of available commands:": 90,
+	"Hosted By:":                            35,
 	"I don't understand that command. Send /help for help.": 62,
 	"In which time zone do you live?":                       61,
 	"Language:":                                             38,
-	"Let's create some new plans.  First, send me the name of the event.": 85,
+	"Let's create some new plans.  First, send me the name of the event.": 89,
 	"Location:":      34,
 	"Max Attendees:": 37,
 	"Maybe: %v":      48,
@@ -129,7 +133,7 @@ var messageKeyToIndex = map[string]int{
 	"🤔️ Maybe":                    54,
 }
 
-var de_DEIndex = []uint32{ // 88 elements
+var de_DEIndex = []uint32{ // 92 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000003, 0x00000006, 0x00000009,
 	0x0000000c, 0x0000000f, 0x00000012, 0x00000015,
@@ -155,7 +159,8 @@ var de_DEIndex = []uint32{ // 88 elements
 	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
 	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
 	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
-} // Size: 376 bytes
+	0x000004f6, 0x000004f6, 0x000004f6, 0x000004f6,
+} // Size: 392 bytes
 
 const de_DEData string = "" + // Size: 1270 bytes
 	"\x02So\x02Mo\x02Di\x02Mi\x02Do\x02Fr\x02Sa\x02Datum akzeptieren: %[1]v" +
@@ -179,7 +184,7 @@ const de_DEData string = "" + // Size: 1270 bytes
 	".\x02In welcher Zeit wohnen Sie?\x02Das habe Ich nicht verstanden.  Bitt" +
 	"e schicken Sie /help fur hilfe."
 
-var en_USIndex = []uint32{ // 88 elements
+var en_USIndex = []uint32{ // 92 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000003, 0x00000006, 0x00000009,
 	0x0000000c, 0x0000000f, 0x00000012, 0x00000015,
@@ -204,10 +209,11 @@ var en_USIndex = []uint32{ // 88 elements
 	0x000007d9, 0x0000083b, 0x00000857, 0x000008c0,
 	0x000008dc, 0x0000090e, 0x0000092c, 0x0000093c,
 	0x00000958, 0x00000971, 0x00000990, 0x00000a56,
-	0x00000a8a, 0x00000af1, 0x00000b35, 0x00000b76,
-} // Size: 376 bytes
+	0x00000a8a, 0x00000af1, 0x00000b0b, 0x00000b24,
+	0x00000b3f, 0x00000b53, 0x00000b97, 0x00000bbd,
+} // Size: 392 bytes
 
-const en_USData string = "" + // Size: 2934 bytes
+const en_USData string = "" + // Size: 3005 bytes
 	"\x02Su\x02Mo\x02Tu\x02We\x02Th\x02Fr\x02Sa\x02Continue with Date: %[1]v" +
 	"\x02Continue with Time: %[1]v\x02Share these plans in a chat ✅🔜\x02🏆 Edi" +
 	"t Name\x02📆 Edit Date\x02⏰ Edit Time\x02📍 Edit Location\x02🕴 Edit Hosted" +
@@ -250,10 +256,12 @@ const en_USData string = "" + // Size: 2934 bytes
 	"ions on how to continue at the bottom of that page.\x02Please check the " +
 	"policy again to see how to finish.\x02Thanks!  You're all set to start u" +
 	"sing the Furry Plans Bot!  Type /start to create a new set of plans.\x02" +
-	"Let's create some new plans.  First, send me the name of the event.\x02H" +
-	"ere is a list of available commands:\x0a/start\x0a/myevents\x0a/language"
+	"Create a new set of plans\x02Display the help message\x02Get a custom ca" +
+	"lendar feed\x02Change the language\x02Let's create some new plans.  Firs" +
+	"t, send me the name of the event.\x02Here is a list of available command" +
+	"s:"
 
-var fr_CHIndex = []uint32{ // 88 elements
+var fr_CHIndex = []uint32{ // 92 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -279,8 +287,9 @@ var fr_CHIndex = []uint32{ // 88 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 376 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 392 bytes
 
 const fr_CHData string = ""
 
-// Total table size 5332 bytes (5KiB); checksum: 39B54195
+// Total table size 5451 bytes (5KiB); checksum: 6A6597A3

@@ -2,9 +2,8 @@ package tgWrapper
 
 import (
 	"context"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"html"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -15,6 +14,10 @@ type Telegram struct {
 	bot *tgbotapi.BotAPI
 	key string
 }
+
+const (
+	ParseModeHtml = "HTML"
+)
 
 func New() *Telegram {
 	return &Telegram{}
@@ -47,14 +50,10 @@ func (t *Telegram) Listen(ctx context.Context, handler func(t *Telegram, update 
 	}
 
 	var updates tgbotapi.UpdatesChannel
-	var err error
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
-	updates, err = t.bot.GetUpdatesChan(u)
-	if err != nil {
-		log.Fatalf("error getting updates: %v", err)
-	}
+	updates = t.bot.GetUpdatesChan(u)
 
 	for {
 		// get either the done context or the next update
@@ -78,21 +77,25 @@ func (t *Telegram) Send(c tgbotapi.Chattable) (tgbotapi.Message, error) {
 	return t.bot.Send(c)
 }
 
-func (t *Telegram) AnswerInlineQuery(c tgbotapi.InlineConfig) (tgbotapi.APIResponse, error) {
-	return t.bot.AnswerInlineQuery(c)
+func (t *Telegram) AnswerInlineQuery(c tgbotapi.InlineConfig) (tgbotapi.Message, error) {
+	return t.bot.Send(c)
 }
-func (t *Telegram) AnswerCallbackQuery(c tgbotapi.CallbackConfig) (tgbotapi.APIResponse, error) {
-	return t.bot.AnswerCallbackQuery(c)
+func (t *Telegram) AnswerCallbackQuery(c tgbotapi.CallbackConfig) (tgbotapi.Message, error) {
+	return t.bot.Send(c)
 }
 
-func (t *Telegram) ConvertEntitiesToHTML(inputText string, entities *[]tgbotapi.MessageEntity) string {
+func (t *Telegram) SetMyCommands() {
+
+}
+
+func (t *Telegram) ConvertEntitiesToHTML(inputText string, entities []tgbotapi.MessageEntity) string {
 	if entities == nil {
 		return htmlEntities(inputText)
 	}
 
 	startTags := make(map[int][]tgbotapi.MessageEntity)
 	endTags := make(map[int][]tgbotapi.MessageEntity)
-	for _, entity := range *entities {
+	for _, entity := range entities {
 		startTags[(entity.Offset)] = append(startTags[(entity.Offset)], entity)
 		endTags[(entity.Offset + entity.Length)] = append(endTags[(entity.Offset+entity.Length)], entity)
 	}

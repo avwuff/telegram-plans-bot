@@ -6,7 +6,7 @@ import (
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"html"
 	"log"
 	"regexp"
@@ -105,7 +105,7 @@ func buildClickableStarter(event *dbHelper.FurryPlans, loc *localizer.Localizer)
 
 	return tgbotapi.InputTextMessageContent{
 		Text:                  fmt.Sprintf("%v\n\n%v", event.Name, loc.Sprintf("Click the button below to activate this event.")),
-		ParseMode:             "HTML",
+		ParseMode:             tgWrapper.ParseModeHtml,
 		DisableWebPagePreview: true,
 	}, &keyb
 }

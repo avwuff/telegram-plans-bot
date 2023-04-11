@@ -7,7 +7,7 @@ import (
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strings"
 	"time"
@@ -126,9 +126,7 @@ func setup_setPolicy(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg 
 	dbHelper.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "setup_complete")
 
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	
+
 	// All done!
 	quickReply(tg, msg, usrInfo.Locale.Sprintf("Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans."))
 }
-
-

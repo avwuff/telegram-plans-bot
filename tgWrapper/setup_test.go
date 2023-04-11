@@ -2,14 +2,14 @@ package tgWrapper
 
 import (
 	"fmt"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"testing"
 )
 
 func TestTelegram_ConvertEntitiesToHTML(t1 *testing.T) {
 	type args struct {
 		Text     string
-		Entities *[]tgbotapi.MessageEntity
+		Entities []tgbotapi.MessageEntity
 	}
 	tests := []struct {
 		name string
@@ -20,7 +20,7 @@ func TestTelegram_ConvertEntitiesToHTML(t1 *testing.T) {
 			name: "Simple",
 			args: args{
 				Text: "What if we tossed under the stars?",
-				Entities: &[]tgbotapi.MessageEntity{
+				Entities: []tgbotapi.MessageEntity{
 					{Type: "bold", Offset: 18, Length: 5},
 					{Type: "italic", Offset: 18, Length: 5},
 					{Type: "bold", Offset: 28, Length: 5},
@@ -32,7 +32,7 @@ func TestTelegram_ConvertEntitiesToHTML(t1 *testing.T) {
 			name: "One emoji",
 			args: args{
 				Text:     "I am a 🧡 dog.",
-				Entities: &[]tgbotapi.MessageEntity{{Type: "bold", Offset: 10, Length: 3}},
+				Entities: []tgbotapi.MessageEntity{{Type: "bold", Offset: 10, Length: 3}},
 			},
 			want: "I am a 🧡 <b>dog</b>.",
 		},
@@ -40,7 +40,7 @@ func TestTelegram_ConvertEntitiesToHTML(t1 *testing.T) {
 			name: "Flag emoji",
 			args: args{
 				Text: "🇨🇦: What kind of DOOOOOOOG are you? \n😈: I'm a man!",
-				Entities: &[]tgbotapi.MessageEntity{
+				Entities: []tgbotapi.MessageEntity{
 					{Type: "bold", Offset: 11, Length: 4},
 					{Type: "italic", Offset: 11, Length: 4},
 					{Type: "italic", Offset: 20, Length: 2},

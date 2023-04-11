@@ -6,7 +6,7 @@ import (
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strconv"
 )
@@ -83,13 +83,13 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 	}
 	if editInPlace != 0 {
 		mObj2 := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
-		mObj2.ParseMode = "HTML"
+		mObj2.ParseMode = tgWrapper.ParseModeHtml
 		mObj2.ReplyMarkup = &buttons
 		mObj2.DisableWebPagePreview = true
 		mObj = mObj2
 	} else {
 		mObj2 := tgbotapi.NewMessage(chatId, t)
-		mObj2.ParseMode = "HTML"
+		mObj2.ParseMode = tgWrapper.ParseModeHtml
 		mObj2.ReplyMarkup = buttons
 		mObj2.DisableWebPagePreview = true
 		mObj = mObj2
@@ -114,7 +114,7 @@ func listEvents(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbo
 		t += fmt.Sprintf("/edit_%v - %v\n", event.EventID, event.Name)
 	}
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf("Select an event to edit:\n%v", t))
-	mObj.ParseMode = "HTML"
+	mObj.ParseMode = tgWrapper.ParseModeHtml
 	_, err = tg.Send(mObj)
 	if err != nil {
 		log.Println(err)

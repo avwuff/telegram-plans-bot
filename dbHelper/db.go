@@ -112,6 +112,7 @@ func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, e
 func GetEventByHash(hash string, saltValue string) (*FurryPlans, *localizer.Localizer, error) {
 
 	// TODO: This whole sharing mechanism needs to be overhauled.
+	// Shouldn't rely on a hardcoded salt, nor on MD5 any longer.
 	sql := `SELECT * FROM furryplans WHERE 
             CONCAT('', MD5(CONCAT(eventID, ?))) = ? AND 
             EventDateTime > NOW() - INTERVAL 2 DAY AND 

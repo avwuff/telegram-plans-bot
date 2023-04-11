@@ -5,7 +5,7 @@ import (
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strconv"
 	"strings"
@@ -55,16 +55,16 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	// SIMPLE STRING EDIT
 	switch data[2] {
 	case "name":
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Name, "EventName", usrInfo.Locale.Sprintf("Specify the name of the event."))
+		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Name, "EventName", usrInfo.Locale.Sprintf("Specify the name of the event."), false)
 	case "location":
 		// BUG: This should really be the same text as the const CHOOSE_LOCATION, but it makes GOTEXT crash when you use the const here.
 		// Go figure.
 		msg := usrInfo.Locale.Sprintf("Where does the event take place?  Specify the name or address as you might type into Google Maps.")
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Location, "EventLocation", msg)
+		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Location, "EventLocation", msg, false)
 	case "hostedby":
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.OwnerName, "ownerName", usrInfo.Locale.Sprintf("Specify the name of the person hosting the event."))
+		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.OwnerName, "ownerName", usrInfo.Locale.Sprintf("Specify the name of the person hosting the event."), false)
 	case "notes":
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Notes, "Notes", usrInfo.Locale.Sprintf("Specify any additional notes you'd like to show about the event."))
+		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Notes, "Notes", usrInfo.Locale.Sprintf("Specify any additional notes you'd like to show about the event."), true)
 
 	// SPECIAL EDITORS
 	case "date":
@@ -436,13 +436,21 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 }
 
 // editStringItem puts them into a mode where they are editing a text item
-func editStringItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem *string, columnName string, prompt string) {
+func editStringItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem *string, columnName string, prompt string, sendExisting bool) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTSTRING, EditItem)
 	usrInfo.SetData(EDIT_EVENTCOLNAME, columnName)
 
 	// Switch to string edit mode
 	usrInfo.SetMode(userManager.MODE_EDIT_STRING)
+
+	// Optionally this function can also send the existing value so the use can copy it easily.
+	if sendExisting && *EditItem != "" {
+		mObj := tgbotapi.NewMessage(chatId, *EditItem)
+		mObj.ParseMode = tgWrapper.ParseModeHtml
+		mObj.DisableWebPagePreview = true
+		_, _ = tg.Send(mObj)
+	}
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)
 	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around

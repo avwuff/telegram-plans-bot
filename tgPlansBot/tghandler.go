@@ -5,7 +5,7 @@ import (
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 )
 
@@ -42,6 +42,8 @@ func initCommands() {
 	initEventCommands(cmds)
 	initSetupCommands(cmds)
 	initUICommands(cmds)
+
+	// Now add the commands to the command menu.
 }
 
 func startHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {

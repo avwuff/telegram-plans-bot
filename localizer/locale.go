@@ -2,7 +2,7 @@ package localizer
 
 import (
 	"errors"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 	"time"

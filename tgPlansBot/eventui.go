@@ -7,7 +7,7 @@ import (
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"net/url"
 	"strconv"
@@ -231,7 +231,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 
 	mObj2 := tgbotapi.NewEditMessageText(chatId, 0, t)
 	mObj2.InlineMessageID = inlineId
-	mObj2.ParseMode = "HTML"
+	mObj2.ParseMode = tgWrapper.ParseModeHtml
 	mObj2.ReplyMarkup = &buttons
 	mObj2.DisableWebPagePreview = true
 	mObj = mObj2

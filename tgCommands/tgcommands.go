@@ -3,7 +3,7 @@ package tgCommands
 import (
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strings"
 )
 
@@ -20,8 +20,11 @@ type Command struct {
 	// The handler that should be called when this command is found
 	Handler CommandHandler
 
-	// Command is followed by underscore so it is all one word
+	// Command is followed by underscore, so it is all one word
 	Underscore bool
+
+	// HelpText is the text shown for help with this command
+	HelpText string
 }
 
 type Callback struct {

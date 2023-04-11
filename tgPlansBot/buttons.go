@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"furryplansbot.avbrand.com/dbHelper"
 	"furryplansbot.avbrand.com/localizer"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strconv"
 	"strings"
 	"time"

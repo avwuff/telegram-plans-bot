@@ -5,12 +5,19 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
+	"strings"
 	"time"
+)
+
+const (
+	usDateFormat = "January 2, 2006 3:04 PM"
+	euDateFormat = "2 January 2006 15:04"
 )
 
 type Localizer struct {
 	name       string
 	iso639code string
+	dateFormat string // the date format that is most common in this culture
 	printer    *message.Printer
 }
 
@@ -22,16 +29,19 @@ func InitLang() {
 		"de-DE": { // Germany
 			name:       "Deutsch",
 			iso639code: "de",
+			dateFormat: euDateFormat,
 			printer:    message.NewPrinter(language.MustParse("de-DE")),
 		},
 		"fr-CH": { // Switzerland (French speaking)
 			name:       "Francais",
 			iso639code: "fr",
+			dateFormat: euDateFormat,
 			printer:    message.NewPrinter(language.MustParse("fr-CH")),
 		},
 		"en-US": { // United States
 			name:       "English",
 			iso639code: "en",
+			dateFormat: usDateFormat,
 			printer:    message.NewPrinter(language.MustParse("en-US")),
 		},
 	}
@@ -127,6 +137,37 @@ func (l *Localizer) Sprintf(key message.Reference, args ...interface{}) string {
 }
 
 func (l *Localizer) FormatDate(date time.Time) string {
-	// TODO: A proper way to format date time.
-	return date.Format("January 2, 2006 15:04")
+	// Looks like the go x/text package doesn't support date formatting
+	// So we do it ourselves.
+	formatted := date.Format(l.dateFormat)
+
+	// Now replace the month name with the localized name.
+	switch date.Month() {
+	case time.January:
+		formatted = strings.ReplaceAll(formatted, time.January.String(), l.Sprintf("January"))
+	case time.February:
+		formatted = strings.ReplaceAll(formatted, time.February.String(), l.Sprintf("February"))
+	case time.March:
+		formatted = strings.ReplaceAll(formatted, time.March.String(), l.Sprintf("March"))
+	case time.April:
+		formatted = strings.ReplaceAll(formatted, time.April.String(), l.Sprintf("April"))
+	case time.May:
+		formatted = strings.ReplaceAll(formatted, time.May.String(), l.Sprintf("May"))
+	case time.June:
+		formatted = strings.ReplaceAll(formatted, time.June.String(), l.Sprintf("June"))
+	case time.July:
+		formatted = strings.ReplaceAll(formatted, time.July.String(), l.Sprintf("July"))
+	case time.August:
+		formatted = strings.ReplaceAll(formatted, time.August.String(), l.Sprintf("August"))
+	case time.September:
+		formatted = strings.ReplaceAll(formatted, time.September.String(), l.Sprintf("September"))
+	case time.October:
+		formatted = strings.ReplaceAll(formatted, time.October.String(), l.Sprintf("October"))
+	case time.November:
+		formatted = strings.ReplaceAll(formatted, time.November.String(), l.Sprintf("November"))
+	case time.December:
+		formatted = strings.ReplaceAll(formatted, time.December.String(), l.Sprintf("December"))
+	}
+
+	return formatted
 }

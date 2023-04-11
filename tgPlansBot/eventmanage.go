@@ -138,7 +138,7 @@ func selectEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgb
 	// Find this event.
 	eventId, err := strconv.Atoi(text)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Unable to parse event ID", err))
+		quickReply(tg, msg, usrInfo.Locale.Sprintf("Unable to parse event ID: %v", err))
 		return
 	}
 

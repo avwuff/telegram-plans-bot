@@ -2,6 +2,66 @@
     "language": "de-DE",
     "messages": [
         {
+            "id": "January",
+            "message": "January",
+            "translation": "Januar"
+        },
+        {
+            "id": "February",
+            "message": "February",
+            "translation": "Februar"
+        },
+        {
+            "id": "March",
+            "message": "March",
+            "translation": "Marz"
+        },
+        {
+            "id": "April",
+            "message": "April",
+            "translation": "April"
+        },
+        {
+            "id": "May",
+            "message": "May",
+            "translation": "Mai"
+        },
+        {
+            "id": "June",
+            "message": "June",
+            "translation": "Juni"
+        },
+        {
+            "id": "July",
+            "message": "July",
+            "translation": "Juli"
+        },
+        {
+            "id": "August",
+            "message": "August",
+            "translation": "August"
+        },
+        {
+            "id": "September",
+            "message": "September",
+            "translation": "September"
+        },
+        {
+            "id": "October",
+            "message": "October",
+            "translation": "Oktober"
+        },
+        {
+            "id": "November",
+            "message": "November",
+            "translation": "November"
+        },
+        {
+            "id": "December",
+            "message": "December",
+            "translation": "Dezember"
+        },
+        {
             "id": "Su",
             "message": "Su",
             "translation": "So"
@@ -134,7 +194,7 @@
         {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
-            "translation": "\uD83D\uDCE9 Weitergeben Erlaubt",
+            "translation": "📩 Weitergeben Erlaubt",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -174,7 +234,7 @@
         {
             "id": "🔠 Language",
             "message": "🔠 Language",
-            "translation": "\uD83D\uDD20 Sprache"
+            "translation": "🔠 Sprache"
         },
         {
             "id": "⌚ Time Zone",
@@ -184,7 +244,22 @@
         {
             "id": "🔙 Back",
             "message": "🔙 Back",
-            "translation": "\uD83D\uDD19 Zuruck"
+            "translation": "🔙 Zuruck"
+        },
+        {
+            "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "message": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ICalURL",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "ICalURL"
+                }
+            ]
         },
         {
             "id": [
@@ -339,6 +414,16 @@
             "translation": ""
         },
         {
+            "id": "A list of your upcoming events",
+            "message": "A list of your upcoming events",
+            "translation": ""
+        },
+        {
+            "id": "A list of all your events, old and new",
+            "message": "A list of all your events, old and new",
+            "translation": ""
+        },
+        {
             "id": "Event not found",
             "message": "Event not found",
             "translation": ""
@@ -401,7 +486,7 @@
         {
             "id": "Select an event to edit:\n{T}",
             "message": "Select an event to edit:\n{T}",
-            "translation": "Wahlen Sie ein Event zum editieren:",
+            "translation": "Wahlen Sie ein Event zum editieren:\n{T}",
             "placeholders": [
                 {
                     "id": "T",
@@ -414,8 +499,8 @@
             ]
         },
         {
-            "id": "Unable to parse event ID",
-            "message": "Unable to parse event ID",
+            "id": "Unable to parse event ID: {Err}",
+            "message": "Unable to parse event ID: {Err}",
             "translation": "",
             "placeholders": [
                 {
@@ -511,22 +596,22 @@
         {
             "id": "🙋‍♂️ I'm going!",
             "message": "🙋‍♂️ I'm going!",
-            "translation": "\uD83D\uDE4B\u200D♂️ Ich gehe!"
+            "translation": "🙋‍♂️ Ich gehe!"
         },
         {
             "id": "👭 Me +1",
             "message": "👭 Me +1",
-            "translation": "\uD83D\uDC6D Ich +1"
+            "translation": "👭 Ich +1"
         },
         {
             "id": "🙋‍♂️👭 Me +2",
             "message": "🙋‍♂️👭 Me +2",
-            "translation": "\uD83D\uDE4B\u200D♂️\uD83D\uDC6D Ich +2"
+            "translation": "🙋‍♂️👭 Ich +2"
         },
         {
             "id": "🤔️ Maybe",
             "message": "🤔️ Maybe",
-            "translation": "\uD83E\uDD14️ Vielleicht"
+            "translation": "🤔️ Vielleicht"
         },
         {
             "id": "❌️ I can't make it",
@@ -536,17 +621,17 @@
         {
             "id": "📆 Add to Calendar",
             "message": "📆 Add to Calendar",
-            "translation": "\uD83D\uDCC6 An Kalendar"
+            "translation": "📆 An Kalendar"
         },
         {
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
-            "translation": "\uD83D\uDCE9 Weitergeben..."
+            "translation": "📩 Weitergeben..."
         },
         {
             "id": "👉 CLICK TO ACTIVATE EVENT 👈",
             "message": "👉 CLICK TO ACTIVATE EVENT 👈",
-            "translation": "\uD83D\uDC49 CLICK UM AKTIVIEREN \uD83D\uDC48"
+            "translation": "👉 CLICK UM AKTIVIEREN 👈"
         },
         {
             "id": "Click the button below to activate this event.",
@@ -584,13 +669,33 @@
             "translation": ""
         },
         {
+            "id": "Create a new set of plans",
+            "message": "Create a new set of plans",
+            "translation": ""
+        },
+        {
+            "id": "Display the help message",
+            "message": "Display the help message",
+            "translation": ""
+        },
+        {
+            "id": "Get a custom calendar feed",
+            "message": "Get a custom calendar feed",
+            "translation": ""
+        },
+        {
+            "id": "Change the language",
+            "message": "Change the language",
+            "translation": ""
+        },
+        {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
             "translation": ""
         },
         {
-            "id": "Here is a list of available commands:\n/start\n/myevents\n/language",
-            "message": "Here is a list of available commands:\n/start\n/myevents\n/language",
+            "id": "Here is a list of available commands:",
+            "message": "Here is a list of available commands:",
             "translation": ""
         },
         {

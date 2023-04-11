@@ -3,6 +3,7 @@ package tgPlansBot
 import (
 	"fmt"
 	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
@@ -136,7 +137,7 @@ func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text 
 // makeEventUI displays the main event UI.
 func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlans, loc *localizer.Localizer, inlineId string) error {
 
-	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(stripHtmlRegex(event.Location)))
+	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location)))
 
 	// TODO: Localization
 	t := "<b>" + event.Name + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName + "\n"
@@ -268,7 +269,7 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	// TODO: This URL needs to be configurable
-	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", calenFeedMD5(int64(event.EventID)))
+	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", helpers.CalenFeedMD5(saltValue, int64(event.EventID)))
 	row = append(row, tgbotapi.InlineKeyboardButton{
 		Text: loc.Sprintf("📆 Add to Calendar"),
 		URL:  &addUrl,
@@ -278,7 +279,7 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 
 	if event.AllowShare == 1 {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
-		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, calenFeedMD5(int64(event.EventID))) // Example: POST:1234
+		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, helpers.CalenFeedMD5(saltValue, int64(event.EventID))) // Example: POST:1234
 		row = append(row, tgbotapi.InlineKeyboardButton{
 			Text:              loc.Sprintf("📩 Share to another chat..."),
 			SwitchInlineQuery: &shareButton,

@@ -2,6 +2,90 @@
     "language": "en-US",
     "messages": [
         {
+            "id": "January",
+            "message": "January",
+            "translation": "January",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "February",
+            "message": "February",
+            "translation": "February",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "March",
+            "message": "March",
+            "translation": "March",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "April",
+            "message": "April",
+            "translation": "April",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "May",
+            "message": "May",
+            "translation": "May",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "June",
+            "message": "June",
+            "translation": "June",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "July",
+            "message": "July",
+            "translation": "July",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "August",
+            "message": "August",
+            "translation": "August",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "September",
+            "message": "September",
+            "translation": "September",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "October",
+            "message": "October",
+            "translation": "October",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "November",
+            "message": "November",
+            "translation": "November",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "December",
+            "message": "December",
+            "translation": "December",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Su",
             "message": "Su",
             "translation": "Su",
@@ -241,6 +325,23 @@
             "fuzzy": true
         },
         {
+            "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "message": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "translation": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "ICalURL",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "ICalURL"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": [
                 "CALEN_DATE_CHOOSE_TEXT",
                 "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
@@ -433,6 +534,20 @@
             "fuzzy": true
         },
         {
+            "id": "A list of your upcoming events",
+            "message": "A list of your upcoming events",
+            "translation": "A list of your upcoming events",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "A list of all your events, old and new",
+            "message": "A list of all your events, old and new",
+            "translation": "A list of all your events, old and new",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Event not found",
             "message": "Event not found",
             "translation": "Event not found",
@@ -530,9 +645,9 @@
             "fuzzy": true
         },
         {
-            "id": "Unable to parse event ID",
-            "message": "Unable to parse event ID",
-            "translation": "Unable to parse event ID",
+            "id": "Unable to parse event ID: {Err}",
+            "message": "Unable to parse event ID: {Err}",
+            "translation": "Unable to parse event ID: {Err}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {

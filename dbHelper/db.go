@@ -140,6 +140,36 @@ func GetEventByHash(hash string, saltValue string) (*FurryPlans, *localizer.Loca
 	return &event, loc, nil
 }
 
+func CalendarFeed(ownerId int64) ([]*FurryPlans, error) {
+
+	// TODO: Include all the attendance types here
+	sql := `SELECT furryplans.* FROM furryplansattend 
+		LEFT JOIN furryplans USING (eventID) 
+		WHERE furryplansattend.userid = ? 
+		AND furryplansattend.CanAttend IN (1, 2) 
+		AND furryplans.EventDateTime > NOW() - INTERVAL 7 DAY 
+		ORDER BY EventDateTime `
+
+	var events []*FurryPlans
+	res := db.Raw(sql, ownerId).Scan(&events)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	// Clean up the old syntax from the previous event bot
+	for _, event := range events {
+		event.cleanOldSyntax()
+
+		// Update the time on the event to match the time zone.
+		if event.TimeZone != "" {
+			tz := localizer.FromTimeZone(event.TimeZone)
+			event.DateTime.Time = event.DateTime.Time.In(tz)
+		}
+	}
+
+	return events, nil
+}
+
 func SearchEvents(ownerId int64, searchText string) ([]*FurryPlans, error) {
 	var events []*FurryPlans
 	query := db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Where("EventName LIKE ?", "%"+searchText+"%").Order("EventDateTime DESC")

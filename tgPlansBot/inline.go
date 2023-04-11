@@ -3,13 +3,12 @@ package tgPlansBot
 import (
 	"fmt"
 	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"html"
 	"log"
-	"regexp"
 	"strconv"
 	"strings"
 )
@@ -77,7 +76,7 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 
 			article := tgbotapi.NewInlineQueryResultArticle(
 				fmt.Sprintf("%v%v", POST_PREFIX, event.EventID),
-				fmt.Sprintf("%v - %v", stripHtmlRegex(event.Name), event.DateTime.Time.Format(layoutISO)), // TODO Proper time format
+				fmt.Sprintf("%v - %v", helpers.StripHtmlRegex(event.Name), event.DateTime.Time.Format(layoutISO)), // TODO Proper time format
 				"")
 			article.InputMessageContent, article.ReplyMarkup = buildClickableStarter(event, usrInfo.Locale)
 			results = append(results, article)
@@ -85,12 +84,6 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 
 		answerWithList(tg, query, results)
 	}
-}
-
-// This method uses a regular expresion to remove HTML tags.
-func stripHtmlRegex(s string) string {
-	r := regexp.MustCompile(`<.*?>`)
-	return html.UnescapeString(r.ReplaceAllString(s, ""))
 }
 
 func buildClickableStarter(event *dbHelper.FurryPlans, loc *localizer.Localizer) (tgbotapi.InputTextMessageContent, *tgbotapi.InlineKeyboardMarkup) {

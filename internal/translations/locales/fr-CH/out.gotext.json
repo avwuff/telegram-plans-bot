@@ -2,6 +2,66 @@
     "language": "fr-CH",
     "messages": [
         {
+            "id": "January",
+            "message": "January",
+            "translation": ""
+        },
+        {
+            "id": "February",
+            "message": "February",
+            "translation": ""
+        },
+        {
+            "id": "March",
+            "message": "March",
+            "translation": ""
+        },
+        {
+            "id": "April",
+            "message": "April",
+            "translation": ""
+        },
+        {
+            "id": "May",
+            "message": "May",
+            "translation": ""
+        },
+        {
+            "id": "June",
+            "message": "June",
+            "translation": ""
+        },
+        {
+            "id": "July",
+            "message": "July",
+            "translation": ""
+        },
+        {
+            "id": "August",
+            "message": "August",
+            "translation": ""
+        },
+        {
+            "id": "September",
+            "message": "September",
+            "translation": ""
+        },
+        {
+            "id": "October",
+            "message": "October",
+            "translation": ""
+        },
+        {
+            "id": "November",
+            "message": "November",
+            "translation": ""
+        },
+        {
+            "id": "December",
+            "message": "December",
+            "translation": ""
+        },
+        {
             "id": "Su",
             "message": "Su",
             "translation": ""
@@ -187,6 +247,21 @@
             "translation": ""
         },
         {
+            "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "message": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ICalURL",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "ICalURL"
+                }
+            ]
+        },
+        {
             "id": [
                 "CALEN_DATE_CHOOSE_TEXT",
                 "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
@@ -339,6 +414,16 @@
             "translation": ""
         },
         {
+            "id": "A list of your upcoming events",
+            "message": "A list of your upcoming events",
+            "translation": ""
+        },
+        {
+            "id": "A list of all your events, old and new",
+            "message": "A list of all your events, old and new",
+            "translation": ""
+        },
+        {
             "id": "Event not found",
             "message": "Event not found",
             "translation": ""
@@ -414,8 +499,8 @@
             ]
         },
         {
-            "id": "Unable to parse event ID",
-            "message": "Unable to parse event ID",
+            "id": "Unable to parse event ID: {Err}",
+            "message": "Unable to parse event ID: {Err}",
             "translation": "",
             "placeholders": [
                 {

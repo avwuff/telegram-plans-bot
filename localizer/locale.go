@@ -11,13 +11,16 @@ import (
 
 const (
 	usDateFormat = "January 2, 2006 3:04 PM"
+	usTimeFormat = "3:04 PM"
 	euDateFormat = "2 January 2006 15:04"
+	euTimeFormat = "15:04"
 )
 
 type Localizer struct {
 	name       string
 	iso639code string
 	dateFormat string // the date format that is most common in this culture
+	timeFormat string // the time format that is most common in this culture
 	printer    *message.Printer
 }
 
@@ -30,18 +33,21 @@ func InitLang() {
 			name:       "Deutsch",
 			iso639code: "de",
 			dateFormat: euDateFormat,
+			timeFormat: euTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("de-DE")),
 		},
 		"fr-CH": { // Switzerland (French speaking)
 			name:       "Francais",
 			iso639code: "fr",
 			dateFormat: euDateFormat,
+			timeFormat: euTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("fr-CH")),
 		},
 		"en-US": { // United States
 			name:       "English",
 			iso639code: "en",
 			dateFormat: usDateFormat,
+			timeFormat: usTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("en-US")),
 		},
 	}
@@ -136,10 +142,20 @@ func (l *Localizer) Sprintf(key message.Reference, args ...interface{}) string {
 	return l.printer.Sprintf(key, args...)
 }
 
-func (l *Localizer) FormatDate(date time.Time) string {
+func (l *Localizer) FormatDateForLocale(date time.Time) string {
 	// Looks like the go x/text package doesn't support date formatting
 	// So we do it ourselves.
-	formatted := date.Format(l.dateFormat)
+	return l.FormatDate(date, l.dateFormat)
+}
+
+func (l *Localizer) FormatTimeForLocale(date time.Time) string {
+	// Looks like the go x/text package doesn't support date formatting
+	// So we do it ourselves.
+	return date.Format(l.timeFormat)
+}
+
+func (l *Localizer) FormatDate(date time.Time, FormatString string) string {
+	formatted := date.Format(FormatString)
 
 	// Now replace the month name with the localized name.
 	switch date.Month() {

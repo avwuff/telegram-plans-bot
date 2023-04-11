@@ -141,7 +141,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 
 	// TODO: Localization
 	t := "<b>" + event.Name + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName + "\n"
-	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDate(event.DateTime.Time) + "\n"
+	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime.Time) + "\n"
 	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location + "</a>" + "\n"
 	if event.MaxAttendees > 0 {
 		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"

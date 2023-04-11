@@ -61,7 +61,7 @@ func create_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		edit.ReplyMarkup = &calen
 	} else {
 		// Move on to the next step.
-		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", selDate.Format("January 2, 2006"))
+		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatDateForLocale(selDate))
 		createSetDateAndContinue(tg, usrInfo, cb.Message.Chat.ID, selDate)
 	}
 
@@ -122,7 +122,7 @@ func create_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		edit.ReplyMarkup = &timeButtons
 	} else {
 		// Move on to the next step.
-		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", selTime.Format("15:04")) // TODO switch to AM/PM
+		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(selTime))
 		createSetTimeAndContinue(tg, usrInfo, cb.Message.Chat.ID, selTime)
 	}
 

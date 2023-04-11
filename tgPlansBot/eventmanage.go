@@ -61,7 +61,7 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 	t := topMsg
 
 	t += "<b>" + usrInfo.Locale.Sprintf("Name:") + "</b> " + event.Name + "\n"
-	t += "<b>" + usrInfo.Locale.Sprintf("Date:") + "</b> " + usrInfo.Locale.FormatDate(event.DateTime.Time) + "\n"
+	t += "<b>" + usrInfo.Locale.Sprintf("Date:") + "</b> " + usrInfo.Locale.FormatDateForLocale(event.DateTime.Time) + "\n"
 	t += "<b>" + usrInfo.Locale.Sprintf("Location:") + "</b> " + event.Location + "\n"
 	t += "<b>" + usrInfo.Locale.Sprintf("Hosted By:") + "</b> " + event.OwnerName + "\n"
 	if event.Suitwalk == 1 {

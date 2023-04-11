@@ -145,7 +145,7 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		timeButtons := createTimeSelection(*editTime, usrInfo.Locale)
 		edit.ReplyMarkup = &timeButtons
 	} else {
-		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", editTime.Format("15:04")) // TODO switch to AM/PM
+		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(*editTime)) // TODO switch to AM/PM
 
 		// Save the value
 		err := event.UpdateEvent(colName)
@@ -256,7 +256,7 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		calen := createCalendar(*editDate, usrInfo.Locale, *editDate)
 		edit.ReplyMarkup = &calen
 	} else {
-		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", editDate.Format("January 2, 2006"))
+		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatTimeForLocale(*editDate))
 
 		// Save the value
 		err := event.UpdateEvent(colName)

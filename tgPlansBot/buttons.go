@@ -34,8 +34,7 @@ func createCalendar(startDate time.Time, loc *localizer.Localizer, selDate time.
 	// Start by listing the current month, and forward/back arrows
 	row := make([]tgbotapi.InlineKeyboardButton, 3)
 	row[0] = quickButton("◀", fmt.Sprintf("calen:month:%v", "P"))
-	// TODO: Month name from locale
-	row[1] = quickButton(startDate.Format("January 2006"), "calen:nothing")
+	row[1] = quickButton(loc.FormatDate(startDate, "January 2006"), "calen:nothing")
 	row[2] = quickButton("▶", fmt.Sprintf("calen:month:%v", "N"))
 	buttons = append(buttons, row)
 
@@ -73,7 +72,7 @@ func createCalendar(startDate time.Time, loc *localizer.Localizer, selDate time.
 	// the CONTINUE button
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
 	// January 2, 15:04:05, 2006
-	row[0] = quickButton(loc.Sprintf("Continue with Date: %v", selDate.Format("January 2")), "calen:finish")
+	row[0] = quickButton(loc.Sprintf("Continue with Date: %v", loc.FormatDate(selDate, "January 2")), "calen:finish")
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{
@@ -179,7 +178,7 @@ func createTimeSelection(selTime time.Time, loc *localizer.Localizer) tgbotapi.I
 	// the CONTINUE button
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
 	// January 2, 15:04:05, 2006
-	row[0] = quickButton(loc.Sprintf("Continue with Time: %v", selTime.Format("15:04")), "time:finish")
+	row[0] = quickButton(loc.Sprintf("Continue with Time: %v", loc.FormatTimeForLocale(selTime)), "time:finish")
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{

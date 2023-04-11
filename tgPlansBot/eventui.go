@@ -31,13 +31,9 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	if err != nil {
 		return
 	}
-	event, loc, err := dbHelper.GetEvent(uint(eventId), int64(cb.From.ID))
+	event, loc, err := dbHelper.GetEvent(uint(eventId), cb.From.ID)
 	if err != nil {
 		return
-	}
-	// TODO: All events should pick up the creator's locale.
-	if loc == nil {
-		loc = usrInfo.Locale
 	}
 
 	// Save where this was posted
@@ -139,7 +135,6 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 
 	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location)))
 
-	// TODO: Localization
 	t := "<b>" + event.Name + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName + "\n"
 	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime.Time) + "\n"
 	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location + "</a>" + "\n"
@@ -147,7 +142,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
 	}
 	if event.Notes != "" {
-		t += "<b>Notes:</b>\n" + event.Notes + "\n"
+		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes + "\n"
 	}
 
 	// Get the list of people attending
@@ -172,6 +167,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 				tGoing = append(tGoing, txt)
 				cGoing += 1 + attend.PlusMany
 
+				// TODO SUITWALK
 			/*case 20 ' Suiting
 				tSuiting = tSuiting & " - " & "<a href="
 				"tg://user?id=" & RS("userID") & ""
@@ -192,7 +188,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 
 				cPhoto = cPhoto + 1 + clng(RS("plusMany"))*/
 
-			case 2: // Maybe
+			case dbHelper.CANATTEND_MAYBE: // Maybe
 
 				txt := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
 				tMaybe = append(tMaybe, txt)
@@ -205,7 +201,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 	}
 
 	if event.Suitwalk == 1 {
-		// TODO
+		// TODO SUITWALK
 
 	} else {
 		if len(tGoing) > 0 {
@@ -251,7 +247,7 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 
 	if event.Suitwalk == 1 {
 		//row := make([]tgbotapi.InlineKeyboardButton, 0)
-		// TODO
+		// TODO SUITWALK
 	} else {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
 		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ I'm going!"), fmt.Sprintf("attending:%v:0", event.EventID)))

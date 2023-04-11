@@ -21,7 +21,7 @@ const POST_PREFIX = "POST:"
 func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 
 	// Note that the request may not be coming from a user that has ever used the bot.
-	usrInfo := userManager.Get(int64(query.From.ID))
+	usrInfo := userManager.Get(query.From.ID)
 
 	// See what it is they want us to post.
 	if query.Query != "" {
@@ -76,7 +76,7 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 
 			article := tgbotapi.NewInlineQueryResultArticle(
 				fmt.Sprintf("%v%v", POST_PREFIX, event.EventID),
-				fmt.Sprintf("%v - %v", helpers.StripHtmlRegex(event.Name), event.DateTime.Time.Format(layoutISO)), // TODO Proper time format
+				fmt.Sprintf("%v - %v", helpers.StripHtmlRegex(event.Name), usrInfo.Locale.FormatDateForLocale(event.DateTime.Time)), // Note that this may be the wrong locale for this user. TODO pick up locale from event.
 				"")
 			article.InputMessageContent, article.ReplyMarkup = buildClickableStarter(event, usrInfo.Locale)
 			results = append(results, article)

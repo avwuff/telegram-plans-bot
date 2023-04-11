@@ -39,7 +39,7 @@ func (t *Telegram) Init() error {
 		return err
 	}
 	// TODO remove this
-	t.bot.Debug = true
+	//t.bot.Debug = true
 	return nil
 }
 
@@ -65,8 +65,7 @@ func (t *Telegram) Listen(ctx context.Context, handler func(t *Telegram, update 
 
 		case update := <-updates:
 			// send it to the handler
-			// TODO: Do we want to do a multithreaded pool of handlers for these?  So one update doens't block.
-			// TODO: Maybe later.
+			// TODO: Do we want to do a multithreaded pool of handlers for these?  So one update doesn't block. Maybe later.
 			handler(t, update)
 		}
 	}

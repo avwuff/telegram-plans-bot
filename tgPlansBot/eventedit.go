@@ -28,8 +28,10 @@ const GENERAL_ERROR = "A general error occurred."
 func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 
 	// Format is: //edit:<id>:item_to_edit
-	// TODO: Length check here
 	data := strings.Split(cb.Data, ":")
+	if len(data) != 3 {
+		return
+	}
 
 	eventId, err := strconv.Atoi(data[1])
 	if err != nil {
@@ -145,7 +147,7 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		timeButtons := createTimeSelection(*editTime, usrInfo.Locale)
 		edit.ReplyMarkup = &timeButtons
 	} else {
-		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(*editTime)) // TODO switch to AM/PM
+		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(*editTime))
 
 		// Save the value
 		err := event.UpdateEvent(colName)

@@ -55,7 +55,6 @@ func createCalendar(startDate time.Time, loc *localizer.Localizer, selDate time.
 			row[i] = quickButton(fmt.Sprintf("%v", dStart.Day()), fmt.Sprintf("calen:sel:%v", dStart.Format(layoutISO)))
 			// Is this the selected day?
 			if selDate.Day() == dStart.Day() && selDate.Month() == dStart.Month() {
-				// TODO A nicer way to mark this.
 				row[i].Text = "[ " + row[i].Text + " ]"
 			}
 
@@ -90,8 +89,10 @@ func quickButton(Text, Callback string) tgbotapi.InlineKeyboardButton {
 
 func processDateClicks(selDate time.Time, cmd string) (outDate time.Time, finished bool) {
 	// What did they click on?
-	// TODO: Length check here
 	data := strings.Split(cmd, ":")
+	if len(data) < 2 {
+		return
+	}
 
 	switch data[1] { // command
 	case "nothing":
@@ -108,6 +109,9 @@ func processDateClicks(selDate time.Time, cmd string) (outDate time.Time, finish
 		}
 		return selDate, false
 	case "sel": // a day has been selected
+		if len(data) < 3 {
+			return
+		}
 		selDate, _ = time.ParseInLocation(layoutISO, data[2], selDate.Location())
 		return selDate, false
 	case "finish":
@@ -188,13 +192,18 @@ func createTimeSelection(selTime time.Time, loc *localizer.Localizer) tgbotapi.I
 
 func processTimeClicks(selTime time.Time, cmd string) (outTime time.Time, finished bool) {
 	// What did they click on?
-	// TODO: Length check here
 	data := strings.Split(cmd, ":")
+	if len(data) < 2 {
+		return
+	}
 
 	switch data[1] { // command
 	case "nothing":
 		// do nothing
 	case "hour": // go to a different month
+		if len(data) < 3 {
+			return
+		}
 		h, err := strconv.Atoi(data[2])
 		if err != nil {
 			return
@@ -202,6 +211,9 @@ func processTimeClicks(selTime time.Time, cmd string) (outTime time.Time, finish
 		selTime = time.Date(selTime.Year(), selTime.Month(), 1, h, selTime.Minute(), 0, 0, selTime.Location())
 		return selTime, false
 	case "minute": // a day has been selected
+		if len(data) < 3 {
+			return
+		}
 		m, err := strconv.Atoi(data[2])
 		if err != nil {
 			return

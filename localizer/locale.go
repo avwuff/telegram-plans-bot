@@ -36,12 +36,19 @@ func InitLang() {
 			timeFormat: euTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("de-DE")),
 		},
-		"fr-CH": { // Switzerland (French speaking)
-			name:       "Francais",
+		"fr-FR": { // France (French)
+			name:       "Francais (France)",
 			iso639code: "fr",
 			dateFormat: euDateFormat,
 			timeFormat: euTimeFormat,
-			printer:    message.NewPrinter(language.MustParse("fr-CH")),
+			printer:    message.NewPrinter(language.MustParse("fr-FR")),
+		},
+		"fr-CA": { // Canada (French)
+			name:       "Francais (Quebec)",
+			iso639code: "fr",
+			dateFormat: euDateFormat,
+			timeFormat: euTimeFormat,
+			printer:    message.NewPrinter(language.MustParse("fr-CA")),
 		},
 		"en-US": { // United States
 			name:       "English",
@@ -59,6 +66,17 @@ func InitLang() {
 		"America/Chicago",
 		"America/Los_Angeles",
 		"Europe/London",
+		"Europe/Berlin",
+		"Europe/Moscow",
+		"Canada/Atlantic",
+		"Canada/Central",
+		"Canada/Eastern",
+		"Canada/Mountain",
+		"Canada/Newfoundland",
+		"Canada/Pacific",
+		"Canada/Saskatchewan",
+		"Canada/Yukon",
+		"Australia/Melbourne",
 	}
 
 	// create the time zones
@@ -134,6 +152,14 @@ func GetTimeZoneChoicesMap() map[string]*time.Location {
 	out := make(map[string]*time.Location)
 	for key, loc := range timezones {
 		out[key] = loc
+	}
+	return out
+}
+
+func GetTimeZoneChoicesMap2() map[string]string {
+	out := make(map[string]string)
+	for key, loc := range timezones {
+		out[key] = loc.String()
 	}
 	return out
 }

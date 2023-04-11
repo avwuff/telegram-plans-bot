@@ -4,62 +4,62 @@
         {
             "id": "January",
             "message": "January",
-            "translation": "Januar"
+            "translation": ""
         },
         {
             "id": "February",
             "message": "February",
-            "translation": "Februar"
+            "translation": ""
         },
         {
             "id": "March",
             "message": "March",
-            "translation": "Marz"
+            "translation": ""
         },
         {
             "id": "April",
             "message": "April",
-            "translation": "April"
+            "translation": ""
         },
         {
             "id": "May",
             "message": "May",
-            "translation": "Mai"
+            "translation": ""
         },
         {
             "id": "June",
             "message": "June",
-            "translation": "Juni"
+            "translation": ""
         },
         {
             "id": "July",
             "message": "July",
-            "translation": "Juli"
+            "translation": ""
         },
         {
             "id": "August",
             "message": "August",
-            "translation": "August"
+            "translation": ""
         },
         {
             "id": "September",
             "message": "September",
-            "translation": "September"
+            "translation": ""
         },
         {
             "id": "October",
             "message": "October",
-            "translation": "Oktober"
+            "translation": ""
         },
         {
             "id": "November",
             "message": "November",
-            "translation": "November"
+            "translation": ""
         },
         {
             "id": "December",
             "message": "December",
-            "translation": "Dezember"
+            "translation": ""
         },
         {
             "id": "Su",
@@ -97,69 +97,69 @@
             "translation": "Sa"
         },
         {
-            "id": "Continue with Date: {FormatJanuary_2}",
-            "message": "Continue with Date: {FormatJanuary_2}",
-            "translation": "Datum akzeptieren: {FormatJanuary_2}",
+            "id": "Continue with Date: {FormatDateselDate_January_2}",
+            "message": "Continue with Date: {FormatDateselDate_January_2}",
+            "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatJanuary_2",
+                    "id": "FormatDateselDate_January_2",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selDate.Format(\"January 2\")"
+                    "expr": "loc.FormatDate(selDate, \"January 2\")"
                 }
             ]
         },
         {
-            "id": "Continue with Time: {Format1504}",
-            "message": "Continue with Time: {Format1504}",
-            "translation": "Zeit Akzeptieren: {Format1504}",
+            "id": "Continue with Time: {FormatTimeForLocaleselTime}",
+            "message": "Continue with Time: {FormatTimeForLocaleselTime}",
+            "translation": "",
             "placeholders": [
                 {
-                    "id": "Format1504",
+                    "id": "FormatTimeForLocaleselTime",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selTime.Format(\"15:04\")"
+                    "expr": "loc.FormatTimeForLocale(selTime)"
                 }
             ]
         },
         {
             "id": "Share these plans in a chat ✅🔜",
             "message": "Share these plans in a chat ✅🔜",
-            "translation": "Plane jetzt weiter geben"
+            "translation": ""
         },
         {
             "id": "🏆 Edit Name",
             "message": "🏆 Edit Name",
-            "translation": "🏆 Namen anderen"
+            "translation": ""
         },
         {
             "id": "📆 Edit Date",
             "message": "📆 Edit Date",
-            "translation": "📆 Daten anderen"
+            "translation": ""
         },
         {
             "id": "⏰ Edit Time",
             "message": "⏰ Edit Time",
-            "translation": "⏰ Zeit anderen"
+            "translation": ""
         },
         {
             "id": "📍 Edit Location",
             "message": "📍 Edit Location",
-            "translation": "📍 Treffpunkt anderen"
+            "translation": ""
         },
         {
             "id": "🕴 Edit Hosted By",
             "message": "🕴 Edit Hosted By",
-            "translation": "🕴 Angeber anderen"
+            "translation": ""
         },
         {
             "id": "📝 Add Notes",
             "message": "📝 Add Notes",
-            "translation": "📝 Hinweise"
+            "translation": ""
         },
         {
             "id": "👫 Set Max Attendees",
@@ -194,7 +194,7 @@
         {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
-            "translation": "📩 Weitergeben Erlaubt",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -239,12 +239,12 @@
         {
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
-            "translation": "⌚ Zeit Berect"
+            "translation": ""
         },
         {
             "id": "🔙 Back",
             "message": "🔙 Back",
-            "translation": "🔙 Zuruck"
+            "translation": ""
         },
         {
             "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
@@ -267,20 +267,20 @@
                 "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
             ],
             "message": "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.",
-            "translation": "Hab es. Wahlen Sie ein Datum aus."
+            "translation": ""
         },
         {
-            "id": "Date selected: {FormatJanuary_2_2006}",
-            "message": "Date selected: {FormatJanuary_2_2006}",
-            "translation": "Datum: {FormatJanuary_2_2006}",
+            "id": "Date selected: {FormatDateForLocaleselDate}",
+            "message": "Date selected: {FormatDateForLocaleselDate}",
+            "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatJanuary_2_2006",
+                    "id": "FormatDateForLocaleselDate",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selDate.Format(\"January 2, 2006\")"
+                    "expr": "usrInfo.Locale.FormatDateForLocale(selDate)"
                 }
             ]
         },
@@ -298,17 +298,17 @@
             "translation": ""
         },
         {
-            "id": "Time selected: {Format1504}",
-            "message": "Time selected: {Format1504}",
+            "id": "Time selected: {FormatTimeForLocaleselTime}",
+            "message": "Time selected: {FormatTimeForLocaleselTime}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "Format1504",
+                    "id": "FormatTimeForLocaleselTime",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selTime.Format(\"15:04\")"
+                    "expr": "usrInfo.Locale.FormatTimeForLocale(selTime)"
                 }
             ]
         },
@@ -348,37 +348,37 @@
         {
             "id": "Specify the name of the event.",
             "message": "Specify the name of the event.",
-            "translation": "Geben Sie den Namen vom Event"
+            "translation": ""
         },
         {
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
-            "translation": "Geben Sie den Namen vom Angeber"
+            "translation": ""
         },
         {
             "id": "Specify any additional notes you'd like to show about the event.",
             "message": "Specify any additional notes you'd like to show about the event.",
-            "translation": "Geben Sie Hinweise an"
+            "translation": ""
         },
         {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
-            "translation": "An welchem Datum?"
+            "translation": ""
         },
         {
             "id": "Specify the time at which this event takes place:",
             "message": "Specify the time at which this event takes place:",
-            "translation": "Zu welcher Zeit?"
+            "translation": ""
         },
         {
             "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
-            "translation": "Die maximale nummer von Leute?"
+            "translation": ""
         },
         {
             "id": "Choose the display language for this event.",
             "message": "Choose the display language for this event.",
-            "translation": "Die Sprache des Event?"
+            "translation": ""
         },
         {
             "id": [
@@ -386,7 +386,7 @@
                 "A general error occurred."
             ],
             "message": "A general error occurred.",
-            "translation": "Ein generales Problem hat passiert."
+            "translation": ""
         },
         {
             "id": "error updating event: {Err}",
@@ -431,42 +431,42 @@
         {
             "id": "Name:",
             "message": "Name:",
-            "translation": "Namen:"
+            "translation": ""
         },
         {
             "id": "Date:",
             "message": "Date:",
-            "translation": "Datum:"
+            "translation": ""
         },
         {
             "id": "Location:",
             "message": "Location:",
-            "translation": "Treffpunkt:"
+            "translation": ""
         },
         {
             "id": "Hosted By:",
             "message": "Hosted By:",
-            "translation": "Besitzer:"
+            "translation": ""
         },
         {
             "id": "Suitwalk:",
             "message": "Suitwalk:",
-            "translation": "Suitwalk:"
+            "translation": ""
         },
         {
             "id": "Max Attendees:",
             "message": "Max Attendees:",
-            "translation": "Max Leute:"
+            "translation": ""
         },
         {
             "id": "Language:",
             "message": "Language:",
-            "translation": "Sprache:"
+            "translation": ""
         },
         {
             "id": "Notes:",
             "message": "Notes:",
-            "translation": "Hinweise:"
+            "translation": ""
         },
         {
             "id": "Error listing events: {Err}",
@@ -486,7 +486,7 @@
         {
             "id": "Select an event to edit:\n{T}",
             "message": "Select an event to edit:\n{T}",
-            "translation": "Wahlen Sie ein Event zum editieren:\n{T}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "T",
@@ -516,37 +516,82 @@
         {
             "id": "Alright, you've been marked as attending.",
             "message": "Alright, you've been marked as attending.",
-            "translation": "OK, Sie sind jetzt markiert als Mitgeher."
+            "translation": ""
         },
         {
             "id": "Alright, you've been marked as maybe.",
             "message": "Alright, you've been marked as maybe.",
-            "translation": "OK, Sie sind jetzt markiert als Vielleicht"
+            "translation": ""
         },
         {
             "id": "Sorry, this event is currently full!",
             "message": "Sorry, this event is currently full!",
-            "translation": "Leider ist diese Event voll."
+            "translation": ""
         },
         {
             "id": "Alright, you've been marked as unable to attend.",
             "message": "Alright, you've been marked as unable to attend.",
-            "translation": "OK, Sie sind jetzt markiert als Nicht Gehen"
+            "translation": ""
         },
         {
             "id": "Event is ready to be used!",
             "message": "Event is ready to be used!",
-            "translation": "Das Event ist ready!"
+            "translation": ""
         },
         {
             "id": "hosted by",
             "message": "hosted by",
-            "translation": "angeben von"
+            "translation": ""
+        },
+        {
+            "id": "Suiting: {CSuiting}",
+            "message": "Suiting: {CSuiting}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CSuiting",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cSuiting"
+                }
+            ]
+        },
+        {
+            "id": "Photographers: {CPhoto}",
+            "message": "Photographers: {CPhoto}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CPhoto",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cPhoto"
+                }
+            ]
+        },
+        {
+            "id": "Spotting: {CGoing}",
+            "message": "Spotting: {CGoing}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CGoing",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cGoing"
+                }
+            ]
         },
         {
             "id": "Attending: {CGoing}",
             "message": "Attending: {CGoing}",
-            "translation": "Mitgehen: {CGoing}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "CGoing",
@@ -561,7 +606,7 @@
         {
             "id": "Maybe: {LentMaybe}",
             "message": "Maybe: {LentMaybe}",
-            "translation": "Veilleicht: {LentMaybe}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "LentMaybe",
@@ -576,7 +621,7 @@
         {
             "id": "Can't make it: {LentNot}",
             "message": "Can't make it: {LentNot}",
-            "translation": "Konnen nicht: {LentNot}",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "LentNot",
@@ -591,62 +636,107 @@
         {
             "id": "Can you go? Use the buttons below.",
             "message": "Can you go? Use the buttons below.",
-            "translation": "Konnen Sie gehen? Benutze die Knopfe:"
+            "translation": ""
+        },
+        {
+            "id": "🐕‍🦺 I'm Suiting",
+            "message": "🐕‍🦺 I'm Suiting",
+            "translation": ""
+        },
+        {
+            "id": "🐕‍🦺🐱 Suiting +1",
+            "message": "🐕‍🦺🐱 Suiting +1",
+            "translation": ""
+        },
+        {
+            "id": "🐕‍🦺🐾 Suiting +2",
+            "message": "🐕‍🦺🐾 Suiting +2",
+            "translation": ""
+        },
+        {
+            "id": "📷 Photographer",
+            "message": "📷 Photographer",
+            "translation": ""
+        },
+        {
+            "id": "📷🎥 Photo +1",
+            "message": "📷🎥 Photo +1",
+            "translation": ""
+        },
+        {
+            "id": "📷🎞 Photo +2",
+            "message": "📷🎞 Photo +2",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️ Spotting",
+            "message": "🙋‍♂️ Spotting",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️🕺 Spotting +1",
+            "message": "🙋‍♂️🕺 Spotting +1",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️👭 Spotting +2",
+            "message": "🙋‍♂️👭 Spotting +2",
+            "translation": ""
         },
         {
             "id": "🙋‍♂️ I'm going!",
             "message": "🙋‍♂️ I'm going!",
-            "translation": "🙋‍♂️ Ich gehe!"
+            "translation": ""
         },
         {
-            "id": "👭 Me +1",
-            "message": "👭 Me +1",
-            "translation": "👭 Ich +1"
+            "id": "🙋‍♂️🕺 Me +1",
+            "message": "🙋‍♂️🕺 Me +1",
+            "translation": ""
         },
         {
             "id": "🙋‍♂️👭 Me +2",
             "message": "🙋‍♂️👭 Me +2",
-            "translation": "🙋‍♂️👭 Ich +2"
+            "translation": ""
         },
         {
             "id": "🤔️ Maybe",
             "message": "🤔️ Maybe",
-            "translation": "🤔️ Vielleicht"
+            "translation": ""
         },
         {
             "id": "❌️ I can't make it",
             "message": "❌️ I can't make it",
-            "translation": "❌️ Kann Nicht"
+            "translation": ""
         },
         {
             "id": "📆 Add to Calendar",
             "message": "📆 Add to Calendar",
-            "translation": "📆 An Kalendar"
+            "translation": ""
         },
         {
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
-            "translation": "📩 Weitergeben..."
+            "translation": ""
         },
         {
             "id": "👉 CLICK TO ACTIVATE EVENT 👈",
             "message": "👉 CLICK TO ACTIVATE EVENT 👈",
-            "translation": "👉 CLICK UM AKTIVIEREN 👈"
+            "translation": ""
         },
         {
             "id": "Click the button below to activate this event.",
             "message": "Click the button below to activate this event.",
-            "translation": "Click dem Knopf um das Event zu aktievieren"
+            "translation": ""
         },
         {
             "id": "The language has been set to English.",
             "message": "The language has been set to English.",
-            "translation": "Die Sprache ist jetzt Deutsch."
+            "translation": ""
         },
         {
             "id": "In which time zone do you live?",
             "message": "In which time zone do you live?",
-            "translation": "In welcher Zeit wohnen Sie?"
+            "translation": ""
         },
         {
             "id": "Specified Time Zone not found.",
@@ -701,7 +791,7 @@
         {
             "id": "I don't understand that command. Send /help for help.",
             "message": "I don't understand that command. Send /help for help.",
-            "translation": "Das habe Ich nicht verstanden.  Bitte schicken Sie /help fur hilfe."
+            "translation": ""
         }
     ]
 }

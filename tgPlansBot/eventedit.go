@@ -62,25 +62,27 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		// BUG: This should really be the same text as the const CHOOSE_LOCATION, but it makes GOTEXT crash when you use the const here.
 		// Go figure.
 		msg := usrInfo.Locale.Sprintf("Where does the event take place?  Specify the name or address as you might type into Google Maps.")
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Location, "EventLocation", msg, false)
+		editStringItem(tg, usrInfo, cb.From.ID, &event.Location, "EventLocation", msg, false)
 	case "hostedby":
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.OwnerName, "ownerName", usrInfo.Locale.Sprintf("Specify the name of the person hosting the event."), false)
+		editStringItem(tg, usrInfo, cb.From.ID, &event.OwnerName, "ownerName", usrInfo.Locale.Sprintf("Specify the name of the person hosting the event."), false)
 	case "notes":
-		editStringItem(tg, usrInfo, int64(cb.From.ID), &event.Notes, "Notes", usrInfo.Locale.Sprintf("Specify any additional notes you'd like to show about the event."), true)
+		editStringItem(tg, usrInfo, cb.From.ID, &event.Notes, "Notes", usrInfo.Locale.Sprintf("Specify any additional notes you'd like to show about the event."), true)
 
 	// SPECIAL EDITORS
 	case "date":
-		editDateItem(tg, usrInfo, int64(cb.From.ID), &event.DateTime.Time, "EventDateTime", usrInfo.Locale.Sprintf("Specify the date on which this event takes place:"))
+		editDateItem(tg, usrInfo, cb.From.ID, &event.DateTime.Time, "EventDateTime", usrInfo.Locale.Sprintf("Specify the date on which this event takes place:"))
 	case "time":
-		editTimeItem(tg, usrInfo, int64(cb.From.ID), &event.DateTime.Time, "EventDateTime", usrInfo.Locale.Sprintf("Specify the time at which this event takes place:"))
+		editTimeItem(tg, usrInfo, cb.From.ID, &event.DateTime.Time, "EventDateTime", usrInfo.Locale.Sprintf("Specify the time at which this event takes place:"))
 
 	// SIMPLE INTEGER
 	case "maxattend":
-		editNumberItem(tg, usrInfo, int64(cb.From.ID), &event.MaxAttendees, "MaxAttendees", usrInfo.Locale.Sprintf("Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0."))
+		editNumberItem(tg, usrInfo, cb.From.ID, &event.MaxAttendees, "MaxAttendees", usrInfo.Locale.Sprintf("Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0."))
 
 	// CHOICE
 	case "language":
-		editChoiceItem(tg, usrInfo, int64(cb.From.ID), &event.Language, "Language", usrInfo.Locale.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesMap())
+		editChoiceItem(tg, usrInfo, cb.From.ID, &event.Language, "Language", usrInfo.Locale.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesMap())
+	case "timezone":
+		editChoiceItem(tg, usrInfo, cb.From.ID, &event.TimeZone, "TimeZone", usrInfo.Locale.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesMap2())
 
 	// TOGGLES
 	case "sharing":
@@ -96,7 +98,7 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		showAdvancedPanel(tg, usrInfo, cb, event)
 	case "back":
 		// Just go back to the main panel
-		eventDetails(tg, usrInfo, int64(cb.From.ID), event.EventID, "", cb.Message.MessageID, false)
+		eventDetails(tg, usrInfo, cb.From.ID, event.EventID, "", cb.Message.MessageID, false)
 	}
 }
 

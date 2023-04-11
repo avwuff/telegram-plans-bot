@@ -1,144 +1,105 @@
 {
-    "language": "en-US",
+    "language": "fr-FR",
     "messages": [
         {
             "id": "January",
             "message": "January",
-            "translation": "January",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "February",
             "message": "February",
-            "translation": "February",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "March",
             "message": "March",
-            "translation": "March",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "April",
             "message": "April",
-            "translation": "April",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "May",
             "message": "May",
-            "translation": "May",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "June",
             "message": "June",
-            "translation": "June",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "July",
             "message": "July",
-            "translation": "July",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "August",
             "message": "August",
-            "translation": "August",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "September",
             "message": "September",
-            "translation": "September",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "October",
             "message": "October",
-            "translation": "October",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "November",
             "message": "November",
-            "translation": "November",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "December",
             "message": "December",
-            "translation": "December",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Su",
             "message": "Su",
-            "translation": "Su",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Mo",
             "message": "Mo",
-            "translation": "Mo",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Tu",
             "message": "Tu",
-            "translation": "Tu",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "We",
             "message": "We",
-            "translation": "We",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Th",
             "message": "Th",
-            "translation": "Th",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Fr",
             "message": "Fr",
-            "translation": "Fr",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Sa",
             "message": "Sa",
-            "translation": "Sa",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Continue with Date: {FormatDateselDate_January_2}",
             "message": "Continue with Date: {FormatDateselDate_January_2}",
-            "translation": "Continue with Date: {FormatDateselDate_January_2}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "FormatDateselDate_January_2",
@@ -148,14 +109,12 @@
                     "argNum": 1,
                     "expr": "loc.FormatDate(selDate, \"January 2\")"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Continue with Time: {FormatTimeForLocaleselTime}",
             "message": "Continue with Time: {FormatTimeForLocaleselTime}",
-            "translation": "Continue with Time: {FormatTimeForLocaleselTime}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "FormatTimeForLocaleselTime",
@@ -165,70 +124,52 @@
                     "argNum": 1,
                     "expr": "loc.FormatTimeForLocale(selTime)"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Share these plans in a chat ✅🔜",
             "message": "Share these plans in a chat ✅🔜",
-            "translation": "Share these plans in a chat ✅🔜",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🏆 Edit Name",
             "message": "🏆 Edit Name",
-            "translation": "🏆 Edit Name",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📆 Edit Date",
             "message": "📆 Edit Date",
-            "translation": "📆 Edit Date",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "⏰ Edit Time",
             "message": "⏰ Edit Time",
-            "translation": "⏰ Edit Time",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📍 Edit Location",
             "message": "📍 Edit Location",
-            "translation": "📍 Edit Location",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🕴 Edit Hosted By",
             "message": "🕴 Edit Hosted By",
-            "translation": "🕴 Edit Hosted By",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📝 Add Notes",
             "message": "📝 Add Notes",
-            "translation": "📝 Add Notes",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
-            "translation": "👫 Set Max Attendees",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "💔 Allow Maybe: {SprintfYes}",
             "message": "💔 Allow Maybe: {SprintfYes}",
-            "translation": "💔 Allow Maybe: {SprintfYes}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "SprintfYes",
@@ -238,28 +179,22 @@
                     "argNum": 1,
                     "expr": "iif(event.DisableMaybe == 1, loc.Sprintf(\"No\"), loc.Sprintf(\"Yes\"))"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "No",
             "message": "No",
-            "translation": "No",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Yes",
             "message": "Yes",
-            "translation": "Yes",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
-            "translation": "📩 Allow Sharing: {SprintfNo}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -269,28 +204,22 @@
                     "argNum": 1,
                     "expr": "iif(event.AllowShare == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "⚙ Advanced Options...",
             "message": "⚙ Advanced Options...",
-            "translation": "⚙ Advanced Options...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "⚙ ADVANCED OPTIONS ⚙",
             "message": "⚙ ADVANCED OPTIONS ⚙",
-            "translation": "⚙ ADVANCED OPTIONS ⚙",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🐕 Suitwalk: {SprintfNo}",
             "message": "🐕 Suitwalk: {SprintfNo}",
-            "translation": "🐕 Suitwalk: {SprintfNo}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -300,35 +229,27 @@
                     "argNum": 1,
                     "expr": "iif(event.Suitwalk == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "🔠 Language",
             "message": "🔠 Language",
-            "translation": "🔠 Language",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
-            "translation": "⌚ Time Zone",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🔙 Back",
             "message": "🔙 Back",
-            "translation": "🔙 Back",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
             "message": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
-            "translation": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "ICalURL",
@@ -338,8 +259,7 @@
                     "argNum": 1,
                     "expr": "ICalURL"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": [
@@ -347,15 +267,12 @@
                 "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
             ],
             "message": "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.",
-            "translation": "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Date selected: {FormatDateForLocaleselDate}",
             "message": "Date selected: {FormatDateForLocaleselDate}",
-            "translation": "Date selected: {FormatDateForLocaleselDate}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "FormatDateForLocaleselDate",
@@ -365,15 +282,12 @@
                     "argNum": 1,
                     "expr": "usrInfo.Locale.FormatDateForLocale(selDate)"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Could not parse the date you provided. Please send it in the format YYYY-MM-DD.",
             "message": "Could not parse the date you provided. Please send it in the format YYYY-MM-DD.",
-            "translation": "Could not parse the date you provided. Please send it in the format YYYY-MM-DD.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": [
@@ -381,15 +295,12 @@
                 "Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue."
             ],
             "message": "Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.",
-            "translation": "Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Time selected: {FormatTimeForLocaleselTime}",
             "message": "Time selected: {FormatTimeForLocaleselTime}",
-            "translation": "Time selected: {FormatTimeForLocaleselTime}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "FormatTimeForLocaleselTime",
@@ -399,15 +310,12 @@
                     "argNum": 1,
                     "expr": "usrInfo.Locale.FormatTimeForLocale(selTime)"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Could not parse the time you provided. Please send it in the format 22:03.",
             "message": "Could not parse the time you provided. Please send it in the format 22:03.",
-            "translation": "Could not parse the time you provided. Please send it in the format 22:03.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": [
@@ -415,15 +323,12 @@
                 "Where does the event take place?  Specify the name or address as you might type into Google Maps."
             ],
             "message": "Where does the event take place?  Specify the name or address as you might type into Google Maps.",
-            "translation": "Where does the event take place?  Specify the name or address as you might type into Google Maps.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "error creating event: {Err}",
             "message": "error creating event: {Err}",
-            "translation": "error creating event: {Err}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Err",
@@ -433,64 +338,47 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
             "message": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
-            "translation": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specify the name of the event.",
             "message": "Specify the name of the event.",
-            "translation": "Specify the name of the event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
-            "translation": "Specify the name of the person hosting the event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specify any additional notes you'd like to show about the event.",
             "message": "Specify any additional notes you'd like to show about the event.",
-            "translation": "Specify any additional notes you'd like to show about the event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
-            "translation": "Specify the date on which this event takes place:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specify the time at which this event takes place:",
             "message": "Specify the time at which this event takes place:",
-            "translation": "Specify the time at which this event takes place:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
-            "translation": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Choose the display language for this event.",
             "message": "Choose the display language for this event.",
-            "translation": "Choose the display language for this event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": [
@@ -498,15 +386,12 @@
                 "A general error occurred."
             ],
             "message": "A general error occurred.",
-            "translation": "A general error occurred.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "error updating event: {Err}",
             "message": "error updating event: {Err}",
-            "translation": "error updating event: {Err}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Err",
@@ -516,105 +401,77 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "The value you provided is not one of the choices.",
             "message": "The value you provided is not one of the choices.",
-            "translation": "The value you provided is not one of the choices.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Please provide a valid number",
             "message": "Please provide a valid number",
-            "translation": "Please provide a valid number",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "A list of your upcoming events",
             "message": "A list of your upcoming events",
-            "translation": "A list of your upcoming events",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "A list of all your events, old and new",
             "message": "A list of all your events, old and new",
-            "translation": "A list of all your events, old and new",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Event not found",
             "message": "Event not found",
-            "translation": "Event not found",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Name:",
             "message": "Name:",
-            "translation": "Name:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Date:",
             "message": "Date:",
-            "translation": "Date:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Location:",
             "message": "Location:",
-            "translation": "Location:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Hosted By:",
             "message": "Hosted By:",
-            "translation": "Hosted By:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Suitwalk:",
             "message": "Suitwalk:",
-            "translation": "Suitwalk:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Max Attendees:",
             "message": "Max Attendees:",
-            "translation": "Max Attendees:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Language:",
             "message": "Language:",
-            "translation": "Language:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Notes:",
             "message": "Notes:",
-            "translation": "Notes:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Error listing events: {Err}",
             "message": "Error listing events: {Err}",
-            "translation": "Error listing events: {Err}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Err",
@@ -624,14 +481,12 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Select an event to edit:\n{T}",
             "message": "Select an event to edit:\n{T}",
-            "translation": "Select an event to edit:\n{T}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "T",
@@ -641,14 +496,12 @@
                     "argNum": 1,
                     "expr": "t"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Unable to parse event ID: {Err}",
             "message": "Unable to parse event ID: {Err}",
-            "translation": "Unable to parse event ID: {Err}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Err",
@@ -658,56 +511,42 @@
                     "argNum": 1,
                     "expr": "err"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Alright, you've been marked as attending.",
             "message": "Alright, you've been marked as attending.",
-            "translation": "Alright, you've been marked as attending.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Alright, you've been marked as maybe.",
             "message": "Alright, you've been marked as maybe.",
-            "translation": "Alright, you've been marked as maybe.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Sorry, this event is currently full!",
             "message": "Sorry, this event is currently full!",
-            "translation": "Sorry, this event is currently full!",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Alright, you've been marked as unable to attend.",
             "message": "Alright, you've been marked as unable to attend.",
-            "translation": "Alright, you've been marked as unable to attend.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Event is ready to be used!",
             "message": "Event is ready to be used!",
-            "translation": "Event is ready to be used!",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "hosted by",
             "message": "hosted by",
-            "translation": "hosted by",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Suiting: {CSuiting}",
             "message": "Suiting: {CSuiting}",
-            "translation": "Suiting: {CSuiting}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "CSuiting",
@@ -717,14 +556,12 @@
                     "argNum": 1,
                     "expr": "cSuiting"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Photographers: {CPhoto}",
             "message": "Photographers: {CPhoto}",
-            "translation": "Photographers: {CPhoto}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "CPhoto",
@@ -734,14 +571,12 @@
                     "argNum": 1,
                     "expr": "cPhoto"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Spotting: {CGoing}",
             "message": "Spotting: {CGoing}",
-            "translation": "Spotting: {CGoing}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "CGoing",
@@ -751,14 +586,12 @@
                     "argNum": 1,
                     "expr": "cGoing"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Attending: {CGoing}",
             "message": "Attending: {CGoing}",
-            "translation": "Attending: {CGoing}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "CGoing",
@@ -768,14 +601,12 @@
                     "argNum": 1,
                     "expr": "cGoing"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Maybe: {LentMaybe}",
             "message": "Maybe: {LentMaybe}",
-            "translation": "Maybe: {LentMaybe}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "LentMaybe",
@@ -785,14 +616,12 @@
                     "argNum": 1,
                     "expr": "len(tMaybe)"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Can't make it: {LentNot}",
             "message": "Can't make it: {LentNot}",
-            "translation": "Can't make it: {LentNot}",
-            "translatorComment": "Copied from source.",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "LentNot",
@@ -802,232 +631,167 @@
                     "argNum": 1,
                     "expr": "len(tNot)"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "Can you go? Use the buttons below.",
             "message": "Can you go? Use the buttons below.",
-            "translation": "Can you go? Use the buttons below.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🐕‍🦺 I'm Suiting",
             "message": "🐕‍🦺 I'm Suiting",
-            "translation": "🐕‍🦺 I'm Suiting",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🐕‍🦺🐱 Suiting +1",
             "message": "🐕‍🦺🐱 Suiting +1",
-            "translation": "🐕‍🦺🐱 Suiting +1",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🐕‍🦺🐾 Suiting +2",
             "message": "🐕‍🦺🐾 Suiting +2",
-            "translation": "🐕‍🦺🐾 Suiting +2",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📷 Photographer",
             "message": "📷 Photographer",
-            "translation": "📷 Photographer",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📷🎥 Photo +1",
             "message": "📷🎥 Photo +1",
-            "translation": "📷🎥 Photo +1",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📷🎞 Photo +2",
             "message": "📷🎞 Photo +2",
-            "translation": "📷🎞 Photo +2",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🙋‍♂️ Spotting",
             "message": "🙋‍♂️ Spotting",
-            "translation": "🙋‍♂️ Spotting",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🙋‍♂️🕺 Spotting +1",
             "message": "🙋‍♂️🕺 Spotting +1",
-            "translation": "🙋‍♂️🕺 Spotting +1",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🙋‍♂️👭 Spotting +2",
             "message": "🙋‍♂️👭 Spotting +2",
-            "translation": "🙋‍♂️👭 Spotting +2",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🙋‍♂️ I'm going!",
             "message": "🙋‍♂️ I'm going!",
-            "translation": "🙋‍♂️ I'm going!",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🙋‍♂️🕺 Me +1",
             "message": "🙋‍♂️🕺 Me +1",
-            "translation": "🙋‍♂️🕺 Me +1",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🙋‍♂️👭 Me +2",
             "message": "🙋‍♂️👭 Me +2",
-            "translation": "🙋‍♂️👭 Me +2",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "🤔️ Maybe",
             "message": "🤔️ Maybe",
-            "translation": "🤔️ Maybe",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "❌️ I can't make it",
             "message": "❌️ I can't make it",
-            "translation": "❌️ I can't make it",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📆 Add to Calendar",
             "message": "📆 Add to Calendar",
-            "translation": "📆 Add to Calendar",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
-            "translation": "📩 Share to another chat...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "👉 CLICK TO ACTIVATE EVENT 👈",
             "message": "👉 CLICK TO ACTIVATE EVENT 👈",
-            "translation": "👉 CLICK TO ACTIVATE EVENT 👈",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Click the button below to activate this event.",
             "message": "Click the button below to activate this event.",
-            "translation": "Click the button below to activate this event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "The language has been set to English.",
             "message": "The language has been set to English.",
-            "translation": "The language has been set to English.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "In which time zone do you live?",
             "message": "In which time zone do you live?",
-            "translation": "In which time zone do you live?",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Specified Time Zone not found.",
             "message": "Specified Time Zone not found.",
-            "translation": "Specified Time Zone not found.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
             "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "translation": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Please check the policy again to see how to finish.",
             "message": "Please check the policy again to see how to finish.",
-            "translation": "Please check the policy again to see how to finish.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
             "message": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
-            "translation": "Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Create a new set of plans",
             "message": "Create a new set of plans",
-            "translation": "Create a new set of plans",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Display the help message",
             "message": "Display the help message",
-            "translation": "Display the help message",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Get a custom calendar feed",
             "message": "Get a custom calendar feed",
-            "translation": "Get a custom calendar feed",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Change the language",
             "message": "Change the language",
-            "translation": "Change the language",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
-            "translation": "Let's create some new plans.  First, send me the name of the event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "Here is a list of available commands:",
             "message": "Here is a list of available commands:",
-            "translation": "Here is a list of available commands:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         },
         {
             "id": "I don't understand that command. Send /help for help.",
             "message": "I don't understand that command. Send /help for help.",
-            "translation": "I don't understand that command. Send /help for help.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": ""
         }
     ]
 }

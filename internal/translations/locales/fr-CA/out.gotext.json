@@ -1,5 +1,5 @@
 {
-    "language": "fr-CH",
+    "language": "fr-CA",
     "messages": [
         {
             "id": "January",
@@ -97,32 +97,32 @@
             "translation": ""
         },
         {
-            "id": "Continue with Date: {FormatJanuary_2}",
-            "message": "Continue with Date: {FormatJanuary_2}",
+            "id": "Continue with Date: {FormatDateselDate_January_2}",
+            "message": "Continue with Date: {FormatDateselDate_January_2}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatJanuary_2",
+                    "id": "FormatDateselDate_January_2",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selDate.Format(\"January 2\")"
+                    "expr": "loc.FormatDate(selDate, \"January 2\")"
                 }
             ]
         },
         {
-            "id": "Continue with Time: {Format1504}",
-            "message": "Continue with Time: {Format1504}",
+            "id": "Continue with Time: {FormatTimeForLocaleselTime}",
+            "message": "Continue with Time: {FormatTimeForLocaleselTime}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "Format1504",
+                    "id": "FormatTimeForLocaleselTime",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selTime.Format(\"15:04\")"
+                    "expr": "loc.FormatTimeForLocale(selTime)"
                 }
             ]
         },
@@ -270,17 +270,17 @@
             "translation": ""
         },
         {
-            "id": "Date selected: {FormatJanuary_2_2006}",
-            "message": "Date selected: {FormatJanuary_2_2006}",
+            "id": "Date selected: {FormatDateForLocaleselDate}",
+            "message": "Date selected: {FormatDateForLocaleselDate}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatJanuary_2_2006",
+                    "id": "FormatDateForLocaleselDate",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selDate.Format(\"January 2, 2006\")"
+                    "expr": "usrInfo.Locale.FormatDateForLocale(selDate)"
                 }
             ]
         },
@@ -298,17 +298,17 @@
             "translation": ""
         },
         {
-            "id": "Time selected: {Format1504}",
-            "message": "Time selected: {Format1504}",
+            "id": "Time selected: {FormatTimeForLocaleselTime}",
+            "message": "Time selected: {FormatTimeForLocaleselTime}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "Format1504",
+                    "id": "FormatTimeForLocaleselTime",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "selTime.Format(\"15:04\")"
+                    "expr": "usrInfo.Locale.FormatTimeForLocale(selTime)"
                 }
             ]
         },
@@ -544,6 +544,51 @@
             "translation": ""
         },
         {
+            "id": "Suiting: {CSuiting}",
+            "message": "Suiting: {CSuiting}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CSuiting",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cSuiting"
+                }
+            ]
+        },
+        {
+            "id": "Photographers: {CPhoto}",
+            "message": "Photographers: {CPhoto}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CPhoto",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cPhoto"
+                }
+            ]
+        },
+        {
+            "id": "Spotting: {CGoing}",
+            "message": "Spotting: {CGoing}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "CGoing",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "cGoing"
+                }
+            ]
+        },
+        {
             "id": "Attending: {CGoing}",
             "message": "Attending: {CGoing}",
             "translation": "",
@@ -594,13 +639,58 @@
             "translation": ""
         },
         {
+            "id": "🐕‍🦺 I'm Suiting",
+            "message": "🐕‍🦺 I'm Suiting",
+            "translation": ""
+        },
+        {
+            "id": "🐕‍🦺🐱 Suiting +1",
+            "message": "🐕‍🦺🐱 Suiting +1",
+            "translation": ""
+        },
+        {
+            "id": "🐕‍🦺🐾 Suiting +2",
+            "message": "🐕‍🦺🐾 Suiting +2",
+            "translation": ""
+        },
+        {
+            "id": "📷 Photographer",
+            "message": "📷 Photographer",
+            "translation": ""
+        },
+        {
+            "id": "📷🎥 Photo +1",
+            "message": "📷🎥 Photo +1",
+            "translation": ""
+        },
+        {
+            "id": "📷🎞 Photo +2",
+            "message": "📷🎞 Photo +2",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️ Spotting",
+            "message": "🙋‍♂️ Spotting",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️🕺 Spotting +1",
+            "message": "🙋‍♂️🕺 Spotting +1",
+            "translation": ""
+        },
+        {
+            "id": "🙋‍♂️👭 Spotting +2",
+            "message": "🙋‍♂️👭 Spotting +2",
+            "translation": ""
+        },
+        {
             "id": "🙋‍♂️ I'm going!",
             "message": "🙋‍♂️ I'm going!",
             "translation": ""
         },
         {
-            "id": "👭 Me +1",
-            "message": "👭 Me +1",
+            "id": "🙋‍♂️🕺 Me +1",
+            "message": "🙋‍♂️🕺 Me +1",
             "translation": ""
         },
         {

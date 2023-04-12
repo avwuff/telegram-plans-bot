@@ -3,13 +3,17 @@ package main
 import (
 	"context"
 	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/dbInterface"
 	_ "furryplansbot.avbrand.com/internal/translations"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgPlansBot"
+	"furryplansbot.avbrand.com/userManager"
 	"furryplansbot.avbrand.com/webserver"
 	"log"
 	"os"
 )
+
+var dbMain dbInterface.DBFeatures
 
 func main() {
 	log.Println("== Furry Plans Bot Startup ==")
@@ -25,19 +29,21 @@ func main() {
 	}
 
 	log.Println("Connecting to database...")
-	err = dbHelper.InitDB("dsn.txt")
+	db, err := dbHelper.InitDB("dsn.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println("Connected.")
+	dbMain = db
+	userManager.Init(db)
 
 	log.Println("Starting telegram bot...")
-	go tgPlansBot.StartTG(ctx, string(saltValue))
+	go tgPlansBot.StartTG(ctx, string(saltValue), dbMain)
 
 	// Wait until the application exits now
 	log.Println("Listening for updates.")
 
 	log.Println("Starting web server")
-	webserver.StartServer(string(saltValue))
+	webserver.StartServer(string(saltValue), db)
 
 }

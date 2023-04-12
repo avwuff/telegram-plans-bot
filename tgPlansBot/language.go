@@ -1,7 +1,6 @@
 package tgPlansBot
 
 import (
-	"furryplansbot.avbrand.com/dbHelper"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
@@ -36,7 +35,7 @@ func setLanguageHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, m
 
 	// Set the language.
 	usrInfo.Prefs.Language = lang
-	dbHelper.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
+	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 
 	// Replace the localizer since the language has been changed

@@ -2,7 +2,7 @@ package tgPlansBot
 
 import (
 	"fmt"
-	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
@@ -31,10 +31,12 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	if err != nil {
 		return
 	}
-	event, loc, err := dbHelper.GetEvent(uint(eventId), -1)
+	event, err := db.GetEvent(uint(eventId), -1)
+
 	if err != nil {
 		return
 	}
+	loc := localizer.FromLanguage(event.Language())
 
 	// Save where this was posted
 	// We can use a Gofunc here since it isn't important to have this saved before we continue
@@ -44,10 +46,10 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	name := tg.ConvertEntitiesToHTML(cb.From.FirstName, nil)
 
 	// Update the attending data about the event.
-	var reply dbHelper.AttendMsgs
+	var reply dbInterface.AttendMsgs
 	switch data[0] {
 	case "use": // Event activated
-		reply = dbHelper.ATTEND_ACTIVE
+		reply = dbInterface.ATTEND_ACTIVE
 	case "attending":
 		// How many people are they bringing?
 		people, err := strconv.Atoi(data[2])
@@ -55,36 +57,36 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 			return
 		}
 
-		canAtt := dbHelper.CANATTEND_YES
-		if people >= int(dbHelper.CANATTEND_PHOTOGRAPHER) {
-			canAtt = dbHelper.CANATTEND_PHOTOGRAPHER
-			people -= int(dbHelper.CANATTEND_PHOTOGRAPHER)
+		canAtt := dbInterface.CANATTEND_YES
+		if people >= int(dbInterface.CANATTEND_PHOTOGRAPHER) {
+			canAtt = dbInterface.CANATTEND_PHOTOGRAPHER
+			people -= int(dbInterface.CANATTEND_PHOTOGRAPHER)
 		}
-		if people >= int(dbHelper.CANATTEND_SUITING) {
-			canAtt = dbHelper.CANATTEND_SUITING
-			people -= int(dbHelper.CANATTEND_SUITING)
+		if people >= int(dbInterface.CANATTEND_SUITING) {
+			canAtt = dbInterface.CANATTEND_SUITING
+			people -= int(dbInterface.CANATTEND_SUITING)
 		}
 
 		reply = event.Attending(cb.From.ID, name, canAtt, people)
 
 	case "maybe":
-		reply = event.Attending(cb.From.ID, name, dbHelper.CANATTEND_MAYBE, 0)
+		reply = event.Attending(cb.From.ID, name, dbInterface.CANATTEND_MAYBE, 0)
 	case "cancel":
-		reply = event.Attending(cb.From.ID, name, dbHelper.CANATTEND_NO, 0)
+		reply = event.Attending(cb.From.ID, name, dbInterface.CANATTEND_NO, 0)
 	}
 
 	// Send the reply.
 	txt := ""
 	switch reply {
-	case dbHelper.ATTEND_ADDED:
+	case dbInterface.ATTEND_ADDED:
 		txt = loc.Sprintf("Alright, you've been marked as attending.")
-	case dbHelper.ATTEND_MAYBE:
+	case dbInterface.ATTEND_MAYBE:
 		txt = loc.Sprintf("Alright, you've been marked as maybe.")
-	case dbHelper.ATTEND_FULL:
+	case dbInterface.ATTEND_FULL:
 		txt = loc.Sprintf("Sorry, this event is currently full!")
-	case dbHelper.ATTEND_REMOVED:
+	case dbInterface.ATTEND_REMOVED:
 		txt = loc.Sprintf("Alright, you've been marked as unable to attend.")
-	case dbHelper.ATTEND_ACTIVE:
+	case dbInterface.ATTEND_ACTIVE:
 		txt = loc.Sprintf("Event is ready to be used!")
 	default:
 		txt = loc.Sprintf("A general error occurred.") // Can't use the CONST here because it crashes GOTEXT.
@@ -101,10 +103,10 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 }
 
 // Every time the event UI needs to be updated, do it in all the places.
-func updateEventUIAllPostings(tg *tgWrapper.Telegram, event *dbHelper.FurryPlans, skipPosting string) {
+func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent, skipPosting string) {
 
 	// Use the localizer from the event.
-	loc := localizer.FromLanguage(event.Language)
+	loc := localizer.FromLanguage(event.Language())
 
 	postings, err := event.Postings()
 	if err != nil {
@@ -112,7 +114,7 @@ func updateEventUIAllPostings(tg *tgWrapper.Telegram, event *dbHelper.FurryPlans
 	}
 
 	for i := range postings {
-		if postings[i].MessageID != skipPosting {
+		if postings[i] != skipPosting {
 			// We do this as a Gofunc so that they can all be updated at once.
 			go func(msgId string) {
 				// Update this one.
@@ -125,7 +127,7 @@ func updateEventUIAllPostings(tg *tgWrapper.Telegram, event *dbHelper.FurryPlans
 						event.DeletePosting(msgId)
 					}
 				}
-			}(postings[i].MessageID)
+			}(postings[i])
 		}
 	}
 
@@ -142,18 +144,18 @@ func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text 
 }
 
 // makeEventUI displays the main event UI.
-func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlans, loc *localizer.Localizer, inlineId string) error {
+func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) error {
 
-	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location)))
+	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
 
-	t := "<b>" + event.Name + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName + "\n"
-	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime.Time) + "\n"
-	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location + "</a>" + "\n"
-	if event.MaxAttendees > 0 {
-		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
+	t := "<b>" + event.Name() + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName() + "\n"
+	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime()) + "\n"
+	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location() + "</a>" + "\n"
+	if event.MaxAttendees() > 0 {
+		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees()) + "\n"
 	}
-	if event.Notes != "" {
-		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes + "\n"
+	if event.Notes() != "" {
+		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
 	}
 
 	// Get the list of people attending
@@ -169,8 +171,8 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 
 		for _, attend := range attending {
 
-			switch dbHelper.CanAttend(attend.CanAttend) {
-			case dbHelper.CANATTEND_YES: // Going / Spotting
+			switch dbInterface.CanAttend(attend.CanAttend) {
+			case dbInterface.CANATTEND_YES: // Going / Spotting
 
 				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
 				if attend.PlusMany > 0 {
@@ -179,7 +181,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 				tGoing = append(tGoing, txt)
 				cGoing += 1 + attend.PlusMany
 
-			case dbHelper.CANATTEND_SUITING:
+			case dbInterface.CANATTEND_SUITING:
 
 				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
 				if attend.PlusMany > 0 {
@@ -188,7 +190,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 				tSuiting = append(tSuiting, txt)
 				cSuiting += 1 + attend.PlusMany
 
-			case dbHelper.CANATTEND_PHOTOGRAPHER:
+			case dbInterface.CANATTEND_PHOTOGRAPHER:
 
 				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
 				if attend.PlusMany > 0 {
@@ -197,7 +199,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 				tPhoto = append(tPhoto, txt)
 				cPhoto += 1 + attend.PlusMany
 
-			case dbHelper.CANATTEND_MAYBE: // Maybe
+			case dbInterface.CANATTEND_MAYBE: // Maybe
 
 				txt := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
 				tMaybe = append(tMaybe, txt)
@@ -210,7 +212,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 	}
 
 	// Fursuit walks display different event messages
-	if event.Suitwalk == 1 {
+	if event.Suitwalk() {
 		if len(tSuiting) > 0 {
 			t += "\n" + "<b>" + loc.Sprintf("Suiting: %v", cSuiting) + "</b>\n"
 			t += strings.Join(tSuiting, "\n") + "\n"
@@ -262,44 +264,44 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event *dbHelper.FurryPlan
 }
 
 // eventEditButtons creates the buttons that help you edit an event.
-func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
+func eventUIButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
 
-	if event.Suitwalk == 1 {
+	if event.Suitwalk() {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
-		row = append(row, quickButton(loc.Sprintf("🐕‍🦺 I'm Suiting"), fmt.Sprintf("attending:%v:20", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("🐕‍🦺🐱 Suiting +1"), fmt.Sprintf("attending:%v:21", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("🐕‍🦺🐾 Suiting +2"), fmt.Sprintf("attending:%v:22", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🐕‍🦺 I'm Suiting"), fmt.Sprintf("attending:%v:20", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("🐕‍🦺🐱 Suiting +1"), fmt.Sprintf("attending:%v:21", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("🐕‍🦺🐾 Suiting +2"), fmt.Sprintf("attending:%v:22", event.ID())))
 		buttons = append(buttons, row)
 		row = make([]tgbotapi.InlineKeyboardButton, 0)
-		row = append(row, quickButton(loc.Sprintf("📷 Photographer"), fmt.Sprintf("attending:%v:30", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("📷🎥 Photo +1"), fmt.Sprintf("attending:%v:31", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("📷🎞 Photo +2"), fmt.Sprintf("attending:%v:32", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("📷 Photographer"), fmt.Sprintf("attending:%v:30", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("📷🎥 Photo +1"), fmt.Sprintf("attending:%v:31", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("📷🎞 Photo +2"), fmt.Sprintf("attending:%v:32", event.ID())))
 		buttons = append(buttons, row)
 		row = make([]tgbotapi.InlineKeyboardButton, 0)
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ Spotting"), fmt.Sprintf("attending:%v:0", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Spotting +1"), fmt.Sprintf("attending:%v:1", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Spotting +2"), fmt.Sprintf("attending:%v:2", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ Spotting"), fmt.Sprintf("attending:%v:0", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Spotting +1"), fmt.Sprintf("attending:%v:1", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Spotting +2"), fmt.Sprintf("attending:%v:2", event.ID())))
 		buttons = append(buttons, row)
 	} else {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ I'm going!"), fmt.Sprintf("attending:%v:0", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Me +1"), fmt.Sprintf("attending:%v:1", event.EventID)))
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Me +2"), fmt.Sprintf("attending:%v:2", event.EventID)))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ I'm going!"), fmt.Sprintf("attending:%v:0", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
+		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Me +2"), fmt.Sprintf("attending:%v:2", event.ID())))
 		buttons = append(buttons, row)
 	}
 
 	row := make([]tgbotapi.InlineKeyboardButton, 0)
-	if event.DisableMaybe == 0 {
-		row = append(row, quickButton(loc.Sprintf("🤔️ Maybe"), fmt.Sprintf("maybe:%v", event.EventID)))
+	if !event.DisableMaybe() {
+		row = append(row, quickButton(loc.Sprintf("🤔️ Maybe"), fmt.Sprintf("maybe:%v", event.ID())))
 	}
-	row = append(row, quickButton(loc.Sprintf("❌️ I can't make it"), fmt.Sprintf("cancel:%v", event.EventID)))
+	row = append(row, quickButton(loc.Sprintf("❌️ I can't make it"), fmt.Sprintf("cancel:%v", event.ID())))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	// TODO: This URL needs to be configurable
-	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", helpers.CalenFeedMD5(saltValue, int64(event.EventID)))
+	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", helpers.CalenFeedMD5(saltValue, int64(event.ID())))
 	row = append(row, tgbotapi.InlineKeyboardButton{
 		Text: loc.Sprintf("📆 Add to Calendar"),
 		URL:  &addUrl,
@@ -307,9 +309,9 @@ func eventUIButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbota
 
 	buttons = append(buttons, row)
 
-	if event.AllowShare == 1 {
+	if event.SharingAllowed() {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
-		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, helpers.CalenFeedMD5(saltValue, int64(event.EventID))) // Example: POST:1234
+		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, helpers.CalenFeedMD5(saltValue, int64(event.ID()))) // Example: POST:1234
 		row = append(row, tgbotapi.InlineKeyboardButton{
 			Text:              loc.Sprintf("📩 Share to another chat..."),
 			SwitchInlineQuery: &shareButton,

@@ -2,7 +2,7 @@ package tgPlansBot
 
 import (
 	"fmt"
-	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strconv"
@@ -240,12 +240,12 @@ func iifint(condition bool, trueText int, falseText int) string {
 }
 
 // eventEditButtons creates the buttons that help you edit an event.
-func eventEditButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
+func eventEditButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
 	row := make([]tgbotapi.InlineKeyboardButton, 0)
 
-	postButton := fmt.Sprintf("%v%v", POST_PREFIX, event.EventID) // Example: POST:1234
+	postButton := fmt.Sprintf("%v%v", POST_PREFIX, event.ID()) // Example: POST:1234
 	row = append(row, tgbotapi.InlineKeyboardButton{
 		Text:              loc.Sprintf("Share these plans in a chat ✅🔜"),
 		SwitchInlineQuery: &postButton,
@@ -253,26 +253,26 @@ func eventEditButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbo
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
-	row = append(row, quickButton(loc.Sprintf("🏆 Edit Name"), fmt.Sprintf("edit:%v:name", event.EventID)))
-	row = append(row, quickButton(loc.Sprintf("📆 Edit Date"), fmt.Sprintf("edit:%v:date", event.EventID)))
+	row = append(row, quickButton(loc.Sprintf("🏆 Edit Name"), fmt.Sprintf("edit:%v:name", event.ID())))
+	row = append(row, quickButton(loc.Sprintf("📆 Edit Date"), fmt.Sprintf("edit:%v:date", event.ID())))
 	buttons = append(buttons, row)
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
-	row = append(row, quickButton(loc.Sprintf("⏰ Edit Time"), fmt.Sprintf("edit:%v:time", event.EventID)))
-	row = append(row, quickButton(loc.Sprintf("📍 Edit Location"), fmt.Sprintf("edit:%v:location", event.EventID)))
+	row = append(row, quickButton(loc.Sprintf("⏰ Edit Time"), fmt.Sprintf("edit:%v:time", event.ID())))
+	row = append(row, quickButton(loc.Sprintf("📍 Edit Location"), fmt.Sprintf("edit:%v:location", event.ID())))
 	buttons = append(buttons, row)
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
-	row = append(row, quickButton(loc.Sprintf("🕴 Edit Hosted By"), fmt.Sprintf("edit:%v:hostedby", event.EventID)))
-	row = append(row, quickButton(loc.Sprintf("📝 Add Notes"), fmt.Sprintf("edit:%v:notes", event.EventID)))
-	buttons = append(buttons, row)
-
-	row = make([]tgbotapi.InlineKeyboardButton, 0)
-	row = append(row, quickButton(loc.Sprintf("👫 Set Max Attendees"), fmt.Sprintf("edit:%v:maxattend", event.EventID)))
-	row = append(row, quickButton(loc.Sprintf("💔 Allow Maybe: %v", iif(event.DisableMaybe == 1, loc.Sprintf("No"), loc.Sprintf("Yes"))), fmt.Sprintf("edit:%v:setmaybe", event.EventID)))
+	row = append(row, quickButton(loc.Sprintf("🕴 Edit Hosted By"), fmt.Sprintf("edit:%v:hostedby", event.ID())))
+	row = append(row, quickButton(loc.Sprintf("📝 Add Notes"), fmt.Sprintf("edit:%v:notes", event.ID())))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
-	row = append(row, quickButton(loc.Sprintf("📩 Allow Sharing: %v", iif(event.AllowShare == 1, loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:sharing", event.EventID)))
-	row = append(row, quickButton(loc.Sprintf("⚙ Advanced Options..."), fmt.Sprintf("edit:%v:advanced", event.EventID)))
+	row = append(row, quickButton(loc.Sprintf("👫 Set Max Attendees"), fmt.Sprintf("edit:%v:maxattend", event.ID())))
+	row = append(row, quickButton(loc.Sprintf("💔 Allow Maybe: %v", iif(event.DisableMaybe(), loc.Sprintf("No"), loc.Sprintf("Yes"))), fmt.Sprintf("edit:%v:setmaybe", event.ID())))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 0)
+	row = append(row, quickButton(loc.Sprintf("📩 Allow Sharing: %v", iif(event.SharingAllowed(), loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:sharing", event.ID())))
+	row = append(row, quickButton(loc.Sprintf("⚙ Advanced Options..."), fmt.Sprintf("edit:%v:advanced", event.ID())))
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{
@@ -281,24 +281,24 @@ func eventEditButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbo
 }
 
 // eventAdvancedButtons creates the buttons with extra options
-func eventAdvancedButtons(event *dbHelper.FurryPlans, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
+func eventAdvancedButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
 	row := make([]tgbotapi.InlineKeyboardButton, 1)
-	row[0] = quickButton(loc.Sprintf("⚙ ADVANCED OPTIONS ⚙"), fmt.Sprintf("edit:%v:back", event.EventID))
+	row[0] = quickButton(loc.Sprintf("⚙ ADVANCED OPTIONS ⚙"), fmt.Sprintf("edit:%v:back", event.ID()))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
-	row[0] = quickButton(loc.Sprintf("🐕 Suitwalk: %v", iif(event.Suitwalk == 1, loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:suitwalk", event.EventID))
+	row[0] = quickButton(loc.Sprintf("🐕 Suitwalk: %v", iif(event.Suitwalk(), loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:suitwalk", event.ID()))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 2)
-	row[0] = quickButton(loc.Sprintf("🔠 Language"), fmt.Sprintf("edit:%v:language", event.EventID))
-	row[1] = quickButton(loc.Sprintf("⌚ Time Zone"), fmt.Sprintf("edit:%v:timezone", event.EventID))
+	row[0] = quickButton(loc.Sprintf("🔠 Language"), fmt.Sprintf("edit:%v:language", event.ID()))
+	row[1] = quickButton(loc.Sprintf("⌚ Time Zone"), fmt.Sprintf("edit:%v:timezone", event.ID()))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
-	row[0] = quickButton(loc.Sprintf("🔙 Back"), fmt.Sprintf("edit:%v:back", event.EventID))
+	row[0] = quickButton(loc.Sprintf("🔙 Back"), fmt.Sprintf("edit:%v:back", event.ID()))
 	buttons = append(buttons, row)
 
 	return tgbotapi.InlineKeyboardMarkup{

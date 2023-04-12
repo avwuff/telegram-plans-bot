@@ -1,9 +1,6 @@
 package tgPlansBot
 
 import (
-	"database/sql"
-	"fmt"
-	"furryplansbot.avbrand.com/dbHelper"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -176,7 +173,14 @@ func create_SetLocation(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, m
 	}
 
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	eventDetails(tg, usrInfo, msg.Chat.ID, eventId, usrInfo.Locale.Sprintf("Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n"), 0, false)
+
+	// Load the details about the event from the database.
+	event, err := db.GetEvent(eventId, msg.Chat.ID)
+	if err != nil {
+		quickReply(tg, msg, usrInfo.Locale.Sprintf("Event not found"))
+		return
+	}
+	eventDetails(tg, usrInfo, msg.Chat.ID, event, usrInfo.Locale.Sprintf("Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n"), 0, false)
 }
 
 func getOwnerName(chat *tgbotapi.Chat) string {
@@ -188,15 +192,5 @@ func getOwnerName(chat *tgbotapi.Chat) string {
 
 func createNewEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, ownerName string, name string, date time.Time, loc string) (uint, error) {
 	// Add this event to the database.
-	event := dbHelper.FurryPlans{
-		OwnerID:   fmt.Sprintf("%v", chatId),
-		Name:      name,
-		DateTime:  sql.NullTime{Time: date, Valid: true},
-		TimeZone:  date.Location().String(),
-		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
-		OwnerName: ownerName,
-		Location:  loc,
-		Language:  usrInfo.Prefs.Language, // By default, events pick up the language of their creators
-	}
-	return dbHelper.CreateEvent(&event)
+	return db.CreateEvent(chatId, name, date, date.Location().String(), ownerName, loc, usrInfo.Prefs.Language)
 }

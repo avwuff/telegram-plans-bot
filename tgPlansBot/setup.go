@@ -2,7 +2,6 @@ package tgPlansBot
 
 import (
 	"fmt"
-	"furryplansbot.avbrand.com/dbHelper"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
@@ -46,7 +45,7 @@ func setup_setLanguage(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, ms
 
 	// Set the language.
 	usrInfo.Prefs.Language = lang
-	dbHelper.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
+	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
 
 	// Replace the localizer since the language has been changed
 	usrInfo.Locale = localizer.FromLanguage(lang)
@@ -94,7 +93,7 @@ func setup_setTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, ms
 	}
 	// Set the language.
 	usrInfo.Prefs.TimeZone = tz
-	dbHelper.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "time_zone")
+	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "time_zone")
 
 	// Go on to the next part.
 	setup_askPolicy(tg, usrInfo, msg)
@@ -124,7 +123,7 @@ func setup_setPolicy(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg 
 	}
 
 	usrInfo.Prefs.SetupComplete = true
-	dbHelper.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "setup_complete")
+	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "setup_complete")
 
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 

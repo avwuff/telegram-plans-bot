@@ -2,7 +2,7 @@ package tgPlansBot
 
 import (
 	"fmt"
-	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
@@ -42,48 +42,37 @@ func initEventCommands(cmds *tgCommands.CommandList) {
 
 // eventDetails displays the details about the event to the user.
 // This lets them edit properties of the event, or share it out.
-func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, eventId uint, topMsg string, editInPlace int, showAdvancedButtons bool) {
+func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, event dbInterface.DBEvent, topMsg string, editInPlace int, showAdvancedButtons bool) {
 
-	// Load the details about the event from the database.
-	event, locOverride, err := dbHelper.GetEvent(eventId, chatId)
-	if err != nil {
-		mObj := tgbotapi.NewMessage(chatId, usrInfo.Locale.Sprintf("Event not found"))
-		_, _ = tg.Send(mObj)
-		return
-	}
-
-	// Override the locale if the event specifies a different one
-	if locOverride != nil {
-		usrInfo.Locale = locOverride
-	}
+	loc := localizer.FromLanguage(event.Language())
 
 	// Start with an optional message at the top.
 	t := topMsg
 
-	t += "<b>" + usrInfo.Locale.Sprintf("Name:") + "</b> " + event.Name + "\n"
-	t += "<b>" + usrInfo.Locale.Sprintf("Date:") + "</b> " + usrInfo.Locale.FormatDateForLocale(event.DateTime.Time) + "\n"
-	t += "<b>" + usrInfo.Locale.Sprintf("Location:") + "</b> " + event.Location + "\n"
-	t += "<b>" + usrInfo.Locale.Sprintf("Hosted By:") + "</b> " + event.OwnerName + "\n"
-	if event.Suitwalk == 1 {
-		t += "<b>" + usrInfo.Locale.Sprintf("Suitwalk:") + "</b> " + usrInfo.Locale.Sprintf("Yes") + "\n"
+	t += "<b>" + loc.Sprintf("Name:") + "</b> " + event.Name() + "\n"
+	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime()) + "\n"
+	t += "<b>" + loc.Sprintf("Location:") + "</b> " + event.Location() + "\n"
+	t += "<b>" + loc.Sprintf("Hosted By:") + "</b> " + event.OwnerName() + "\n"
+	if event.Suitwalk() {
+		t += "<b>" + loc.Sprintf("Suitwalk:") + "</b> " + loc.Sprintf("Yes") + "\n"
 	}
-	if event.MaxAttendees > 0 {
-		t += "<b>" + usrInfo.Locale.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees) + "\n"
+	if event.MaxAttendees() > 0 {
+		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees()) + "\n"
 	}
-	if event.Language != "" {
-		t += "<b>" + usrInfo.Locale.Sprintf("Language:") + "</b> " + fmt.Sprintf("%v", event.Language) + "\n"
+	if event.Language() != "" {
+		t += "<b>" + loc.Sprintf("Language:") + "</b> " + fmt.Sprintf("%v", event.Language()) + "\n"
 	}
-	if event.Notes != "" {
-		t += "<b>" + usrInfo.Locale.Sprintf("Notes:") + "</b>\n" + event.Notes + "\n"
+	if event.Notes() != "" {
+		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
 	}
 
 	var mObj tgbotapi.Chattable
 
 	var buttons tgbotapi.InlineKeyboardMarkup
 	if showAdvancedButtons {
-		buttons = eventAdvancedButtons(event, usrInfo.Locale)
+		buttons = eventAdvancedButtons(event, loc)
 	} else {
-		buttons = eventEditButtons(event, usrInfo.Locale)
+		buttons = eventEditButtons(event, loc)
 	}
 	if editInPlace != 0 {
 		mObj2 := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
@@ -99,7 +88,7 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 		mObj = mObj2
 	}
 
-	_, err = tg.Send(mObj)
+	_, err := tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
@@ -116,7 +105,7 @@ func listEventsOld(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *t
 }
 
 func listEventsReal(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, includeOld bool) {
-	events, err := dbHelper.GetEvents(msg.Chat.ID, includeOld)
+	events, err := db.GetEvents(msg.Chat.ID, includeOld)
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("Error listing events: %v", err))
 		return
@@ -124,7 +113,7 @@ func listEventsReal(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 
 	t := ""
 	for _, event := range events {
-		t += fmt.Sprintf("/edit_%v - %v\n", event.EventID, event.Name)
+		t += fmt.Sprintf("/edit_%v - %v\n", event.ID(), event.Name())
 	}
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf("Select an event to edit:\n%v", t))
 	mObj.ParseMode = tgWrapper.ParseModeHtml
@@ -142,6 +131,13 @@ func selectEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgb
 		return
 	}
 
+	// Load the details about the event from the database.
+	event, err := db.GetEvent(uint(eventId), msg.Chat.ID)
+	if err != nil {
+		quickReply(tg, msg, usrInfo.Locale.Sprintf("Event not found"))
+		return
+	}
+
 	// Display the event information now.
-	eventDetails(tg, usrInfo, msg.Chat.ID, uint(eventId), "", 0, false)
+	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
 }

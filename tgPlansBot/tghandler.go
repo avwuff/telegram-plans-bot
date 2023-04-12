@@ -3,6 +3,7 @@ package tgPlansBot
 import (
 	"context"
 	"fmt"
+	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/tgWrapper"
@@ -15,8 +16,12 @@ var cmds *tgCommands.CommandList
 
 var saltValue string
 
-func StartTG(ctx context.Context, salt string) {
+// my database connection
+var db dbInterface.DBFeatures
+
+func StartTG(ctx context.Context, salt string, dbMain dbInterface.DBFeatures) {
 	saltValue = salt
+	db = dbMain
 
 	// Create the tgWrapper object
 	tg := initTg()

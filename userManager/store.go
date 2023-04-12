@@ -1,7 +1,7 @@
 package userManager
 
 import (
-	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	"time"
 )
@@ -20,18 +20,23 @@ type UserEphemeral struct {
 
 type UserInfo struct {
 	Eph      *UserEphemeral
-	Prefs    dbHelper.UserPrefs
+	Prefs    dbInterface.Prefs
 	Locale   *localizer.Localizer
 	TimeZone *time.Location
 }
 
 var userEph = make(map[int64]*UserEphemeral)
+var db dbInterface.DBFeatures
+
+func Init(useDb dbInterface.DBFeatures) {
+	db = useDb
+}
 
 // Get will either retrieve or create a user data object for the specified user.
 func Get(userid int64) *UserInfo {
 
 	usrData := &UserInfo{
-		Prefs: dbHelper.GetPrefs(userid),
+		Prefs: db.GetPrefs(userid),
 	}
 	usrData.Locale = localizer.FromLanguage(usrData.Prefs.Language)
 	usrData.TimeZone = localizer.FromTimeZone(usrData.Prefs.TimeZone)

@@ -2,7 +2,7 @@ package webserver
 
 import (
 	"fmt"
-	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	ics "github.com/arran4/golang-ical"
 	"github.com/gorilla/mux"
@@ -14,13 +14,16 @@ import (
 )
 
 var saltValue string
+var db dbInterface.DBFeatures
 
 const layoutIsoFull = "2006-01-02 15:04:05"
 
 // StartServer provides a basic web server for handling 'add to calendar'
 // and ICS feeds
-func StartServer(salt string) {
+
+func StartServer(salt string, useDb dbInterface.DBFeatures) {
 	saltValue = salt
+	db = useDb
 
 	r := mux.NewRouter()
 
@@ -52,7 +55,7 @@ func errorMessage(w http.ResponseWriter, msg string) {
 func addToCalendarHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	// Find this event.
-	event, loc, err := dbHelper.GetEventByHash(vars["key"], saltValue)
+	event, loc, err := db.GetEventByHash(vars["key"], saltValue, false)
 	if err != nil {
 		errorMessage(w, "Event not found")
 		return
@@ -68,14 +71,14 @@ func addToCalendarHandler(w http.ResponseWriter, r *http.Request) {
 You can add this feed to Google Calendar or other calendars, and events will appear automatically! 
 To get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.`))
 
-	tmpl = strings.ReplaceAll(tmpl, "%INSTRUCTION%", loc.Sprintf("Add '%v' to your Calendar", event.Name))
-	tmpl = strings.ReplaceAll(tmpl, "%DATESTART%", event.DateTime.Time.Format(layoutIsoFull))
-	tmpl = strings.ReplaceAll(tmpl, "%DATEEND%", event.DateTime.Time.Add(time.Hour).Format(layoutIsoFull)) // Just make it one hour long always
-	tmpl = strings.ReplaceAll(tmpl, "%TIMEZONE%", event.TimeZone)
-	tmpl = strings.ReplaceAll(tmpl, "%EVENTNAME%", event.Name)
-	tmpl = strings.ReplaceAll(tmpl, "%NOTES%", event.Notes)
-	tmpl = strings.ReplaceAll(tmpl, "%HOST%", event.OwnerName)
-	tmpl = strings.ReplaceAll(tmpl, "%LOCATION%", event.Location)
+	tmpl = strings.ReplaceAll(tmpl, "%INSTRUCTION%", loc.Sprintf("Add '%v' to your Calendar", event.Name()))
+	tmpl = strings.ReplaceAll(tmpl, "%DATESTART%", event.DateTime().Format(layoutIsoFull))
+	tmpl = strings.ReplaceAll(tmpl, "%DATEEND%", event.DateTime().Add(time.Hour).Format(layoutIsoFull)) // Just make it one hour long always
+	tmpl = strings.ReplaceAll(tmpl, "%TIMEZONE%", event.TimeZone())
+	tmpl = strings.ReplaceAll(tmpl, "%EVENTNAME%", event.Name())
+	tmpl = strings.ReplaceAll(tmpl, "%NOTES%", event.Notes())
+	tmpl = strings.ReplaceAll(tmpl, "%HOST%", event.OwnerName())
+	tmpl = strings.ReplaceAll(tmpl, "%LOCATION%", event.Location())
 
 	w.Write([]byte(tmpl))
 }
@@ -97,23 +100,23 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get the list of events this owner has decided to go to.
-	events, err := dbHelper.CalendarFeed(int64(owner))
+	events, err := db.CalendarFeed(int64(owner))
 
 	cal := ics.NewCalendar()
 	cal.SetMethod(ics.MethodRequest)
 	cal.SetName("Furry Plans Attending Events")
 	cal.SetDescription("Furry Plans Calendar")
 	for _, ev := range events {
-		event := cal.AddEvent(fmt.Sprintf("furryplans%v-plans@telegram.com", ev.EventID))
+		event := cal.AddEvent(fmt.Sprintf("furryplans%v-plans@telegram.com", ev.ID()))
 		event.SetCreatedTime(time.Now())
 		event.SetDtStampTime(time.Now())
 		event.SetModifiedAt(time.Now())
-		event.SetStartAt(ev.DateTime.Time)
-		event.SetEndAt(ev.DateTime.Time.Add(time.Hour))
-		event.SetSummary(helpers.StripHtmlRegex(ev.Name))
-		event.SetLocation(helpers.StripHtmlRegex(ev.Location))
-		event.SetDescription(helpers.StripHtmlRegex(ev.Notes))
-		event.SetOrganizer(helpers.StripHtmlRegex(ev.OwnerName))
+		event.SetStartAt(ev.DateTime())
+		event.SetEndAt(ev.DateTime().Add(time.Hour))
+		event.SetSummary(helpers.StripHtmlRegex(ev.Name()))
+		event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
+		event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))
+		event.SetOrganizer(helpers.StripHtmlRegex(ev.OwnerName()))
 	}
 	w.Header().Add("Content-Type", "text/calendar")
 	w.Write([]byte(cal.Serialize()))

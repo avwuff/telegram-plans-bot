@@ -39,14 +39,14 @@ func InitLang() {
 			printer:    message.NewPrinter(language.MustParse("de-DE")),
 		},
 		"fr-FR": { // France (French)
-			name:       "Francais (France)",
+			name:       "Française (France)",
 			iso639code: "fr",
 			dateFormat: euDateFormat,
 			timeFormat: euTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("fr-FR")),
 		},
 		"fr-CA": { // Canada (French)
-			name:       "Francais (Quebec)",
+			name:       "Française (Quebec)",
 			iso639code: "fr",
 			dateFormat: euDateFormat,
 			timeFormat: euTimeFormat,

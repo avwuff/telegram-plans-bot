@@ -64,9 +64,9 @@ func setup_askTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, ms
 	tzs := localizer.GetTimeZoneChoicesList()
 	// Build the choices.
 	var keyboard [][]tgbotapi.KeyboardButton
-	for tz, tzl := range tzs {
+	for _, tzl := range tzs {
 		keyboard = append(keyboard, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton(fmt.Sprintf("%v: %v", tz, time.Now().In(tzMap[tzl.Key]).Format("15:04"))),
+			tgbotapi.NewKeyboardButton(fmt.Sprintf("%v: %v", tzl.DisplayText, time.Now().In(tzMap[tzl.Key]).Format("15:04"))),
 		))
 	}
 

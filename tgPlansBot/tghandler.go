@@ -39,6 +39,8 @@ func initCommands() {
 	cmds.Add(tgCommands.Command{Command: "/help", Handler: helpHandler, HelpText: loc.Sprintf("Display the help message")})
 	cmds.Add(tgCommands.Command{Command: "/feed", Handler: calendarFeed, HelpText: loc.Sprintf("Get a custom calendar feed")})
 	cmds.Add(tgCommands.Command{Command: "/language", Handler: languageHandler, HelpText: loc.Sprintf("Change the language")})
+	cmds.Add(tgCommands.Command{Command: "/setup", Handler: setupHandler, HelpText: loc.Sprintf("Start the Setup process")})
+	cmds.Add(tgCommands.Command{Command: "/about", Handler: aboutHandler, HelpText: loc.Sprintf("Learn more about the bot")})
 	cmds.SetUnknown(unknownHandler)
 
 	// These handlers respond to any message, as long as we are in the right mode.
@@ -90,6 +92,11 @@ func startHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	quickReply(tg, msg, usrInfo.Locale.Sprintf("Let's create some new plans.  First, send me the name of the event."))
 }
 
+// User wants to start the setup process again
+func setupHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	startSetup(tg, usrInfo, msg)
+}
+
 func helpHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// Build the help message.
 	base := cmds.BaseCommandList()
@@ -97,6 +104,19 @@ func helpHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgb
 	for _, cmd := range base {
 		txt += fmt.Sprintf("<b>%v</b> - %v\n", cmd.Command, usrInfo.Locale.Sprintf(cmd.HelpText))
 	}
+	quickReply(tg, msg, txt)
+}
+
+func aboutHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	// Build the help message.
+	txt := usrInfo.Locale.Sprintf(`The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)
+
+Translations provided by:`) + usrInfo.Locale.Sprintf(` 
+<b>Deutsch</b>: Banane9
+<b>Française Canadian</b>: Boof, Snarl
+<b>Française</b>: Achorawl
+`) + usrInfo.Locale.Sprintf(`
+This project is open source! Learn more at: github.com/avwuff/furryplansbot`)
 	quickReply(tg, msg, txt)
 }
 

@@ -60,12 +60,13 @@ func setup_askTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, ms
 	usrInfo.SetMode(userManager.MODE_SETUP_TIMEZONE)
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf("In which time zone do you live?"))
 
-	tzs := localizer.GetTimeZoneChoicesMap()
+	tzMap := localizer.GetTimeZoneChoicesMap()
+	tzs := localizer.GetTimeZoneChoicesList()
 	// Build the choices.
 	var keyboard [][]tgbotapi.KeyboardButton
 	for tz, tzl := range tzs {
 		keyboard = append(keyboard, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton(fmt.Sprintf("%v: %v", tz, time.Now().In(tzl).Format("15:04"))),
+			tgbotapi.NewKeyboardButton(fmt.Sprintf("%v: %v", tz, time.Now().In(tzMap[tzl.Key]).Format("15:04"))),
 		))
 	}
 

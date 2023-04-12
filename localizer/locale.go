@@ -2,9 +2,11 @@ package localizer
 
 import (
 	"errors"
+	"furryplansbot.avbrand.com/helpers"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
+	"sort"
 	"strings"
 	"time"
 )
@@ -65,9 +67,6 @@ func InitLang() {
 		"America/Toronto",
 		"America/Chicago",
 		"America/Los_Angeles",
-		"Europe/London",
-		"Europe/Berlin",
-		"Europe/Moscow",
 		"Canada/Atlantic",
 		"Canada/Central",
 		"Canada/Eastern",
@@ -76,6 +75,9 @@ func InitLang() {
 		"Canada/Pacific",
 		"Canada/Saskatchewan",
 		"Canada/Yukon",
+		"Europe/London",
+		"Europe/Berlin",
+		"Europe/Moscow",
 		"Australia/Melbourne",
 	}
 
@@ -120,6 +122,7 @@ func FromLanguageName(name string) (string, error) {
 
 func GetLanguageChoices() tgbotapi.ReplyKeyboardMarkup {
 	var keyboard [][]tgbotapi.KeyboardButton
+
 	for _, loc := range locales {
 		keyboard = append(keyboard, tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton(loc.name),
@@ -132,11 +135,19 @@ func GetLanguageChoices() tgbotapi.ReplyKeyboardMarkup {
 	}
 }
 
-func GetLanguageChoicesMap() map[string]string {
-	out := make(map[string]string)
+func GetLanguageChoicesList() []helpers.Tuple {
+	var out []helpers.Tuple
 	for key, loc := range locales {
-		out[key] = loc.name
+		out = append(out, helpers.Tuple{
+			DisplayText: loc.name,
+			Key:         key,
+		})
 	}
+
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].DisplayText < out[j].DisplayText
+	})
+
 	return out
 }
 
@@ -156,11 +167,18 @@ func GetTimeZoneChoicesMap() map[string]*time.Location {
 	return out
 }
 
-func GetTimeZoneChoicesMap2() map[string]string {
-	out := make(map[string]string)
-	for key, loc := range timezones {
-		out[key] = loc.String()
+func GetTimeZoneChoicesList() []helpers.Tuple {
+	var out []helpers.Tuple
+	for key, tz := range timezones {
+		out = append(out, helpers.Tuple{
+			DisplayText: tz.String(),
+			Key:         key,
+		})
 	}
+	sort.Slice(out, func(i, j int) bool {
+		return out[i].DisplayText < out[j].DisplayText
+	})
+
 	return out
 }
 

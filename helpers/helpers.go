@@ -8,6 +8,12 @@ import (
 	"regexp"
 )
 
+// Tuple provides a simple 2-item type
+type Tuple struct {
+	DisplayText string
+	Key         string
+}
+
 // CalenFeedMD5 combines the ID and the sale to make a hash.
 // TODO: This should no longer use MD5.
 // Keeping this for compatibility.

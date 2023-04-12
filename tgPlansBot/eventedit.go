@@ -2,6 +2,7 @@ package tgPlansBot
 
 import (
 	"furryplansbot.avbrand.com/dbHelper"
+	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
@@ -80,9 +81,9 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 
 	// CHOICE
 	case "language":
-		editChoiceItem(tg, usrInfo, cb.From.ID, &event.Language, "Language", usrInfo.Locale.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesMap())
+		editChoiceItem(tg, usrInfo, cb.From.ID, &event.Language, "Language", usrInfo.Locale.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesList())
 	case "timezone":
-		editChoiceItem(tg, usrInfo, cb.From.ID, &event.TimeZone, "TimeZone", usrInfo.Locale.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesMap2())
+		editChoiceItem(tg, usrInfo, cb.From.ID, &event.TimeZone, "TimeZone", usrInfo.Locale.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesList())
 
 	// TOGGLES
 	case "sharing":
@@ -353,7 +354,7 @@ func toggleItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbot
 	updateEventUIAllPostings(tg, event, "")
 }
 
-func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem *string, columnName string, prompt string, choices map[string]string) {
+func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem *string, columnName string, prompt string, choices []helpers.Tuple) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTSTRING, EditItem)
 	usrInfo.SetData(EDIT_EVENTCHOICES, choices)
@@ -366,7 +367,7 @@ func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatI
 	var keyboard [][]tgbotapi.KeyboardButton
 	for _, choice := range choices {
 		keyboard = append(keyboard, tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton(choice),
+			tgbotapi.NewKeyboardButton(choice.DisplayText),
 		))
 	}
 
@@ -398,7 +399,7 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	}
 
 	// Get the original list of choices
-	choices, ok := usrInfo.GetData(EDIT_EVENTCHOICES).(map[string]string)
+	choices, ok := usrInfo.GetData(EDIT_EVENTCHOICES).([]helpers.Tuple)
 	if !ok {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
@@ -411,9 +412,9 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 
 	// The text has to be one of the choices.
 	found := ""
-	for key, choice := range choices {
-		if choice == text {
-			found = key
+	for _, choice := range choices {
+		if choice.DisplayText == text {
+			found = choice.Key
 			break
 		}
 	}

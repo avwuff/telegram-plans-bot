@@ -651,12 +651,12 @@
         {
             "id": "🐕‍🦺🐱 Suiting +1",
             "message": "🐕‍🦺🐱 Suiting +1",
-            "translation": "🐕‍🦺🐱 Suiter +1"
+            "translation": "🐕‍🦺 +1"
         },
         {
             "id": "🐕‍🦺🐾 Suiting +2",
             "message": "🐕‍🦺🐾 Suiting +2",
-            "translation": "🐕‍🦺🐾 Suiter +2"
+            "translation": "🐕‍🦺 +2"
         },
         {
             "id": "📷 Photographer",
@@ -666,12 +666,12 @@
         {
             "id": "📷🎥 Photo +1",
             "message": "📷🎥 Photo +1",
-            "translation": "📷🎥 Fotograf +1"
+            "translation": "📷 +1"
         },
         {
             "id": "📷🎞 Photo +2",
             "message": "📷🎞 Photo +2",
-            "translation": "📷🎞 Fotograf +2"
+            "translation": "📷 +2"
         },
         {
             "id": "🙋‍♂️ Spotting",
@@ -681,12 +681,12 @@
         {
             "id": "🙋‍♂️🕺 Spotting +1",
             "message": "🙋‍♂️🕺 Spotting +1",
-            "translation": "🙋‍♂️🕺 Spotter +1"
+            "translation": "🙋‍♂️ +1"
         },
         {
             "id": "🙋‍♂️👭 Spotting +2",
             "message": "🙋‍♂️👭 Spotting +2",
-            "translation": "🙋‍♂️👭 Spotter +2"
+            "translation": "🙋‍♂️ +2"
         },
         {
             "id": "🙋‍♂️ I'm going!",
@@ -696,12 +696,12 @@
         {
             "id": "🙋‍♂️🕺 Me +1",
             "message": "🙋‍♂️🕺 Me +1",
-            "translation": "🙋‍♂️🕺 Ich +1"
+            "translation": "🙋‍♂️ Ich +1"
         },
         {
             "id": "🙋‍♂️👭 Me +2",
             "message": "🙋‍♂️👭 Me +2",
-            "translation": "🙋‍♂️👭 Ich +2"
+            "translation": "🙋‍♂️ Ich +2"
         },
         {
             "id": "🤔️ Maybe",

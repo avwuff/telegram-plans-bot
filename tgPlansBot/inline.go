@@ -6,7 +6,6 @@ import (
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgWrapper"
-	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strconv"
@@ -19,9 +18,6 @@ const POST_PREFIX = "POST:"
 // handleInline comes from the user typing @furryplansbot followed by a query
 // Generally this means we want to post the event in a chat.
 func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
-
-	// Note that the request may not be coming from a user that has ever used the bot.
-	usrInfo := userManager.Get(query.From.ID)
 
 	// See what it is they want us to post.
 	if query.Query != "" {
@@ -74,11 +70,14 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 		var results []interface{}
 		for _, event := range events {
 
+			// Use the locale of the event.
+			loc := localizer.FromLanguage(event.Language)
+
 			article := tgbotapi.NewInlineQueryResultArticle(
 				fmt.Sprintf("%v%v", POST_PREFIX, event.EventID),
-				fmt.Sprintf("%v - %v", helpers.StripHtmlRegex(event.Name), usrInfo.Locale.FormatDateForLocale(event.DateTime.Time)), // Note that this may be the wrong locale for this user. TODO pick up locale from event.
+				fmt.Sprintf("%v - %v", helpers.StripHtmlRegex(event.Name), loc.FormatDateForLocale(event.DateTime.Time)),
 				"")
-			article.InputMessageContent, article.ReplyMarkup = buildClickableStarter(event, usrInfo.Locale)
+			article.InputMessageContent, article.ReplyMarkup = buildClickableStarter(event, loc)
 			results = append(results, article)
 		}
 
@@ -108,7 +107,7 @@ func answerWithList(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery, results
 	inlineConf := tgbotapi.InlineConfig{
 		InlineQueryID: query.ID,
 		IsPersonal:    true,
-		CacheTime:     0,
+		CacheTime:     1,
 		Results:       results,
 	}
 

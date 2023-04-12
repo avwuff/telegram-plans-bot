@@ -111,11 +111,11 @@ func aboutHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// Build the help message.
 	txt := usrInfo.Locale.Sprintf(`The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)
 
-Translations provided by:`) + usrInfo.Locale.Sprintf(` 
+Translations provided by:`) + ` 
 <b>Deutsch</b>: Banane9
 <b>Française Canadian</b>: Boof, Snarl
 <b>Française</b>: Achorawl
-`) + usrInfo.Locale.Sprintf(`
+` + usrInfo.Locale.Sprintf(`
 This project is open source! Learn more at: github.com/avwuff/furryplansbot`)
 	quickReply(tg, msg, txt)
 }

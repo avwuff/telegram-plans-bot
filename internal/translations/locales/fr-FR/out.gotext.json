@@ -784,6 +784,16 @@
             "translation": ""
         },
         {
+            "id": "Start the Setup process",
+            "message": "Start the Setup process",
+            "translation": ""
+        },
+        {
+            "id": "Learn more about the bot",
+            "message": "Learn more about the bot",
+            "translation": ""
+        },
+        {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
             "translation": ""
@@ -794,9 +804,49 @@
             "translation": ""
         },
         {
+            "id": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "message": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "translation": ""
+        },
+        {
+            "id": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
+            "message": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
+            "translation": ""
+        },
+        {
             "id": "I don't understand that command. Send /help for help.",
             "message": "I don't understand that command. Send /help for help.",
             "translation": ""
+        },
+        {
+            "id": "Add to Calendar",
+            "message": "Add to Calendar",
+            "translation": ""
+        },
+        {
+            "id": "Did you know?",
+            "message": "Did you know?",
+            "translation": ""
+        },
+        {
+            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "translation": ""
+        },
+        {
+            "id": "Add '{Name}' to your Calendar",
+            "message": "Add '{Name}' to your Calendar",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name"
+                }
+            ]
         }
     ]
 }

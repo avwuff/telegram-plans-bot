@@ -41,9 +41,12 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
+	"\nThis project is open source! Learn more at: github.com/avwuff/furryplansbot": 121,
 	"A general error occurred.":              57,
 	"A list of all your events, old and new": 62,
 	"A list of your upcoming events":         61,
+	"Add '%v' to your Calendar":              126,
+	"Add to Calendar":                        123,
 	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n": 48,
 	"Alright, you've been marked as attending.":                                                              75,
 	"Alright, you've been marked as maybe.":                                                                  76,
@@ -67,6 +70,7 @@ var messageKeyToIndex = map[string]int{
 	"Date selected: %v":          41,
 	"Date:":                      65,
 	"December":                   11,
+	"Did you know?":              124,
 	"Display the help message":   113,
 	"Error listing events: %v":   72,
 	"Event is ready to be used!": 79,
@@ -76,15 +80,16 @@ var messageKeyToIndex = map[string]int{
 	"Get a custom calendar feed": 114,
 	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 40,
 	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    43,
-	"Here is a list of available commands:": 117,
+	"Here is a list of available commands:": 119,
 	"Hosted By:":                            67,
-	"I don't understand that command. Send /help for help.": 118,
+	"I don't understand that command. Send /help for help.": 122,
 	"In which time zone do you live?":                       107,
 	"January":                                               0,
 	"July":                                                  6,
 	"June":                                                  5,
 	"Language:":                                             70,
-	"Let's create some new plans.  First, send me the name of the event.": 116,
+	"Learn more about the bot":                              117,
+	"Let's create some new plans.  First, send me the name of the event.": 118,
 	"Location:":         66,
 	"March":             2,
 	"Max Attendees:":    69,
@@ -111,12 +116,15 @@ var messageKeyToIndex = map[string]int{
 	"Specify the name of the event.":                    49,
 	"Specify the name of the person hosting the event.": 50,
 	"Specify the time at which this event takes place:": 53,
-	"Spotting: %v": 83,
-	"Su":           12,
-	"Suiting: %v":  81,
-	"Suitwalk:":    68,
-	"Th":           16,
+	"Spotting: %v":            83,
+	"Start the Setup process": 116,
+	"Su":                      12,
+	"Suiting: %v":             81,
+	"Suitwalk:":               68,
+	"Th":                      16,
 	"Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.": 111,
+	"The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.": 125,
+	"The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:": 120,
 	"The language has been set to English.":             106,
 	"The value you provided is not one of the choices.": 59,
 	"Time selected: %v":                                 44,
@@ -162,7 +170,7 @@ var messageKeyToIndex = map[string]int{
 	"🤔️ Maybe":                    100,
 }
 
-var de_DEIndex = []uint32{ // 120 elements
+var de_DEIndex = []uint32{ // 128 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000007, 0x0000000f, 0x00000015,
 	0x0000001b, 0x0000001f, 0x00000024, 0x00000029,
@@ -196,10 +204,12 @@ var de_DEIndex = []uint32{ // 120 elements
 	0x00000da3, 0x00000dc6, 0x00000e04, 0x00000e2c,
 	0x00000e4a, 0x00000e78, 0x00000f38, 0x00000f9e,
 	0x0000102d, 0x0000104e, 0x00001061, 0x00001096,
-	0x000010aa, 0x000010f8, 0x00001126, 0x0000115f,
-} // Size: 504 bytes
+	0x000010aa, 0x000010c4, 0x000010e0, 0x0000112e,
+	0x0000115c, 0x000011cf, 0x0000122d, 0x00001266,
+	0x0000127f, 0x0000128c, 0x000013e4, 0x00001413,
+} // Size: 536 bytes
 
-const de_DEData string = "" + // Size: 4447 bytes
+const de_DEData string = "" + // Size: 5139 bytes
 	"\x02Januar\x02Februar\x02März\x02April\x02Mai\x02Juni\x02Juli\x02August" +
 	"\x02September\x02Oktober\x02November\x02Dezember\x02So\x02Mo\x02Di\x02Mi" +
 	"\x02Do\x02Fr\x02Sa\x02Weiter mit Datum: %[1]v\x02Weiter mit Uhrzeit: %[1" +
@@ -262,12 +272,21 @@ const de_DEData string = "" + // Size: 4447 bytes
 	", damit du den Furry-Veranstaltungsbot benutzen kannst! Sende /start um " +
 	"eine neue Veranstaltung zu erstellen.\x02Erstelle eine neue Veranstaltun" +
 	"g\x02Zeige die Hilfe an\x02Bekomme einen auf dich zugeschnittenen Kalend" +
-	"er-Feed\x02Ändere die Sprache\x02Lass uns eine neue Veranstaltung erstel" +
-	"len.  Schick mir als erstes den Namen.\x02Hier ist eine Liste der verfüg" +
-	"baren Befehle:\x02Den Befehl verstehe ich nicht. Benutze /help für Hilfe" +
-	"."
+	"er-Feed\x02Ändere die Sprache\x02Starten den Setup-Vorgang\x02Erfahren m" +
+	"ehr über den Bot\x02Lass uns eine neue Veranstaltung erstellen.  Schick " +
+	"mir als erstes den Namen.\x02Hier ist eine Liste der verfügbaren Befehle" +
+	":\x02Der Furry Plans-Bot wurde von 🐕\u200d🦺<b>Av</b> (www.avbrand.com) e" +
+	"rstellt.\x0a\x0aÜbersetzungen bereitgestellt von:\x04\x01\x0a\x00Y\x02Di" +
+	"eses Projekt ist Open Source! Erfahren Sie mehr unter: github.com/avwuff" +
+	"/furryplansbot\x02Den Befehl verstehe ich nicht. Benutze /help für Hilfe" +
+	".\x02Zum Kalender hinzufügen\x02Wussten Sie?\x02Der Furry Plans Bot biet" +
+	"et einen iCal-Feed aller Ereignisse, die Sie mit „Ja“ oder „Vielleicht“ " +
+	"markiert haben.\x0aSie können diesen Feed zu Google Kalender oder andere" +
+	"n Kalendern hinzufügen, und Ereignisse werden automatisch angezeigt!\x0a" +
+	"Um die Feed-URL zu erhalten, chatten Sie mit @furryplansbot und senden S" +
+	"ie den Befehl <b>/feed</b>.\x02Fügen Sie „%[1]v“ zu Ihrem Kalender hinzu"
 
-var en_USIndex = []uint32{ // 120 elements
+var en_USIndex = []uint32{ // 128 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000008, 0x00000011, 0x00000017,
 	0x0000001d, 0x00000021, 0x00000026, 0x0000002b,
@@ -301,10 +320,12 @@ var en_USIndex = []uint32{ // 120 elements
 	0x00000b46, 0x00000b68, 0x00000b97, 0x00000bbd,
 	0x00000bdd, 0x00000bfc, 0x00000cc2, 0x00000cf6,
 	0x00000d5d, 0x00000d77, 0x00000d90, 0x00000dab,
-	0x00000dbf, 0x00000e03, 0x00000e29, 0x00000e5f,
-} // Size: 504 bytes
+	0x00000dbf, 0x00000dd7, 0x00000df0, 0x00000e34,
+	0x00000e5a, 0x00000ebf, 0x00000f10, 0x00000f46,
+	0x00000f56, 0x00000f64, 0x0000107b, 0x00001098,
+} // Size: 536 bytes
 
-const en_USData string = "" + // Size: 3679 bytes
+const en_USData string = "" + // Size: 4248 bytes
 	"\x02January\x02February\x02March\x02April\x02May\x02June\x02July\x02Augu" +
 	"st\x02September\x02October\x02November\x02December\x02Su\x02Mo\x02Tu\x02" +
 	"We\x02Th\x02Fr\x02Sa\x02Continue with Date: %[1]v\x02Continue with Time:" +
@@ -358,11 +379,20 @@ const en_USData string = "" + // Size: 3679 bytes
 	"inish.\x02Thanks!  You're all set to start using the Furry Plans Bot!  T" +
 	"ype /start to create a new set of plans.\x02Create a new set of plans" +
 	"\x02Display the help message\x02Get a custom calendar feed\x02Change the" +
-	" language\x02Let's create some new plans.  First, send me the name of th" +
-	"e event.\x02Here is a list of available commands:\x02I don't understand " +
-	"that command. Send /help for help."
+	" language\x02Start the Setup process\x02Learn more about the bot\x02Let'" +
+	"s create some new plans.  First, send me the name of the event.\x02Here " +
+	"is a list of available commands:\x02The Furry Plans bot was created by 🐕" +
+	"\u200d🦺<b>Av</b> (www.avbrand.com)\x0a\x0aTranslations provided by:\x04" +
+	"\x01\x0a\x00L\x02This project is open source! Learn more at: github.com/" +
+	"avwuff/furryplansbot\x02I don't understand that command. Send /help for " +
+	"help.\x02Add to Calendar\x02Did you know?\x02The Furry Plans Bot provide" +
+	"s an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  " +
+	"\x0aYou can add this feed to Google Calendar or other calendars, and eve" +
+	"nts will appear automatically! \x0aTo get the feed URL, chat with @furry" +
+	"plansbot and send the command <b>/feed</b>.\x02Add '%[1]v' to your Calen" +
+	"dar"
 
-var fr_CAIndex = []uint32{ // 120 elements
+var fr_CAIndex = []uint32{ // 128 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000008, 0x00000011, 0x00000016,
 	0x0000001c, 0x00000020, 0x00000025, 0x0000002d,
@@ -396,10 +426,12 @@ var fr_CAIndex = []uint32{ // 120 elements
 	0x00000cfc, 0x00000d29, 0x00000d68, 0x00000d94,
 	0x00000db9, 0x00000de0, 0x00000eae, 0x00000efe,
 	0x00000f76, 0x00000f8d, 0x00000fa8, 0x00000fd4,
-	0x00000fe6, 0x00001032, 0x0000105a, 0x0000109a,
-} // Size: 504 bytes
+	0x00000fe6, 0x00000ffe, 0x00001018, 0x00001064,
+	0x0000108c, 0x000010f6, 0x0000114c, 0x0000118c,
+	0x000011a2, 0x000011af, 0x000012fd, 0x00001321,
+} // Size: 536 bytes
 
-const fr_CAData string = "" + // Size: 4250 bytes
+const fr_CAData string = "" + // Size: 4897 bytes
 	"\x02Janvier\x02Février\x02Mars\x02Avril\x02Mai\x02Juin\x02Juillet\x02Aoû" +
 	"t\x02Septembre\x02Octobre\x02Novembre\x02Décembre\x02Dim\x02Lun\x02Mar" +
 	"\x02Mer\x02Jeu\x02Ven\x02Sam\x02Continuer avec la date : %[1]v\x02Contin" +
@@ -458,12 +490,22 @@ const fr_CAData string = "" + // Size: 4250 bytes
 	" confidentialité pour pouvoir terminer\x02Merci! Vous pouvez commencé d'" +
 	"utiliser Le planificateur de plans furry! Écrire /start pour commencer u" +
 	"n nouveau plan.\x02Créer un nouveau plan\x02Afficher le message d'aide" +
-	"\x02Recevoir un flux de calendrier personalisé\x02Changer la langue\x02C" +
-	"ommençons un nouveau plan.  Premièrement écrire le nom de l'événement" +
-	"\x02Voici la liste des commandes disponible\x02Je ne comprend pas cette " +
-	"commande. Écrire /help pour de l'aide"
+	"\x02Recevoir un flux de calendrier personalisé\x02Changer la langue\x02S" +
+	"tart the Setup process\x02En savoir plus sur le Bot\x02Commençons un nou" +
+	"veau plan.  Premièrement écrire le nom de l'événement\x02Voici la liste " +
+	"des commandes disponible\x02Le robot Furry Plans a été créé par 🐕\u200d🦺" +
+	"<b>Av</b> (www.avbrand.com)\x0a\x0aTraductions fournies par:\x04\x01\x0a" +
+	"\x00Q\x02Ce projet est open source ! En savoir plus sur : github.com/avw" +
+	"uff/furryplansbot\x02Je ne comprend pas cette commande. Écrire /help pou" +
+	"r de l'aide\x02Ajouter au calendrier\x02Saviez-vous?\x02Le bot Furry Pla" +
+	"ns fournit un flux iCal de tous les événements que vous avez marqués com" +
+	"me \x22Oui\x22 ou \x22Peut-être\x22.\x0aVous pouvez ajouter ce flux à Go" +
+	"ogle\u00a0Agenda ou à d'autres agendas, et les événements apparaîtront a" +
+	"utomatiquement\u00a0!\x0aPour obtenir l'URL du flux, discutez avec @furr" +
+	"yplansbot et envoyez la commande <b>/feed</b>.\x02Ajouter '%[1]v' à votr" +
+	"e calendrier"
 
-var fr_FRIndex = []uint32{ // 120 elements
+var fr_FRIndex = []uint32{ // 128 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -498,8 +540,10 @@ var fr_FRIndex = []uint32{ // 120 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-} // Size: 504 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+} // Size: 536 bytes
 
 const fr_FRData string = ""
 
-// Total table size 14392 bytes (14KiB); checksum: 31BF2DBA
+// Total table size 16428 bytes (16KiB); checksum: F47B231

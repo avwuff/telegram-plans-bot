@@ -784,6 +784,16 @@
             "translation": "Changer la langue"
         },
         {
+            "id": "Start the Setup process",
+            "message": "Start the Setup process",
+            "translation": "Start the Setup process"
+        },
+        {
+            "id": "Learn more about the bot",
+            "message": "Learn more about the bot",
+            "translation": "En savoir plus sur le Bot"
+        },
+        {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
             "translation": "Commençons un nouveau plan.  Premièrement écrire le nom de l'événement"
@@ -794,9 +804,49 @@
             "translation": "Voici la liste des commandes disponible"
         },
         {
+            "id": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "message": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "translation": "Le robot Furry Plans a été créé par 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTraductions fournies par:"
+        },
+        {
+            "id": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
+            "message": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
+            "translation": "Ce projet est open source ! En savoir plus sur : github.com/avwuff/furryplansbot"
+        },
+        {
             "id": "I don't understand that command. Send /help for help.",
             "message": "I don't understand that command. Send /help for help.",
             "translation": "Je ne comprend pas cette commande. Écrire /help pour de l'aide"
+        },
+        {
+            "id": "Add to Calendar",
+            "message": "Add to Calendar",
+            "translation": "Ajouter au calendrier"
+        },
+        {
+            "id": "Did you know?",
+            "message": "Did you know?",
+            "translation": "Saviez-vous?"
+        },
+        {
+            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "translation": "Le bot Furry Plans fournit un flux iCal de tous les événements que vous avez marqués comme \"Oui\" ou \"Peut-être\".\nVous pouvez ajouter ce flux à Google Agenda ou à d'autres agendas, et les événements apparaîtront automatiquement !\nPour obtenir l'URL du flux, discutez avec @furryplansbot et envoyez la commande \u003cb\u003e/feed\u003c/b\u003e."
+        },
+        {
+            "id": "Add '{Name}' to your Calendar",
+            "message": "Add '{Name}' to your Calendar",
+            "translation": "Ajouter '{Name}' à votre calendrier",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name"
+                }
+            ]
         }
     ]
 }

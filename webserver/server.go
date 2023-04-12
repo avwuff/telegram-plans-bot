@@ -32,11 +32,13 @@ func StartServer(salt string) {
 	srv := &http.Server{
 		Handler: r,
 
-		Addr: "127.0.0.1:8000",
+		Addr: ":16300",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+
+	log.Println("Starting listener on", srv.Addr)
 
 	log.Fatal(srv.ListenAndServe())
 }
@@ -56,6 +58,8 @@ func addToCalendarHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// TODO: Use a file template instead of this
+	// TODO: Copy the JS file from addtocalendar.com
 	// Make the template page.
 	tmpl := ADDTOCALENDAR_PAGE
 	tmpl = strings.ReplaceAll(tmpl, "%TITLE%", loc.Sprintf("Add to Calendar"))
@@ -111,6 +115,6 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 		event.SetDescription(helpers.StripHtmlRegex(ev.Notes))
 		event.SetOrganizer(helpers.StripHtmlRegex(ev.OwnerName))
 	}
-	//w.Header().Add("Content-Type", "text/calendar")
+	w.Header().Add("Content-Type", "text/calendar")
 	w.Write([]byte(cal.Serialize()))
 }

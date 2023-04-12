@@ -24,7 +24,7 @@ const ADDTOCALENDAR_PAGE = `
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="stylesheet" href="../normalize.css">
   <link rel="stylesheet" href="../skeleton.css">
-  <link href="http://addtocalendar.com/atc/1.5/atc-style-blue.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="../atc-style-blue.css" type="text/css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

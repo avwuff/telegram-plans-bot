@@ -352,18 +352,18 @@
             "fuzzy": true
         },
         {
-            "id": "Date selected: {FormatDateForLocaleselDate}",
-            "message": "Date selected: {FormatDateForLocaleselDate}",
-            "translation": "Date selected: {FormatDateForLocaleselDate}",
+            "id": "Date selected: {FormatDateForLocaleeditDate}",
+            "message": "Date selected: {FormatDateForLocaleeditDate}",
+            "translation": "Date selected: {FormatDateForLocaleeditDate}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "FormatDateForLocaleselDate",
+                    "id": "FormatDateForLocaleeditDate",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "usrInfo.Locale.FormatDateForLocale(selDate)"
+                    "expr": "usrInfo.Locale.FormatDateForLocale(editDate)"
                 }
             ],
             "fuzzy": true
@@ -386,18 +386,18 @@
             "fuzzy": true
         },
         {
-            "id": "Time selected: {FormatTimeForLocaleselTime}",
-            "message": "Time selected: {FormatTimeForLocaleselTime}",
-            "translation": "Time selected: {FormatTimeForLocaleselTime}",
+            "id": "Time selected: {FormatTimeForLocaleeditTime}",
+            "message": "Time selected: {FormatTimeForLocaleeditTime}",
+            "translation": "Time selected: {FormatTimeForLocaleeditTime}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "FormatTimeForLocaleselTime",
+                    "id": "FormatTimeForLocaleeditTime",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "usrInfo.Locale.FormatTimeForLocale(selTime)"
+                    "expr": "usrInfo.Locale.FormatTimeForLocale(editTime)"
                 }
             ],
             "fuzzy": true
@@ -489,6 +489,13 @@
             "id": "Choose the display language for this event.",
             "message": "Choose the display language for this event.",
             "translation": "Choose the display language for this event.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Choose the time zone for this event.",
+            "message": "Choose the time zone for this event.",
+            "translation": "Choose the time zone for this event.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

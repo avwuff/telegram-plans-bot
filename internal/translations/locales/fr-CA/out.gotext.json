@@ -270,17 +270,17 @@
             "translation": ""
         },
         {
-            "id": "Date selected: {FormatDateForLocaleselDate}",
-            "message": "Date selected: {FormatDateForLocaleselDate}",
+            "id": "Date selected: {FormatDateForLocaleeditDate}",
+            "message": "Date selected: {FormatDateForLocaleeditDate}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatDateForLocaleselDate",
+                    "id": "FormatDateForLocaleeditDate",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "usrInfo.Locale.FormatDateForLocale(selDate)"
+                    "expr": "usrInfo.Locale.FormatDateForLocale(editDate)"
                 }
             ]
         },
@@ -298,17 +298,17 @@
             "translation": ""
         },
         {
-            "id": "Time selected: {FormatTimeForLocaleselTime}",
-            "message": "Time selected: {FormatTimeForLocaleselTime}",
+            "id": "Time selected: {FormatTimeForLocaleeditTime}",
+            "message": "Time selected: {FormatTimeForLocaleeditTime}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "FormatTimeForLocaleselTime",
+                    "id": "FormatTimeForLocaleeditTime",
                     "string": "%[1]v",
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "usrInfo.Locale.FormatTimeForLocale(selTime)"
+                    "expr": "usrInfo.Locale.FormatTimeForLocale(editTime)"
                 }
             ]
         },
@@ -378,6 +378,11 @@
         {
             "id": "Choose the display language for this event.",
             "message": "Choose the display language for this event.",
+            "translation": ""
+        },
+        {
+            "id": "Choose the time zone for this event.",
+            "message": "Choose the time zone for this event.",
             "translation": ""
         },
         {

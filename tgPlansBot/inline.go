@@ -52,7 +52,7 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 				return
 			}
 
-			event, _, err := dbHelper.GetEvent(uint(id), int64(query.From.ID))
+			event, _, err := dbHelper.GetEvent(uint(id), query.From.ID)
 			if err != nil {
 				answerWithList(tg, query, nil)
 				return
@@ -63,7 +63,7 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 		} else {
 			// Normal search by text
 			var err error
-			events, err = dbHelper.SearchEvents(int64(query.From.ID), query.Query)
+			events, err = dbHelper.SearchEvents(query.From.ID, query.Query)
 			if err != nil {
 				answerWithList(tg, query, nil)
 				return

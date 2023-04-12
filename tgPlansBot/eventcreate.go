@@ -46,23 +46,23 @@ func create_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	// We update the message as needed.
 
 	edit := tgbotapi.NewEditMessageText(int64(cb.From.ID), cb.Message.MessageID, CALEN_DATE_CHOOSE_TEXT)
-	selDate, ok := usrInfo.GetData(CREATE_DATE).(time.Time)
+	editDate, ok := usrInfo.GetData(CREATE_DATE).(time.Time)
 	if !ok {
-		selDate = time.Now()
+		editDate = time.Now()
 	}
 
 	var finished bool
-	selDate, finished = processDateClicks(selDate, cb.Data)
-	usrInfo.SetData(CREATE_DATE, selDate)
+	editDate, finished = processDateClicks(editDate, cb.Data)
+	usrInfo.SetData(CREATE_DATE, editDate)
 
 	// Send the calendar again.
 	if !finished {
-		calen := createCalendar(selDate, usrInfo.Locale, selDate)
+		calen := createCalendar(editDate, usrInfo.Locale, editDate)
 		edit.ReplyMarkup = &calen
 	} else {
 		// Move on to the next step.
-		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatDateForLocale(selDate))
-		createSetDateAndContinue(tg, usrInfo, cb.Message.Chat.ID, selDate)
+		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatDateForLocale(editDate))
+		createSetDateAndContinue(tg, usrInfo, cb.Message.Chat.ID, editDate)
 	}
 
 	_, err := tg.Send(edit)
@@ -107,23 +107,23 @@ func create_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	// We update the message as needed.
 
 	edit := tgbotapi.NewEditMessageText(int64(cb.From.ID), cb.Message.MessageID, CALEN_TIME_CHOOSE_TEXT)
-	selTime, ok := usrInfo.GetData(CREATE_TIME).(time.Time)
+	editTime, ok := usrInfo.GetData(CREATE_TIME).(time.Time)
 	if !ok {
-		selTime = time.Now()
+		editTime = time.Now()
 	}
 
 	var finished bool
-	selTime, finished = processTimeClicks(selTime, cb.Data)
-	usrInfo.SetData(CREATE_TIME, selTime)
+	editTime, finished = processTimeClicks(editTime, cb.Data)
+	usrInfo.SetData(CREATE_TIME, editTime)
 
 	// Send the calendar again.
 	if !finished {
-		timeButtons := createTimeSelection(selTime, usrInfo.Locale)
+		timeButtons := createTimeSelection(editTime, usrInfo.Locale)
 		edit.ReplyMarkup = &timeButtons
 	} else {
 		// Move on to the next step.
-		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(selTime))
-		createSetTimeAndContinue(tg, usrInfo, cb.Message.Chat.ID, selTime)
+		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(editTime))
+		createSetTimeAndContinue(tg, usrInfo, cb.Message.Chat.ID, editTime)
 	}
 
 	_, err := tg.Send(edit)

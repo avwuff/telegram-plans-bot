@@ -260,7 +260,7 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		calen := createCalendar(*editDate, usrInfo.Locale, *editDate)
 		edit.ReplyMarkup = &calen
 	} else {
-		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatTimeForLocale(*editDate))
+		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatDateForLocale(*editDate))
 
 		// Save the value
 		err := event.UpdateEvent(colName)

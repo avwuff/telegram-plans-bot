@@ -39,7 +39,7 @@ func (t *Telegram) Init() error {
 		return err
 	}
 	// TODO remove this
-	//t.bot.Debug = true
+	t.bot.Debug = true
 	return nil
 }
 

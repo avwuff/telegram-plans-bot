@@ -94,7 +94,15 @@ func CreateEvent(event *FurryPlans) (uint, error) {
 // GetEvent returns the event, and also an overridden localizer if they changed the language of the event.
 func GetEvent(eventId uint, ownerId int64) (*FurryPlans, *localizer.Localizer, error) {
 	var event FurryPlans
-	if err := db.Where(&FurryPlans{EventID: eventId, OwnerID: fmt.Sprintf("%v", ownerId)}).First(&event).Error; err != nil {
+
+	query := db.Where(&FurryPlans{EventID: eventId})
+
+	// Allow querying by owner ID
+	if ownerId != -1 {
+		query = query.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)})
+	}
+
+	if err := query.First(&event).Error; err != nil {
 		return nil, nil, fmt.Errorf("event not found")
 	}
 

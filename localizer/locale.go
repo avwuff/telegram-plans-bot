@@ -12,7 +12,7 @@ import (
 const (
 	usDateFormat = "January 2, 2006 3:04 PM"
 	usTimeFormat = "3:04 PM"
-	euDateFormat = "2 January 2006 15:04"
+	euDateFormat = "2. January 2006, 15:04"
 	euTimeFormat = "15:04"
 )
 

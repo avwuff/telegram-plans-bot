@@ -76,6 +76,10 @@ func (t *Telegram) Send(c tgbotapi.Chattable) (tgbotapi.Message, error) {
 	return t.bot.Send(c)
 }
 
+func (t *Telegram) Request(c tgbotapi.Chattable) (*tgbotapi.APIResponse, error) {
+	return t.bot.Request(c)
+}
+
 func (t *Telegram) AnswerInlineQuery(c tgbotapi.InlineConfig) (*tgbotapi.APIResponse, error) {
 	return t.bot.Request(c)
 }

@@ -62,7 +62,7 @@ func create_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		createSetDateAndContinue(tg, usrInfo, cb.Message.Chat.ID, editDate)
 	}
 
-	_, err := tg.Send(edit)
+	_, err := tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}
@@ -123,7 +123,7 @@ func create_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		createSetTimeAndContinue(tg, usrInfo, cb.Message.Chat.ID, editTime)
 	}
 
-	_, err := tg.Send(edit)
+	_, err := tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}

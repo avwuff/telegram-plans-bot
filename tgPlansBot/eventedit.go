@@ -171,7 +171,7 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		updateEventUIAllPostings(tg, event, "")
 	}
 
-	_, err := tg.Send(edit)
+	_, err := tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}
@@ -284,7 +284,7 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		eventDetails(tg, usrInfo, cb.From.ID, event, "", 0, false)
 		updateEventUIAllPostings(tg, event, "")
 	}
-	_, err := tg.Send(edit)
+	_, err := tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}

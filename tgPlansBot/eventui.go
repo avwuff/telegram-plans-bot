@@ -84,16 +84,20 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 		txt = loc.Sprintf("Alright, you've been marked as maybe.")
 	case dbInterface.ATTEND_FULL:
 		txt = loc.Sprintf("Sorry, this event is currently full!")
+		answerCallback(tg, cb, txt)
+		return
 	case dbInterface.ATTEND_REMOVED:
 		txt = loc.Sprintf("Alright, you've been marked as unable to attend.")
 	case dbInterface.ATTEND_ACTIVE:
 		txt = loc.Sprintf("Event is ready to be used!")
 	default:
 		txt = loc.Sprintf("A general error occurred.") // Can't use the CONST here because it crashes GOTEXT.
+		answerCallback(tg, cb, txt)
+		return
 	}
 	// Answer the callback in a Gofunc
 	go answerCallback(tg, cb, txt)
-	err = makeEventUI(tg, int64(cb.From.ID), event, loc, cb.InlineMessageID)
+	err = makeEventUI(tg, cb.From.ID, event, loc, cb.InlineMessageID)
 	if err != nil {
 		log.Println(err)
 	}
@@ -256,7 +260,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent
 	mObj2.DisableWebPagePreview = true
 	mObj = mObj2
 
-	_, err = tg.Send(mObj)
+	_, err = tg.Request(mObj)
 	if err != nil {
 		return err
 	}

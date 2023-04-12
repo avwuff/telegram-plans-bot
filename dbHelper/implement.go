@@ -139,11 +139,10 @@ func (c *Connector) GetEventByHash(hash string, saltValue string, shareMode bool
 
 func (c *Connector) CalendarFeed(ownerId int64) ([]dbInterface.DBEvent, error) {
 
-	// TODO: Include all the attendance types here
 	sql := `SELECT furryplans.* FROM furryplansattend 
 		LEFT JOIN furryplans USING (eventID) 
 		WHERE furryplansattend.userid = ? 
-		AND furryplansattend.CanAttend IN (1, 2) 
+		AND furryplansattend.CanAttend IN (1, 2, 20, 30) 
 		AND furryplans.EventDateTime > NOW() - INTERVAL 7 DAY 
 		ORDER BY EventDateTime `
 

@@ -88,7 +88,7 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 		mObj = mObj2
 	}
 
-	_, err := tg.Send(mObj)
+	_, err := tg.Request(mObj)
 	if err != nil {
 		log.Println(err)
 	}

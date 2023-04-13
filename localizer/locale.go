@@ -12,9 +12,9 @@ import (
 )
 
 const (
-	usDateFormat = "January 2, 2006 3:04 PM"
+	usDateFormat = "Monday, January 2, 2006 3:04 PM"
 	usTimeFormat = "3:04 PM"
-	euDateFormat = "2. January 2006, 15:04"
+	euDateFormat = "Monday, 2. January 2006, 15:04"
 	euTimeFormat = "15:04"
 )
 
@@ -236,5 +236,21 @@ func (l *Localizer) FormatDate(date time.Time, FormatString string) string {
 		formatted = strings.ReplaceAll(formatted, time.December.String(), l.Sprintf("December"))
 	}
 
+	switch date.Weekday() {
+	case time.Sunday:
+		formatted = strings.ReplaceAll(formatted, time.Sunday.String(), l.Sprintf("Sunday"))
+	case time.Monday:
+		formatted = strings.ReplaceAll(formatted, time.Monday.String(), l.Sprintf("Monday"))
+	case time.Tuesday:
+		formatted = strings.ReplaceAll(formatted, time.Tuesday.String(), l.Sprintf("Tuesday"))
+	case time.Wednesday:
+		formatted = strings.ReplaceAll(formatted, time.Wednesday.String(), l.Sprintf("Wednesday"))
+	case time.Thursday:
+		formatted = strings.ReplaceAll(formatted, time.Thursday.String(), l.Sprintf("Thursday"))
+	case time.Friday:
+		formatted = strings.ReplaceAll(formatted, time.Friday.String(), l.Sprintf("Friday"))
+	case time.Saturday:
+		formatted = strings.ReplaceAll(formatted, time.Saturday.String(), l.Sprintf("Saturday"))
+	}
 	return formatted
 }

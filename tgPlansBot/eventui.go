@@ -97,6 +97,7 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	}
 	// Answer the callback in a Gofunc
 	go answerCallback(tg, cb, txt)
+	updateEventPosting(tg, event, cb.InlineMessageID)
 
 	// Also update the event in all the places
 	updateEventUIAllPostings(tg, event)
@@ -104,9 +105,6 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 
 // Every time the event UI needs to be updated, do it in all the places.
 func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent) {
-
-	// Use the localizer from the event.
-	loc := localizer.FromLanguage(event.Language())
 
 	postings, err := event.Postings()
 	if err != nil {
@@ -119,25 +117,32 @@ func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent)
 
 			// Make sure this one isn't in the Retry After queue.
 			if !inQueue(msgId) {
-				// Update this one.
-				retryAfter, err := makeEventUI(tg, 0, event, loc, msgId)
-				if err != nil {
-					// Was this a "too many requests" message?
-					if strings.Contains(err.Error(), "Too Many Requests") {
-						// Retry this one after this time.
-						addToQueue(tg, event, msgId, retryAfter)
-					}
-
-					if strings.Contains(err.Error(), "MESSAGE_ID_INVALID") {
-						// The message where this once was, was probably deleted.
-						// So we delete the posting, so we don't try it again.
-						event.DeletePosting(msgId)
-					}
-				}
+				updateEventPosting(tg, event, msgId)
 			}
 		}(postings[i])
 	}
 
+}
+
+func updateEventPosting(tg *tgWrapper.Telegram, event dbInterface.DBEvent, msgId string) {
+	// Use the localizer from the event.
+	loc := localizer.FromLanguage(event.Language())
+
+	// Update this one.
+	retryAfter, err := makeEventUI(tg, 0, event, loc, msgId)
+	if err != nil {
+		// Was this a "too many requests" message?
+		if strings.Contains(err.Error(), "Too Many Requests") {
+			// Retry this one after this time.
+			addToQueue(tg, event, msgId, retryAfter)
+		}
+
+		if strings.Contains(err.Error(), "MESSAGE_ID_INVALID") {
+			// The message where this once was, was probably deleted.
+			// So we delete the posting, so we don't try it again.
+			event.DeletePosting(msgId)
+		}
+	}
 }
 
 func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text string) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"html"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -34,7 +35,9 @@ func (t *Telegram) LoadKeyFromFile(file string) error {
 
 func (t *Telegram) Init() error {
 	var err error
+	tgbotapi.SetLogger(log.Default())
 	t.bot, err = tgbotapi.NewBotAPI(t.key)
+
 	if err != nil {
 		return err
 	}

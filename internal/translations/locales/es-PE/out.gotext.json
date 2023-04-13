@@ -62,6 +62,41 @@
             "translation": ""
         },
         {
+            "id": "Sunday",
+            "message": "Sunday",
+            "translation": ""
+        },
+        {
+            "id": "Monday",
+            "message": "Monday",
+            "translation": ""
+        },
+        {
+            "id": "Tuesday",
+            "message": "Tuesday",
+            "translation": ""
+        },
+        {
+            "id": "Wednesday",
+            "message": "Wednesday",
+            "translation": ""
+        },
+        {
+            "id": "Thursday",
+            "message": "Thursday",
+            "translation": ""
+        },
+        {
+            "id": "Friday",
+            "message": "Friday",
+            "translation": ""
+        },
+        {
+            "id": "Saturday",
+            "message": "Saturday",
+            "translation": ""
+        },
+        {
             "id": "Su",
             "message": "Su",
             "translation": ""

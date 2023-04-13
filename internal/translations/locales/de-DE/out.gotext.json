@@ -62,6 +62,41 @@
             "translation": "Dezember"
         },
         {
+            "id": "Sunday",
+            "message": "Sunday",
+            "translation": "Sonntag"
+        },
+        {
+            "id": "Monday",
+            "message": "Monday",
+            "translation": "Montag"
+        },
+        {
+            "id": "Tuesday",
+            "message": "Tuesday",
+            "translation": "Dienstag"
+        },
+        {
+            "id": "Wednesday",
+            "message": "Wednesday",
+            "translation": "Mittwoch"
+        },
+        {
+            "id": "Thursday",
+            "message": "Thursday",
+            "translation": "Donnerstag"
+        },
+        {
+            "id": "Friday",
+            "message": "Friday",
+            "translation": "Freitag"
+        },
+        {
+            "id": "Saturday",
+            "message": "Saturday",
+            "translation": "Samstag"
+        },
+        {
             "id": "Su",
             "message": "Su",
             "translation": "So"

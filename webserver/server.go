@@ -33,9 +33,8 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./html"))))
 
 	srv := &http.Server{
-		Handler: r,
-
-		Addr: ":16300",
+		Handler: logging(log.Default())(r),
+		Addr:    ":16300",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
@@ -50,6 +49,18 @@ func errorMessage(w http.ResponseWriter, msg string) {
 	w.WriteHeader(http.StatusInternalServerError)
 	// TODO: nicer message
 	w.Write([]byte(msg))
+}
+
+func logging(logger *log.Logger) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			defer func() {
+
+				logger.Println(r.Method, r.URL.Path, r.RemoteAddr, r.Header.Get("X-Forwarded-For"), r.UserAgent())
+			}()
+			next.ServeHTTP(w, r)
+		})
+	}
 }
 
 func addToCalendarHandler(w http.ResponseWriter, r *http.Request) {

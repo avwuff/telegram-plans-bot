@@ -4,3 +4,4 @@
 salt.txt
 /*.lnk
 /*.exe
+/logs/

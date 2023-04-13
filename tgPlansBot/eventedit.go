@@ -56,6 +56,7 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	usrInfo.SetData(EDIT_EVENT, event)
 
 	// What thing do they want to edit?
+	go answerCallback(tg, cb, "")
 
 	// SIMPLE STRING EDIT
 	switch data[2] {
@@ -103,6 +104,7 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		// Just go back to the main panel
 		eventDetails(tg, usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
 	}
+
 }
 
 // TIME SELECTION
@@ -168,7 +170,7 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		// switch back to normal mode and display the event details
 		usrInfo.SetMode(userManager.MODE_DEFAULT)
 		eventDetails(tg, usrInfo, cb.From.ID, event, "", 0, false)
-		updateEventUIAllPostings(tg, event, "")
+		updateEventUIAllPostings(tg, event)
 	}
 
 	_, err := tg.Request(edit)
@@ -215,7 +217,7 @@ func edit_setTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event, "")
+	updateEventUIAllPostings(tg, event)
 }
 
 // editDateItem displays the date select calendar.
@@ -282,7 +284,7 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		// switch back to normal mode and display the event details
 		usrInfo.SetMode(userManager.MODE_DEFAULT)
 		eventDetails(tg, usrInfo, cb.From.ID, event, "", 0, false)
-		updateEventUIAllPostings(tg, event, "")
+		updateEventUIAllPostings(tg, event)
 	}
 	_, err := tg.Request(edit)
 	if err != nil {
@@ -330,7 +332,7 @@ func edit_setDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event, "")
+	updateEventUIAllPostings(tg, event)
 }
 
 func changeJustDate(fullDate time.Time, newDate time.Time) time.Time {
@@ -357,7 +359,7 @@ func toggleItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbot
 	}
 
 	eventDetails(tg, usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
-	updateEventUIAllPostings(tg, event, "")
+	updateEventUIAllPostings(tg, event)
 }
 
 func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, SetFunc setStringFunc, prompt string, choices []helpers.Tuple) {
@@ -431,7 +433,7 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event, "")
+	updateEventUIAllPostings(tg, event)
 }
 
 // editStringItem puts them into a mode where they are editing a text item
@@ -482,7 +484,7 @@ func edit_setString(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event, "")
+	updateEventUIAllPostings(tg, event)
 }
 
 // editNumberItem puts them into a mode where they are editing a number item
@@ -530,5 +532,5 @@ func edit_setNumber(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event, "")
+	updateEventUIAllPostings(tg, event)
 }

@@ -97,17 +97,13 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	}
 	// Answer the callback in a Gofunc
 	go answerCallback(tg, cb, txt)
-	err = makeEventUI(tg, cb.From.ID, event, loc, cb.InlineMessageID)
-	if err != nil {
-		log.Println(err)
-	}
 
 	// Also update the event in all the places
-	updateEventUIAllPostings(tg, event, cb.InlineMessageID)
+	updateEventUIAllPostings(tg, event)
 }
 
 // Every time the event UI needs to be updated, do it in all the places.
-func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent, skipPosting string) {
+func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent) {
 
 	// Use the localizer from the event.
 	loc := localizer.FromLanguage(event.Language())
@@ -118,21 +114,28 @@ func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent,
 	}
 
 	for i := range postings {
-		if postings[i] != skipPosting {
-			// We do this as a Gofunc so that they can all be updated at once.
-			go func(msgId string) {
+		// We do this as a Gofunc so that they can all be updated at once.
+		go func(msgId string) {
+
+			// Make sure this one isn't in the Retry After queue.
+			if !inQueue(msgId) {
 				// Update this one.
-				err := makeEventUI(tg, 0, event, loc, msgId)
+				retryAfter, err := makeEventUI(tg, 0, event, loc, msgId)
 				if err != nil {
-					//log.Println("Failed on ID", msgId, err)
+					// Was this a "too many requests" message?
+					if strings.Contains(err.Error(), "Too Many Requests") {
+						// Retry this one after this time.
+						addToQueue(tg, event, msgId, retryAfter)
+					}
+
 					if strings.Contains(err.Error(), "MESSAGE_ID_INVALID") {
 						// The message where this once was, was probably deleted.
 						// So we delete the posting, so we don't try it again.
 						event.DeletePosting(msgId)
 					}
 				}
-			}(postings[i])
-		}
+			}
+		}(postings[i])
 	}
 
 }
@@ -148,7 +151,7 @@ func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text 
 }
 
 // makeEventUI displays the main event UI.
-func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) error {
+func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) (int, error) {
 
 	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
 
@@ -260,11 +263,14 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent
 	mObj2.DisableWebPagePreview = true
 	mObj = mObj2
 
-	_, err = tg.Request(mObj)
+	rsp, err := tg.Request(mObj)
 	if err != nil {
-		return err
+		if rsp.Parameters != nil {
+			return rsp.Parameters.RetryAfter, err
+		}
+		return 0, err
 	}
-	return nil
+	return 0, nil
 }
 
 // eventEditButtons creates the buttons that help you edit an event.

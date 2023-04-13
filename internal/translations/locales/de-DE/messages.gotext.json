@@ -249,7 +249,7 @@
         {
             "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
             "message": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
-            "translation": "Cool, hier ist ein iCal-Feed für alle Veranstaltungen, bei denen du mit „Ja“ oder „Vielleicht“ geantwortet hast: \n\n{ICalURL}\n\nDu kannst diesen Feed in deinem Google Kalender oder bei Outlook hinzufügen, damit alle Veranstaltungen, bei denen du mit „Ja“ oder „Vielleicht“ antwortest, automatisch in deinem Kalender auftauchen und du immer auf dem neuesten Stand bist!",
+            "translation": "Cool, hier ist ein iCal-Feed für alle Veranstaltungen, bei denen du fest oder vielleicht zugesagt hast: \n\n{ICalURL}\n\nDu kannst diesen Feed in deinem Google Kalender oder bei Outlook hinzufügen, damit alle Veranstaltungen, bei denen du fest oder vielleicht zusagst, automatisch in deinem Kalender auftauchen und du immer auf dem neuesten Stand bist!",
             "placeholders": [
                 {
                     "id": "ICalURL",

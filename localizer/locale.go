@@ -31,7 +31,7 @@ var timezones map[string]*time.Location
 
 func InitLang() {
 	locales = map[string]*Localizer{
-		"de-DE": { // Germany
+		"de-DE": { // German
 			name:       "Deutsch",
 			iso639code: "de",
 			dateFormat: euDateFormat,
@@ -58,6 +58,13 @@ func InitLang() {
 			dateFormat: usDateFormat,
 			timeFormat: usTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("en-US")),
+		},
+		"es-PE": { // Spanish
+			name:       "Español",
+			iso639code: "es",
+			dateFormat: usDateFormat,
+			timeFormat: usTimeFormat,
+			printer:    message.NewPrinter(language.MustParse("es-PE")),
 		},
 	}
 

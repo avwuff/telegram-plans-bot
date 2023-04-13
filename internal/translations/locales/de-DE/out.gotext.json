@@ -177,7 +177,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "iif(event.DisableMaybe == 1, loc.Sprintf(\"No\"), loc.Sprintf(\"Yes\"))"
+                    "expr": "iif(event.DisableMaybe(), loc.Sprintf(\"No\"), loc.Sprintf(\"Yes\"))"
                 }
             ]
         },
@@ -202,7 +202,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "iif(event.AllowShare == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                    "expr": "iif(event.SharingAllowed(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
             ]
         },
@@ -227,7 +227,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "iif(event.Suitwalk == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                    "expr": "iif(event.Suitwalk(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
             ]
         },
@@ -249,7 +249,7 @@
         {
             "id": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
             "message": "Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!",
-            "translation": "Cool, hier ist ein iCal-Feed für alle Veranstaltungen, bei denen du mit „Ja“ oder „Vielleicht“ geantwortet hast: \n\n{ICalURL}\n\nDu kannst diesen Feed in deinem Google Kalender oder bei Outlook hinzufügen, damit alle Veranstaltungen, bei denen du mit „Ja“ oder „Vielleicht“ antwortest, automatisch in deinem Kalender auftauchen und du immer auf dem neuesten Stand bist!",
+            "translation": "Cool, hier ist ein iCal-Feed für alle Veranstaltungen, bei denen du fest oder vielleicht zugesagt hast: \n\n{ICalURL}\n\nDu kannst diesen Feed in deinem Google Kalender oder bei Outlook hinzufügen, damit alle Veranstaltungen, bei denen du fest oder vielleicht zusagst, automatisch in deinem Kalender auftauchen und du immer auf dem neuesten Stand bist!",
             "placeholders": [
                 {
                     "id": "ICalURL",
@@ -341,6 +341,11 @@
             ]
         },
         {
+            "id": "Event not found",
+            "message": "Event not found",
+            "translation": "Veranstaltung nicht gefunden"
+        },
+        {
             "id": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
             "message": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
             "translation": "Okay, ich habe deine Veranstaltung erstellt! Du kannst jetzt zusätzliche Informationen angeben oder es in einem anderen Chat teilen."
@@ -427,11 +432,6 @@
             "id": "A list of all your events, old and new",
             "message": "A list of all your events, old and new",
             "translation": "Eine Liste all deiner Veranstaltungen, alt wie neu"
-        },
-        {
-            "id": "Event not found",
-            "message": "Event not found",
-            "translation": "Veranstaltung nicht gefunden"
         },
         {
             "id": "Name:",
@@ -844,7 +844,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "event.Name"
+                    "expr": "event.Name()"
                 }
             ]
         }

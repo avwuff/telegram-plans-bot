@@ -236,7 +236,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "iif(event.DisableMaybe == 1, loc.Sprintf(\"No\"), loc.Sprintf(\"Yes\"))"
+                    "expr": "iif(event.DisableMaybe(), loc.Sprintf(\"No\"), loc.Sprintf(\"Yes\"))"
                 }
             ],
             "fuzzy": true
@@ -267,7 +267,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "iif(event.AllowShare == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                    "expr": "iif(event.SharingAllowed(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
             ],
             "fuzzy": true
@@ -298,7 +298,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "iif(event.Suitwalk == 1, loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                    "expr": "iif(event.Suitwalk(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
             ],
             "fuzzy": true
@@ -437,6 +437,13 @@
             "fuzzy": true
         },
         {
+            "id": "Event not found",
+            "message": "Event not found",
+            "translation": "Event not found",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
             "message": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
             "translation": "Alright, I've created your event! You can now add additional content, or share it to another chat.",
@@ -551,13 +558,6 @@
             "id": "A list of all your events, old and new",
             "message": "A list of all your events, old and new",
             "translation": "A list of all your events, old and new",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Event not found",
-            "message": "Event not found",
-            "translation": "Event not found",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1097,7 +1097,7 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "event.Name"
+                    "expr": "event.Name()"
                 }
             ],
             "fuzzy": true

@@ -41,7 +41,7 @@ func (tgp *TGPlansBot) StartTG(ctx context.Context, salt string, dbMain dbInterf
 	tgp.setMyCommands()
 
 	// Start listening
-	go tgp.tg.Listen(ctx, tgp.handleUpdate)
+	tgp.tg.Listen(ctx, tgp.handleUpdate)
 }
 
 func (tgp *TGPlansBot) initCommands() {

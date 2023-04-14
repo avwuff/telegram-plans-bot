@@ -5,6 +5,8 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+//go:generate go run github.com/vektra/mockery/v2 --name=TelegramBot --structname TelegramBotMock --filename telegrambot_mock.go --inpackage
+
 type TelegramBot interface {
 	Init() error
 	Listen(ctx context.Context, handler func(update tgbotapi.Update))

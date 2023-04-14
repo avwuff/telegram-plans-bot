@@ -65,8 +65,6 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
 	}
 
-	var mObj tgbotapi.Chattable
-
 	var buttons tgbotapi.InlineKeyboardMarkup
 	if showAdvancedButtons {
 		buttons = eventAdvancedButtons(event, loc)
@@ -74,23 +72,25 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		buttons = eventEditButtons(event, loc)
 	}
 	if editInPlace != 0 {
-		mObj2 := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
-		mObj2.ParseMode = ParseModeHtml
-		mObj2.ReplyMarkup = &buttons
-		mObj2.DisableWebPagePreview = true
-		mObj = mObj2
+		mObj := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
+		mObj.ParseMode = ParseModeHtml
+		mObj.ReplyMarkup = &buttons
+		mObj.DisableWebPagePreview = true
+		_, err := tgp.tg.Request(mObj)
+		if err != nil {
+			log.Println(err)
+		}
 	} else {
-		mObj2 := tgbotapi.NewMessage(chatId, t)
-		mObj2.ParseMode = ParseModeHtml
-		mObj2.ReplyMarkup = buttons
-		mObj2.DisableWebPagePreview = true
-		mObj = mObj2
+		mObj := tgbotapi.NewMessage(chatId, t)
+		mObj.ParseMode = ParseModeHtml
+		mObj.ReplyMarkup = buttons
+		mObj.DisableWebPagePreview = true
+		_, err := tgp.tg.Send(mObj)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
-	_, err := tgp.tg.Request(mObj)
-	if err != nil {
-		log.Println(err)
-	}
 }
 
 // listEvents will list all the events the user has created that are not too far in the past.

@@ -1,6 +1,7 @@
 package tgPlansBot
 
 import (
+	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -25,7 +26,7 @@ func create_SetName(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	selDate := time.Now().In(usrInfo.TimeZone)
 
 	// Store the name
-	usrInfo.SetData(CREATE_NAME, tg.ConvertEntitiesToHTML(text, msg.Entities))
+	usrInfo.SetData(CREATE_NAME, helpers.ConvertEntitiesToHTML(text, msg.Entities))
 	usrInfo.SetData(CREATE_DATE, selDate)
 
 	usrInfo.SetMode(userManager.MODE_CREATE_EVENTDATE)
@@ -166,7 +167,7 @@ func create_SetLocation(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, m
 	selName := usrInfo.GetData(CREATE_NAME).(string)
 
 	// Now finish the event
-	eventId, err := createNewEvent(tg, usrInfo, msg.Chat.ID, tg.ConvertEntitiesToHTML(getOwnerName(msg.Chat), nil), selName, selDate, tg.ConvertEntitiesToHTML(text, msg.Entities))
+	eventId, err := createNewEvent(tg, usrInfo, msg.Chat.ID, helpers.HtmlEntities(getOwnerName(msg.Chat)), selName, selDate, helpers.ConvertEntitiesToHTML(text, msg.Entities))
 	if err != nil {
 		quickReply(tg, msg, usrInfo.Locale.Sprintf("error creating event: %v", err))
 		return

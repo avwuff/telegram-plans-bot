@@ -39,7 +39,7 @@ func (c *Connector) SavePrefs(userid int64, prefs dbInterface.Prefs, colName str
 	}
 
 	if c.db.Model(&UserPrefs{}).Where(&UserPrefs{UserID: userid}).Select(colName).Updates(&p).RowsAffected == 0 {
-		return c.db.Create(&prefs).Error
+		return c.db.Create(&p).Error
 	}
 	return nil
 }

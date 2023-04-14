@@ -43,7 +43,7 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 	go event.SavePosting(cb.InlineMessageID)
 
 	// HTML format the name so it works properly.
-	name := tg.ConvertEntitiesToHTML(cb.From.FirstName, nil)
+	name := helpers.HtmlEntities(cb.From.FirstName)
 
 	// Update the attending data about the event.
 	var reply dbInterface.AttendMsgs

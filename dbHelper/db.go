@@ -3,12 +3,11 @@ package dbHelper
 import (
 	"encoding/json"
 	"fmt"
+	"furryplansbot.avbrand.com/helpers"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"html"
 	"os"
 	"regexp"
-	"strconv"
 )
 
 // In the old version of the furry plans bot, for some reason, this syntax was used for special characters:
@@ -53,20 +52,5 @@ func cleanOldSyntaxText(text string) string {
 	// Use the json unmarshaler to fix it
 	var str string
 	_ = json.Unmarshal([]byte("\""+fixed+"\""), &str)
-	return htmlEntities(str)
-}
-
-func htmlEntities(str string) string {
-	str = html.EscapeString(str)
-	res := ""
-	runes := []rune(str)
-	for i := 0; i < len(runes); i++ {
-		r := runes[i]
-		if r < 128 {
-			res += string(r)
-		} else {
-			res += "&#" + strconv.FormatInt(int64(r), 10) + ";"
-		}
-	}
-	return res
+	return helpers.HtmlEntities(str)
 }

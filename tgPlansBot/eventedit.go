@@ -472,7 +472,7 @@ func edit_setString(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 		return
 	}
 
-	htmlText := tg.ConvertEntitiesToHTML(text, msg.Entities)
+	htmlText := helpers.ConvertEntitiesToHTML(text, msg.Entities)
 
 	// Set the string to this value.  This should update it in the struct.
 	err := setFunc(htmlText)

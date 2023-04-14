@@ -5,6 +5,9 @@ import (
 	"time"
 )
 
+// Generate mocks of these interfaces for testing
+//go:generate go run github.com/vektra/mockery/v2 --name=DBFeatures --structname DBFeaturesMock --filename dbfeatures_mock.go --inpackage
+
 // DBFeatures defines the features we expect to see from the database in a nice, tidy interface.
 type DBFeatures interface {
 	GetPrefs(userid int64) Prefs

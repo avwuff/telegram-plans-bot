@@ -1,0 +1,28 @@
+quiet: False
+keeptree: True
+disable-version-string: True
+with-expecter: True
+mockname: "{{.InterfaceName}}"
+filename: "{{.MockName}}.go"
+outpkg: mocks
+packages:
+  github.com/vektra/mockery/v2/pkg:
+    interfaces:
+      TypesPackage:
+  github.com/vektra/mockery/v2/pkg/fixtures:
+    config:
+      all: True
+    interfaces:
+      RequesterArgSameAsNamedImport:
+      RequesterVariadic:
+        config:
+          with-expecter: False
+        configs:
+          - mockname: RequesterVariadicOneArgument
+            unroll-variadic: False
+          - mockname: RequesterVariadic
+      Expecter:
+      RequesterReturnElided:
+
+
+ 

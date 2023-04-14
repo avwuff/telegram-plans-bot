@@ -5,3 +5,5 @@ salt.txt
 /*.lnk
 /*.exe
 /logs/
+
+token-prod.txt

@@ -13,10 +13,6 @@ type Telegram struct {
 	key string
 }
 
-const (
-	ParseModeHtml = "HTML"
-)
-
 func New() *Telegram {
 	return &Telegram{}
 }
@@ -44,7 +40,7 @@ func (t *Telegram) Init() error {
 }
 
 // Listen is designed to be called as a Gofunc.
-func (t *Telegram) Listen(ctx context.Context, handler func(t *Telegram, update tgbotapi.Update)) {
+func (t *Telegram) Listen(ctx context.Context, handler func(update tgbotapi.Update)) {
 	if t.bot == nil {
 		panic("Listen called without Init")
 	}
@@ -66,7 +62,7 @@ func (t *Telegram) Listen(ctx context.Context, handler func(t *Telegram, update 
 		case update := <-updates:
 			// send it to the handler
 			// TODO: Do we want to do a multithreaded pool of handlers for these?  So one update doesn't block. Maybe later.
-			handler(t, update)
+			handler(update)
 		}
 	}
 }

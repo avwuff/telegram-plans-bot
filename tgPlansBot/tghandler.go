@@ -6,62 +6,70 @@ import (
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"sync"
 )
 
-var cmds *tgCommands.CommandList
+type TGPlansBot struct {
+	// the commands i will listen to
+	cmds *tgCommands.CommandList
 
-var saltValue string
+	// the salt value for my MD5 code
+	saltValue string
 
-// my database connection
-var db dbInterface.DBFeatures
+	// my database connection
+	db dbInterface.DBFeatures
 
-func StartTG(ctx context.Context, salt string, dbMain dbInterface.DBFeatures) {
-	saltValue = salt
-	db = dbMain
+	// my telegram bot interface
+	tg TelegramBot
 
-	// Create the tgWrapper object
-	tg := initTg()
-
-	// Set up the initial set of commands and what each one does, and under which modes it is active.
-	initCommands()
-
-	// Set up the available commands in the bot
-	setMyCommands(tg)
-
-	// Start listening
-	go tg.Listen(ctx, handleUpdate)
+	// queue is used for keeping track of retry delay sends
+	queue sync.Map
 }
 
-func initCommands() {
+func (tgp *TGPlansBot) StartTG(ctx context.Context, salt string, dbMain dbInterface.DBFeatures, tg TelegramBot) {
+	tgp.saltValue = salt
+	tgp.db = dbMain
+	tgp.tg = tg
+
+	// Set up the initial set of commands and what each one does, and under which modes it is active.
+	tgp.initCommands()
+
+	// Set up the available commands in the bot
+	tgp.setMyCommands()
+
+	// Start listening
+	go tgp.tg.Listen(ctx, tgp.handleUpdate)
+}
+
+func (tgp *TGPlansBot) initCommands() {
 	loc := localizer.FromLanguage("default") // not a real locale
 
-	cmds = tgCommands.NewList()
-	cmds.Add(tgCommands.Command{Command: "/start", Handler: startHandler, HelpText: loc.Sprintf("Create a new set of plans")})
-	cmds.Add(tgCommands.Command{Command: "/help", Handler: helpHandler, HelpText: loc.Sprintf("Display the help message")})
-	cmds.Add(tgCommands.Command{Command: "/feed", Handler: calendarFeed, HelpText: loc.Sprintf("Get a custom calendar feed")})
-	cmds.Add(tgCommands.Command{Command: "/language", Handler: languageHandler, HelpText: loc.Sprintf("Change the language")})
-	cmds.Add(tgCommands.Command{Command: "/setup", Handler: setupHandler, HelpText: loc.Sprintf("Start the Setup process")})
-	cmds.Add(tgCommands.Command{Command: "/about", Handler: aboutHandler, HelpText: loc.Sprintf("Learn more about the bot")})
-	cmds.SetUnknown(unknownHandler)
+	tgp.cmds = tgCommands.NewList()
+	tgp.cmds.Add(tgCommands.Command{Command: "/start", Handler: tgp.startHandler, HelpText: loc.Sprintf("Create a new set of plans")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/help", Handler: tgp.helpHandler, HelpText: loc.Sprintf("Display the help message")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/feed", Handler: tgp.calendarFeed, HelpText: loc.Sprintf("Get a custom calendar feed")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/language", Handler: tgp.languageHandler, HelpText: loc.Sprintf("Change the language")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/setup", Handler: tgp.setupHandler, HelpText: loc.Sprintf("Start the Setup process")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/about", Handler: tgp.aboutHandler, HelpText: loc.Sprintf("Learn more about the bot")})
+	tgp.cmds.SetUnknown(tgp.unknownHandler)
 
 	// These handlers respond to any message, as long as we are in the right mode.
 	// SETTINGS
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETLANGUAGE, Handler: setLanguageHandler})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETLANGUAGE, Handler: tgp.setLanguageHandler})
 
 	// EVENTS
-	initEventCommands(cmds)
-	initSetupCommands(cmds)
-	initUICommands(cmds)
+	tgp.initEventCommands()
+	tgp.initSetupCommands()
+	tgp.initUICommands()
 
 }
 
-func setMyCommands(tg *tgWrapper.Telegram) {
+func (tgp *TGPlansBot) setMyCommands() {
 	// Now add the commands to the command menu.
-	base := cmds.BaseCommandList()
+	base := tgp.cmds.BaseCommandList()
 	// Do this for each language
 	langs := localizer.GetLanguageChoicesISO639()
 	for locale, isoCode := range langs {
@@ -77,42 +85,42 @@ func setMyCommands(tg *tgWrapper.Telegram) {
 				Description: loc.Sprintf(cmd.HelpText),
 			})
 		}
-		_, err := tg.SetMyCommands(tgbotapi.SetMyCommandsConfig{Commands: cmdList, LanguageCode: isoCode})
+		_, err := tgp.tg.SetMyCommands(tgbotapi.SetMyCommandsConfig{Commands: cmdList, LanguageCode: isoCode})
 		if err != nil {
 			log.Println(err)
 		}
 	}
 }
 
-func startHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) startHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// Has the user completed the setup process?
 	if !usrInfo.Prefs.SetupComplete {
-		startSetup(tg, usrInfo, msg)
+		tgp.startSetup(usrInfo, msg)
 		return
 	}
 
 	// Reset the user back to the default mode.
 	usrInfo.SetMode(userManager.MODE_CREATE_EVENTNAME)
-	quickReply(tg, msg, usrInfo.Locale.Sprintf("Let's create some new plans.  First, send me the name of the event."))
+	tgp.quickReply(msg, usrInfo.Locale.Sprintf("Let's create some new plans.  First, send me the name of the event."))
 }
 
 // User wants to start the setup process again
-func setupHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	startSetup(tg, usrInfo, msg)
+func (tgp *TGPlansBot) setupHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	tgp.startSetup(usrInfo, msg)
 }
 
-func helpHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) helpHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// Build the help message.
-	base := cmds.BaseCommandList()
+	base := tgp.cmds.BaseCommandList()
 	txt := usrInfo.Locale.Sprintf("Here is a list of available commands:") + "\n\n"
 	for _, cmd := range base {
 		txt += fmt.Sprintf("<b>%v</b> - %v\n", cmd.Command, usrInfo.Locale.Sprintf(cmd.HelpText))
 	}
-	quickReply(tg, msg, txt)
+	tgp.quickReply(msg, txt)
 }
 
-func aboutHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) aboutHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// Build the help message.
 	txt := usrInfo.Locale.Sprintf(`The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)
 
@@ -122,59 +130,46 @@ Translations provided by:`) + `
 <b>Française</b>: Achorawl
 ` + usrInfo.Locale.Sprintf(`
 This project is open source! Learn more at: github.com/avwuff/furryplansbot`)
-	quickReply(tg, msg, txt)
+	tgp.quickReply(msg, txt)
 }
 
-func unknownHandler(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	_ = quickReply(tg, msg, usrInfo.Locale.Sprintf("I don't understand that command. Send /help for help."))
+func (tgp *TGPlansBot) unknownHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	_ = tgp.quickReply(msg, usrInfo.Locale.Sprintf("I don't understand that command. Send /help for help."))
 }
 
-func initTg() *tgWrapper.Telegram {
-	tg := tgWrapper.New()
-	err := tg.LoadKeyFromFile("token.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = tg.Init()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return tg
-}
-
-func handleUpdate(tg *tgWrapper.Telegram, update tgbotapi.Update) {
+func (tgp *TGPlansBot) handleUpdate(update tgbotapi.Update) {
 
 	// What kind of update is it?
 	if update.Message != nil {
-		handleMsg(tg, update.Message)
+		tgp.handleMsg(update.Message)
 	} else if update.CallbackQuery != nil {
-		handleCallback(tg, update.CallbackQuery)
+		tgp.handleCallback(update.CallbackQuery)
 	} else if update.InlineQuery != nil {
-		handleInline(tg, update.InlineQuery)
+		tgp.handleInline(update.InlineQuery)
 	}
 
 }
 
-func handleMsg(tg *tgWrapper.Telegram, msg *tgbotapi.Message) {
+func (tgp *TGPlansBot) handleMsg(msg *tgbotapi.Message) {
 	// Get the mode the user is in
 	usrInfo := userManager.Get(msg.Chat.ID)
 
 	// Let the command list handler handle it
-	cmds.Process(tg, usrInfo, msg)
+	tgp.cmds.Process(usrInfo, msg)
 }
 
-func handleCallback(tg *tgWrapper.Telegram, callback *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) handleCallback(callback *tgbotapi.CallbackQuery) {
 	// Get the mode the user is in
-	usrInfo := userManager.Get(int64(callback.From.ID))
+	usrInfo := userManager.Get(callback.From.ID)
 
 	// See if this callback is one of the ones we can handle.
-	cmds.ProcessCallback(tg, usrInfo, callback)
+	tgp.cmds.ProcessCallback(usrInfo, callback)
 }
 
-func quickReply(tg *tgWrapper.Telegram, msg *tgbotapi.Message, text string) error {
+func (tgp *TGPlansBot) quickReply(msg *tgbotapi.Message, text string) error {
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, text)
-	mObj.ParseMode = tgWrapper.ParseModeHtml
-	_, err := tg.Send(mObj)
+	mObj.ParseMode = ParseModeHtml
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		return err
 	}

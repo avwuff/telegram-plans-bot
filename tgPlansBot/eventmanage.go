@@ -5,44 +5,43 @@ import (
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strconv"
 )
 
-func initEventCommands(cmds *tgCommands.CommandList) {
+func (tgp *TGPlansBot) initEventCommands() {
 	loc := localizer.FromLanguage("default") // not a real locale
 
 	// General edit commands
-	cmds.Add(tgCommands.Command{Command: "/myevents", Handler: listEvents, HelpText: loc.Sprintf("A list of your upcoming events")})
-	cmds.Add(tgCommands.Command{Command: "/oldevents", Handler: listEventsOld, HelpText: loc.Sprintf("A list of all your events, old and new")})
-	cmds.Add(tgCommands.Command{Command: "/edit", Handler: selectEvent, Underscore: true})
+	tgp.cmds.Add(tgCommands.Command{Command: "/myevents", Handler: tgp.listEvents, HelpText: loc.Sprintf("A list of your upcoming events")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/oldevents", Handler: tgp.listEventsOld, HelpText: loc.Sprintf("A list of all your events, old and new")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/edit", Handler: tgp.selectEvent, Underscore: true})
 
 	// Create commands
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTNAME, Handler: create_SetName})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTDATE, Handler: create_SetDate})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTTIME, Handler: create_SetTime})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTLOCATION, Handler: create_SetLocation})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTNAME, Handler: tgp.create_SetName})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTDATE, Handler: tgp.create_SetDate})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTTIME, Handler: tgp.create_SetTime})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTLOCATION, Handler: tgp.create_SetLocation})
 
 	// Edit commands
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_STRING, Handler: edit_setString})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_NUMBER, Handler: edit_setNumber})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_CHOICE, Handler: edit_setChoice})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_DATE, Handler: edit_setDate})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_TIME, Handler: edit_setTime})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_STRING, Handler: tgp.edit_setString})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_NUMBER, Handler: tgp.edit_setNumber})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_CHOICE, Handler: tgp.edit_setChoice})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_DATE, Handler: tgp.edit_setDate})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_TIME, Handler: tgp.edit_setTime})
 
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_CREATE_EVENTDATE, Handler: create_ClickDate})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_CREATE_EVENTTIME, Handler: create_ClickTime})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_EDIT_DATE, Handler: edit_ClickDate})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_EDIT_TIME, Handler: edit_ClickTime})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "edit", Handler: manage_clickEdit})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_CREATE_EVENTDATE, Handler: tgp.create_ClickDate})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_CREATE_EVENTTIME, Handler: tgp.create_ClickTime})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_EDIT_DATE, Handler: tgp.edit_ClickDate})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_EDIT_TIME, Handler: tgp.edit_ClickTime})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "edit", Handler: tgp.manage_clickEdit})
 }
 
 // eventDetails displays the details about the event to the user.
 // This lets them edit properties of the event, or share it out.
-func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, event dbInterface.DBEvent, topMsg string, editInPlace int, showAdvancedButtons bool) {
+func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64, event dbInterface.DBEvent, topMsg string, editInPlace int, showAdvancedButtons bool) {
 
 	loc := localizer.FromLanguage(event.Language())
 
@@ -76,38 +75,38 @@ func eventDetails(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 	}
 	if editInPlace != 0 {
 		mObj2 := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
-		mObj2.ParseMode = tgWrapper.ParseModeHtml
+		mObj2.ParseMode = ParseModeHtml
 		mObj2.ReplyMarkup = &buttons
 		mObj2.DisableWebPagePreview = true
 		mObj = mObj2
 	} else {
 		mObj2 := tgbotapi.NewMessage(chatId, t)
-		mObj2.ParseMode = tgWrapper.ParseModeHtml
+		mObj2.ParseMode = ParseModeHtml
 		mObj2.ReplyMarkup = buttons
 		mObj2.DisableWebPagePreview = true
 		mObj = mObj2
 	}
 
-	_, err := tg.Request(mObj)
+	_, err := tgp.tg.Request(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // listEvents will list all the events the user has created that are not too far in the past.
-func listEvents(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	listEventsReal(tg, usrInfo, msg, false)
+func (tgp *TGPlansBot) listEvents(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	tgp.listEventsReal(usrInfo, msg, false)
 }
 
 // listEvents will list all the events the user has created that are not too far in the past.
-func listEventsOld(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
-	listEventsReal(tg, usrInfo, msg, true)
+func (tgp *TGPlansBot) listEventsOld(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	tgp.listEventsReal(usrInfo, msg, true)
 }
 
-func listEventsReal(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, includeOld bool) {
-	events, err := db.GetEvents(msg.Chat.ID, includeOld)
+func (tgp *TGPlansBot) listEventsReal(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, includeOld bool) {
+	events, err := tgp.db.GetEvents(msg.Chat.ID, includeOld)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Error listing events: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Error listing events: %v", err))
 		return
 	}
 
@@ -116,28 +115,28 @@ func listEventsReal(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 		t += fmt.Sprintf("/edit_%v - %v\n", event.ID(), event.Name())
 	}
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf("Select an event to edit:\n%v", t))
-	mObj.ParseMode = tgWrapper.ParseModeHtml
-	_, err = tg.Send(mObj)
+	mObj.ParseMode = ParseModeHtml
+	_, err = tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func selectEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) selectEvent(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// Find this event.
 	eventId, err := strconv.Atoi(text)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Unable to parse event ID: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Unable to parse event ID: %v", err))
 		return
 	}
 
 	// Load the details about the event from the database.
-	event, err := db.GetEvent(uint(eventId), msg.Chat.ID)
+	event, err := tgp.db.GetEvent(uint(eventId), msg.Chat.ID)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Event not found"))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Event not found"))
 		return
 	}
 
 	// Display the event information now.
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
 }

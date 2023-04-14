@@ -5,7 +5,6 @@ import (
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
-	"furryplansbot.avbrand.com/tgWrapper"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strconv"
@@ -17,7 +16,7 @@ const POST_PREFIX = "POST:"
 
 // handleInline comes from the user typing @furryplansbot followed by a query
 // Generally this means we want to post the event in a chat.
-func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
+func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 
 	// See what it is they want us to post.
 	if query.Query != "" {
@@ -30,9 +29,9 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 
 			// Find a match for this one.
 			hash := query.Query[len(SHARE_PREFIX):] // strip off the post prefix
-			event, _, err := db.GetEventByHash(hash, saltValue, true)
+			event, _, err := tgp.db.GetEventByHash(hash, tgp.saltValue, true)
 			if err != nil {
-				answerWithList(tg, query, nil)
+				tgp.answerWithList(query, nil)
 				return
 			}
 
@@ -44,13 +43,13 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 			eventId := query.Query[len(POST_PREFIX):] // strip off the post prefix
 			id, err := strconv.Atoi(eventId)
 			if err != nil {
-				answerWithList(tg, query, nil)
+				tgp.answerWithList(query, nil)
 				return
 			}
 
-			event, err := db.GetEvent(uint(id), query.From.ID)
+			event, err := tgp.db.GetEvent(uint(id), query.From.ID)
 			if err != nil {
-				answerWithList(tg, query, nil)
+				tgp.answerWithList(query, nil)
 				return
 			}
 
@@ -59,9 +58,9 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 		} else {
 			// Normal search by text
 			var err error
-			events, err = db.SearchEvents(query.From.ID, query.Query)
+			events, err = tgp.db.SearchEvents(query.From.ID, query.Query)
 			if err != nil {
-				answerWithList(tg, query, nil)
+				tgp.answerWithList(query, nil)
 				return
 			}
 		}
@@ -77,15 +76,15 @@ func handleInline(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery) {
 				fmt.Sprintf("%v%v", POST_PREFIX, event.ID()),
 				fmt.Sprintf("%v - %v", helpers.StripHtmlRegex(event.Name()), loc.FormatDateForLocale(event.DateTime())),
 				"")
-			article.InputMessageContent, article.ReplyMarkup = buildClickableStarter(event, loc)
+			article.InputMessageContent, article.ReplyMarkup = tgp.buildClickableStarter(event, loc)
 			results = append(results, article)
 		}
 
-		answerWithList(tg, query, results)
+		tgp.answerWithList(query, results)
 	}
 }
 
-func buildClickableStarter(event dbInterface.DBEvent, loc *localizer.Localizer) (tgbotapi.InputTextMessageContent, *tgbotapi.InlineKeyboardMarkup) {
+func (tgp *TGPlansBot) buildClickableStarter(event dbInterface.DBEvent, loc *localizer.Localizer) (tgbotapi.InputTextMessageContent, *tgbotapi.InlineKeyboardMarkup) {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
 	row := make([]tgbotapi.InlineKeyboardButton, 1)
@@ -97,12 +96,12 @@ func buildClickableStarter(event dbInterface.DBEvent, loc *localizer.Localizer) 
 
 	return tgbotapi.InputTextMessageContent{
 		Text:                  fmt.Sprintf("%s\n\n%s", event.Name(), loc.Sprintf("Click the button below to activate this event.")),
-		ParseMode:             tgWrapper.ParseModeHtml,
+		ParseMode:             ParseModeHtml,
 		DisableWebPagePreview: true,
 	}, &keyb
 }
 
-func answerWithList(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery, results []interface{}) {
+func (tgp *TGPlansBot) answerWithList(query *tgbotapi.InlineQuery, results []interface{}) {
 
 	inlineConf := tgbotapi.InlineConfig{
 		InlineQueryID: query.ID,
@@ -111,7 +110,7 @@ func answerWithList(tg *tgWrapper.Telegram, query *tgbotapi.InlineQuery, results
 		Results:       results,
 	}
 
-	if _, err := tg.AnswerInlineQuery(inlineConf); err != nil {
+	if _, err := tgp.tg.AnswerInlineQuery(inlineConf); err != nil {
 		log.Println(err)
 	}
 }

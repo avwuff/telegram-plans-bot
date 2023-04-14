@@ -6,7 +6,6 @@ import (
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
@@ -15,23 +14,23 @@ import (
 	"strings"
 )
 
-func initUICommands(cmds *tgCommands.CommandList) {
+func (tgp *TGPlansBot) initUICommands() {
 
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "use", Public: true, Handler: ui_Attending})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "attending", Public: true, Handler: ui_Attending})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "maybe", Public: true, Handler: ui_Attending})
-	cmds.AddCB(tgCommands.Callback{DataPrefix: "cancel", Public: true, Handler: ui_Attending})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "use", Public: true, Handler: tgp.ui_Attending})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "attending", Public: true, Handler: tgp.ui_Attending})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "maybe", Public: true, Handler: tgp.ui_Attending})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "cancel", Public: true, Handler: tgp.ui_Attending})
 
 }
 
-func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// note that usrInfo may represent a user who has never used the bot.
 	data := strings.Split(cb.Data, ":")
 	eventId, err := strconv.Atoi(data[1])
 	if err != nil {
 		return
 	}
-	event, err := db.GetEvent(uint(eventId), -1)
+	event, err := tgp.db.GetEvent(uint(eventId), -1)
 
 	if err != nil {
 		return
@@ -84,7 +83,7 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 		txt = loc.Sprintf("Alright, you've been marked as maybe.")
 	case dbInterface.ATTEND_FULL:
 		txt = loc.Sprintf("Sorry, this event is currently full!")
-		answerCallback(tg, cb, txt)
+		tgp.answerCallback(cb, txt)
 		return
 	case dbInterface.ATTEND_REMOVED:
 		txt = loc.Sprintf("Alright, you've been marked as unable to attend.")
@@ -92,19 +91,19 @@ func ui_Attending(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgb
 		txt = loc.Sprintf("Event is ready to be used!")
 	default:
 		txt = loc.Sprintf("A general error occurred.") // Can't use the CONST here because it crashes GOTEXT.
-		answerCallback(tg, cb, txt)
+		tgp.answerCallback(cb, txt)
 		return
 	}
 	// Answer the callback in a Gofunc
-	go answerCallback(tg, cb, txt)
-	updateEventPosting(tg, event, cb.InlineMessageID)
+	go tgp.answerCallback(cb, txt)
+	tgp.updateEventPosting(event, cb.InlineMessageID)
 
 	// Also update the event in all the places
-	updateEventUIAllPostings(tg, event)
+	tgp.updateEventUIAllPostings(event)
 }
 
 // Every time the event UI needs to be updated, do it in all the places.
-func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent) {
+func (tgp *TGPlansBot) updateEventUIAllPostings(event dbInterface.DBEvent) {
 
 	postings, err := event.Postings()
 	if err != nil {
@@ -116,25 +115,25 @@ func updateEventUIAllPostings(tg *tgWrapper.Telegram, event dbInterface.DBEvent)
 		go func(msgId string) {
 
 			// Make sure this one isn't in the Retry After queue.
-			if !inQueue(msgId) {
-				updateEventPosting(tg, event, msgId)
+			if !tgp.inQueue(msgId) {
+				tgp.updateEventPosting(event, msgId)
 			}
 		}(postings[i])
 	}
 
 }
 
-func updateEventPosting(tg *tgWrapper.Telegram, event dbInterface.DBEvent, msgId string) {
+func (tgp *TGPlansBot) updateEventPosting(event dbInterface.DBEvent, msgId string) {
 	// Use the localizer from the event.
 	loc := localizer.FromLanguage(event.Language())
 
 	// Update this one.
-	retryAfter, err := makeEventUI(tg, 0, event, loc, msgId)
+	retryAfter, err := tgp.makeEventUI(0, event, loc, msgId)
 	if err != nil {
 		// Was this a "too many requests" message?
 		if strings.Contains(err.Error(), "Too Many Requests") {
 			// Retry this one after this time.
-			addToQueue(tg, event, msgId, retryAfter)
+			tgp.addToQueue(event, msgId, retryAfter)
 		}
 
 		if strings.Contains(err.Error(), "MESSAGE_ID_INVALID") {
@@ -145,18 +144,18 @@ func updateEventPosting(tg *tgWrapper.Telegram, event dbInterface.DBEvent, msgId
 	}
 }
 
-func answerCallback(tg *tgWrapper.Telegram, query *tgbotapi.CallbackQuery, Text string) {
+func (tgp *TGPlansBot) answerCallback(query *tgbotapi.CallbackQuery, Text string) {
 	callbackConfg := tgbotapi.CallbackConfig{
 		CallbackQueryID: query.ID,
 		Text:            Text,
 	}
-	if _, err := tg.AnswerCallbackQuery(callbackConfg); err != nil {
+	if _, err := tgp.tg.AnswerCallbackQuery(callbackConfg); err != nil {
 		log.Println(err)
 	}
 }
 
 // makeEventUI displays the main event UI.
-func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) (int, error) {
+func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) (int, error) {
 
 	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
 
@@ -259,16 +258,16 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent
 
 	var mObj tgbotapi.Chattable
 
-	buttons := eventUIButtons(event, loc)
+	buttons := tgp.eventUIButtons(event, loc)
 
 	mObj2 := tgbotapi.NewEditMessageText(chatId, 0, t)
 	mObj2.InlineMessageID = inlineId
-	mObj2.ParseMode = tgWrapper.ParseModeHtml
+	mObj2.ParseMode = ParseModeHtml
 	mObj2.ReplyMarkup = &buttons
 	mObj2.DisableWebPagePreview = true
 	mObj = mObj2
 
-	rsp, err := tg.Request(mObj)
+	rsp, err := tgp.tg.Request(mObj)
 	if err != nil {
 		if rsp.Parameters != nil {
 			return rsp.Parameters.RetryAfter, err
@@ -279,7 +278,7 @@ func makeEventUI(tg *tgWrapper.Telegram, chatId int64, event dbInterface.DBEvent
 }
 
 // eventEditButtons creates the buttons that help you edit an event.
-func eventUIButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
+func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
 
@@ -316,7 +315,7 @@ func eventUIButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotap
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	// TODO: This URL needs to be configurable
-	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", helpers.CalenFeedMD5(saltValue, int64(event.ID())))
+	addUrl := fmt.Sprintf("https://plansbot.avbrand.com/add/%v.html", helpers.CalenFeedMD5(tgp.saltValue, int64(event.ID())))
 	row = append(row, tgbotapi.InlineKeyboardButton{
 		Text: loc.Sprintf("📆 Add to Calendar"),
 		URL:  &addUrl,
@@ -326,7 +325,7 @@ func eventUIButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotap
 
 	if event.SharingAllowed() {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
-		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, helpers.CalenFeedMD5(saltValue, int64(event.ID()))) // Example: POST:1234
+		shareButton := fmt.Sprintf("%v%v", SHARE_PREFIX, helpers.CalenFeedMD5(tgp.saltValue, int64(event.ID()))) // Example: POST:1234
 		row = append(row, tgbotapi.InlineKeyboardButton{
 			Text:              loc.Sprintf("📩 Share to another chat..."),
 			SwitchInlineQuery: &shareButton,

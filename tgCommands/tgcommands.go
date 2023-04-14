@@ -1,14 +1,13 @@
 package tgCommands
 
 import (
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"strings"
 )
 
-type CommandHandler func(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string)
-type CallbackHandler func(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery)
+type CommandHandler func(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string)
+type CallbackHandler func(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery)
 
 type Command struct {
 	// The text of the command
@@ -76,7 +75,7 @@ func (c *CommandList) BaseCommandList() []Command {
 	return out
 }
 
-func (c *CommandList) Process(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
+func (c *CommandList) Process(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 	// Split the msg by spaces
 	if msg.Text == "" {
 		return
@@ -93,30 +92,30 @@ func (c *CommandList) Process(tg *tgWrapper.Telegram, usrInfo *userManager.UserI
 		// Normal commands
 		if !cmd.Underscore {
 			if (cmd.Command == sp[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode) {
-				cmd.Handler(tg, usrInfo, msg, text)
+				cmd.Handler(usrInfo, msg, text)
 				return
 			}
 		} else {
 			// underscore command
 			if (cmd.Command == sp2[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode) {
-				cmd.Handler(tg, usrInfo, msg, text2)
+				cmd.Handler(usrInfo, msg, text2)
 				return
 			}
 		}
 
 		// Full text commands
 		if (cmd.Command == "") && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode) {
-			cmd.Handler(tg, usrInfo, msg, msg.Text)
+			cmd.Handler(usrInfo, msg, msg.Text)
 			return
 		}
 	}
 
 	if c.unknown != nil {
-		c.unknown(tg, usrInfo, msg, msg.Text)
+		c.unknown(usrInfo, msg, msg.Text)
 	}
 }
 
-func (c *CommandList) ProcessCallback(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (c *CommandList) ProcessCallback(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// Split the msg by spaces
 	if cb.Data == "" {
 		return
@@ -127,7 +126,7 @@ func (c *CommandList) ProcessCallback(tg *tgWrapper.Telegram, usrInfo *userManag
 	for _, cmd := range c.cblist {
 		// Normal commands
 		if (cmd.DataPrefix == sp[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode || cmd.Public) {
-			cmd.Handler(tg, usrInfo, cb)
+			cmd.Handler(usrInfo, cb)
 			return
 		}
 	}

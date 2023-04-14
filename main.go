@@ -8,6 +8,7 @@ import (
 	_ "furryplansbot.avbrand.com/internal/translations"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgPlansBot"
+	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	"furryplansbot.avbrand.com/webserver"
 	"io"
@@ -49,7 +50,12 @@ func main() {
 	userManager.Init(db)
 
 	log.Println("Starting telegram bot...")
-	go tgPlansBot.StartTG(ctx, string(saltValue), dbMain)
+	tgBot := initTg()
+
+	// Create our telegram plans bot item
+	tgPlans := &tgPlansBot.TGPlansBot{}
+
+	go tgPlans.StartTG(ctx, string(saltValue), dbMain, tgBot)
 
 	// Wait until the application exits now
 	log.Println("Listening for updates.")
@@ -57,6 +63,19 @@ func main() {
 	log.Println("Starting web server")
 	webserver.StartServer(string(saltValue), db)
 
+}
+
+func initTg() tgPlansBot.TelegramBot {
+	tg := tgWrapper.New()
+	err := tg.LoadKeyFromFile("token.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = tg.Init()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return tg
 }
 
 func setLog() {

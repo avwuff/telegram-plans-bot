@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
@@ -12,15 +11,15 @@ import (
 	"time"
 )
 
-func initSetupCommands(cmds *tgCommands.CommandList) {
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_LANGUAGE, Handler: setup_setLanguage})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_TIMEZONE, Handler: setup_setTimeZone})
-	cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_POLICY, Handler: setup_setPolicy})
+func (tgp *TGPlansBot) initSetupCommands() {
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_LANGUAGE, Handler: tgp.setup_setLanguage})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_TIMEZONE, Handler: tgp.setup_setTimeZone})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_POLICY, Handler: tgp.setup_setPolicy})
 
 }
 
 // Handling of the setup process.
-func startSetup(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
+func (tgp *TGPlansBot) startSetup(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 
 	usrInfo.SetMode(userManager.MODE_SETUP_LANGUAGE)
 
@@ -28,33 +27,33 @@ func startSetup(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbo
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, "Hello!  I'm the Furry Plans Bot, version 2.0!\n\nI see this is your first time.  Let me take you through the setup process first.\n\nWhat language do you speak?")
 	mObj.ReplyMarkup = localizer.GetLanguageChoices()
 
-	_, err := tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func setup_setLanguage(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) setup_setLanguage(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// See if this is one of the languages we support.
 	lang, err := localizer.FromLanguageName(text)
 	if err != nil {
-		quickReply(tg, msg, "Language not found")
+		tgp.quickReply(msg, "Language not found")
 		return
 	}
 
 	// Set the language.
 	usrInfo.Prefs.Language = lang
-	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
+	tgp.db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "language")
 
 	// Replace the localizer since the language has been changed
 	usrInfo.Locale = localizer.FromLanguage(lang)
 
 	// Go on to the next part.
-	setup_askTimeZone(tg, usrInfo, msg)
+	tgp.setup_askTimeZone(usrInfo, msg)
 }
 
-func setup_askTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
+func (tgp *TGPlansBot) setup_askTimeZone(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 
 	usrInfo.SetMode(userManager.MODE_SETUP_TIMEZONE)
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf("In which time zone do you live?"))
@@ -74,13 +73,13 @@ func setup_askTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, ms
 		Keyboard:       keyboard,
 	}
 
-	_, err := tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func setup_setTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) setup_setTimeZone(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// Get the text before the ":"
 	s := strings.Split(text, ":")
@@ -88,19 +87,19 @@ func setup_setTimeZone(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, ms
 	tzs := localizer.GetTimeZoneChoicesMap()
 	_, ok := tzs[tz]
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Specified Time Zone not found."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Specified Time Zone not found."))
 		return
 	}
 	// Set the language.
 	usrInfo.Prefs.TimeZone = tz
-	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "time_zone")
+	tgp.db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "time_zone")
 
 	// Go on to the next part.
-	setup_askPolicy(tg, usrInfo, msg)
+	tgp.setup_askPolicy(usrInfo, msg)
 
 }
 
-func setup_askPolicy(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
+func (tgp *TGPlansBot) setup_askPolicy(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 
 	usrInfo.SetMode(userManager.MODE_SETUP_POLICY)
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf(`Before you continue, please read and accept our privacy policy.
@@ -109,24 +108,24 @@ https://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29
 
 You'll find the instructions on how to continue at the bottom of that page.`))
 	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false)
-	_, err := tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func setup_setPolicy(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) setup_setPolicy(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	if strings.ToLower(text) != "i accept" {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Please check the policy again to see how to finish."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Please check the policy again to see how to finish."))
 		return
 	}
 
 	usrInfo.Prefs.SetupComplete = true
-	db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "setup_complete")
+	tgp.db.SavePrefs(msg.Chat.ID, usrInfo.Prefs, "setup_complete")
 
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 
 	// All done!
-	quickReply(tg, msg, usrInfo.Locale.Sprintf("Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans."))
+	tgp.quickReply(msg, usrInfo.Locale.Sprintf("Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans."))
 }

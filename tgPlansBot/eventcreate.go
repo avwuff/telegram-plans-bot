@@ -2,7 +2,6 @@ package tgPlansBot
 
 import (
 	"furryplansbot.avbrand.com/helpers"
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
@@ -21,7 +20,7 @@ const (
 )
 
 // create_SetName is after the user has responded with the name of the event.
-func create_SetName(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) create_SetName(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// Initial date, set to NOW in the user's time zone.
 	selDate := time.Now().In(usrInfo.TimeZone)
 
@@ -32,18 +31,18 @@ func create_SetName(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	usrInfo.SetMode(userManager.MODE_CREATE_EVENTDATE)
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf(CALEN_DATE_CHOOSE_TEXT))
 	mObj.ReplyMarkup = createCalendar(selDate, usrInfo.Locale, selDate)
-	_, err := tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // DATE SELECTION
-func create_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) create_ClickDate(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// Ok, which date element did they click?
 	// We update the message as needed.
 
-	edit := tgbotapi.NewEditMessageText(int64(cb.From.ID), cb.Message.MessageID, CALEN_DATE_CHOOSE_TEXT)
+	edit := tgbotapi.NewEditMessageText(cb.From.ID, cb.Message.MessageID, CALEN_DATE_CHOOSE_TEXT)
 	editDate, ok := usrInfo.GetData(CREATE_DATE).(time.Time)
 	if !ok {
 		editDate = time.Now()
@@ -60,16 +59,16 @@ func create_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	} else {
 		// Move on to the next step.
 		edit.Text = usrInfo.Locale.Sprintf("Date selected: %v", usrInfo.Locale.FormatDateForLocale(editDate))
-		createSetDateAndContinue(tg, usrInfo, cb.Message.Chat.ID, editDate)
+		tgp.createSetDateAndContinue(usrInfo, cb.Message.Chat.ID, editDate)
 	}
 
-	_, err := tg.Request(edit)
+	_, err := tgp.tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func create_SetDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) create_SetDate(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	selDate, ok := usrInfo.GetData(CREATE_DATE).(time.Time)
 	if !ok {
 		selDate = time.Now()
@@ -77,14 +76,14 @@ func create_SetDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// See if they spoke a date.
 	selDate, err := time.ParseInLocation(layoutISO, text, selDate.Location())
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Could not parse the date you provided. Please send it in the format YYYY-MM-DD."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Could not parse the date you provided. Please send it in the format YYYY-MM-DD."))
 		return
 	}
 
-	createSetDateAndContinue(tg, usrInfo, msg.Chat.ID, selDate)
+	tgp.createSetDateAndContinue(usrInfo, msg.Chat.ID, selDate)
 }
 
-func createSetDateAndContinue(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, selDate time.Time) {
+func (tgp *TGPlansBot) createSetDateAndContinue(usrInfo *userManager.UserInfo, chatId int64, selDate time.Time) {
 	usrInfo.SetData(CREATE_DATE, selDate)
 	usrInfo.SetData(CREATE_TIME, time.Now().In(usrInfo.TimeZone)) // only the TIME part is used.
 
@@ -92,7 +91,7 @@ func createSetDateAndContinue(tg *tgWrapper.Telegram, usrInfo *userManager.UserI
 	usrInfo.SetMode(userManager.MODE_CREATE_EVENTTIME)
 	mObj := tgbotapi.NewMessage(chatId, usrInfo.Locale.Sprintf(CALEN_TIME_CHOOSE_TEXT))
 	mObj.ReplyMarkup = createTimeSelection(time.Now(), usrInfo.Locale)
-	_, err := tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
@@ -100,11 +99,11 @@ func createSetDateAndContinue(tg *tgWrapper.Telegram, usrInfo *userManager.UserI
 }
 
 // TIME SELECTION
-func create_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) create_ClickTime(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// Ok, which time element did they click?
 	// We update the message as needed.
 
-	edit := tgbotapi.NewEditMessageText(int64(cb.From.ID), cb.Message.MessageID, CALEN_TIME_CHOOSE_TEXT)
+	edit := tgbotapi.NewEditMessageText(cb.From.ID, cb.Message.MessageID, CALEN_TIME_CHOOSE_TEXT)
 	editTime, ok := usrInfo.GetData(CREATE_TIME).(time.Time)
 	if !ok {
 		editTime = time.Now()
@@ -121,16 +120,16 @@ func create_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	} else {
 		// Move on to the next step.
 		edit.Text = usrInfo.Locale.Sprintf("Time selected: %v", usrInfo.Locale.FormatTimeForLocale(editTime))
-		createSetTimeAndContinue(tg, usrInfo, cb.Message.Chat.ID, editTime)
+		tgp.createSetTimeAndContinue(usrInfo, cb.Message.Chat.ID, editTime)
 	}
 
-	_, err := tg.Request(edit)
+	_, err := tgp.tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
-func create_SetTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) create_SetTime(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	selDate, ok := usrInfo.GetData(CREATE_DATE).(time.Time)
 	if !ok {
 		selDate = time.Now()
@@ -138,14 +137,14 @@ func create_SetTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// See if they spoke a time.
 	selTime, err := time.ParseInLocation("15:04", text, selDate.Location())
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Could not parse the time you provided. Please send it in the format 22:03."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Could not parse the time you provided. Please send it in the format 22:03."))
 		return
 	}
 
-	createSetTimeAndContinue(tg, usrInfo, msg.Chat.ID, selTime)
+	tgp.createSetTimeAndContinue(usrInfo, msg.Chat.ID, selTime)
 }
 
-func createSetTimeAndContinue(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, selTime time.Time) {
+func (tgp *TGPlansBot) createSetTimeAndContinue(usrInfo *userManager.UserInfo, chatId int64, selTime time.Time) {
 	// Combine the date and time now
 	selDate := usrInfo.GetData(CREATE_DATE).(time.Time)
 	selDate = time.Date(selDate.Year(), selDate.Month(), selDate.Day(), selTime.Hour(), selTime.Minute(), 0, 0, selDate.Location())
@@ -154,34 +153,34 @@ func createSetTimeAndContinue(tg *tgWrapper.Telegram, usrInfo *userManager.UserI
 	// Move to the time selection part.
 	usrInfo.SetMode(userManager.MODE_CREATE_EVENTLOCATION)
 	mObj := tgbotapi.NewMessage(chatId, usrInfo.Locale.Sprintf(CHOOSE_LOCATION))
-	_, err := tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // LOCATION
-func create_SetLocation(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) create_SetLocation(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// Store the location
 	selDate := usrInfo.GetData(CREATE_DATE).(time.Time)
 	selName := usrInfo.GetData(CREATE_NAME).(string)
 
 	// Now finish the event
-	eventId, err := createNewEvent(tg, usrInfo, msg.Chat.ID, helpers.HtmlEntities(getOwnerName(msg.Chat)), selName, selDate, helpers.ConvertEntitiesToHTML(text, msg.Entities))
+	eventId, err := tgp.createNewEvent(usrInfo, msg.Chat.ID, helpers.HtmlEntities(getOwnerName(msg.Chat)), selName, selDate, helpers.ConvertEntitiesToHTML(text, msg.Entities))
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("error creating event: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error creating event: %v", err))
 		return
 	}
 
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 
 	// Load the details about the event from the database.
-	event, err := db.GetEvent(eventId, msg.Chat.ID)
+	event, err := tgp.db.GetEvent(eventId, msg.Chat.ID)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Event not found"))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Event not found"))
 		return
 	}
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, usrInfo.Locale.Sprintf("Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n"), 0, false)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, usrInfo.Locale.Sprintf("Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n"), 0, false)
 }
 
 func getOwnerName(chat *tgbotapi.Chat) string {
@@ -191,7 +190,7 @@ func getOwnerName(chat *tgbotapi.Chat) string {
 	return strings.TrimSpace(chat.FirstName + " " + chat.LastName)
 }
 
-func createNewEvent(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, ownerName string, name string, date time.Time, loc string) (uint, error) {
+func (tgp *TGPlansBot) createNewEvent(usrInfo *userManager.UserInfo, chatId int64, ownerName string, name string, date time.Time, loc string) (uint, error) {
 	// Add this event to the database.
-	return db.CreateEvent(chatId, name, date, date.Location().String(), ownerName, loc, usrInfo.Prefs.Language)
+	return tgp.db.CreateEvent(chatId, name, date, date.Location().String(), ownerName, loc, usrInfo.Prefs.Language)
 }

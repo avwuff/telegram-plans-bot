@@ -4,7 +4,6 @@ import (
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
-	"furryplansbot.avbrand.com/tgWrapper"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
@@ -31,7 +30,7 @@ type setBoolFunc func(t bool) error
 type setTimeFunc func(t time.Time) error
 
 // This handles one of the callback functions for when an 'edit' button is clicked.
-func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 
 	// Format is: //edit:<id>:item_to_edit
 	data := strings.Split(cb.Data, ":")
@@ -44,7 +43,7 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 		return
 	}
 
-	event, err := db.GetEvent(uint(eventId), cb.From.ID)
+	event, err := tgp.db.GetEvent(uint(eventId), cb.From.ID)
 	if err != nil {
 		return
 	}
@@ -56,60 +55,60 @@ func manage_clickEdit(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb 
 	usrInfo.SetData(EDIT_EVENT, event)
 
 	// What thing do they want to edit?
-	go answerCallback(tg, cb, "")
+	go tgp.answerCallback(cb, "")
 
 	// SIMPLE STRING EDIT
 	switch data[2] {
 	case "name":
-		editStringItem(tg, usrInfo, cb.From.ID, event.Name(), event.SetName, loc.Sprintf("Specify the name of the event."), false)
+		tgp.editStringItem(usrInfo, cb.From.ID, event.Name(), event.SetName, loc.Sprintf("Specify the name of the event."), false)
 	case "location":
 		// BUG: This should really be the same text as the const CHOOSE_LOCATION, but it makes GOTEXT crash when you use the const here.
 		// Go figure.
 		msg := loc.Sprintf("Where does the event take place?  Specify the name or address as you might type into Google Maps.")
-		editStringItem(tg, usrInfo, cb.From.ID, event.Location(), event.SetLocation, msg, false)
+		tgp.editStringItem(usrInfo, cb.From.ID, event.Location(), event.SetLocation, msg, false)
 	case "hostedby":
-		editStringItem(tg, usrInfo, cb.From.ID, event.OwnerName(), event.SetOwnerName, loc.Sprintf("Specify the name of the person hosting the event."), false)
+		tgp.editStringItem(usrInfo, cb.From.ID, event.OwnerName(), event.SetOwnerName, loc.Sprintf("Specify the name of the person hosting the event."), false)
 	case "notes":
-		editStringItem(tg, usrInfo, cb.From.ID, event.Notes(), event.SetNotes, loc.Sprintf("Specify any additional notes you'd like to show about the event."), true)
+		tgp.editStringItem(usrInfo, cb.From.ID, event.Notes(), event.SetNotes, loc.Sprintf("Specify any additional notes you'd like to show about the event."), true)
 
 	// SPECIAL EDITORS
 	case "date":
-		editDateItem(tg, usrInfo, cb.From.ID, event.DateTime(), event.SetDateTime, loc.Sprintf("Specify the date on which this event takes place:"), loc)
+		tgp.editDateItem(usrInfo, cb.From.ID, event.DateTime(), event.SetDateTime, loc.Sprintf("Specify the date on which this event takes place:"), loc)
 	case "time":
-		editTimeItem(tg, usrInfo, cb.From.ID, event.DateTime(), event.SetDateTime, loc.Sprintf("Specify the time at which this event takes place:"), loc)
+		tgp.editTimeItem(usrInfo, cb.From.ID, event.DateTime(), event.SetDateTime, loc.Sprintf("Specify the time at which this event takes place:"), loc)
 
 	// SIMPLE INTEGER
 	case "maxattend":
-		editNumberItem(tg, usrInfo, cb.From.ID, event.MaxAttendees(), event.SetMaxAttendees, loc.Sprintf("Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0."))
+		tgp.editNumberItem(usrInfo, cb.From.ID, event.MaxAttendees(), event.SetMaxAttendees, loc.Sprintf("Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0."))
 
 	// CHOICE
 	case "language":
-		editChoiceItem(tg, usrInfo, cb.From.ID, event.SetLanguage, loc.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesList())
+		tgp.editChoiceItem(usrInfo, cb.From.ID, event.SetLanguage, loc.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesList())
 	case "timezone":
-		editChoiceItem(tg, usrInfo, cb.From.ID, event.SetTimeZone, loc.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesList())
+		tgp.editChoiceItem(usrInfo, cb.From.ID, event.SetTimeZone, loc.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesList())
 
 	// TOGGLES
 	case "sharing":
-		toggleItem(tg, usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event)
+		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event)
 	case "setmaybe":
-		toggleItem(tg, usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event)
+		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event)
 	case "suitwalk":
-		toggleItem(tg, usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event)
+		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event)
 
 	// COMMANDS
 	case "advanced":
 		// Show the advanced options
-		showAdvancedPanel(tg, usrInfo, cb, event)
+		tgp.showAdvancedPanel(usrInfo, cb, event)
 	case "back":
 		// Just go back to the main panel
-		eventDetails(tg, usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
+		tgp.eventDetails(usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
 	}
 
 }
 
 // TIME SELECTION
 // editTimeItem displays the time selector.
-func editTimeItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem time.Time, SetFunc setTimeFunc, prompt string, loc *localizer.Localizer) {
+func (tgp *TGPlansBot) editTimeItem(usrInfo *userManager.UserInfo, chatId int64, EditItem time.Time, SetFunc setTimeFunc, prompt string, loc *localizer.Localizer) {
 	// Store a pointer to the string we are trying to set.
 	tempDate := &EditItem
 	usrInfo.SetData(EDIT_EVENTDATE, tempDate)
@@ -120,28 +119,28 @@ func editTimeItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)
 	mObj.ReplyMarkup = createTimeSelection(EditItem, loc)
-	_, _ = tg.Send(mObj)
+	_, _ = tgp.tg.Send(mObj)
 }
 
-func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) edit_ClickTime(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// Ok, which time element did they click?
 	// We update the message as needed.
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf(GENERAL_ERROR))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 	editTime, ok := usrInfo.GetData(EDIT_EVENTDATE).(*time.Time)
 	if !ok {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf(GENERAL_ERROR))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setTimeFunc)
 	if !ok {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf(GENERAL_ERROR))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 
@@ -163,44 +162,44 @@ func edit_ClickTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		err := setFunc(*editTime)
 		if err != nil {
 			mObj := tgbotapi.NewMessage(cb.From.ID, loc.Sprintf("error updating event: %v", err))
-			_, _ = tg.Send(mObj)
+			_, _ = tgp.tg.Send(mObj)
 			return
 		}
 
 		// switch back to normal mode and display the event details
 		usrInfo.SetMode(userManager.MODE_DEFAULT)
-		eventDetails(tg, usrInfo, cb.From.ID, event, "", 0, false)
-		updateEventUIAllPostings(tg, event)
+		tgp.eventDetails(usrInfo, cb.From.ID, event, "", 0, false)
+		tgp.updateEventUIAllPostings(event)
 	}
 
-	_, err := tg.Request(edit)
+	_, err := tgp.tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // Called from when the mode above is finished
-func edit_setTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) edit_setTime(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 	// See if we are in a valid mode.
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	editTime, ok := usrInfo.GetData(EDIT_EVENTDATE).(*time.Time)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setTimeFunc)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 
 	selTime, err := time.ParseInLocation("15:04", text, editTime.Location())
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Could not parse the time you provided. Please send it in the format 22:03."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Could not parse the time you provided. Please send it in the format 22:03."))
 		return
 	}
 
@@ -210,18 +209,18 @@ func edit_setTime(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// Save the changes to the string.
 	err = setFunc(*editTime)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
 	}
 
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
 }
 
 // editDateItem displays the date select calendar.
-func editDateItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem time.Time, SetFunc setTimeFunc, prompt string, loc *localizer.Localizer) {
+func (tgp *TGPlansBot) editDateItem(usrInfo *userManager.UserInfo, chatId int64, EditItem time.Time, SetFunc setTimeFunc, prompt string, loc *localizer.Localizer) {
 	// Store a pointer to the string we are trying to set.
 	tempDate := &EditItem
 	usrInfo.SetData(EDIT_EVENTDATE, tempDate)
@@ -232,30 +231,30 @@ func editDateItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId 
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)
 	mObj.ReplyMarkup = createCalendar(EditItem, loc, EditItem)
-	_, _ = tg.Send(mObj)
+	_, _ = tgp.tg.Send(mObj)
 }
 
 // DATE SELECTION
-func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+func (tgp *TGPlansBot) edit_ClickDate(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// Ok, which date element did they click?
 	// We update the message as needed.
 
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf(GENERAL_ERROR))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 	editDate, ok := usrInfo.GetData(EDIT_EVENTDATE).(*time.Time)
 	if !ok {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf(GENERAL_ERROR))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setTimeFunc)
 	if !ok {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf(GENERAL_ERROR))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 
@@ -277,45 +276,45 @@ func edit_ClickDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *t
 		err := setFunc(*editDate)
 		if err != nil {
 			mObj := tgbotapi.NewMessage(cb.From.ID, loc.Sprintf("error updating event: %v", err))
-			_, _ = tg.Send(mObj)
+			_, _ = tgp.tg.Send(mObj)
 			return
 		}
 
 		// switch back to normal mode and display the event details
 		usrInfo.SetMode(userManager.MODE_DEFAULT)
-		eventDetails(tg, usrInfo, cb.From.ID, event, "", 0, false)
-		updateEventUIAllPostings(tg, event)
+		tgp.eventDetails(usrInfo, cb.From.ID, event, "", 0, false)
+		tgp.updateEventUIAllPostings(event)
 	}
-	_, err := tg.Request(edit)
+	_, err := tgp.tg.Request(edit)
 	if err != nil {
 		log.Println(err)
 	}
 }
 
 // Called from when the mode above is finished
-func edit_setDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) edit_setDate(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// See if we are in a valid mode.
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 
 	editDate, ok := usrInfo.GetData(EDIT_EVENTDATE).(*time.Time)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setTimeFunc)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 
 	selDate, err := time.ParseInLocation(layoutISO, text, editDate.Location())
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Could not parse the date you provided. Please send it in the format YYYY-MM-DD."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Could not parse the date you provided. Please send it in the format YYYY-MM-DD."))
 		return
 	}
 
@@ -325,14 +324,14 @@ func edit_setDate(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tg
 	// Save the changes to the string.
 	err = setFunc(*editDate)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
 	}
 
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
 }
 
 func changeJustDate(fullDate time.Time, newDate time.Time) time.Time {
@@ -342,27 +341,27 @@ func changeJustTime(fullDate time.Time, newDate time.Time) time.Time {
 	return time.Date(fullDate.Year(), fullDate.Month(), fullDate.Day(), newDate.Hour(), newDate.Minute(), newDate.Second(), 0, fullDate.Location())
 }
 
-func showAdvancedPanel(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, event dbInterface.DBEvent) {
+func (tgp *TGPlansBot) showAdvancedPanel(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, event dbInterface.DBEvent) {
 
-	eventDetails(tg, usrInfo, cb.From.ID, event, "", cb.Message.MessageID, true)
+	tgp.eventDetails(usrInfo, cb.From.ID, event, "", cb.Message.MessageID, true)
 
 }
 
-func toggleItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, value bool, SetFunc setBoolFunc, event dbInterface.DBEvent) {
+func (tgp *TGPlansBot) toggleItem(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, value bool, SetFunc setBoolFunc, event dbInterface.DBEvent) {
 
 	// Save the changes
 	err := SetFunc(!value)
 	if err != nil {
 		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf("error updating event: %v", err))
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 		return
 	}
 
-	eventDetails(tg, usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
-	updateEventUIAllPostings(tg, event)
+	tgp.eventDetails(usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
+	tgp.updateEventUIAllPostings(event)
 }
 
-func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, SetFunc setStringFunc, prompt string, choices []helpers.Tuple) {
+func (tgp *TGPlansBot) editChoiceItem(usrInfo *userManager.UserInfo, chatId int64, SetFunc setStringFunc, prompt string, choices []helpers.Tuple) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTCHOICES, choices)
 	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
@@ -386,27 +385,27 @@ func editChoiceItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatI
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)
 	mObj.ReplyMarkup = choiceKeyboard
-	_, _ = tg.Send(mObj)
+	_, _ = tgp.tg.Send(mObj)
 }
 
 // Called from when the mode above is finished
-func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) edit_setChoice(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// See if we are in a valid mode.
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setStringFunc)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	// Get the original list of choices
 	choices, ok := usrInfo.GetData(EDIT_EVENTCHOICES).([]helpers.Tuple)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 
@@ -420,24 +419,24 @@ func edit_setChoice(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	}
 
 	if found == "" {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("The value you provided is not one of the choices."))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("The value you provided is not one of the choices."))
 		return
 	}
 
 	err := setFunc(found)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
 	}
 
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
 }
 
 // editStringItem puts them into a mode where they are editing a text item
-func editStringItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem string, SetFunc setStringFunc, prompt string, sendExisting bool) {
+func (tgp *TGPlansBot) editStringItem(usrInfo *userManager.UserInfo, chatId int64, EditItem string, SetFunc setStringFunc, prompt string, sendExisting bool) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
 
@@ -447,28 +446,28 @@ func editStringItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatI
 	// Optionally this function can also send the existing value so the use can copy it easily.
 	if sendExisting && EditItem != "" {
 		mObj := tgbotapi.NewMessage(chatId, EditItem)
-		mObj.ParseMode = tgWrapper.ParseModeHtml
+		mObj.ParseMode = ParseModeHtml
 		mObj.DisableWebPagePreview = true
-		_, _ = tg.Send(mObj)
+		_, _ = tgp.tg.Send(mObj)
 	}
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)
 	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around
-	_, _ = tg.Send(mObj)
+	_, _ = tgp.tg.Send(mObj)
 }
 
 // Called from when the mode above is finished
-func edit_setString(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) edit_setString(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// See if we are in a valid mode.
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setStringFunc)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 
@@ -477,18 +476,18 @@ func edit_setString(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *
 	// Set the string to this value.  This should update it in the struct.
 	err := setFunc(htmlText)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
 	}
 
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
 }
 
 // editNumberItem puts them into a mode where they are editing a number item
-func editNumberItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatId int64, EditItem int, SetFunc setIntFunc, prompt string) {
+func (tgp *TGPlansBot) editNumberItem(usrInfo *userManager.UserInfo, chatId int64, EditItem int, SetFunc setIntFunc, prompt string) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTNUMBER, EditItem)
 	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
@@ -498,39 +497,39 @@ func editNumberItem(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, chatI
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)
 	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around
-	_, _ = tg.Send(mObj)
+	_, _ = tgp.tg.Send(mObj)
 }
 
 // Called from when the mode above is finished
-func edit_setNumber(tg *tgWrapper.Telegram, usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+func (tgp *TGPlansBot) edit_setNumber(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
 	// See if we are in a valid mode.
 	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setIntFunc)
 	if !ok {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
 
 	// Convert the value to a number
 	num, err := strconv.Atoi(text)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("Please provide a valid number"))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Please provide a valid number"))
 		return
 	}
 
 	err = setFunc(num)
 	if err != nil {
-		quickReply(tg, msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
 	}
 
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	eventDetails(tg, usrInfo, msg.Chat.ID, event, "", 0, false)
-	updateEventUIAllPostings(tg, event)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
 }

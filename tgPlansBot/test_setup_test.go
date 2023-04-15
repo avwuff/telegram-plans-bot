@@ -70,3 +70,30 @@ func (sU *sendUpdate) sendText(text string) {
 		},
 	})
 }
+
+func (sU *sendUpdate) sendButton(text string) {
+	sU.listenFunc(tgbotapi.Update{
+		CallbackQuery: &tgbotapi.CallbackQuery{
+			ID: "",
+			From: &tgbotapi.User{
+				ID:        1234,
+				FirstName: "Bob",
+				LastName:  "Smith",
+				UserName:  "bob",
+			},
+			Message: &tgbotapi.Message{
+				MessageID: 1111,
+				Chat: &tgbotapi.Chat{
+					ID:        1234,
+					UserName:  "bob",
+					FirstName: "Bob",
+					LastName:  "Smith",
+				},
+			},
+			InlineMessageID: "",
+			ChatInstance:    "",
+			Data:            text,
+			GameShortName:   "",
+		},
+	})
+}

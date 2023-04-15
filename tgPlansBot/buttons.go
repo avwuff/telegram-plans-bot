@@ -146,7 +146,7 @@ func createTimeSelection(selTime time.Time, loc *localizer.Localizer) tgbotapi.I
 			t = fmt.Sprintf("[ %v ]", t)
 		}
 
-		row = append(row, quickButton(t, fmt.Sprintf("time:hour:%v", n)))
+		row = append(row, quickButton(t, fmt.Sprintf("z:%v", n)))
 
 		// Telegram limits to 8 buttons per row
 		if i == 5 {

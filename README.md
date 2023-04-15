@@ -51,6 +51,9 @@ Here's what is on my roadmap so far:
 - **More languages and time zones** 
 - **Remove hardcoded URLs** Right now, plansbot.avbrand.com is hardcoded in a few places.
 - **Attendee management:** Allow the organize to see and remove attendees
+- **Better notes editor:** What if adding/editing notes worked in a popup?
+- **+1 naming:** Naming who you plan to bring
+- **Disable +1** Limit/Disable the ability to +1 +2 to an event
 - **and more!**
 
 ## Environment

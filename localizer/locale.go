@@ -70,23 +70,9 @@ func InitLang() {
 
 	// Get the list from here
 	// https://github.com/Lewington-pitsos/golang-time-locations
-	list := []string{
-		"America/Toronto",
-		"America/Chicago",
-		"America/Los_Angeles",
-		"Canada/Atlantic",
-		"Canada/Central",
-		"Canada/Eastern",
-		"Canada/Mountain",
-		"Canada/Newfoundland",
-		"Canada/Pacific",
-		"Canada/Saskatchewan",
-		"Canada/Yukon",
-		"Europe/London",
-		"Europe/Berlin",
-		"Europe/Moscow",
-		"Australia/Melbourne",
-	}
+
+	// remove windows line endings
+	list := strings.Split(strings.ReplaceAll(VALID_TIMEZONES, "\r", ""), "\n")
 
 	// create the time zones
 	timezones = make(map[string]*time.Location)
@@ -176,10 +162,11 @@ func GetTimeZoneChoicesMap() map[string]*time.Location {
 
 func GetTimeZoneChoicesList() []helpers.Tuple {
 	var out []helpers.Tuple
-	for key, tz := range timezones {
+	tzList := strings.Split(strings.ReplaceAll(SHOW_TIMEZONES, "\r", ""), "\n")
+	for _, tz := range tzList {
 		out = append(out, helpers.Tuple{
-			DisplayText: tz.String(),
-			Key:         key,
+			DisplayText: tz,
+			Key:         tz,
 		})
 	}
 	sort.Slice(out, func(i, j int) bool {

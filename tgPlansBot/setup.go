@@ -6,6 +6,7 @@ import (
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/zsefvlol/timezonemapper"
 	"log"
 	"strings"
 	"time"
@@ -56,7 +57,11 @@ func (tgp *TGPlansBot) setup_setLanguage(usrInfo *userManager.UserInfo, msg *tgb
 func (tgp *TGPlansBot) setup_askTimeZone(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 
 	usrInfo.SetMode(userManager.MODE_SETUP_TIMEZONE)
-	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf("In which time zone do you live?"))
+	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf(`In which time zone do you live?
+You can either send one of the time zones on <a href="https://github.com/Lewington-pitsos/golang-time-locations">this</a> list,
+or you can send your current 📍 Location by clicking the paperclip and choosing Location.`))
+	mObj.DisableWebPagePreview = true
+	mObj.ParseMode = ParseModeHtml
 
 	tzMap := localizer.GetTimeZoneChoicesMap()
 	tzs := localizer.GetTimeZoneChoicesList()
@@ -81,14 +86,29 @@ func (tgp *TGPlansBot) setup_askTimeZone(usrInfo *userManager.UserInfo, msg *tgb
 
 func (tgp *TGPlansBot) setup_setTimeZone(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
 
-	// Get the text before the ":"
-	s := strings.Split(text, ":")
-	tz := s[0]
-	tzs := localizer.GetTimeZoneChoicesMap()
-	_, ok := tzs[tz]
-	if !ok {
-		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Specified Time Zone not found."))
-		return
+	var tz string
+	// Did they send a location?
+	if msg.Location != nil {
+		// Convert this location to a time zone.
+		tz = timezonemapper.LatLngToTimezoneString(msg.Location.Latitude, msg.Location.Longitude)
+		if tz == "" {
+			tgp.quickReply(msg, usrInfo.Locale.Sprintf("Specified Time Zone not found."))
+			return
+		}
+
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Selected: %v", tz))
+
+	} else {
+
+		// Get the text before the ":"
+		s := strings.Split(text, ":")
+		tz = s[0]
+		tzs := localizer.GetTimeZoneChoicesMap()
+		_, ok := tzs[tz]
+		if !ok {
+			tgp.quickReply(msg, usrInfo.Locale.Sprintf("Specified Time Zone not found."))
+			return
+		}
 	}
 	// Set the language.
 	usrInfo.Prefs.TimeZone = tz

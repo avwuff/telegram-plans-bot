@@ -129,7 +129,7 @@ Translations provided by:`) + `
 <b>Française Canadian</b>: Boof, Snarl
 <b>Française</b>: Achorawl
 ` + usrInfo.Locale.Sprintf(`
-This project is open source! Learn more at: github.com/avwuff/furryplansbot`)
+This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot`)
 	tgp.quickReply(msg, txt)
 }
 

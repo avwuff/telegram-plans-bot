@@ -125,6 +125,9 @@ github.com/vektra/mockery/v2/cmd
 github.com/vektra/mockery/v2/pkg
 github.com/vektra/mockery/v2/pkg/config
 github.com/vektra/mockery/v2/pkg/logging
+# github.com/zsefvlol/timezonemapper v1.0.0
+## explicit; go 1.12
+github.com/zsefvlol/timezonemapper
 # golang.org/x/mod v0.8.0
 ## explicit; go 1.17
 golang.org/x/mod/internal/lazyregexp

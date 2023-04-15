@@ -77,7 +77,7 @@ func (c *CommandList) BaseCommandList() []Command {
 
 func (c *CommandList) Process(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 	// Split the msg by spaces
-	if msg.Text == "" {
+	if msg.Text == "" && msg.Location == nil {
 		return
 	}
 	sp := strings.Split(msg.Text, " ")

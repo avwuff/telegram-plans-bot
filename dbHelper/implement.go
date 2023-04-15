@@ -247,7 +247,6 @@ func (e *eventConnector) Attending(userId int64, name string, attendType dbInter
 		FROM furryplansattend WHERE EventID=?
 		AND CanAttend IN (1, 20, 30) AND userID <> ?`
 
-			// TODO make sure this is working
 			var count *int
 			res := e.db.Raw(sql, e.ev.EventID, userId).Scan(&count)
 			if res.Error != nil {

@@ -16,6 +16,7 @@ func (tgp *TGPlansBot) initSetupCommands() {
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_LANGUAGE, Handler: tgp.setup_setLanguage})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_TIMEZONE, Handler: tgp.setup_setTimeZone})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_SETUP_POLICY, Handler: tgp.setup_setPolicy})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "policy", Mode: userManager.MODE_SETUP_POLICY, Handler: tgp.setup_setPolicyCB})
 
 }
 
@@ -106,7 +107,7 @@ func (tgp *TGPlansBot) setup_setTimeZone(usrInfo *userManager.UserInfo, msg *tgb
 		tzs := localizer.GetTimeZoneChoicesMap()
 		_, ok := tzs[tz]
 		if !ok {
-			tgp.quickReply(msg, usrInfo.Locale.Sprintf("Specified Time Zone not found."))
+			tgp.quickReply(msg, usrInfo.Locale.Sprintf("Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices."))
 			return
 		}
 	}
@@ -124,10 +125,17 @@ func (tgp *TGPlansBot) setup_askPolicy(usrInfo *userManager.UserInfo, msg *tgbot
 	usrInfo.SetMode(userManager.MODE_SETUP_POLICY)
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf(`Before you continue, please read and accept our privacy policy.
 
-https://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29
+https://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29`))
+	var buttons [][]tgbotapi.InlineKeyboardButton
 
-You'll find the instructions on how to continue at the bottom of that page.`))
-	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false)
+	row := make([]tgbotapi.InlineKeyboardButton, 0)
+	row = append(row, quickButton(usrInfo.Locale.Sprintf("I accept"), "policy:accept"))
+	buttons = append(buttons, row)
+
+	mObj.ReplyMarkup = tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: buttons,
+	}
+
 	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
@@ -148,4 +156,16 @@ func (tgp *TGPlansBot) setup_setPolicy(usrInfo *userManager.UserInfo, msg *tgbot
 
 	// All done!
 	tgp.quickReply(msg, usrInfo.Locale.Sprintf("Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans."))
+
+}
+
+func (tgp *TGPlansBot) setup_setPolicyCB(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
+
+	usrInfo.Prefs.SetupComplete = true
+	tgp.db.SavePrefs(cb.Message.Chat.ID, usrInfo.Prefs, "setup_complete")
+
+	usrInfo.SetMode(userManager.MODE_DEFAULT)
+
+	// All done!
+	tgp.quickReply(cb.Message, usrInfo.Locale.Sprintf("Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans."))
 }

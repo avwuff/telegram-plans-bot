@@ -1002,9 +1002,9 @@
             "fuzzy": true
         },
         {
-            "id": "In which time zone do you live?",
-            "message": "In which time zone do you live?",
-            "translation": "In which time zone do you live?",
+            "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "translation": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1016,9 +1016,40 @@
             "fuzzy": true
         },
         {
-            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "translation": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "id": "Selected: {Tz}",
+            "message": "Selected: {Tz}",
+            "translation": "Selected: {Tz}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Tz",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "tz"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "message": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "translation": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "translation": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "I accept",
+            "message": "I accept",
+            "translation": "I accept",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1100,9 +1131,9 @@
             "fuzzy": true
         },
         {
-            "id": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
-            "message": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
-            "translation": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
+            "id": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
+            "message": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
+            "translation": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

@@ -208,7 +208,7 @@ func processTimeClicks(selTime time.Time, cmd string) (outTime time.Time, finish
 		if err != nil {
 			return
 		}
-		selTime = time.Date(selTime.Year(), selTime.Month(), 1, h, selTime.Minute(), 0, 0, selTime.Location())
+		selTime = time.Date(selTime.Year(), selTime.Month(), selTime.Day(), h, selTime.Minute(), 0, 0, selTime.Location())
 		return selTime, false
 	case "minute": // a day has been selected
 		if len(data) < 3 {
@@ -218,7 +218,7 @@ func processTimeClicks(selTime time.Time, cmd string) (outTime time.Time, finish
 		if err != nil {
 			return
 		}
-		selTime = time.Date(selTime.Year(), selTime.Month(), 1, selTime.Hour(), m, 0, 0, selTime.Location())
+		selTime = time.Date(selTime.Year(), selTime.Month(), selTime.Day(), selTime.Hour(), m, 0, 0, selTime.Location())
 		return selTime, false
 	case "finish":
 		return selTime, true

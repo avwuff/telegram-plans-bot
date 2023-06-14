@@ -169,9 +169,11 @@ func (tgp *TGPlansBot) handleCallback(callback *tgbotapi.CallbackQuery) {
 func (tgp *TGPlansBot) quickReply(msg *tgbotapi.Message, text string) error {
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, text)
 	mObj.ParseMode = ParseModeHtml
+	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false)
 	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		return err
 	}
 	return nil
+
 }

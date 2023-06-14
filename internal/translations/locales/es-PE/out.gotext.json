@@ -774,8 +774,8 @@
             "translation": ""
         },
         {
-            "id": "In which time zone do you live?",
-            "message": "In which time zone do you live?",
+            "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "translation": ""
         },
         {
@@ -784,8 +784,33 @@
             "translation": ""
         },
         {
-            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
+            "id": "Selected: {Tz}",
+            "message": "Selected: {Tz}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Tz",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "tz"
+                }
+            ]
+        },
+        {
+            "id": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "message": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "translation": ""
+        },
+        {
+            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "translation": ""
+        },
+        {
+            "id": "I accept",
+            "message": "I accept",
             "translation": ""
         },
         {
@@ -844,8 +869,8 @@
             "translation": ""
         },
         {
-            "id": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
-            "message": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
+            "id": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
+            "message": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
             "translation": ""
         },
         {

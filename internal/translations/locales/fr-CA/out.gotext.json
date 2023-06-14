@@ -774,9 +774,9 @@
             "translation": "La langue française a été sélectionnée"
         },
         {
-            "id": "In which time zone do you live?",
-            "message": "In which time zone do you live?",
-            "translation": "Dans quel fuseau horaire vivez-vous?"
+            "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ecette\u003c/a\u003e liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
         },
         {
             "id": "Specified Time Zone not found.",
@@ -784,9 +784,34 @@
             "translation": "Fuseau horaire spécifié introuvable."
         },
         {
-            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\nYou'll find the instructions on how to continue at the bottom of that page.",
-            "translation": "Avant de continuer SVP lire et accepter note politique de confidentialité. \n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\n\n Vous allez trouver les instructions pour continuer au bas de la page."
+            "id": "Selected: {Tz}",
+            "message": "Selected: {Tz}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Tz",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "tz"
+                }
+            ]
+        },
+        {
+            "id": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "message": "Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.",
+            "translation": "Fuseau horaire spécifié introuvable. Veuillez choisir un fuseau horaire dans la liste. Si la liste n'apparaît pas, veuillez cliquer sur le bouton qui ressemble à quatre cases dans le champ de saisie de texte pour faire apparaître les choix."
+        },
+        {
+            "id": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "message": "Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29",
+            "translation": "Avant de continuer, veuillez lire et accepter notre politique de confidentialité.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29"
+        },
+        {
+            "id": "I accept",
+            "message": "I accept",
+            "translation": "J'accepte"
         },
         {
             "id": "Please check the policy again to see how to finish.",
@@ -844,9 +869,9 @@
             "translation": "Le robot Furry Plans a été créé par 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTraductions fournies par:"
         },
         {
-            "id": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
-            "message": "This project is open source! Learn more at: github.com/avwuff/furryplansbot",
-            "translation": "Ce projet est open source ! En savoir plus sur : github.com/avwuff/furryplansbot"
+            "id": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
+            "message": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
+            "translation": ""
         },
         {
             "id": "I don't understand that command. Send /help for help.",

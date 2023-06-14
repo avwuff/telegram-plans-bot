@@ -44,7 +44,7 @@ func (c *Connector) SavePrefs(userid int64, prefs dbInterface.Prefs, colName str
 	return nil
 }
 
-func (c *Connector) CreateEvent(OwnerID int64, Name string, DateTime time.Time, TimeZone string, OwnerName string, Location string, Language string) (uint, error) {
+func (c *Connector) CreateEvent(OwnerID int64, Name string, DateTime time.Time, TimeZone string, OwnerName string, Location string, Language string, Notes string) (uint, error) {
 	event := FurryPlans{
 		OwnerID:   fmt.Sprintf("%v", OwnerID),
 		Name:      Name,
@@ -53,6 +53,7 @@ func (c *Connector) CreateEvent(OwnerID int64, Name string, DateTime time.Time, 
 		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
 		OwnerName: OwnerName,
 		Location:  Location,
+		Notes:     Notes,
 		Language:  Language, // By default, events pick up the language of their creators
 	}
 	err := c.db.Create(&event).Error

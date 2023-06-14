@@ -13,7 +13,7 @@ import (
 type DBFeatures interface {
 	GetPrefs(userid int64) Prefs
 	SavePrefs(userid int64, prefs Prefs, colName string) error
-	CreateEvent(OwnerID int64, Name string, DateTime time.Time, TimeZone string, OwnerName string, Location string, Language string) (uint, error)
+	CreateEvent(OwnerID int64, Name string, DateTime time.Time, TimeZone string, OwnerName string, Location string, Language string, Notes string) (uint, error)
 	GetEvent(eventId uint, ownerId int64) (DBEvent, error)
 	GetEventByHash(hash string, saltValue string, shareMode bool) (DBEvent, *localizer.Localizer, error)
 	CalendarFeed(ownerId int64) ([]DBEvent, error)

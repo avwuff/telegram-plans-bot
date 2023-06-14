@@ -361,6 +361,22 @@
             "translation": "Où se déroule l'événement?  Enter le nom ou l'adresse tel qu'utilisé sur Google Maps "
         },
         {
+            "id": [
+                "SET_NOTES",
+                "Specify any additional notes you'd like to show about the event."
+            ],
+            "message": "Specify any additional notes you'd like to show about the event.",
+            "translation": "Entrer toutes notes additionnelles que vous aimeriez ajouter à propos de l'événement."
+        },
+        {
+            "id": [
+                "SET_NOTES_2",
+                "If you don't have any notes, just click /skip."
+            ],
+            "message": "If you don't have any notes, just click /skip.",
+            "translation": "Si vous n'avez pas de notes, cliquez simplement sur /skip."
+        },
+        {
             "id": "error creating event: {Err}",
             "message": "error creating event: {Err}",
             "translation": "error à la création de l'évènement : {Err}",
@@ -394,11 +410,6 @@
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
             "translation": "Entrer le nom de l'hôte de l'événement"
-        },
-        {
-            "id": "Specify any additional notes you'd like to show about the event.",
-            "message": "Specify any additional notes you'd like to show about the event.",
-            "translation": "Entrer toutes notes additionnelles que vous aimeriez ajouter à propos de l'événement."
         },
         {
             "id": "Specify the date on which this event takes place:",
@@ -776,7 +787,7 @@
         {
             "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">cette</a> liste,\nou vous pouvez envoyer votre \uD83D\uDCCD Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
+            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ecette\u003c/a\u003e liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
         },
         {
             "id": "Specified Time Zone not found.",

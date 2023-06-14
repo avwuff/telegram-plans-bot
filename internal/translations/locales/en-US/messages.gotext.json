@@ -469,6 +469,26 @@
             "fuzzy": true
         },
         {
+            "id": [
+                "SET_NOTES",
+                "Specify any additional notes you'd like to show about the event."
+            ],
+            "message": "Specify any additional notes you'd like to show about the event.",
+            "translation": "Specify any additional notes you'd like to show about the event.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": [
+                "SET_NOTES_2",
+                "If you don't have any notes, just click /skip."
+            ],
+            "message": "If you don't have any notes, just click /skip.",
+            "translation": "If you don't have any notes, just click /skip.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "error creating event: {Err}",
             "message": "error creating event: {Err}",
             "translation": "error creating event: {Err}",
@@ -510,13 +530,6 @@
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
             "translation": "Specify the name of the person hosting the event.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Specify any additional notes you'd like to show about the event.",
-            "message": "Specify any additional notes you'd like to show about the event.",
-            "translation": "Specify any additional notes you'd like to show about the event.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

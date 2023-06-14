@@ -40,23 +40,23 @@ func (_m *DBFeaturesMock) CalendarFeed(ownerId int64) ([]DBEvent, error) {
 	return r0, r1
 }
 
-// CreateEvent provides a mock function with given fields: OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language
-func (_m *DBFeaturesMock) CreateEvent(OwnerID int64, Name string, DateTime time.Time, TimeZone string, OwnerName string, Location string, Language string) (uint, error) {
-	ret := _m.Called(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language)
+// CreateEvent provides a mock function with given fields: OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language, Notes
+func (_m *DBFeaturesMock) CreateEvent(OwnerID int64, Name string, DateTime time.Time, TimeZone string, OwnerName string, Location string, Language string, Notes string) (uint, error) {
+	ret := _m.Called(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language, Notes)
 
 	var r0 uint
 	var r1 error
-	if rf, ok := ret.Get(0).(func(int64, string, time.Time, string, string, string, string) (uint, error)); ok {
-		return rf(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language)
+	if rf, ok := ret.Get(0).(func(int64, string, time.Time, string, string, string, string, string) (uint, error)); ok {
+		return rf(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language, Notes)
 	}
-	if rf, ok := ret.Get(0).(func(int64, string, time.Time, string, string, string, string) uint); ok {
-		r0 = rf(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language)
+	if rf, ok := ret.Get(0).(func(int64, string, time.Time, string, string, string, string, string) uint); ok {
+		r0 = rf(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language, Notes)
 	} else {
 		r0 = ret.Get(0).(uint)
 	}
 
-	if rf, ok := ret.Get(1).(func(int64, string, time.Time, string, string, string, string) error); ok {
-		r1 = rf(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language)
+	if rf, ok := ret.Get(1).(func(int64, string, time.Time, string, string, string, string, string) error); ok {
+		r1 = rf(OwnerID, Name, DateTime, TimeZone, OwnerName, Location, Language, Notes)
 	} else {
 		r1 = ret.Error(1)
 	}

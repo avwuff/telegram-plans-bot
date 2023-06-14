@@ -269,14 +269,14 @@
         {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
-            "translation": "👫 Set Max Attendees",
+            "translation": "👫 Max People",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
             "id": "💔 Allow Maybe: {SprintfYes}",
             "message": "💔 Allow Maybe: {SprintfYes}",
-            "translation": "💔 Allow Maybe: {SprintfYes}",
+            "translation": "💔 Maybe: {SprintfYes}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -307,8 +307,7 @@
         {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
-            "translation": "📩 Allow Sharing: {SprintfNo}",
-            "translatorComment": "Copied from source.",
+            "translation": "📩 Can Share: {SprintfNo}",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -318,15 +317,12 @@
                     "argNum": 1,
                     "expr": "iif(event.SharingAllowed(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "⚙ Advanced Options...",
             "message": "⚙ Advanced Options...",
-            "translation": "⚙ Advanced Options...",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
+            "translation": "⚙ Advanced"
         },
         {
             "id": "⚙ ADVANCED OPTIONS ⚙",
@@ -994,6 +990,20 @@
             "fuzzy": true
         },
         {
+            "id": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "message": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "translation": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Not an event you are attending.",
+            "message": "Not an event you are attending.",
+            "translation": "Not an event you are attending.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "👉 CLICK TO ACTIVATE EVENT 👈",
             "message": "👉 CLICK TO ACTIVATE EVENT 👈",
             "translation": "👉 CLICK TO ACTIVATE EVENT 👈",
@@ -1119,6 +1129,13 @@
             "id": "Learn more about the bot",
             "message": "Learn more about the bot",
             "translation": "Learn more about the bot",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "See a list of all events you RSVPd to",
+            "message": "See a list of all events you RSVPd to",
+            "translation": "See a list of all events you RSVPd to",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

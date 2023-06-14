@@ -37,6 +37,13 @@ type FurryPlans struct {
 	AllowShare   int `gorm:"column:AllowShare"`
 }
 
+// FurryPlansWithAttend is the same as FurryPlans, and doesn't actually represent a table in the DB.
+// Instead, it is the data that comes back from the CalendarFeed so that we can get the user's attendance status.
+type FurryPlansWithAttend struct {
+	FurryPlans
+	CanAttend int `gorm:"column:CanAttend"`
+}
+
 // TableName is used to override Gorm's default table naming
 func (*FurryPlans) TableName() string {
 	return "furryplans"
@@ -60,6 +67,8 @@ func (FurryPlansAttend) TableName() string {
 type FurryPlansPosted struct {
 	EventID   uint   `gorm:"primarykey;column:event_id"`
 	MessageID string `gorm:"primarykey;column:message_id"`
+	ChatID    int64  `gorm:"primarykey;column:chat_id"`
+	LocalID   int    `gorm:"primarykey;column:local_id"`
 }
 
 func (FurryPlansPosted) TableName() string {

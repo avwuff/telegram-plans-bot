@@ -39,7 +39,11 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 
 	// Save where this was posted
 	// We can use a Gofunc here since it isn't important to have this saved before we continue
-	go event.SavePosting(cb.InlineMessageID)
+	if cb.InlineMessageID != "" {
+		go event.SavePosting(cb.InlineMessageID)
+	} else {
+		go event.SavePostingRegular(cb.Message.Chat.ID, cb.Message.MessageID)
+	}
 
 	// HTML format the name so it works properly.
 	name := helpers.HtmlEntities(cb.From.FirstName)
@@ -96,7 +100,12 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 	}
 	// Answer the callback in a Gofunc
 	go tgp.answerCallback(cb, txt)
-	tgp.updateEventPosting(event, cb.InlineMessageID)
+
+	if cb.InlineMessageID != "" {
+		tgp.updateEventPosting(event, cb.InlineMessageID)
+	} else {
+		tgp.updateEventPostingRegular(event, cb.Message.Chat.ID, cb.Message.MessageID)
+	}
 
 	// Also update the event in all the places
 	tgp.updateEventUIAllPostings(event)
@@ -112,12 +121,19 @@ func (tgp *TGPlansBot) updateEventUIAllPostings(event dbInterface.DBEvent) {
 
 	for i := range postings {
 		// We do this as a Gofunc so that they can all be updated at once.
-		go func(msgId string) {
+		go func(posting dbInterface.Posting) {
 
 			// Make sure this one isn't in the Retry After queue.
-			if !tgp.inQueue(msgId) {
-				tgp.updateEventPosting(event, msgId)
+			if posting.InlineMessageID != "" {
+				if !tgp.inQueue(posting.InlineMessageID) {
+					tgp.updateEventPosting(event, posting.InlineMessageID)
+				}
+			} else {
+				if !tgp.inQueueRegular(posting.ChatID, posting.MessageId) {
+					tgp.updateEventPostingRegular(event, posting.ChatID, posting.MessageId)
+				}
 			}
+
 		}(postings[i])
 	}
 
@@ -144,6 +160,28 @@ func (tgp *TGPlansBot) updateEventPosting(event dbInterface.DBEvent, msgId strin
 	}
 }
 
+// updateEventPostingRegular is the same as updateEventPosting, but it works on non-inline messages
+func (tgp *TGPlansBot) updateEventPostingRegular(event dbInterface.DBEvent, chatId int64, messageId int) {
+	// Use the localizer from the event.
+	loc := localizer.FromLanguage(event.Language())
+
+	// Update this one.
+	retryAfter, err := tgp.makeEventUIRegular(chatId, event, loc, messageId)
+	if err != nil {
+		// Was this a "too many requests" message?
+		if strings.Contains(err.Error(), "Too Many Requests") {
+			// Retry this one after this time.
+			tgp.addToQueueRegular(event, chatId, messageId, retryAfter)
+		}
+
+		if strings.Contains(err.Error(), "message to edit not found") {
+			// The message where this once was, was probably deleted.
+			// So we delete the posting, so we don't try it again.
+			event.DeletePostingRegular(chatId, messageId)
+		}
+	}
+}
+
 func (tgp *TGPlansBot) answerCallback(query *tgbotapi.CallbackQuery, Text string) {
 	callbackConfg := tgbotapi.CallbackConfig{
 		CallbackQueryID: query.ID,
@@ -154,8 +192,7 @@ func (tgp *TGPlansBot) answerCallback(query *tgbotapi.CallbackQuery, Text string
 	}
 }
 
-// makeEventUI displays the main event UI.
-func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) (int, error) {
+func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer.Localizer) string {
 
 	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
 
@@ -255,6 +292,13 @@ func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc 
 	}
 
 	t += "\n<i>" + loc.Sprintf("Can you go? Use the buttons below.") + "</i>"
+	return t
+}
+
+// makeEventUI displays the main event UI.
+func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) (int, error) {
+
+	t := tgp.makeEventUIText(event, loc)
 
 	var mObj tgbotapi.Chattable
 
@@ -262,6 +306,32 @@ func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc 
 
 	mObj2 := tgbotapi.NewEditMessageText(chatId, 0, t)
 	mObj2.InlineMessageID = inlineId
+	mObj2.ParseMode = ParseModeHtml
+	mObj2.ReplyMarkup = &buttons
+	mObj2.DisableWebPagePreview = true
+	mObj = mObj2
+
+	rsp, err := tgp.tg.Request(mObj)
+	if err != nil {
+		if rsp.Parameters != nil {
+			return rsp.Parameters.RetryAfter, err
+		}
+		return 0, err
+	}
+	return 0, nil
+}
+
+// makeEventUIRegular displays the main event UI for non-inline messages
+func (tgp *TGPlansBot) makeEventUIRegular(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, messageId int) (int, error) {
+
+	t := tgp.makeEventUIText(event, loc)
+
+	var mObj tgbotapi.Chattable
+
+	buttons := tgp.eventUIButtons(event, loc)
+
+	mObj2 := tgbotapi.NewEditMessageText(chatId, 0, t)
+	mObj2.MessageID = messageId
 	mObj2.ParseMode = ParseModeHtml
 	mObj2.ReplyMarkup = &buttons
 	mObj2.DisableWebPagePreview = true

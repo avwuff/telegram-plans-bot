@@ -13,6 +13,20 @@ type DBEventMock struct {
 	mock.Mock
 }
 
+// AmIAttending provides a mock function with given fields: id
+func (_m *DBEventMock) AmIAttending(id int64) bool {
+	ret := _m.Called(id)
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func(int64) bool); ok {
+		r0 = rf(id)
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
+}
+
 // Attending provides a mock function with given fields: userId, name, attendType, plusPeople
 func (_m *DBEventMock) Attending(userId int64, name string, attendType CanAttend, plusPeople int) AttendMsgs {
 	ret := _m.Called(userId, name, attendType, plusPeople)
@@ -48,6 +62,20 @@ func (_m *DBEventMock) DeletePosting(MessageID string) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(string) error); ok {
 		r0 = rf(MessageID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// DeletePostingRegular provides a mock function with given fields: chatId, messageId
+func (_m *DBEventMock) DeletePostingRegular(chatId int64, messageId int) error {
+	ret := _m.Called(chatId, messageId)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int64, int) error); ok {
+		r0 = rf(chatId, messageId)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -93,6 +121,20 @@ func (_m *DBEventMock) GetAttending() ([]*Attend, error) {
 	}
 
 	return r0, r1
+}
+
+// GetCanAttend provides a mock function with given fields:
+func (_m *DBEventMock) GetCanAttend() CanAttend {
+	ret := _m.Called()
+
+	var r0 CanAttend
+	if rf, ok := ret.Get(0).(func() CanAttend); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(CanAttend)
+	}
+
+	return r0
 }
 
 // ID provides a mock function with given fields:
@@ -194,19 +236,19 @@ func (_m *DBEventMock) OwnerName() string {
 }
 
 // Postings provides a mock function with given fields:
-func (_m *DBEventMock) Postings() ([]string, error) {
+func (_m *DBEventMock) Postings() ([]Posting, error) {
 	ret := _m.Called()
 
-	var r0 []string
+	var r0 []Posting
 	var r1 error
-	if rf, ok := ret.Get(0).(func() ([]string, error)); ok {
+	if rf, ok := ret.Get(0).(func() ([]Posting, error)); ok {
 		return rf()
 	}
-	if rf, ok := ret.Get(0).(func() []string); ok {
+	if rf, ok := ret.Get(0).(func() []Posting); ok {
 		r0 = rf()
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]string)
+			r0 = ret.Get(0).([]Posting)
 		}
 	}
 
@@ -222,6 +264,11 @@ func (_m *DBEventMock) Postings() ([]string, error) {
 // SavePosting provides a mock function with given fields: MessageID
 func (_m *DBEventMock) SavePosting(MessageID string) {
 	_m.Called(MessageID)
+}
+
+// SavePostingRegular provides a mock function with given fields: chatId, messageId
+func (_m *DBEventMock) SavePostingRegular(chatId int64, messageId int) {
+	_m.Called(chatId, messageId)
 }
 
 // SetDateTime provides a mock function with given fields: d

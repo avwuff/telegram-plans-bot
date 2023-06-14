@@ -770,6 +770,16 @@
             "translation": "📩 Partager dans un autre échange..."
         },
         {
+            "id": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "message": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "translation": "Vous ✅ planifiez ou \uD83E\uDD14️ envisagez d'assister aux événements suivants. Cliquez sur l'événement pour plus d'informations."
+        },
+        {
+            "id": "Not an event you are attending.",
+            "message": "Not an event you are attending.",
+            "translation": ""
+        },
+        {
             "id": "👉 CLICK TO ACTIVATE EVENT 👈",
             "message": "👉 CLICK TO ACTIVATE EVENT 👈",
             "translation": "👉 CLIQUER POUR ACTIVER L'ÉVÈNEMENT 👈"
@@ -865,6 +875,11 @@
             "translation": "En savoir plus sur le Bot"
         },
         {
+            "id": "See a list of all events you RSVPd to",
+            "message": "See a list of all events you RSVPd to",
+            "translation": "Voir une liste de tous les événements auxquels vous avez répondu"
+        },
+        {
             "id": "Let's create some new plans.  First, send me the name of the event.",
             "message": "Let's create some new plans.  First, send me the name of the event.",
             "translation": "Commençons un nouveau plan.  Premièrement écrire le nom de l'événement"
@@ -882,7 +897,7 @@
         {
             "id": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
             "message": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
-            "translation": ""
+            "translation": "Ce projet est open source ! En savoir plus sur : https://github.com/avwuff/telegram-plans-bot"
         },
         {
             "id": "I don't understand that command. Send /help for help.",

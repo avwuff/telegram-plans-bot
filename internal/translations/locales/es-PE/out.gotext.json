@@ -770,6 +770,16 @@
             "translation": ""
         },
         {
+            "id": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "message": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "translation": ""
+        },
+        {
+            "id": "Not an event you are attending.",
+            "message": "Not an event you are attending.",
+            "translation": ""
+        },
+        {
             "id": "👉 CLICK TO ACTIVATE EVENT 👈",
             "message": "👉 CLICK TO ACTIVATE EVENT 👈",
             "translation": ""
@@ -862,6 +872,11 @@
         {
             "id": "Learn more about the bot",
             "message": "Learn more about the bot",
+            "translation": ""
+        },
+        {
+            "id": "See a list of all events you RSVPd to",
+            "message": "See a list of all events you RSVPd to",
             "translation": ""
         },
         {

@@ -97,6 +97,14 @@ func (c *Connector) wrap(event *FurryPlans) dbInterface.DBEvent {
 	}
 }
 
+func (c *Connector) wrapWithAttend(event *FurryPlansWithAttend) dbInterface.DBEvent {
+	return &eventConnector{
+		db:        c.db,
+		ev:        &event.FurryPlans,
+		canAttend: dbInterface.CanAttend(event.CanAttend),
+	}
+}
+
 // GetEventByHash searches for this event by the hash.
 func (c *Connector) GetEventByHash(hash string, saltValue string, shareMode bool) (dbInterface.DBEvent, *localizer.Localizer, error) {
 
@@ -140,14 +148,14 @@ func (c *Connector) GetEventByHash(hash string, saltValue string, shareMode bool
 
 func (c *Connector) CalendarFeed(ownerId int64) ([]dbInterface.DBEvent, error) {
 
-	sql := `SELECT furryplans.* FROM furryplansattend 
+	sql := fmt.Sprintf(`SELECT furryplans.*, furryplansattend.CanAttend FROM furryplansattend 
 		LEFT JOIN furryplans USING (eventID) 
 		WHERE furryplansattend.userid = ? 
-		AND furryplansattend.CanAttend IN (1, 2, 20, 30) 
+		AND furryplansattend.CanAttend IN (%v, %v, %v, %v) 
 		AND furryplans.EventDateTime > NOW() - INTERVAL 7 DAY 
-		ORDER BY EventDateTime `
+		ORDER BY EventDateTime `, dbInterface.CANATTEND_YES, dbInterface.CANATTEND_MAYBE, dbInterface.CANATTEND_SUITING, dbInterface.CANATTEND_PHOTOGRAPHER)
 
-	var events []*FurryPlans
+	var events []*FurryPlansWithAttend
 	res := c.db.Raw(sql, ownerId).Scan(&events)
 	if res.Error != nil {
 		return nil, res.Error
@@ -163,7 +171,7 @@ func (c *Connector) CalendarFeed(ownerId int64) ([]dbInterface.DBEvent, error) {
 			tz := localizer.FromTimeZone(event.TimeZone)
 			event.DateTime.Time = event.DateTime.Time.In(tz)
 		}
-		list[i] = c.wrap(event)
+		list[i] = c.wrapWithAttend(event)
 	}
 
 	return list, nil
@@ -208,6 +216,8 @@ func (c *Connector) GetEvents(ownerId int64, includeOld bool) ([]dbInterface.DBE
 type eventConnector struct {
 	db *gorm.DB
 	ev *FurryPlans
+	// only present when used from the Calendar Feed
+	canAttend dbInterface.CanAttend
 }
 
 func (e *eventConnector) updateEvent(column string) error {
@@ -232,6 +242,22 @@ func (e *eventConnector) GetAttending() ([]*dbInterface.Attend, error) {
 		}
 	}
 	return list, nil
+}
+
+// AmIAttending returns true or false depending on whether or not this user is attending this event
+func (e *eventConnector) AmIAttending(id int64) bool {
+	attending, err := e.GetAttending()
+	if err != nil {
+		return false
+	}
+	for _, attend := range attending {
+		if attend.UserID == id {
+			if attend.CanAttend > 0 {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // Attending marks (or unmarks) a person as attending this event.
@@ -304,8 +330,18 @@ func (e *eventConnector) SavePosting(MessageID string) {
 		e.db.Create(&posting)
 	}
 }
+func (e *eventConnector) SavePostingRegular(chatId int64, messageId int) {
+	posting := &FurryPlansPosted{
+		EventID: e.ev.EventID,
+		ChatID:  chatId,
+		LocalID: messageId,
+	}
+	if e.db.Model(&FurryPlansPosted{}).Updates(&posting).RowsAffected == 0 {
+		e.db.Create(&posting)
+	}
+}
 
-func (e *eventConnector) Postings() ([]string, error) {
+func (e *eventConnector) Postings() ([]dbInterface.Posting, error) {
 	var posted []FurryPlansPosted
 	query := e.db.Where(&FurryPlansPosted{EventID: e.ev.EventID})
 	err := query.Find(&posted).Error
@@ -313,9 +349,11 @@ func (e *eventConnector) Postings() ([]string, error) {
 		return nil, err
 	}
 
-	list := make([]string, len(posted))
+	list := make([]dbInterface.Posting, len(posted))
 	for i, post := range posted {
-		list[i] = post.MessageID
+		list[i].InlineMessageID = post.MessageID
+		list[i].ChatID = post.ChatID
+		list[i].MessageId = post.LocalID
 	}
 
 	return list, nil
@@ -325,6 +363,13 @@ func (e *eventConnector) DeletePosting(MessageID string) error {
 	return e.db.Model(&FurryPlansPosted{}).Unscoped().Delete(&FurryPlansPosted{
 		EventID:   e.ev.EventID,
 		MessageID: MessageID,
+	}).Error
+}
+func (e *eventConnector) DeletePostingRegular(chatId int64, messageId int) error {
+	return e.db.Model(&FurryPlansPosted{}).Unscoped().Delete(&FurryPlansPosted{
+		EventID: e.ev.EventID,
+		ChatID:  chatId,
+		LocalID: messageId,
 	}).Error
 }
 
@@ -339,6 +384,10 @@ func (e *eventConnector) SetName(t string) error {
 
 func (e *eventConnector) ID() uint {
 	return e.ev.EventID
+}
+
+func (e *eventConnector) GetCanAttend() dbInterface.CanAttend {
+	return e.canAttend
 }
 
 func (e *eventConnector) DateTime() time.Time {

@@ -26,8 +26,10 @@ type DBEvent interface {
 	GetAttending() ([]*Attend, error)
 	Attending(userId int64, name string, attendType CanAttend, plusPeople int) AttendMsgs
 	SavePosting(MessageID string)
-	Postings() ([]string, error)
+	SavePostingRegular(chatId int64, messageId int)
+	Postings() ([]Posting, error)
 	DeletePosting(MessageID string) error
+	DeletePostingRegular(chatId int64, messageId int) error
 
 	// Setters and Getters
 	Name() string
@@ -53,6 +55,8 @@ type DBEvent interface {
 	SetDisableMaybe(v bool) error
 	SharingAllowed() bool
 	SetSharingAllowed(v bool) error
+	GetCanAttend() CanAttend
+	AmIAttending(id int64) bool
 }
 
 type Attend struct {
@@ -74,6 +78,13 @@ const (
 	CANATTEND_PHOTOGRAPHER CanAttend = 30
 	CANATTEND_SPOTTING     CanAttend = 0
 )
+
+// Posting is used to list out all the postings
+type Posting struct {
+	InlineMessageID string
+	ChatID          int64
+	MessageId       int
+}
 
 // AttendMsgs is for the messages that can result from clicking the attendance buttons
 type AttendMsgs int

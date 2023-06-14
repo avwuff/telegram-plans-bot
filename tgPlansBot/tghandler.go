@@ -54,6 +54,8 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.cmds.Add(tgCommands.Command{Command: "/language", Handler: tgp.languageHandler, HelpText: loc.Sprintf("Change the language")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/setup", Handler: tgp.setupHandler, HelpText: loc.Sprintf("Start the Setup process")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/about", Handler: tgp.aboutHandler, HelpText: loc.Sprintf("Learn more about the bot")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/going", Handler: tgp.goingHandler, HelpText: loc.Sprintf("See a list of all events you RSVPd to")})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "moreinfo", Handler: tgp.goingMoreInfo})
 	tgp.cmds.SetUnknown(tgp.unknownHandler)
 
 	// These handlers respond to any message, as long as we are in the right mode.

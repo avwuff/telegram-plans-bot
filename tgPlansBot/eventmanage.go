@@ -24,6 +24,7 @@ func (tgp *TGPlansBot) initEventCommands() {
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTDATE, Handler: tgp.create_SetDate})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTTIME, Handler: tgp.create_SetTime})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTLOCATION, Handler: tgp.create_SetLocation})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_SETNOTES, Handler: tgp.create_SetNotes})
 
 	// Edit commands
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_STRING, Handler: tgp.edit_setString})

@@ -361,6 +361,22 @@
             "translation": "Où se déroule l'événement?  Enter le nom ou l'adresse tel qu'utilisé sur Google Maps "
         },
         {
+            "id": [
+                "SET_NOTES",
+                "Specify any additional notes you'd like to show about the event."
+            ],
+            "message": "Specify any additional notes you'd like to show about the event.",
+            "translation": "Entrer toutes notes additionnelles que vous aimeriez ajouter à propos de l'événement."
+        },
+        {
+            "id": [
+                "SET_NOTES_2",
+                "If you don't have any notes, just click /skip."
+            ],
+            "message": "If you don't have any notes, just click /skip.",
+            "translation": "Si vous n'avez pas de notes, cliquez simplement sur /skip."
+        },
+        {
             "id": "error creating event: {Err}",
             "message": "error creating event: {Err}",
             "translation": "error à la création de l'évènement : {Err}",
@@ -394,11 +410,6 @@
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
             "translation": "Entrer le nom de l'hôte de l'événement"
-        },
-        {
-            "id": "Specify any additional notes you'd like to show about the event.",
-            "message": "Specify any additional notes you'd like to show about the event.",
-            "translation": "Entrer toutes notes additionnelles que vous aimeriez ajouter à propos de l'événement."
         },
         {
             "id": "Specify the date on which this event takes place:",

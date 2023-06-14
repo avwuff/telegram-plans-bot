@@ -361,6 +361,22 @@
             "translation": ""
         },
         {
+            "id": [
+                "SET_NOTES",
+                "Specify any additional notes you'd like to show about the event."
+            ],
+            "message": "Specify any additional notes you'd like to show about the event.",
+            "translation": ""
+        },
+        {
+            "id": [
+                "SET_NOTES_2",
+                "If you don't have any notes, just click /skip."
+            ],
+            "message": "If you don't have any notes, just click /skip.",
+            "translation": ""
+        },
+        {
             "id": "error creating event: {Err}",
             "message": "error creating event: {Err}",
             "translation": "",
@@ -393,11 +409,6 @@
         {
             "id": "Specify the name of the person hosting the event.",
             "message": "Specify the name of the person hosting the event.",
-            "translation": ""
-        },
-        {
-            "id": "Specify any additional notes you'd like to show about the event.",
-            "message": "Specify any additional notes you'd like to show about the event.",
             "translation": ""
         },
         {

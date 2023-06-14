@@ -26,7 +26,17 @@ func Test_EventCreate(t *testing.T) {
 		loc, _ := time.LoadLocation("America/Los_Angeles")
 
 		// Now the event will be created
-		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "bob", "My house", "en-US").Return(uint(1200), nil)
+		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "bob", "My house", "en-US", "Some notes").Return(uint(1200), nil)
+		db.On("GetEvent", uint(1200), int64(1234)).Return(mEvent, nil)
+	}
+	dummy2 := func(t *testing.T, db *dbInterface.DBFeaturesMock) {
+		// Create a dummy event
+		mEvent := simpleEvent(t, "Test Event", "My house")
+
+		loc, _ := time.LoadLocation("America/Los_Angeles")
+
+		// Now the event will be created
+		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "bob", "My house", "en-US", "").Return(uint(1200), nil)
 		db.On("GetEvent", uint(1200), int64(1234)).Return(mEvent, nil)
 	}
 
@@ -42,9 +52,22 @@ func Test_EventCreate(t *testing.T) {
 				{send: "Test Event", expect: "Choose a Date for the event"},
 				{send: "2023-01-01", expect: "Choose a Time"},
 				{send: "20:00", expect: "Where does the event take place"},
-				{send: "My house", expect: "Alright"},
+				{send: "My house", expect: "Specify any additional notes"},
+				{send: "Some notes", expect: "Alright"},
 			},
 			on: dummy1,
+		},
+		{
+			name: "Skip notes",
+			cmds: []tCmd{
+				{send: "/start", expect: "First, send me the name of the event."},
+				{send: "Test Event", expect: "Choose a Date for the event"},
+				{send: "2023-01-01", expect: "Choose a Time"},
+				{send: "20:00", expect: "Where does the event take place"},
+				{send: "My house", expect: "Specify any additional notes"},
+				{send: "/skip", expect: "Alright"},
+			},
+			on: dummy2,
 		},
 		{
 			name: "choosing date via calendar",
@@ -56,7 +79,8 @@ func Test_EventCreate(t *testing.T) {
 				{sendbutton: "time:hour:20", exrequest: "Choose a Time"},
 				{sendbutton: "time:minute:0", exrequest: "Choose a Time"},
 				{sendbutton: "time:finish", exrequest: "Time selected", expect: "Where does the event take place"},
-				{send: "My house", expect: "Alright"},
+				{send: "My house", expect: "Specify any additional notes"},
+				{send: "Some notes", expect: "Alright"},
 			},
 			on: dummy1,
 		},

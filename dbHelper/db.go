@@ -38,6 +38,11 @@ func InitDB(dsnFile string) (*Connector, error) {
 		return nil, fmt.Errorf("db migration error: %v", err)
 	}
 
+	err = db.AutoMigrate(&GlobalSend{})
+	if err != nil {
+		return nil, fmt.Errorf("db migration error: %v", err)
+	}
+
 	return &Connector{db: db}, nil
 }
 

@@ -55,6 +55,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.cmds.Add(tgCommands.Command{Command: "/setup", Handler: tgp.setupHandler, HelpText: loc.Sprintf("Start the Setup process")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/about", Handler: tgp.aboutHandler, HelpText: loc.Sprintf("Learn more about the bot")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/going", Handler: tgp.goingHandler, HelpText: loc.Sprintf("See a list of all events you RSVPd to")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/globalmsg", Handler: tgp.sendGlobalMessage, Private: true})
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "moreinfo", Handler: tgp.goingMoreInfo})
 	tgp.cmds.SetUnknown(tgp.unknownHandler)
 
@@ -66,6 +67,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.initEventCommands()
 	tgp.initSetupCommands()
 	tgp.initUICommands()
+	tgp.initGlobalMsgCommands()
 
 }
 
@@ -82,10 +84,12 @@ func (tgp *TGPlansBot) setMyCommands() {
 
 		// build the command list
 		for _, cmd := range base {
-			cmdList = append(cmdList, tgbotapi.BotCommand{
-				Command:     cmd.Command,
-				Description: loc.Sprintf(cmd.HelpText),
-			})
+			if !cmd.Private {
+				cmdList = append(cmdList, tgbotapi.BotCommand{
+					Command:     cmd.Command,
+					Description: loc.Sprintf(cmd.HelpText),
+				})
+			}
 		}
 		_, err := tgp.tg.SetMyCommands(tgbotapi.SetMyCommandsConfig{Commands: cmdList, LanguageCode: isoCode})
 		if err != nil {
@@ -117,7 +121,9 @@ func (tgp *TGPlansBot) helpHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.
 	base := tgp.cmds.BaseCommandList()
 	txt := usrInfo.Locale.Sprintf("Here is a list of available commands:") + "\n\n"
 	for _, cmd := range base {
-		txt += fmt.Sprintf("<b>%v</b> - %v\n", cmd.Command, usrInfo.Locale.Sprintf(cmd.HelpText))
+		if !cmd.Private {
+			txt += fmt.Sprintf("<b>%v</b> - %v\n", cmd.Command, usrInfo.Locale.Sprintf(cmd.HelpText))
+		}
 	}
 	tgp.quickReply(msg, txt)
 }

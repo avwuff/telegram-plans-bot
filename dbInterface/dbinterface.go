@@ -19,6 +19,10 @@ type DBFeatures interface {
 	CalendarFeed(ownerId int64) ([]DBEvent, error)
 	SearchEvents(ownerId int64, searchText string) ([]DBEvent, error)
 	GetEvents(ownerId int64, includeOld bool) ([]DBEvent, error)
+	GetAllUsers() ([]int64, error)
+	GlobalShouldSend(id int64) bool
+	GlobalMarkBadUser(id int64)
+	GlobalSent(id int64)
 }
 
 // DBEvent provides access to features on the event.

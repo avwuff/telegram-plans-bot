@@ -213,6 +213,50 @@ func (c *Connector) GetEvents(ownerId int64, includeOld bool) ([]dbInterface.DBE
 	return list, nil
 }
 
+// GLOBAL MESSAGING SYSTEM
+
+// GetAllUsers will return a list of ALL users that have EVER created an event with this bot.
+func (c *Connector) GetAllUsers() ([]int64, error) {
+	query := "select ownerid from telegram.furryplans group by ownerid;"
+
+	var owners []int64
+	res := c.db.Raw(query).Scan(&owners)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	return owners, nil
+}
+
+func (c *Connector) GlobalShouldSend(chatId int64) bool {
+	var send GlobalSend
+	query := c.db.Where(&GlobalSend{UserID: chatId})
+	if err := query.First(&send).Error; err != nil {
+		return true
+	}
+
+	// only if they haven't gotten the message before, put it at 0
+	return send.SendType == 0
+}
+func (c *Connector) GlobalMarkBadUser(chatId int64) {
+	send := &GlobalSend{
+		UserID:   chatId,
+		SendType: 2,
+	}
+	if c.db.Model(&GlobalSend{}).Where(&GlobalSend{UserID: chatId}).Updates(&send).RowsAffected == 0 {
+		c.db.Create(&send)
+	}
+}
+func (c *Connector) GlobalSent(chatId int64) {
+	send := &GlobalSend{
+		UserID:   chatId,
+		SendType: 1,
+	}
+	if c.db.Model(&GlobalSend{}).Where(&GlobalSend{UserID: chatId}).Updates(&send).RowsAffected == 0 {
+		c.db.Create(&send)
+	}
+}
+
 type eventConnector struct {
 	db *gorm.DB
 	ev *FurryPlans

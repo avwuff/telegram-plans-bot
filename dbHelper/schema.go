@@ -18,6 +18,12 @@ type UserPrefs struct {
 	TimeZone string // The user's default time zone
 }
 
+type GlobalSend struct {
+	gorm.Model
+	UserID   int64 `gorm:"primarykey"`
+	SendType int   // 0 - unsent, 1 - sent, 2 - user no longer valid so can't send.
+}
+
 type FurryPlans struct {
 	EventID   uint         `gorm:"primarykey;column:eventID"`
 	OwnerID   string       `gorm:"column:ownerID"` // Should be an int64

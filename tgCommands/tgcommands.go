@@ -24,6 +24,9 @@ type Command struct {
 
 	// HelpText is the text shown for help with this command
 	HelpText string
+
+	// Private means the command is not included in the help or command list
+	Private bool
 }
 
 type Callback struct {

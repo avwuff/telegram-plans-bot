@@ -270,7 +270,7 @@ func (e *eventConnector) updateEvent(column string) error {
 
 func (e *eventConnector) GetAttending() ([]*dbInterface.Attend, error) {
 	var attend []*FurryPlansAttend
-	query := e.db.Where(&FurryPlansAttend{EventID: e.ev.EventID}).Order("UCASE(UserName) DESC")
+	query := e.db.Where(&FurryPlansAttend{EventID: e.ev.EventID}).Order("UCASE(UserName) ASC")
 	err := query.Find(&attend).Error
 	if err != nil {
 		return nil, err

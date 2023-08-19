@@ -114,7 +114,7 @@ func startTagToText(tag tgbotapi.MessageEntity, text []uint16) string {
 	case "mention":
 		return "<a href=\"https://t.me/" + string(utf16.Decode(text[tag.Offset+1:(tag.Offset+tag.Length)])) + "\">"
 	case "url":
-		return "<a href=\"" + string(utf16.Decode(text[tag.Offset:(tag.Offset+tag.Length-1)])) + "\">"
+		return "<a href=\"" + string(utf16.Decode(text[tag.Offset:(tag.Offset+tag.Length)])) + "\">"
 	default:
 		return ""
 	}

@@ -2,6 +2,7 @@ package helpers
 
 import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -83,14 +84,23 @@ func Test_ConvertEntitiesToHTML(t1 *testing.T) {
 			},
 			want: "&#127464;&#127462;: What <b><i>kind</i></b> of D<i>OO</i>OOOOOG are you? \n&#128520;: I&#39;m a man!",
 		},
+		{
+			name: "url in text",
+			args: args{
+				Text: "FOOOO BAR\nLet's go here!\nFoobars event: https://foobars.com/events/1353073",
+				Entities: []tgbotapi.MessageEntity{
+					{Type: "url", Offset: 40, Length: 34},
+				},
+			},
+			want: "FOOOO BAR\nLet&#39;s go here!\nFoobars event: <a href=\"https://foobars.com/events/1353073\">https://foobars.com/events/1353073</a>",
+		},
 	}
 
 	for _, tt := range tests {
 		t1.Run(tt.name, func(t1 *testing.T) {
 			t1.Log("Running test", tt.name)
-			if got := ConvertEntitiesToHTML(tt.args.Text, tt.args.Entities); got != tt.want {
-				t1.Errorf("ConvertEntitiesToHTML() = GOT:\n%v\n, WANT:\n%v\n", got, tt.want)
-			}
+			got := ConvertEntitiesToHTML(tt.args.Text, tt.args.Entities)
+			assert.Equal(t1, tt.want, got)
 		})
 	}
 }

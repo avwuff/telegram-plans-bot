@@ -304,6 +304,11 @@ func eventAdvancedButtons(event dbInterface.DBEvent, loc *localizer.Localizer) t
 	row[1] = quickButton(loc.Sprintf("⌚ Time Zone"), fmt.Sprintf("edit:%v:timezone", event.ID()))
 	buttons = append(buttons, row)
 
+	// Limit the max number of guests people can bring
+	row = make([]tgbotapi.InlineKeyboardButton, 1)
+	row[0] = quickButton(loc.Sprintf("👨‍👩‍👦 Max Guests (+1's): %v", event.MaxGuests()), fmt.Sprintf("edit:%v:maxguests", event.ID()))
+	buttons = append(buttons, row)
+
 	if !event.Closed() { // Only show a Close button when the event isn't already closed.
 		row = make([]tgbotapi.InlineKeyboardButton, 1)
 		row[0] = quickButton(loc.Sprintf("❌ Close Event"), fmt.Sprintf("edit:%v:close", event.ID()))

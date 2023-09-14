@@ -207,6 +207,20 @@ func (_m *DBEventMock) MaxAttendees() int {
 	return r0
 }
 
+// MaxGuests provides a mock function with given fields:
+func (_m *DBEventMock) MaxGuests() int {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
+	}
+
+	return r0
+}
+
 // Name provides a mock function with given fields:
 func (_m *DBEventMock) Name() string {
 	ret := _m.Called()
@@ -362,6 +376,20 @@ func (_m *DBEventMock) SetMaxAttendees(i int) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(int) error); ok {
 		r0 = rf(i)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SetMaxGuests provides a mock function with given fields: v
+func (_m *DBEventMock) SetMaxGuests(v int) error {
+	ret := _m.Called(v)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int) error); ok {
+		r0 = rf(v)
 	} else {
 		r0 = ret.Error(0)
 	}

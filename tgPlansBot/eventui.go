@@ -395,8 +395,26 @@ func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.
 	} else {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)
 		row = append(row, quickButton(loc.Sprintf("🙋‍♂️ I'm going!"), fmt.Sprintf("attending:%v:0", event.ID())))
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️🕺 Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
-		row = append(row, quickButton(loc.Sprintf("🙋‍♂️👭 Me +2"), fmt.Sprintf("attending:%v:2", event.ID())))
+
+		emoji1 := "🙋‍♂️🕺 "
+		emoji2 := "🙋‍♂️👭 "
+		emoji3 := "🙋‍♂️👨‍👩‍👦 "
+
+		if event.MaxGuests() > 2 { // more than 2, remove the emoji
+			emoji1 = ""
+			emoji2 = ""
+			emoji3 = ""
+		}
+
+		if event.MaxGuests() >= 1 {
+			row = append(row, quickButton(emoji1+loc.Sprintf("Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
+		}
+		if event.MaxGuests() >= 2 {
+			row = append(row, quickButton(emoji2+loc.Sprintf("+2"), fmt.Sprintf("attending:%v:2", event.ID())))
+		}
+		if event.MaxGuests() >= 3 {
+			row = append(row, quickButton(emoji3+loc.Sprintf("+3"), fmt.Sprintf("attending:%v:3", event.ID())))
+		}
 		buttons = append(buttons, row)
 	}
 

@@ -89,15 +89,22 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 
 	// TOGGLES
 	case "sharing":
-		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event)
+		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event, false)
 	case "setmaybe":
-		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event)
+		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event, false)
 	case "suitwalk":
-		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event)
+		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event, false)
 	case "close": // When the event is no longer accepting attendees
-		tgp.toggleItem(usrInfo, cb, false, event.SetClosed, event)
+		tgp.toggleItem(usrInfo, cb, false, event.SetClosed, event, false)
 	case "reopen": // Reopen after closing
-		tgp.toggleItem(usrInfo, cb, true, event.SetClosed, event)
+		tgp.toggleItem(usrInfo, cb, true, event.SetClosed, event, false)
+	case "maxguests":
+		// Cycle between 0, 1, 2, 3
+		set := event.MaxGuests() + 1
+		if set > 3 {
+			set = 0
+		}
+		tgp.directSetItem(usrInfo, cb, set, event.SetMaxGuests, event, true)
 
 	// COMMANDS
 	case "advanced":
@@ -351,7 +358,7 @@ func (tgp *TGPlansBot) showAdvancedPanel(usrInfo *userManager.UserInfo, cb *tgbo
 
 }
 
-func (tgp *TGPlansBot) toggleItem(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, value bool, SetFunc setBoolFunc, event dbInterface.DBEvent) {
+func (tgp *TGPlansBot) toggleItem(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, value bool, SetFunc setBoolFunc, event dbInterface.DBEvent, advanced bool) {
 
 	// Save the changes
 	err := SetFunc(!value)
@@ -361,7 +368,22 @@ func (tgp *TGPlansBot) toggleItem(usrInfo *userManager.UserInfo, cb *tgbotapi.Ca
 		return
 	}
 
-	tgp.eventDetails(usrInfo, cb.From.ID, event, "", cb.Message.MessageID, false)
+	tgp.eventDetails(usrInfo, cb.From.ID, event, "", cb.Message.MessageID, advanced)
+	tgp.updateEventUIAllPostings(event)
+}
+
+// directSetItem is used to directly set the value of an item
+func (tgp *TGPlansBot) directSetItem(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery, value int, SetFunc setIntFunc, event dbInterface.DBEvent, advanced bool) {
+
+	// Save the changes
+	err := SetFunc(value)
+	if err != nil {
+		mObj := tgbotapi.NewMessage(cb.From.ID, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		_, _ = tgp.tg.Send(mObj)
+		return
+	}
+
+	tgp.eventDetails(usrInfo, cb.From.ID, event, "", cb.Message.MessageID, advanced)
 	tgp.updateEventUIAllPostings(event)
 }
 

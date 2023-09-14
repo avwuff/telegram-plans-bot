@@ -41,6 +41,20 @@ func (_m *DBEventMock) Attending(userId int64, name string, attendType CanAttend
 	return r0
 }
 
+// Closed provides a mock function with given fields:
+func (_m *DBEventMock) Closed() bool {
+	ret := _m.Called()
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func() bool); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
+}
+
 // DateTime provides a mock function with given fields:
 func (_m *DBEventMock) DateTime() time.Time {
 	ret := _m.Called()
@@ -269,6 +283,20 @@ func (_m *DBEventMock) SavePosting(MessageID string) {
 // SavePostingRegular provides a mock function with given fields: chatId, messageId
 func (_m *DBEventMock) SavePostingRegular(chatId int64, messageId int) {
 	_m.Called(chatId, messageId)
+}
+
+// SetClosed provides a mock function with given fields: v
+func (_m *DBEventMock) SetClosed(v bool) error {
+	ret := _m.Called(v)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(bool) error); ok {
+		r0 = rf(v)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // SetDateTime provides a mock function with given fields: d

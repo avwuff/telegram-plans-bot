@@ -94,6 +94,10 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event)
 	case "suitwalk":
 		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event)
+	case "close": // When the event is no longer accepting attendees
+		tgp.toggleItem(usrInfo, cb, false, event.SetClosed, event)
+	case "reopen": // Reopen after closing
+		tgp.toggleItem(usrInfo, cb, true, event.SetClosed, event)
 
 	// COMMANDS
 	case "advanced":

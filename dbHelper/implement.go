@@ -504,6 +504,14 @@ func (e *eventConnector) SetSuitwalk(v bool) error {
 	return e.updateEvent("Suitwalk")
 
 }
+func (e *eventConnector) Closed() bool {
+	return e.ev.Closed
+}
+
+func (e *eventConnector) SetClosed(v bool) error {
+	e.ev.Closed = v
+	return e.updateEvent("Closed")
+}
 
 func (e *eventConnector) MaxAttendees() int {
 	return e.ev.MaxAttendees

@@ -55,7 +55,7 @@ Here's what is on my roadmap so far:
 - **Attendee management:** Allow the organize to see and remove attendees
 - **Better notes editor:** What if adding/editing notes worked in a popup?
 - **+1 naming:** Naming who you plan to bring
-- **Disable +1** Limit/Disable the ability to +1 +2 to an event
+- **Duration** Specify how long the event is, currently all events default to one hour.
 - **and more!**
 
 ## Environment

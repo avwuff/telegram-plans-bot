@@ -55,6 +55,7 @@ func (c *Connector) CreateEvent(OwnerID int64, Name string, DateTime time.Time, 
 		Location:  Location,
 		Notes:     Notes,
 		Language:  Language, // By default, events pick up the language of their creators
+		MaxGuests: 2,        // by default, we allow two guests
 	}
 	err := c.db.Create(&event).Error
 	if err != nil {
@@ -511,6 +512,15 @@ func (e *eventConnector) Closed() bool {
 func (e *eventConnector) SetClosed(v bool) error {
 	e.ev.Closed = v
 	return e.updateEvent("Closed")
+}
+
+func (e *eventConnector) MaxGuests() int {
+	return e.ev.MaxGuests
+}
+
+func (e *eventConnector) SetMaxGuests(v int) error {
+	e.ev.MaxGuests = v
+	return e.updateEvent("MaxGuests")
 }
 
 func (e *eventConnector) MaxAttendees() int {

@@ -43,7 +43,8 @@ type FurryPlans struct {
 	AllowShare   int `gorm:"column:AllowShare"`
 
 	// new items are being added as bools!
-	Closed bool `gorm:"column:Closed"`
+	Closed    bool `gorm:"column:Closed"`
+	MaxGuests int  `gorm:"column:MaxGuests"`
 }
 
 // FurryPlansWithAttend is the same as FurryPlans, and doesn't actually represent a table in the DB.

@@ -17,6 +17,7 @@ import (
 func (tgp *TGPlansBot) initUICommands() {
 
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "use", Public: true, Handler: tgp.ui_Attending})
+	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "nothing", Public: true, Handler: tgp.ui_Attending})
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "attending", Public: true, Handler: tgp.ui_Attending})
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "maybe", Public: true, Handler: tgp.ui_Attending})
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "cancel", Public: true, Handler: tgp.ui_Attending})
@@ -48,11 +49,19 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 	// HTML format the name so it works properly.
 	name := helpers.HtmlEntities(cb.From.FirstName)
 
-	// Update the attending data about the event.
 	var reply dbInterface.AttendMsgs
+
+	// If the event is closed, then don't let the user change anything.
+	if event.Closed() {
+		data[0] = "nothing"
+	}
+
+	// Update the attending data about the event.
 	switch data[0] {
 	case "use": // Event activated
 		reply = dbInterface.ATTEND_ACTIVE
+	case "nothing": // Event activated
+		reply = dbInterface.ATTEND_CLOSED
 	case "attending":
 		// How many people are they bringing?
 		people, err := strconv.Atoi(data[2])
@@ -93,6 +102,10 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 		txt = loc.Sprintf("Alright, you've been marked as unable to attend.")
 	case dbInterface.ATTEND_ACTIVE:
 		txt = loc.Sprintf("Event is ready to be used!")
+	case dbInterface.ATTEND_CLOSED:
+		txt = loc.Sprintf("Event is closed, please contact the host for more information.")
+		tgp.answerCallback(cb, txt)
+		return
 	default:
 		txt = loc.Sprintf("A general error occurred.") // Can't use the CONST here because it crashes GOTEXT.
 		tgp.answerCallback(cb, txt)
@@ -351,6 +364,17 @@ func (tgp *TGPlansBot) makeEventUIRegular(chatId int64, event dbInterface.DBEven
 func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InlineKeyboardMarkup {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
+
+	// If the event is closed, remove all the buttons!
+	if event.Closed() {
+		row := make([]tgbotapi.InlineKeyboardButton, 0)
+		row = append(row, quickButton(loc.Sprintf("❌️ Event Closed"), fmt.Sprintf("nothing:%v", event.ID())))
+		buttons = append(buttons, row)
+
+		return tgbotapi.InlineKeyboardMarkup{
+			InlineKeyboard: buttons,
+		}
+	}
 
 	if event.Suitwalk() {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)

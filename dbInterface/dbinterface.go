@@ -53,6 +53,8 @@ type DBEvent interface {
 	SetLanguage(t string) error
 	Suitwalk() bool
 	SetSuitwalk(v bool) error
+	Closed() bool
+	SetClosed(v bool) error
 	MaxAttendees() int
 	SetMaxAttendees(i int) error
 	DisableMaybe() bool
@@ -100,6 +102,7 @@ const (
 	ATTEND_REMOVED
 	ATTEND_FULL
 	ATTEND_ACTIVE
+	ATTEND_CLOSED
 )
 
 type Prefs struct {

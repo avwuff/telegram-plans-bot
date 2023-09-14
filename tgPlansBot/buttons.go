@@ -270,6 +270,13 @@ func eventEditButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbot
 	row = append(row, quickButton(loc.Sprintf("💔 Allow Maybe: %v", iif(event.DisableMaybe(), loc.Sprintf("No"), loc.Sprintf("Yes"))), fmt.Sprintf("edit:%v:setmaybe", event.ID())))
 	buttons = append(buttons, row)
 
+	// If event is closed, show a button to reopen
+	if event.Closed() {
+		row = make([]tgbotapi.InlineKeyboardButton, 0)
+		row = append(row, quickButton(loc.Sprintf("🏁 Event is closed. Reopen!"), fmt.Sprintf("edit:%v:reopen", event.ID())))
+		buttons = append(buttons, row)
+	}
+
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	row = append(row, quickButton(loc.Sprintf("📩 Allow Sharing: %v", iif(event.SharingAllowed(), loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:sharing", event.ID())))
 	row = append(row, quickButton(loc.Sprintf("⚙ Advanced Options..."), fmt.Sprintf("edit:%v:advanced", event.ID())))
@@ -296,6 +303,12 @@ func eventAdvancedButtons(event dbInterface.DBEvent, loc *localizer.Localizer) t
 	row[0] = quickButton(loc.Sprintf("🔠 Language"), fmt.Sprintf("edit:%v:language", event.ID()))
 	row[1] = quickButton(loc.Sprintf("⌚ Time Zone"), fmt.Sprintf("edit:%v:timezone", event.ID()))
 	buttons = append(buttons, row)
+
+	if !event.Closed() { // Only show a Close button when the event isn't already closed.
+		row = make([]tgbotapi.InlineKeyboardButton, 1)
+		row[0] = quickButton(loc.Sprintf("❌ Close Event"), fmt.Sprintf("edit:%v:close", event.ID()))
+		buttons = append(buttons, row)
+	}
 
 	row = make([]tgbotapi.InlineKeyboardButton, 1)
 	row[0] = quickButton(loc.Sprintf("🔙 Back"), fmt.Sprintf("edit:%v:back", event.ID()))

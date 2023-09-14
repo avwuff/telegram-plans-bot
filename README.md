@@ -42,11 +42,13 @@ As of version 2.0, this bot is now fully open source!
 You can clone the code and run your own copy, or you can submit pull requests 
 and bug reports to this version to bring them to the `@furryplansbot`.
 
+## Changelog
+See the [Changelog](changelog.md) for the most recent changes!
+
 ## Roadmap
 
 As time allows, I'd like to bring a lot more features to this bot.  
 Here's what is on my roadmap so far:
-- **Closing events:** When an event is over, the ability to close it so no further RSVPing can happen
 - **Migrate to newer DB:** Right now the bot still runs on my old DB. 
 - **More languages and time zones** 
 - **Remove hardcoded URLs** Right now, plansbot.avbrand.com is hardcoded in a few places.

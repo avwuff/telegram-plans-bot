@@ -227,6 +227,11 @@
             "translation": ""
         },
         {
+            "id": "🏁 Event is closed. Reopen!",
+            "message": "🏁 Event is closed. Reopen!",
+            "translation": ""
+        },
+        {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
             "translation": "",
@@ -274,6 +279,26 @@
         {
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
+            "translation": ""
+        },
+        {
+            "id": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
+            "message": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "MaxGuests",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.MaxGuests()"
+                }
+            ]
+        },
+        {
+            "id": "❌ Close Event",
+            "message": "❌ Close Event",
             "translation": ""
         },
         {
@@ -590,6 +615,11 @@
             "translation": ""
         },
         {
+            "id": "Event is closed, please contact the host for more information.",
+            "message": "Event is closed, please contact the host for more information.",
+            "translation": ""
+        },
+        {
             "id": "hosted by",
             "message": "hosted by",
             "translation": ""
@@ -690,6 +720,11 @@
             "translation": ""
         },
         {
+            "id": "❌️ Event Closed",
+            "message": "❌️ Event Closed",
+            "translation": ""
+        },
+        {
             "id": "🐕‍🦺 I'm Suiting",
             "message": "🐕‍🦺 I'm Suiting",
             "translation": ""
@@ -740,13 +775,13 @@
             "translation": ""
         },
         {
-            "id": "🙋‍♂️🕺 Me +1",
-            "message": "🙋‍♂️🕺 Me +1",
+            "id": "Me +1",
+            "message": "Me +1",
             "translation": ""
         },
         {
-            "id": "🙋‍♂️👭 Me +2",
-            "message": "🙋‍♂️👭 Me +2",
+            "id": "Guest Names...",
+            "message": "Guest Names...",
             "translation": ""
         },
         {
@@ -777,6 +812,69 @@
         {
             "id": "Not an event you are attending.",
             "message": "Not an event you are attending.",
+            "translation": ""
+        },
+        {
+            "id": "Sorry, I wasn't able to find the event.  Try again.",
+            "message": "Sorry, I wasn't able to find the event.  Try again.",
+            "translation": ""
+        },
+        {
+            "id": "Sorry, but this event does not allow you to bring any guests.",
+            "message": "Sorry, but this event does not allow you to bring any guests.",
+            "translation": ""
+        },
+        {
+            "id": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
+            "message": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                },
+                {
+                    "id": "MaxGuests",
+                    "string": "%[2]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxGuests()"
+                }
+            ]
+        },
+        {
+            "id": "Woah, slow down!  Just give me the name of the attendee.",
+            "message": "Woah, slow down!  Just give me the name of the attendee.",
+            "translation": ""
+        },
+        {
+            "id": "Got it.  Who's the next guest?  If that's the last one, click /done.",
+            "message": "Got it.  Who's the next guest?  If that's the last one, click /done.",
+            "translation": ""
+        },
+        {
+            "id": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "message": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                }
+            ]
+        },
+        {
+            "id": "Click here to specify Guest names...",
+            "message": "Click here to specify Guest names...",
             "translation": ""
         },
         {

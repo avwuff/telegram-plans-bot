@@ -305,10 +305,16 @@
             "fuzzy": true
         },
         {
+            "id": "🏁 Event is closed. Reopen!",
+            "message": "🏁 Event is closed. Reopen!",
+            "translation": "🏁 Event is closed. Reopen!",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "📩 Allow Sharing: {SprintfNo}",
             "message": "📩 Allow Sharing: {SprintfNo}",
             "translation": "📩 Can Share: {SprintfNo}",
-            "translatorComment": "",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -318,15 +324,12 @@
                     "argNum": 1,
                     "expr": "iif(event.SharingAllowed(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
-            ],
-            "fuzzy": true
+            ]
         },
         {
             "id": "⚙ Advanced Options...",
             "message": "⚙ Advanced Options...",
-            "translation": "⚙ Advanced",
-            "translatorComment": "",
-            "fuzzy": true
+            "translation": "⚙ Advanced"
         },
         {
             "id": "⚙ ADVANCED OPTIONS ⚙",
@@ -363,6 +366,30 @@
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
             "translation": "⌚ Time Zone",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
+            "message": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
+            "translation": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "MaxGuests",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.MaxGuests()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "❌ Close Event",
+            "message": "❌ Close Event",
+            "translation": "❌ Close Event",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -766,6 +793,13 @@
             "fuzzy": true
         },
         {
+            "id": "Event is closed, please contact the host for more information.",
+            "message": "Event is closed, please contact the host for more information.",
+            "translation": "Event is closed, please contact the host for more information.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "hosted by",
             "message": "hosted by",
             "translation": "hosted by",
@@ -882,6 +916,13 @@
             "fuzzy": true
         },
         {
+            "id": "❌️ Event Closed",
+            "message": "❌️ Event Closed",
+            "translation": "❌️ Event Closed",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "🐕‍🦺 I'm Suiting",
             "message": "🐕‍🦺 I'm Suiting",
             "translation": "🐕‍🦺 I'm Suiting",
@@ -952,16 +993,16 @@
             "fuzzy": true
         },
         {
-            "id": "🙋‍♂️🕺 Me +1",
-            "message": "🙋‍♂️🕺 Me +1",
-            "translation": "🙋‍♂️ Me +1",
+            "id": "Me +1",
+            "message": "Me +1",
+            "translation": "Me +1",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "🙋‍♂️👭 Me +2",
-            "message": "🙋‍♂️👭 Me +2",
-            "translation": "🙋‍♂️ Me +2",
+            "id": "Guest Names...",
+            "message": "Guest Names...",
+            "translation": "Guest Names...",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -990,6 +1031,97 @@
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
             "translation": "📩 Share to another chat...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "message": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "translation": "You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Not an event you are attending.",
+            "message": "Not an event you are attending.",
+            "translation": "Not an event you are attending.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sorry, I wasn't able to find the event.  Try again.",
+            "message": "Sorry, I wasn't able to find the event.  Try again.",
+            "translation": "Sorry, I wasn't able to find the event.  Try again.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sorry, but this event does not allow you to bring any guests.",
+            "message": "Sorry, but this event does not allow you to bring any guests.",
+            "translation": "Sorry, but this event does not allow you to bring any guests.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
+            "message": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
+            "translation": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                },
+                {
+                    "id": "MaxGuests",
+                    "string": "%[2]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxGuests()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Woah, slow down!  Just give me the name of the attendee.",
+            "message": "Woah, slow down!  Just give me the name of the attendee.",
+            "translation": "Woah, slow down!  Just give me the name of the attendee.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Got it.  Who's the next guest?  If that's the last one, click /done.",
+            "message": "Got it.  Who's the next guest?  If that's the last one, click /done.",
+            "translation": "Got it.  Who's the next guest?  If that's the last one, click /done.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "message": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "translation": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Click here to specify Guest names...",
+            "message": "Click here to specify Guest names...",
+            "translation": "Click here to specify Guest names...",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1119,6 +1251,13 @@
             "id": "Learn more about the bot",
             "message": "Learn more about the bot",
             "translation": "Learn more about the bot",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "See a list of all events you RSVPd to",
+            "message": "See a list of all events you RSVPd to",
+            "translation": "See a list of all events you RSVPd to",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

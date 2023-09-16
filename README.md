@@ -84,3 +84,12 @@ Place your database connection string here.  Example:
 For backwards-compatibility reasons, the bot still uses MD5 for hashing.  
 One day this will be removed.
 In this file, place any value that will be used to salt the MD5 hashes.
+
+## Updating the language files
+The Furry Plans Bot uses `gotext` to help provide translations.
+1. Run `go generate internal\translations\translations.go`. This will run `gotext` to create the translation files.
+2. Look in the `locales` directory.  You will see a new file named `out.gotext.json` for each language.
+3. Edit this file and fill in the missing translations
+4. Delete the `messages.gotext.json` file in each language folder
+5. Rename the `out.gotext.json` file to `messages.gotext.json`
+6. Run the `go generate` from step 1 again to import your changes into the code. Delete the `out` files generated this time. 

@@ -54,7 +54,6 @@ Here's what is on my roadmap so far:
 - **Remove hardcoded URLs** Right now, plansbot.avbrand.com is hardcoded in a few places.
 - **Attendee management:** Allow the organize to see and remove attendees
 - **Better notes editor:** What if adding/editing notes worked in a popup?
-- **+1 naming:** Naming who you plan to bring
 - **Duration** Specify how long the event is, currently all events default to one hour.
 - **and more!**
 

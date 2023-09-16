@@ -79,12 +79,23 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 			people -= int(dbInterface.CANATTEND_SUITING)
 		}
 
-		reply = event.Attending(cb.From.ID, name, canAtt, people)
+		// If we had previously specified the names of our guests, don't erase that information.
+		attend, _ := event.GetAttending(cb.From.ID)
+		var guests []string
+		if len(attend) > 0 {
+			guests = attend[0].Guests
+			// strip the number of guests to how many guests we are bringing.
+			if people < len(guests) {
+				guests = guests[0:people]
+			}
+		}
+
+		reply = event.Attending(cb.From.ID, name, canAtt, people, guests)
 
 	case "maybe":
-		reply = event.Attending(cb.From.ID, name, dbInterface.CANATTEND_MAYBE, 0)
+		reply = event.Attending(cb.From.ID, name, dbInterface.CANATTEND_MAYBE, 0, nil)
 	case "cancel":
-		reply = event.Attending(cb.From.ID, name, dbInterface.CANATTEND_NO, 0)
+		reply = event.Attending(cb.From.ID, name, dbInterface.CANATTEND_NO, 0, nil)
 	}
 
 	// Send the reply.
@@ -220,7 +231,7 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 	}
 
 	// Get the list of people attending
-	attending, err := event.GetAttending()
+	attending, err := event.GetAttending(-1)
 
 	var cGoing, cSuiting, cPhoto int
 	var tGoing, tMaybe, tNot []string
@@ -239,7 +250,15 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 				if attend.PlusMany > 0 {
 					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
 				}
+
 				tGoing = append(tGoing, txt)
+
+				// Do we have named guests?
+				for _, guest := range attend.Guests {
+					txtG := fmt.Sprintf(`   - <i>%v</i>`, guest)
+					tGoing = append(tGoing, txtG)
+				}
+
 				cGoing += 1 + attend.PlusMany
 
 			case dbInterface.CANATTEND_SUITING:
@@ -400,22 +419,37 @@ func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.
 		emoji2 := "🙋‍♂️👭 "
 		emoji3 := "🙋‍♂️👨‍👩‍👦 "
 
-		if event.MaxGuests() > 2 { // more than 2, remove the emoji
-			emoji1 = ""
-			emoji2 = ""
-			emoji3 = ""
-		}
-
 		if event.MaxGuests() >= 1 {
-			row = append(row, quickButton(emoji1+loc.Sprintf("Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
-		}
-		if event.MaxGuests() >= 2 {
-			row = append(row, quickButton(emoji2+loc.Sprintf("+2"), fmt.Sprintf("attending:%v:2", event.ID())))
-		}
-		if event.MaxGuests() >= 3 {
-			row = append(row, quickButton(emoji3+loc.Sprintf("+3"), fmt.Sprintf("attending:%v:3", event.ID())))
+
+			// if it is just one guest...
+			if event.MaxGuests() == 1 {
+				row = append(row, quickButton(emoji1+loc.Sprintf("Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
+			}
+
+			// Create the text for the button for inline, to get the guest ID sharing UI
+			specGuestText := fmt.Sprintf("%v%v", GUESTS_PREFIX, helpers.CalenFeedMD5(tgp.saltValue+GUEST_HASH_EXTRA, int64(event.ID())))
+			row = append(row, tgbotapi.InlineKeyboardButton{
+				Text:                         loc.Sprintf("Guest Names..."),
+				SwitchInlineQueryCurrentChat: &specGuestText,
+			})
 		}
 		buttons = append(buttons, row)
+
+		// Only show the +1 buttons if guests are configured
+		if event.MaxGuests() >= 2 {
+			row = make([]tgbotapi.InlineKeyboardButton, 0)
+
+			if event.MaxGuests() >= 1 {
+				row = append(row, quickButton(emoji1+loc.Sprintf("Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
+			}
+			if event.MaxGuests() >= 2 {
+				row = append(row, quickButton(emoji2+loc.Sprintf("+2"), fmt.Sprintf("attending:%v:2", event.ID())))
+			}
+			if event.MaxGuests() >= 3 {
+				row = append(row, quickButton(emoji3+loc.Sprintf("+3"), fmt.Sprintf("attending:%v:3", event.ID())))
+			}
+			buttons = append(buttons, row)
+		}
 	}
 
 	row := make([]tgbotapi.InlineKeyboardButton, 0)

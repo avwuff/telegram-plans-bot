@@ -27,13 +27,13 @@ func (_m *DBEventMock) AmIAttending(id int64) bool {
 	return r0
 }
 
-// Attending provides a mock function with given fields: userId, name, attendType, plusPeople
-func (_m *DBEventMock) Attending(userId int64, name string, attendType CanAttend, plusPeople int) AttendMsgs {
-	ret := _m.Called(userId, name, attendType, plusPeople)
+// Attending provides a mock function with given fields: userId, name, attendType, plusPeople, guests
+func (_m *DBEventMock) Attending(userId int64, name string, attendType CanAttend, plusPeople int, guests []string) AttendMsgs {
+	ret := _m.Called(userId, name, attendType, plusPeople, guests)
 
 	var r0 AttendMsgs
-	if rf, ok := ret.Get(0).(func(int64, string, CanAttend, int) AttendMsgs); ok {
-		r0 = rf(userId, name, attendType, plusPeople)
+	if rf, ok := ret.Get(0).(func(int64, string, CanAttend, int, []string) AttendMsgs); ok {
+		r0 = rf(userId, name, attendType, plusPeople, guests)
 	} else {
 		r0 = ret.Get(0).(AttendMsgs)
 	}
@@ -111,25 +111,25 @@ func (_m *DBEventMock) DisableMaybe() bool {
 	return r0
 }
 
-// GetAttending provides a mock function with given fields:
-func (_m *DBEventMock) GetAttending() ([]*Attend, error) {
-	ret := _m.Called()
+// GetAttending provides a mock function with given fields: userId
+func (_m *DBEventMock) GetAttending(userId int64) ([]*Attend, error) {
+	ret := _m.Called(userId)
 
 	var r0 []*Attend
 	var r1 error
-	if rf, ok := ret.Get(0).(func() ([]*Attend, error)); ok {
-		return rf()
+	if rf, ok := ret.Get(0).(func(int64) ([]*Attend, error)); ok {
+		return rf(userId)
 	}
-	if rf, ok := ret.Get(0).(func() []*Attend); ok {
-		r0 = rf()
+	if rf, ok := ret.Get(0).(func(int64) []*Attend); ok {
+		r0 = rf(userId)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).([]*Attend)
 		}
 	}
 
-	if rf, ok := ret.Get(1).(func() error); ok {
-		r1 = rf()
+	if rf, ok := ret.Get(1).(func(int64) error); ok {
+		r1 = rf(userId)
 	} else {
 		r1 = ret.Error(1)
 	}

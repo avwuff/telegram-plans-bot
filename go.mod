@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/arran4/golang-ical v0.0.0-20230318005454-19abf92700cc
-	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
+	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.2-0.20221020003552-4126fa611266
 	github.com/gorilla/mux v1.8.0
 	github.com/stretchr/testify v1.8.1
 	github.com/vektra/mockery/v2 v2.24.0

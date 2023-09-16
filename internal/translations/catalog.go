@@ -42,39 +42,39 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"\nThis project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot": 147,
+	"\nThis project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot": 146,
 	"A general error occurred.":              69,
 	"A list of all your events, old and new": 74,
 	"A list of your upcoming events":         73,
-	"Add '%v' to your Calendar":              152,
-	"Add to Calendar":                        149,
-	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n": 61,
-	"Alright, tell me the name of each guest you are bringing to <b>%v</b>. You can bring up to %v.":         121,
-	"Alright, you've been marked as attending.":                                                              86,
-	"Alright, you've been marked as maybe.":                                                                  87,
-	"Alright, you've been marked as unable to attend.":                                                       89,
+	"Add '%v' to your Calendar":              151,
+	"Add to Calendar":                        148,
+	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n":                                     61,
+	"Alright, tell me the name of the first guest you are bringing to <b>%v</b>. You can bring up to %v.\n\nSend me one name at a time, please!": 152,
+	"Alright, you've been marked as attending.":        86,
+	"Alright, you've been marked as maybe.":            87,
+	"Alright, you've been marked as unable to attend.": 89,
 	"April":         3,
 	"Attending: %v": 96,
 	"August":        7,
-	"Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29": 133,
+	"Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29": 132,
 	"Can you go? Use the buttons below.":             99,
 	"Can't make it: %v":                              98,
-	"Change the language":                            140,
+	"Change the language":                            139,
 	"Choose the display language for this event.":    67,
 	"Choose the time zone for this event.":           68,
-	"Click here to specify Guest names...":           125,
-	"Click the button below to activate this event.": 127,
+	"Click here to specify Guest names...":           124,
+	"Click the button below to activate this event.": 126,
 	"Continue with Date: %v":                         26,
 	"Continue with Time: %v":                         27,
 	"Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n%v\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!": 49,
 	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 52,
 	"Could not parse the time you provided. Please send it in the format 22:03.":      55,
-	"Create a new set of plans": 137,
+	"Create a new set of plans": 136,
 	"Date selected: %v":         51,
 	"Date:":                     76,
 	"December":                  11,
-	"Did you know?":             150,
-	"Display the help message":  138,
+	"Did you know?":             149,
+	"Display the help message":  137,
 	"Error listing events: %v":  83,
 	"Event is closed, please contact the host for more information.": 91,
 	"Event is ready to be used!":                                     90,
@@ -82,23 +82,23 @@ var messageKeyToIndex = map[string]int{
 	"February":                                                       1,
 	"Fr":                                                             24,
 	"Friday":                                                         17,
-	"Get a custom calendar feed":                                     139,
+	"Get a custom calendar feed":                                     138,
 	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 50,
 	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    53,
-	"Got it.  Who's the next guest?  If that's the last one, click /done.":                               123,
+	"Got it.  Who's the next guest?  If that's the last one, click /done.":                               122,
 	"Guest Names...":                        112,
-	"Here is a list of available commands:": 145,
+	"Here is a list of available commands:": 144,
 	"Hosted By:":                            78,
-	"I accept":                              134,
-	"I don't understand that command. Send /help for help.": 148,
+	"I accept":                              133,
+	"I don't understand that command. Send /help for help.": 147,
 	"If you don't have any notes, just click /skip.":        58,
-	"In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.": 129,
+	"In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.": 128,
 	"January":                  0,
 	"July":                     6,
 	"June":                     5,
 	"Language:":                81,
-	"Learn more about the bot": 142,
-	"Let's create some new plans.  First, send me the name of the event.": 144,
+	"Learn more about the bot": 141,
+	"Let's create some new plans.  First, send me the name of the event.": 143,
 	"Location:":                       77,
 	"March":                           2,
 	"Max Attendees:":                  80,
@@ -114,20 +114,20 @@ var messageKeyToIndex = map[string]int{
 	"November":                        10,
 	"October":                         9,
 	"Photographers: %v":               94,
-	"Please check the policy again to see how to finish.": 135,
+	"Please check the policy again to see how to finish.": 134,
 	"Please provide a valid number":                       72,
 	"Sa":                                                  25,
 	"Saturday":                                            18,
-	"See a list of all events you RSVPd to":               143,
+	"See a list of all events you RSVPd to":               142,
 	"Select an event to edit:\n%v":                        84,
-	"Selected: %v":                                        131,
+	"Selected: %v":                                        130,
 	"September":                                           8,
 	"Share these plans in a chat ✅🔜":                      28,
 	"Sorry, I wasn't able to find the event.  Try again.":           119,
 	"Sorry, but this event does not allow you to bring any guests.": 120,
 	"Sorry, this event is currently full!":                          88,
-	"Specified Time Zone not found.":                                130,
-	"Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.": 132,
+	"Specified Time Zone not found.":                                129,
+	"Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.": 131,
 	"Specify any additional notes you'd like to show about the event.": 57,
 	"Specify the date on which this event takes place:":                64,
 	"Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.": 66,
@@ -135,16 +135,16 @@ var messageKeyToIndex = map[string]int{
 	"Specify the name of the person hosting the event.": 63,
 	"Specify the time at which this event takes place:": 65,
 	"Spotting: %v":            95,
-	"Start the Setup process": 141,
+	"Start the Setup process": 140,
 	"Su":                      19,
 	"Suiting: %v":             93,
 	"Suitwalk:":               79,
 	"Sunday":                  12,
 	"Th":                      23,
-	"Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.": 136,
-	"The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.": 151,
-	"The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:": 146,
-	"The language has been set to English.":             128,
+	"Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.": 135,
+	"The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.": 150,
+	"The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:": 145,
+	"The language has been set to English.":             127,
 	"The value you provided is not one of the choices.": 71,
 	"Thursday":                     16,
 	"Time selected: %v":            54,
@@ -154,9 +154,9 @@ var messageKeyToIndex = map[string]int{
 	"We":                           22,
 	"Wednesday":                    15,
 	"Where does the event take place?  Specify the name or address as you might type into Google Maps.": 56,
-	"Woah, slow down!  Just give me the name of the attendee.":                                          122,
+	"Woah, slow down!  Just give me the name of the attendee.":                                          121,
 	"Yes": 38,
-	"You're all set!  I've added those people as your guests at <b>%v</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!": 124,
+	"You're all set!  I've added those people as your guests at <b>%v</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!": 123,
 	"You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.\n\n":                                                                117,
 	"error creating event: %v":              59,
 	"error updating event: %v":              70,
@@ -174,7 +174,7 @@ var messageKeyToIndex = map[string]int{
 	"🐕\u200d🦺 I'm Suiting":                  101,
 	"🐕\u200d🦺🐱 Suiting +1":                  102,
 	"🐕\u200d🦺🐾 Suiting +2":                  103,
-	"👉 CLICK TO ACTIVATE EVENT 👈":           126,
+	"👉 CLICK TO ACTIVATE EVENT 👈":           125,
 	"👨\u200d👩\u200d👦 Max Guests (+1's): %v": 46,
 	"👫 Set Max Attendees":                   35,
 	"💔 Allow Maybe: %v":                     36,
@@ -232,19 +232,19 @@ var de_DEIndex = []uint32{ // 154 elements
 	0x00000e14, 0x00000e25, 0x00000e36, 0x00000e4f,
 	0x00000e56, 0x00000e63, 0x00000e76, 0x00000e8c,
 	0x00000eaa, 0x00000ed0, 0x00000f76, 0x00000fa2,
-	0x00000fed, 0x0000103a, 0x000010af, 0x000010f8,
-	0x0000114e, 0x00001226, 0x00001252, 0x00001275,
+	0x00000fed, 0x0000103a, 0x00001083, 0x000010d9,
+	0x000011b1, 0x000011dd, 0x00001200, 0x0000123e,
 	// Entry 80 - 9F
-	0x000012b3, 0x000012db, 0x000013f9, 0x00001427,
-	0x0000143a, 0x00001546, 0x000015dd, 0x000015ec,
-	0x00001652, 0x000016e1, 0x00001702, 0x00001715,
-	0x0000174a, 0x0000175e, 0x00001778, 0x00001794,
-	0x000017e1, 0x0000182f, 0x0000185d, 0x000018d0,
-	0x0000193b, 0x00001974, 0x0000198d, 0x0000199a,
-	0x00001af2, 0x00001b21,
+	0x00001266, 0x00001384, 0x000013b2, 0x000013c5,
+	0x000014d1, 0x00001568, 0x00001577, 0x000015dd,
+	0x0000166c, 0x0000168d, 0x000016a0, 0x000016d5,
+	0x000016e9, 0x00001703, 0x0000171f, 0x0000176c,
+	0x000017ba, 0x000017e8, 0x0000185b, 0x000018c6,
+	0x000018ff, 0x00001918, 0x00001925, 0x00001a7d,
+	0x00001aac, 0x00001aac,
 } // Size: 640 bytes
 
-const de_DEData string = "" + // Size: 6945 bytes
+const de_DEData string = "" + // Size: 6828 bytes
 	"\x02Januar\x02Februar\x02März\x02April\x02Mai\x02Juni\x02Juli\x02August" +
 	"\x02September\x02Oktober\x02November\x02Dezember\x02Sonntag\x02Montag" +
 	"\x02Dienstag\x02Mittwoch\x02Donnerstag\x02Freitag\x02Samstag\x02So\x02Mo" +
@@ -306,47 +306,46 @@ const de_DEData string = "" + // Size: 6945 bytes
 	"ne Veranstaltung, um weitere Informationen zu erhalten.\x02Keine Veranst" +
 	"altung, an der Sie teilnehmen.\x02Leider konnte ich die Veranstaltung ni" +
 	"cht finden. Versuchen Sie es erneut.\x02Leider ist es bei dieser Veranst" +
-	"altung nicht gestattet, Gäste mitzubringen.\x02Okay, sagen Sie mir den N" +
-	"amen jedes Gastes, den Sie zu <b>%[1]v</b> mitbringen. Sie können bis zu" +
-	" %[2]v mitbringen.\x02Boah, mach mal langsam! Geben Sie mir einfach den " +
-	"Namen des Teilnehmers.\x02Sehr gut. Wer ist der nächste Gast? Wenn dies " +
-	"der letzte ist, klicken Sie auf /done.\x02Sie sind bereit! Ich habe dies" +
-	"e Personen als Ihre Gäste unter <b>%[1]v</b> hinzugefügt. Sie können nun" +
-	" zu dem Chat zurückkehren, in dem Sie sich zuvor befanden.\x0a\x0aVielen" +
-	" Dank, dass Sie den Furry Plans Bot nutzen!\x02Klicken Sie hier, um Gast" +
-	"namen anzugeben...\x02👉 VERANSTALTUNG AKTIVIEREN 👈\x02Drücke den Button " +
-	"unten, um die Veranstaltung zu aktivieren.\x02Die Sprache wurde auf Deut" +
-	"sch gestellt.\x02In welcher Zeitzone leben Sie?\x0aSie können entweder e" +
-	"ine der Zeitzonen auf <a href=\x22https://github.com/Lewington-pitsos/go" +
-	"lang-time-locations\x22>dieser</a> Liste senden,\x0aOder Sie können Ihre" +
-	"n aktuellen 📍Standort senden, indem Sie auf die Büroklammer klicken und " +
-	"Standort auswählen.\x02Die angegebene Zeitzone wurde nicht gefunden.\x02" +
-	"Ausgewählt: %[1]v\x02Die angegebene Zeitzone wurde nicht gefunden. Bitte" +
-	" wählen Sie eine Zeitzone aus der Liste aus. Wenn die Liste nicht angeze" +
-	"igt wird, klicken Sie bitte auf die Schaltfläche, die wie vier Kästchen " +
-	"im Texteingabefeld aussieht, um die Auswahlmöglichkeiten aufzurufen.\x02" +
-	"Bevor Sie fortfahren, lesen Sie bitte unsere Datenschutzerklärung und ak" +
-	"zeptieren Sie diese.\x0a\x0ahttps://telegra.ph/Furry-Plans-Bot-Privacy-P" +
-	"olicy-06-29\x02Ich akzeptiere\x02Bitte prüfe die Bestimmungen noch einma" +
-	"l, um herauszufinden, wie du den Vorgang abschließen kannst.\x02Danke!  " +
-	"Es ist jetzt alles bereit, damit du den Furry-Veranstaltungsbot benutzen" +
-	" kannst! Sende /start um eine neue Veranstaltung zu erstellen.\x02Erstel" +
-	"le eine neue Veranstaltung\x02Zeige die Hilfe an\x02Bekomme einen auf di" +
-	"ch zugeschnittenen Kalender-Feed\x02Ändere die Sprache\x02Starten den Se" +
-	"tup-Vorgang\x02Erfahren mehr über den Bot\x02Sehen Sie sich eine Liste a" +
-	"ller Ereignisse an, zu denen Sie zugestimmt haben\x02Lass uns eine neue " +
-	"Veranstaltung erstellen.  Schick mir als erstes den Namen.\x02Hier ist e" +
-	"ine Liste der verfügbaren Befehle:\x02Der Furry Plans-Bot wurde von 🐕" +
-	"\u200d🦺<b>Av</b> (www.avbrand.com) erstellt.\x0a\x0aÜbersetzungen bereit" +
-	"gestellt von:\x04\x01\x0a\x00f\x02Dieses Projekt ist Open Source! Erfahr" +
-	"en Sie mehr unter: https://github.com/avwuff/telegram-plans-bot\x02Den B" +
-	"efehl verstehe ich nicht. Benutze /help für Hilfe.\x02Zum Kalender hinzu" +
-	"fügen\x02Wussten Sie?\x02Der Furry Plans Bot bietet einen iCal-Feed alle" +
-	"r Ereignisse, die Sie mit „Ja“ oder „Vielleicht“ markiert haben.\x0aSie " +
-	"können diesen Feed zu Google Kalender oder anderen Kalendern hinzufügen," +
-	" und Ereignisse werden automatisch angezeigt!\x0aUm die Feed-URL zu erha" +
-	"lten, chatten Sie mit @furryplansbot und senden Sie den Befehl <b>/feed<" +
-	"/b>.\x02Fügen Sie „%[1]v“ zu Ihrem Kalender hinzu"
+	"altung nicht gestattet, Gäste mitzubringen.\x02Boah, mach mal langsam! G" +
+	"eben Sie mir einfach den Namen des Teilnehmers.\x02Sehr gut. Wer ist der" +
+	" nächste Gast? Wenn dies der letzte ist, klicken Sie auf /done.\x02Sie s" +
+	"ind bereit! Ich habe diese Personen als Ihre Gäste unter <b>%[1]v</b> hi" +
+	"nzugefügt. Sie können nun zu dem Chat zurückkehren, in dem Sie sich zuvo" +
+	"r befanden.\x0a\x0aVielen Dank, dass Sie den Furry Plans Bot nutzen!\x02" +
+	"Klicken Sie hier, um Gastnamen anzugeben...\x02👉 VERANSTALTUNG AKTIVIERE" +
+	"N 👈\x02Drücke den Button unten, um die Veranstaltung zu aktivieren.\x02D" +
+	"ie Sprache wurde auf Deutsch gestellt.\x02In welcher Zeitzone leben Sie?" +
+	"\x0aSie können entweder eine der Zeitzonen auf <a href=\x22https://githu" +
+	"b.com/Lewington-pitsos/golang-time-locations\x22>dieser</a> Liste senden" +
+	",\x0aOder Sie können Ihren aktuellen 📍Standort senden, indem Sie auf die" +
+	" Büroklammer klicken und Standort auswählen.\x02Die angegebene Zeitzone " +
+	"wurde nicht gefunden.\x02Ausgewählt: %[1]v\x02Die angegebene Zeitzone wu" +
+	"rde nicht gefunden. Bitte wählen Sie eine Zeitzone aus der Liste aus. We" +
+	"nn die Liste nicht angezeigt wird, klicken Sie bitte auf die Schaltfläch" +
+	"e, die wie vier Kästchen im Texteingabefeld aussieht, um die Auswahlmögl" +
+	"ichkeiten aufzurufen.\x02Bevor Sie fortfahren, lesen Sie bitte unsere Da" +
+	"tenschutzerklärung und akzeptieren Sie diese.\x0a\x0ahttps://telegra.ph/" +
+	"Furry-Plans-Bot-Privacy-Policy-06-29\x02Ich akzeptiere\x02Bitte prüfe di" +
+	"e Bestimmungen noch einmal, um herauszufinden, wie du den Vorgang abschl" +
+	"ießen kannst.\x02Danke!  Es ist jetzt alles bereit, damit du den Furry-V" +
+	"eranstaltungsbot benutzen kannst! Sende /start um eine neue Veranstaltun" +
+	"g zu erstellen.\x02Erstelle eine neue Veranstaltung\x02Zeige die Hilfe a" +
+	"n\x02Bekomme einen auf dich zugeschnittenen Kalender-Feed\x02Ändere die " +
+	"Sprache\x02Starten den Setup-Vorgang\x02Erfahren mehr über den Bot\x02Se" +
+	"hen Sie sich eine Liste aller Ereignisse an, zu denen Sie zugestimmt hab" +
+	"en\x02Lass uns eine neue Veranstaltung erstellen.  Schick mir als erstes" +
+	" den Namen.\x02Hier ist eine Liste der verfügbaren Befehle:\x02Der Furry" +
+	" Plans-Bot wurde von 🐕\u200d🦺<b>Av</b> (www.avbrand.com) erstellt.\x0a" +
+	"\x0aÜbersetzungen bereitgestellt von:\x04\x01\x0a\x00f\x02Dieses Projekt" +
+	" ist Open Source! Erfahren Sie mehr unter: https://github.com/avwuff/tel" +
+	"egram-plans-bot\x02Den Befehl verstehe ich nicht. Benutze /help für Hilf" +
+	"e.\x02Zum Kalender hinzufügen\x02Wussten Sie?\x02Der Furry Plans Bot bie" +
+	"tet einen iCal-Feed aller Ereignisse, die Sie mit „Ja“ oder „Vielleicht“" +
+	" markiert haben.\x0aSie können diesen Feed zu Google Kalender oder ander" +
+	"en Kalendern hinzufügen, und Ereignisse werden automatisch angezeigt!" +
+	"\x0aUm die Feed-URL zu erhalten, chatten Sie mit @furryplansbot und send" +
+	"en Sie den Befehl <b>/feed</b>.\x02Fügen Sie „%[1]v“ zu Ihrem Kalender h" +
+	"inzu"
 
 var en_USIndex = []uint32{ // 154 elements
 	// Entry 0 - 1F
@@ -383,19 +382,19 @@ var en_USIndex = []uint32{ // 154 elements
 	0x00000b84, 0x00000b95, 0x00000ba6, 0x00000bbf,
 	0x00000bc5, 0x00000bd4, 0x00000be2, 0x00000bf9,
 	0x00000c0e, 0x00000c2c, 0x00000c9c, 0x00000cbc,
-	0x00000cf0, 0x00000d2e, 0x00000d93, 0x00000dcc,
-	0x00000e11, 0x00000eb8, 0x00000edd, 0x00000eff,
+	0x00000cf0, 0x00000d2e, 0x00000d67, 0x00000dac,
+	0x00000e53, 0x00000e78, 0x00000e9a, 0x00000ec9,
 	// Entry 80 - 9F
-	0x00000f2e, 0x00000f54, 0x00001050, 0x0000106f,
-	0x0000107f, 0x0000114b, 0x000011c4, 0x000011cd,
-	0x00001201, 0x00001268, 0x00001282, 0x0000129b,
-	0x000012b6, 0x000012ca, 0x000012e2, 0x000012fb,
-	0x00001321, 0x00001365, 0x0000138b, 0x000013f0,
-	0x0000144e, 0x00001484, 0x00001494, 0x000014a2,
-	0x000015b9, 0x000015d6,
+	0x00000eef, 0x00000feb, 0x0000100a, 0x0000101a,
+	0x000010e6, 0x0000115f, 0x00001168, 0x0000119c,
+	0x00001203, 0x0000121d, 0x00001236, 0x00001251,
+	0x00001265, 0x0000127d, 0x00001296, 0x000012bc,
+	0x00001300, 0x00001326, 0x0000138b, 0x000013e9,
+	0x0000141f, 0x0000142f, 0x0000143d, 0x00001554,
+	0x00001571, 0x00001600,
 } // Size: 640 bytes
 
-const en_USData string = "" + // Size: 5590 bytes
+const en_USData string = "" + // Size: 5632 bytes
 	"\x02January\x02February\x02March\x02April\x02May\x02June\x02July\x02Augu" +
 	"st\x02September\x02October\x02November\x02December\x02Sunday\x02Monday" +
 	"\x02Tuesday\x02Wednesday\x02Thursday\x02Friday\x02Saturday\x02Su\x02Mo" +
@@ -447,39 +446,40 @@ const en_USData string = "" + // Size: 5590 bytes
 	" considering attending the following events.  Click an event for more in" +
 	"fo.\x02Not an event you are attending.\x02Sorry, I wasn't able to find t" +
 	"he event.  Try again.\x02Sorry, but this event does not allow you to bri" +
-	"ng any guests.\x02Alright, tell me the name of each guest you are bringi" +
-	"ng to <b>%[1]v</b>. You can bring up to %[2]v.\x02Woah, slow down!  Just" +
-	" give me the name of the attendee.\x02Got it.  Who's the next guest?  If" +
-	" that's the last one, click /done.\x02You're all set!  I've added those " +
-	"people as your guests at <b>%[1]v</b>. You can now return to the chat yo" +
-	"u were in previously.\x0a\x0aThanks for using the Furry Plans Bot!\x02Cl" +
-	"ick here to specify Guest names...\x02👉 CLICK TO ACTIVATE EVENT 👈\x02Cli" +
-	"ck the button below to activate this event.\x02The language has been set" +
-	" to English.\x02In which time zone do you live?\x0aYou can either send o" +
-	"ne of the time zones on <a href=\x22https://github.com/Lewington-pitsos/" +
-	"golang-time-locations\x22>this</a> list,\x0aor you can send your current" +
-	" 📍 Location by clicking the paperclip and choosing Location.\x02Specifie" +
-	"d Time Zone not found.\x02Selected: %[1]v\x02Specified Time Zone not fou" +
-	"nd.  Please choose a time zone from the list.  If the list is not appear" +
-	"ing, please click the button that looks like four boxes in the text entr" +
-	"y field to bring up the choices.\x02Before you continue, please read and" +
-	" accept our privacy policy.\x0a\x0ahttps://telegra.ph/Furry-Plans-Bot-Pr" +
-	"ivacy-Policy-06-29\x02I accept\x02Please check the policy again to see h" +
-	"ow to finish.\x02Thanks!  You're all set to start using the Furry Plans " +
-	"Bot!  Type /start to create a new set of plans.\x02Create a new set of p" +
-	"lans\x02Display the help message\x02Get a custom calendar feed\x02Change" +
-	" the language\x02Start the Setup process\x02Learn more about the bot\x02" +
-	"See a list of all events you RSVPd to\x02Let's create some new plans.  F" +
-	"irst, send me the name of the event.\x02Here is a list of available comm" +
-	"ands:\x02The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbra" +
-	"nd.com)\x0a\x0aTranslations provided by:\x04\x01\x0a\x00Y\x02This projec" +
-	"t is open source! Learn more at: https://github.com/avwuff/telegram-plan" +
-	"s-bot\x02I don't understand that command. Send /help for help.\x02Add to" +
-	" Calendar\x02Did you know?\x02The Furry Plans Bot provides an iCal feed " +
-	"of all events that you've marked as 'Yes' or 'Maybe'.  \x0aYou can add t" +
-	"his feed to Google Calendar or other calendars, and events will appear a" +
-	"utomatically! \x0aTo get the feed URL, chat with @furryplansbot and send" +
-	" the command <b>/feed</b>.\x02Add '%[1]v' to your Calendar"
+	"ng any guests.\x02Woah, slow down!  Just give me the name of the attende" +
+	"e.\x02Got it.  Who's the next guest?  If that's the last one, click /don" +
+	"e.\x02You're all set!  I've added those people as your guests at <b>%[1]" +
+	"v</b>. You can now return to the chat you were in previously.\x0a\x0aTha" +
+	"nks for using the Furry Plans Bot!\x02Click here to specify Guest names." +
+	"..\x02👉 CLICK TO ACTIVATE EVENT 👈\x02Click the button below to activate " +
+	"this event.\x02The language has been set to English.\x02In which time zo" +
+	"ne do you live?\x0aYou can either send one of the time zones on <a href=" +
+	"\x22https://github.com/Lewington-pitsos/golang-time-locations\x22>this</" +
+	"a> list,\x0aor you can send your current 📍 Location by clicking the pape" +
+	"rclip and choosing Location.\x02Specified Time Zone not found.\x02Select" +
+	"ed: %[1]v\x02Specified Time Zone not found.  Please choose a time zone f" +
+	"rom the list.  If the list is not appearing, please click the button tha" +
+	"t looks like four boxes in the text entry field to bring up the choices." +
+	"\x02Before you continue, please read and accept our privacy policy.\x0a" +
+	"\x0ahttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\x02I accept" +
+	"\x02Please check the policy again to see how to finish.\x02Thanks!  You'" +
+	"re all set to start using the Furry Plans Bot!  Type /start to create a " +
+	"new set of plans.\x02Create a new set of plans\x02Display the help messa" +
+	"ge\x02Get a custom calendar feed\x02Change the language\x02Start the Set" +
+	"up process\x02Learn more about the bot\x02See a list of all events you R" +
+	"SVPd to\x02Let's create some new plans.  First, send me the name of the " +
+	"event.\x02Here is a list of available commands:\x02The Furry Plans bot w" +
+	"as created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\x0a\x0aTranslations pr" +
+	"ovided by:\x04\x01\x0a\x00Y\x02This project is open source! Learn more a" +
+	"t: https://github.com/avwuff/telegram-plans-bot\x02I don't understand th" +
+	"at command. Send /help for help.\x02Add to Calendar\x02Did you know?\x02" +
+	"The Furry Plans Bot provides an iCal feed of all events that you've mark" +
+	"ed as 'Yes' or 'Maybe'.  \x0aYou can add this feed to Google Calendar or" +
+	" other calendars, and events will appear automatically! \x0aTo get the f" +
+	"eed URL, chat with @furryplansbot and send the command <b>/feed</b>.\x02" +
+	"Add '%[1]v' to your Calendar\x02Alright, tell me the name of the first g" +
+	"uest you are bringing to <b>%[1]v</b>. You can bring up to %[2]v.\x0a" +
+	"\x0aSend me one name at a time, please!"
 
 var es_PEIndex = []uint32{ // 154 elements
 	// Entry 0 - 1F
@@ -565,19 +565,19 @@ var fr_CAIndex = []uint32{ // 154 elements
 	0x00000d79, 0x00000d8a, 0x00000d9b, 0x00000db4,
 	0x00000dbb, 0x00000dd0, 0x00000de3, 0x00000df7,
 	0x00000e12, 0x00000e3a, 0x00000ec3, 0x00000ef5,
-	0x00000f41, 0x00000f88, 0x00000ffb, 0x0000103a,
-	0x0000108e, 0x00001153, 0x00001188, 0x000011b5,
+	0x00000f41, 0x00000f88, 0x00000fc7, 0x0000101b,
+	0x000010e0, 0x00001115, 0x00001142, 0x00001181,
 	// Entry 80 - 9F
-	0x000011f4, 0x00001220, 0x00001345, 0x0000136c,
-	0x00001381, 0x00001477, 0x00001503, 0x0000150d,
-	0x0000155d, 0x000015d5, 0x000015ec, 0x00001607,
-	0x00001633, 0x00001645, 0x0000165d, 0x00001677,
-	0x000016bb, 0x00001707, 0x0000172f, 0x00001799,
-	0x000017fd, 0x0000183d, 0x00001853, 0x00001860,
-	0x000019ae, 0x000019d2,
+	0x000011ad, 0x000012d2, 0x000012f9, 0x0000130e,
+	0x00001404, 0x00001490, 0x0000149a, 0x000014ea,
+	0x00001562, 0x00001579, 0x00001594, 0x000015c0,
+	0x000015d2, 0x000015ea, 0x00001604, 0x00001648,
+	0x00001694, 0x000016bc, 0x00001726, 0x0000178a,
+	0x000017ca, 0x000017e0, 0x000017ed, 0x0000193b,
+	0x0000195f, 0x0000195f,
 } // Size: 640 bytes
 
-const fr_CAData string = "" + // Size: 6610 bytes
+const fr_CAData string = "" + // Size: 6495 bytes
 	"\x02Janvier\x02Février\x02Mars\x02Avril\x02Mai\x02Juin\x02Juillet\x02Aoû" +
 	"t\x02Septembre\x02Octobre\x02Novembre\x02Décembre\x02Dimanche\x02Lundi" +
 	"\x02Mardi\x02Mercredi\x02Jeudi\x02Vendredi\x02Samedi\x02Dim\x02Lun\x02Ma" +
@@ -635,45 +635,44 @@ const fr_CAData string = "" + // Size: 6610 bytes
 	"aux événements suivants. Cliquez sur l'événement pour plus d'information" +
 	"s.\x02Ce n'est pas un événement auquel vous assistez.\x02Désolé, je n'ai" +
 	" pas réussi à trouver l'événement. Essayer à nouveau.\x02Désolé, mais ce" +
-	"t événement ne vous permet pas d'amener d'invités.\x02Très bien, dites-m" +
-	"oi le nom de chaque invité que vous amenez à <b>%[1]v</b>. Vous pouvez a" +
-	"mener jusqu'à %[2]v.\x02Waouh, ralentis ! Donnez-moi simplement le nom d" +
-	"u participant.\x02J'ai compris. Qui est le prochain invité ? Si c'est le" +
-	" dernier, cliquez sur /done.\x02Vous êtes prêt! J'ai ajouté ces personne" +
-	"s comme invités sur <b>%[1]v</b>. Vous pouvez maintenant revenir au chat" +
-	" dans lequel vous étiez précédemment.\x0a\x0aMerci d'utiliser le robot F" +
-	"urry Plans!\x02Cliquez ici pour spécifier les noms des invités...\x02👉 C" +
-	"LIQUER POUR ACTIVER L'ÉVÈNEMENT 👈\x02Cliquer sur le bouton ci-dessous po" +
-	"ur activer cet évènement.\x02La langue française a été sélectionnée\x02D" +
-	"ans quel fuseau horaire habitez-vous\u00a0?\x0aVous pouvez soit envoyer " +
-	"l'un des fuseaux horaires sur <a href=\x22https://github.com/Lewington-p" +
-	"itsos/golang-time-locations\x22>cette</a> liste,\x0aou vous pouvez envoy" +
-	"er votre 📍 Emplacement actuel en cliquant sur le trombone et en choisiss" +
-	"ant Emplacement.\x02Fuseau horaire spécifié introuvable.\x02Sélectionné:" +
-	" %[1]v\x02Fuseau horaire spécifié introuvable. Veuillez choisir un fusea" +
-	"u horaire dans la liste. Si la liste n'apparaît pas, veuillez cliquer su" +
-	"r le bouton qui ressemble à quatre cases dans le champ de saisie de text" +
-	"e pour faire apparaître les choix.\x02Avant de continuer, veuillez lire " +
-	"et accepter notre politique de confidentialité.\x0a\x0ahttps://telegra.p" +
-	"h/Furry-Plans-Bot-Privacy-Policy-06-29\x02J'accepte\x02SVP vérifier à no" +
-	"uveau la politique de confidentialité pour pouvoir terminer\x02Merci! Vo" +
-	"us pouvez commencé d'utiliser Le planificateur de plans furry! Écrire /s" +
-	"tart pour commencer un nouveau plan.\x02Créer un nouveau plan\x02Affiche" +
-	"r le message d'aide\x02Recevoir un flux de calendrier personalisé\x02Cha" +
-	"nger la langue\x02Start the Setup process\x02En savoir plus sur le Bot" +
-	"\x02Voir une liste de tous les événements auxquels vous avez répondu\x02" +
-	"Commençons un nouveau plan.  Premièrement écrire le nom de l'événement" +
-	"\x02Voici la liste des commandes disponible\x02Le robot Furry Plans a ét" +
-	"é créé par 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\x0a\x0aTraductions fourn" +
-	"ies par:\x04\x01\x0a\x00_\x02Ce projet est open source ! En savoir plus " +
-	"sur\u00a0: https://github.com/avwuff/telegram-plans-bot\x02Je ne compren" +
-	"d pas cette commande. Écrire /help pour de l'aide\x02Ajouter au calendri" +
-	"er\x02Saviez-vous?\x02Le bot Furry Plans fournit un flux iCal de tous le" +
-	"s événements que vous avez marqués comme \x22Oui\x22 ou \x22Peut-être" +
-	"\x22.\x0aVous pouvez ajouter ce flux à Google\u00a0Agenda ou à d'autres " +
-	"agendas, et les événements apparaîtront automatiquement\u00a0!\x0aPour o" +
-	"btenir l'URL du flux, discutez avec @furryplansbot et envoyez la command" +
-	"e <b>/feed</b>.\x02Ajouter '%[1]v' à votre calendrier"
+	"t événement ne vous permet pas d'amener d'invités.\x02Waouh, ralentis ! " +
+	"Donnez-moi simplement le nom du participant.\x02J'ai compris. Qui est le" +
+	" prochain invité ? Si c'est le dernier, cliquez sur /done.\x02Vous êtes " +
+	"prêt! J'ai ajouté ces personnes comme invités sur <b>%[1]v</b>. Vous pou" +
+	"vez maintenant revenir au chat dans lequel vous étiez précédemment.\x0a" +
+	"\x0aMerci d'utiliser le robot Furry Plans!\x02Cliquez ici pour spécifier" +
+	" les noms des invités...\x02👉 CLIQUER POUR ACTIVER L'ÉVÈNEMENT 👈\x02Cliq" +
+	"uer sur le bouton ci-dessous pour activer cet évènement.\x02La langue fr" +
+	"ançaise a été sélectionnée\x02Dans quel fuseau horaire habitez-vous" +
+	"\u00a0?\x0aVous pouvez soit envoyer l'un des fuseaux horaires sur <a hre" +
+	"f=\x22https://github.com/Lewington-pitsos/golang-time-locations\x22>cett" +
+	"e</a> liste,\x0aou vous pouvez envoyer votre 📍 Emplacement actuel en cli" +
+	"quant sur le trombone et en choisissant Emplacement.\x02Fuseau horaire s" +
+	"pécifié introuvable.\x02Sélectionné: %[1]v\x02Fuseau horaire spécifié in" +
+	"trouvable. Veuillez choisir un fuseau horaire dans la liste. Si la liste" +
+	" n'apparaît pas, veuillez cliquer sur le bouton qui ressemble à quatre c" +
+	"ases dans le champ de saisie de texte pour faire apparaître les choix." +
+	"\x02Avant de continuer, veuillez lire et accepter notre politique de con" +
+	"fidentialité.\x0a\x0ahttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-0" +
+	"6-29\x02J'accepte\x02SVP vérifier à nouveau la politique de confidential" +
+	"ité pour pouvoir terminer\x02Merci! Vous pouvez commencé d'utiliser Le p" +
+	"lanificateur de plans furry! Écrire /start pour commencer un nouveau pla" +
+	"n.\x02Créer un nouveau plan\x02Afficher le message d'aide\x02Recevoir un" +
+	" flux de calendrier personalisé\x02Changer la langue\x02Start the Setup " +
+	"process\x02En savoir plus sur le Bot\x02Voir une liste de tous les événe" +
+	"ments auxquels vous avez répondu\x02Commençons un nouveau plan.  Premièr" +
+	"ement écrire le nom de l'événement\x02Voici la liste des commandes dispo" +
+	"nible\x02Le robot Furry Plans a été créé par 🐕\u200d🦺<b>Av</b> (www.avbr" +
+	"and.com)\x0a\x0aTraductions fournies par:\x04\x01\x0a\x00_\x02Ce projet " +
+	"est open source ! En savoir plus sur\u00a0: https://github.com/avwuff/te" +
+	"legram-plans-bot\x02Je ne comprend pas cette commande. Écrire /help pour" +
+	" de l'aide\x02Ajouter au calendrier\x02Saviez-vous?\x02Le bot Furry Plan" +
+	"s fournit un flux iCal de tous les événements que vous avez marqués comm" +
+	"e \x22Oui\x22 ou \x22Peut-être\x22.\x0aVous pouvez ajouter ce flux à Goo" +
+	"gle\u00a0Agenda ou à d'autres agendas, et les événements apparaîtront au" +
+	"tomatiquement\u00a0!\x0aPour obtenir l'URL du flux, discutez avec @furry" +
+	"plansbot et envoyez la commande <b>/feed</b>.\x02Ajouter '%[1]v' à votre" +
+	" calendrier"
 
 var fr_FRIndex = []uint32{ // 154 elements
 	// Entry 0 - 1F
@@ -724,4 +723,4 @@ var fr_FRIndex = []uint32{ // 154 elements
 
 const fr_FRData string = ""
 
-// Total table size 22345 bytes (21KiB); checksum: AFFDB70D
+// Total table size 22155 bytes (21KiB); checksum: 6C4D93DD

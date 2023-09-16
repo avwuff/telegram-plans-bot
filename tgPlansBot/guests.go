@@ -37,7 +37,7 @@ func (tgp *TGPlansBot) handleGuestStart(usrInfo *userManager.UserInfo, msg *tgbo
 	usrInfo.SetData("GuestEvent", event.ID())
 	usrInfo.SetData("GuestList", []string{})
 
-	tgp.quickReply(msg, usrInfo.Locale.Sprintf("Alright, tell me the name of each guest you are bringing to <b>%v</b>. You can bring up to %v.", event.Name(), event.MaxGuests()))
+	tgp.quickReply(msg, usrInfo.Locale.Sprintf("Alright, tell me the name of the first guest you are bringing to <b>%v</b>. You can bring up to %v.\n\nSend me one name at a time, please!", event.Name(), event.MaxGuests()))
 }
 
 // addGuest is when the user wants to add a guest to their list.

@@ -825,9 +825,9 @@
             "translation": "Désolé, mais cet événement ne vous permet pas d'amener d'invités."
         },
         {
-            "id": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
-            "message": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
-            "translation": "Très bien, dites-moi le nom de chaque invité que vous amenez à \u003cb\u003e{Name}\u003c/b\u003e. Vous pouvez amener jusqu'à {MaxGuests}.",
+            "id": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "message": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "translation": "",
             "placeholders": [
                 {
                     "id": "Name",

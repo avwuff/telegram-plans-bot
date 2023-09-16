@@ -9,6 +9,7 @@ import (
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
+	"strings"
 	"sync"
 )
 
@@ -68,6 +69,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.initSetupCommands()
 	tgp.initUICommands()
 	tgp.initGlobalMsgCommands()
+	tgp.initGuestCommands()
 
 }
 
@@ -99,6 +101,14 @@ func (tgp *TGPlansBot) setMyCommands() {
 }
 
 func (tgp *TGPlansBot) startHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	// Are we doing one of the special inline starts?
+	// Example:
+	// /start SetGuestNames_8265bf4ef5c0b7afd8336d620fed2dee
+	if strings.HasPrefix(text, GUEST_START_PREFIX) {
+		tgp.handleGuestStart(usrInfo, msg, text)
+		return
+	}
 
 	// Has the user completed the setup process?
 	if !usrInfo.Prefs.SetupComplete {

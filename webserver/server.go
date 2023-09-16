@@ -29,6 +29,7 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 
 	// This will serve files under http://localhost:8000/static/<filename>
 	r.HandleFunc("/add/{key}.html", addToCalendarHandler)
+	r.HandleFunc("/guests/nameguests.html", nameGuestsHandler)
 	r.HandleFunc("/feed/{user}/{key}/plans.ics", generateCalFeed)
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./html"))))
 
@@ -90,6 +91,15 @@ To get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.
 	tmpl = strings.ReplaceAll(tmpl, "%NOTES%", event.Notes())
 	tmpl = strings.ReplaceAll(tmpl, "%HOST%", event.OwnerName())
 	tmpl = strings.ReplaceAll(tmpl, "%LOCATION%", event.Location())
+
+	w.Write([]byte(tmpl))
+}
+
+func nameGuestsHandler(w http.ResponseWriter, r *http.Request) {
+	//vars := mux.Vars(r)
+	// TODO: Use a file template instead of this
+	// Make the template page.
+	tmpl := NAME_GUESTS_PAGE
 
 	w.Write([]byte(tmpl))
 }

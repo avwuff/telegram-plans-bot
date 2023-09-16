@@ -13,6 +13,9 @@ import (
 
 const SHARE_PREFIX = "FPBSHARE-"
 const POST_PREFIX = "POST:"
+const GUESTS_PREFIX = "GUESTS:"
+const GUEST_HASH_EXTRA = "2oi3mi2o" // Add some extra crap to the hash so that the guest hash doesn't match the main hash
+const GUEST_START_PREFIX = "SetGuestNames_"
 
 // handleInline comes from the user typing @furryplansbot followed by a query
 // Generally this means we want to post the event in a chat.
@@ -24,14 +27,31 @@ func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 		var events []dbInterface.DBEvent
 
 		// There are several ways the inline mode can be used.
-		// Mode 1: Sharing from another chat.
-		if strings.HasPrefix(query.Query, SHARE_PREFIX) {
+
+		// Specifying guests
+		if strings.HasPrefix(query.Query, GUESTS_PREFIX) {
+			hash := query.Query[len(GUESTS_PREFIX):] // strip off the post prefix
+			event, _, err := tgp.db.GetEventByHash(hash, tgp.saltValue+GUEST_HASH_EXTRA, false)
+			if err != nil {
+				tgp.answerWithList(query, nil, nil)
+				return
+			}
+
+			loc := localizer.FromLanguage(event.Language())
+			button := map[string]interface{}{
+				"text":            loc.Sprintf("Click here to specify Guest names..."),
+				"start_parameter": GUEST_START_PREFIX + hash,
+			}
+
+			tgp.answerWithList(query, nil, button)
+
+		} else if strings.HasPrefix(query.Query, SHARE_PREFIX) { // Mode 1: Sharing from another chat.
 
 			// Find a match for this one.
 			hash := query.Query[len(SHARE_PREFIX):] // strip off the post prefix
 			event, _, err := tgp.db.GetEventByHash(hash, tgp.saltValue, true)
 			if err != nil {
-				tgp.answerWithList(query, nil)
+				tgp.answerWithList(query, nil, nil)
 				return
 			}
 
@@ -43,13 +63,13 @@ func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 			eventId := query.Query[len(POST_PREFIX):] // strip off the post prefix
 			id, err := strconv.Atoi(eventId)
 			if err != nil {
-				tgp.answerWithList(query, nil)
+				tgp.answerWithList(query, nil, nil)
 				return
 			}
 
 			event, err := tgp.db.GetEvent(uint(id), query.From.ID)
 			if err != nil {
-				tgp.answerWithList(query, nil)
+				tgp.answerWithList(query, nil, nil)
 				return
 			}
 
@@ -60,7 +80,7 @@ func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 			var err error
 			events, err = tgp.db.SearchEvents(query.From.ID, query.Query)
 			if err != nil {
-				tgp.answerWithList(query, nil)
+				tgp.answerWithList(query, nil, nil)
 				return
 			}
 		}
@@ -80,7 +100,7 @@ func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 			results = append(results, article)
 		}
 
-		tgp.answerWithList(query, results)
+		tgp.answerWithList(query, results, nil)
 	}
 }
 
@@ -101,13 +121,14 @@ func (tgp *TGPlansBot) buildClickableStarter(event dbInterface.DBEvent, loc *loc
 	}, &keyb
 }
 
-func (tgp *TGPlansBot) answerWithList(query *tgbotapi.InlineQuery, results []interface{}) {
+func (tgp *TGPlansBot) answerWithList(query *tgbotapi.InlineQuery, results []interface{}, button interface{}) {
 
 	inlineConf := tgbotapi.InlineConfig{
-		InlineQueryID: query.ID,
-		IsPersonal:    true,
-		CacheTime:     1,
-		Results:       results,
+		InlineQueryID:            query.ID,
+		IsPersonal:               true,
+		CacheTime:                1,
+		Results:                  results,
+		InlineQueryResultsButton: button,
 	}
 
 	if _, err := tgp.tg.AnswerInlineQuery(inlineConf); err != nil {

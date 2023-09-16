@@ -27,8 +27,8 @@ type DBFeatures interface {
 
 // DBEvent provides access to features on the event.
 type DBEvent interface {
-	GetAttending() ([]*Attend, error)
-	Attending(userId int64, name string, attendType CanAttend, plusPeople int) AttendMsgs
+	GetAttending(userId int64) ([]*Attend, error)
+	Attending(userId int64, name string, attendType CanAttend, plusPeople int, guests []string) AttendMsgs
 	SavePosting(MessageID string)
 	SavePostingRegular(chatId int64, messageId int)
 	Postings() ([]Posting, error)
@@ -73,6 +73,7 @@ type Attend struct {
 	UserName  string
 	CanAttend int
 	PlusMany  int
+	Guests    []string
 }
 
 type CanAttend int

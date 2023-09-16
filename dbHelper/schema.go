@@ -66,6 +66,7 @@ type FurryPlansAttend struct {
 	UserName  string `gorm:"column:UserName"`
 	CanAttend int    `gorm:"column:canAttend"`
 	PlusMany  int    `gorm:"column:plusMany"`
+	Guests    string `gorm:"column:guestList"`
 }
 
 func (FurryPlansAttend) TableName() string {

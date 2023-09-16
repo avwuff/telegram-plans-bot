@@ -2,6 +2,7 @@ package dbHelper
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
@@ -269,21 +270,31 @@ func (e *eventConnector) updateEvent(column string) error {
 	return e.db.Where(&FurryPlans{EventID: e.ev.EventID}).Select(column).Updates(e.ev).Error
 }
 
-func (e *eventConnector) GetAttending() ([]*dbInterface.Attend, error) {
+func (e *eventConnector) GetAttending(userId int64) ([]*dbInterface.Attend, error) {
 	var attend []*FurryPlansAttend
-	query := e.db.Where(&FurryPlansAttend{EventID: e.ev.EventID}).Order("UCASE(UserName) ASC")
+	query := e.db.Where(&FurryPlansAttend{EventID: e.ev.EventID})
+	if userId != -1 {
+		query = query.Where(&FurryPlansAttend{UserID: userId})
+	}
+	query = query.Order("UCASE(UserName) ASC")
+
 	err := query.Find(&attend).Error
 	if err != nil {
 		return nil, err
 	}
 	list := make([]*dbInterface.Attend, len(attend))
 	for i, att := range attend {
+
+		var guests []string
+		_ = json.Unmarshal([]byte(att.Guests), &guests)
+
 		list[i] = &dbInterface.Attend{
 			EventID:   att.EventID,
 			UserID:    att.UserID,
 			UserName:  cleanOldSyntaxText(att.UserName),
 			CanAttend: att.CanAttend,
 			PlusMany:  att.PlusMany,
+			Guests:    guests,
 		}
 	}
 	return list, nil
@@ -291,22 +302,20 @@ func (e *eventConnector) GetAttending() ([]*dbInterface.Attend, error) {
 
 // AmIAttending returns true or false depending on whether or not this user is attending this event
 func (e *eventConnector) AmIAttending(id int64) bool {
-	attending, err := e.GetAttending()
+	attending, err := e.GetAttending(id)
 	if err != nil {
 		return false
 	}
 	for _, attend := range attending {
-		if attend.UserID == id {
-			if attend.CanAttend > 0 {
-				return true
-			}
+		if attend.CanAttend > 0 {
+			return true
 		}
 	}
 	return false
 }
 
 // Attending marks (or unmarks) a person as attending this event.
-func (e *eventConnector) Attending(userId int64, name string, attendType dbInterface.CanAttend, plusPeople int) dbInterface.AttendMsgs {
+func (e *eventConnector) Attending(userId int64, name string, attendType dbInterface.CanAttend, plusPeople int, guests []string) dbInterface.AttendMsgs {
 	// Does this event have a cap?
 
 	if attendType == dbInterface.CANATTEND_MAYBE || attendType == dbInterface.CANATTEND_NO {
@@ -337,7 +346,7 @@ func (e *eventConnector) Attending(userId int64, name string, attendType dbInter
 
 		}
 	}
-	e.updateAttendTable(userId, name, attendType, plusPeople)
+	e.updateAttendTable(userId, name, attendType, plusPeople, guests)
 	if attendType == dbInterface.CANATTEND_YES || attendType == dbInterface.CANATTEND_SUITING || attendType == dbInterface.CANATTEND_PHOTOGRAPHER {
 		return dbInterface.ATTEND_ADDED
 	}
@@ -350,14 +359,18 @@ func (e *eventConnector) Attending(userId int64, name string, attendType dbInter
 	return dbInterface.ATTEND_ERROR
 }
 
-func (e *eventConnector) updateAttendTable(userId int64, name string, attendVal dbInterface.CanAttend, plusPeople int) {
+func (e *eventConnector) updateAttendTable(userId int64, name string, attendVal dbInterface.CanAttend, plusPeople int, guests []string) {
 	// Instead of using REPLACE INTO, we use GORM's UPDATE/CREATE workflow.
+
+	guestsJson, _ := json.Marshal(&guests)
+
 	attend := FurryPlansAttend{
 		EventID:   e.ev.EventID,
 		UserID:    userId,
 		UserName:  name,
 		CanAttend: int(attendVal),
 		PlusMany:  plusPeople,
+		Guests:    string(guestsJson),
 	}
 
 	if e.db.Model(&FurryPlansAttend{}).Where(&FurryPlansAttend{EventID: e.ev.EventID, UserID: userId}).Select("*").Updates(&attend).RowsAffected == 0 {

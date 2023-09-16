@@ -80,3 +80,17 @@ const ADDTOCALENDAR_PAGE = `
 </body>
 </html>
 `
+
+const NAME_GUESTS_PAGE = `<html>
+	<head>
+		<script src="https://telegram.org/js/telegram-web-app.js"></script>
+	</head>
+	<body>
+		Hello World!
+		<script>
+			// info about the user
+			//alert(
+		</script>
+	</body>
+</html>
+`

@@ -97,7 +97,7 @@ func (tgp *TGPlansBot) goingMoreInfo(usrInfo *userManager.UserInfo, cb *tgbotapi
 	mObj := tgbotapi.NewMessage(cb.Message.Chat.ID, txt)
 	mObj.ReplyMarkup = &buttons
 	mObj.ParseMode = ParseModeHtml
-	mObj.DisableWebPagePreview = true
+	mObj.LinkPreviewOptions.IsDisabled = true
 
 	_, err = tgp.tg.Send(mObj)
 	if err != nil {

@@ -76,7 +76,7 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		mObj := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
 		mObj.ParseMode = ParseModeHtml
 		mObj.ReplyMarkup = &buttons
-		mObj.DisableWebPagePreview = true
+		mObj.LinkPreviewOptions.IsDisabled = true
 		_, err := tgp.tg.Request(mObj)
 		if err != nil {
 			log.Println(err)
@@ -85,7 +85,7 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		mObj := tgbotapi.NewMessage(chatId, t)
 		mObj.ParseMode = ParseModeHtml
 		mObj.ReplyMarkup = buttons
-		mObj.DisableWebPagePreview = true
+		mObj.LinkPreviewOptions.IsDisabled = true
 		_, err := tgp.tg.Send(mObj)
 		if err != nil {
 			log.Println(err)

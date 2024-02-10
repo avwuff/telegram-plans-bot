@@ -473,7 +473,7 @@ func (tgp *TGPlansBot) editStringItem(usrInfo *userManager.UserInfo, chatId int6
 	if sendExisting && EditItem != "" {
 		mObj := tgbotapi.NewMessage(chatId, EditItem)
 		mObj.ParseMode = ParseModeHtml
-		mObj.DisableWebPagePreview = true
+		mObj.LinkPreviewOptions.IsDisabled = true
 		_, _ = tgp.tg.Send(mObj)
 	}
 

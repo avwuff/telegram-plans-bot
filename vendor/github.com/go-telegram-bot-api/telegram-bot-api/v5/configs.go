@@ -60,6 +60,12 @@ const (
 	// UpdateTypeEditedChannelPost is new version of a channel post that is known to the bot and was edited
 	UpdateTypeEditedChannelPost = "edited_channel_post"
 
+	// UpdateTypeMessageReactionis is a reaction to a message was changed by a user
+	UpdateTypeMessageReaction = "message_reaction"
+
+	// UpdateTypeMessageReactionCount are reactions to a message with anonymous reactions were changed
+	UpdateTypeMessageReactionCount = "message_reaction_count"
+
 	// UpdateTypeInlineQuery is new incoming inline query
 	UpdateTypeInlineQuery = "inline_query"
 
@@ -92,6 +98,18 @@ const (
 	// UpdateTypeChatMember is when the bot must be an administrator in the chat and must explicitly specify
 	// this update in the list of allowed_updates to receive these updates.
 	UpdateTypeChatMember = "chat_member"
+
+	// UpdateTypeChatJoinRequest is request to join the chat has been sent.
+	// The bot must have the can_invite_users administrator right in the chat to receive these updates.
+	UpdateTypeChatJoinRequest = "chat_join_request"
+
+	// UpdateTypeChatBoost is chat boost was added or changed.
+	// The bot must be an administrator in the chat to receive these updates.
+	UpdateTypeChatBoost = "chat_boost"
+
+	// UpdateTypeRemovedChatBoost is boost was removed from a chat.
+	// The bot must be an administrator in the chat to receive these updates.
+	UpdateTypeRemovedChatBoost = "removed_chat_boost"
 )
 
 // Library errors
@@ -262,72 +280,13 @@ func (CloseConfig) params() (Params, error) {
 	return nil, nil
 }
 
-// BaseChat is base type for all chat config types.
-type BaseChat struct {
-	ChatID                   int64 // required
-	ChannelUsername          string
-	ProtectContent           bool
-	ReplyToMessageID         int
-	ReplyMarkup              interface{}
-	DisableNotification      bool
-	AllowSendingWithoutReply bool
-}
-
-func (chat *BaseChat) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", chat.ChatID, chat.ChannelUsername)
-	params.AddNonZero("reply_to_message_id", chat.ReplyToMessageID)
-	params.AddBool("disable_notification", chat.DisableNotification)
-	params.AddBool("allow_sending_without_reply", chat.AllowSendingWithoutReply)
-	params.AddBool("protect_content", chat.ProtectContent)
-
-	err := params.AddInterface("reply_markup", chat.ReplyMarkup)
-
-	return params, err
-}
-
-// BaseFile is a base type for all file config types.
-type BaseFile struct {
-	BaseChat
-	File RequestFileData
-}
-
-func (file BaseFile) params() (Params, error) {
-	return file.BaseChat.params()
-}
-
-// BaseEdit is base type of all chat edits.
-type BaseEdit struct {
-	ChatID          int64
-	ChannelUsername string
-	MessageID       int
-	InlineMessageID string
-	ReplyMarkup     *InlineKeyboardMarkup
-}
-
-func (edit BaseEdit) params() (Params, error) {
-	params := make(Params)
-
-	if edit.InlineMessageID != "" {
-		params["inline_message_id"] = edit.InlineMessageID
-	} else {
-		params.AddFirstValid("chat_id", edit.ChatID, edit.ChannelUsername)
-		params.AddNonZero("message_id", edit.MessageID)
-	}
-
-	err := params.AddInterface("reply_markup", edit.ReplyMarkup)
-
-	return params, err
-}
-
 // MessageConfig contains information about a SendMessage request.
 type MessageConfig struct {
 	BaseChat
-	Text                  string
-	ParseMode             string
-	Entities              []MessageEntity
-	DisableWebPagePreview bool
+	Text               string
+	ParseMode          string
+	Entities           []MessageEntity
+	LinkPreviewOptions LinkPreviewOptions
 }
 
 func (config MessageConfig) params() (Params, error) {
@@ -337,9 +296,12 @@ func (config MessageConfig) params() (Params, error) {
 	}
 
 	params.AddNonEmpty("text", config.Text)
-	params.AddBool("disable_web_page_preview", config.DisableWebPagePreview)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
 	err = params.AddInterface("entities", config.Entities)
+	if err != nil {
+		return params, err
+	}
+	err = params.AddInterface("link_preview_options", config.LinkPreviewOptions)
 
 	return params, err
 }
@@ -351,9 +313,8 @@ func (config MessageConfig) method() string {
 // ForwardConfig contains information about a ForwardMessage request.
 type ForwardConfig struct {
 	BaseChat
-	FromChatID          int64 // required
-	FromChannelUsername string
-	MessageID           int // required
+	FromChat  ChatConfig
+	MessageID int // required
 }
 
 func (config ForwardConfig) params() (Params, error) {
@@ -361,8 +322,11 @@ func (config ForwardConfig) params() (Params, error) {
 	if err != nil {
 		return params, err
 	}
-
-	params.AddNonZero64("from_chat_id", config.FromChatID)
+	p1, err := config.FromChat.paramsWithKey("from_chat_id")
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 	params.AddNonZero("message_id", config.MessageID)
 
 	return params, nil
@@ -372,15 +336,41 @@ func (config ForwardConfig) method() string {
 	return "forwardMessage"
 }
 
+// ForwardMessagesConfig contains information about a ForwardMessages request.
+type ForwardMessagesConfig struct {
+	BaseChat
+	FromChat   ChatConfig
+	MessageIDs []int // required
+}
+
+func (config ForwardMessagesConfig) params() (Params, error) {
+	params, err := config.BaseChat.params()
+	if err != nil {
+		return params, err
+	}
+
+	p1, err := config.FromChat.paramsWithKey("from_chat_id")
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
+	err = params.AddInterface("message_ids", config.MessageIDs)
+
+	return params, err
+}
+
+func (config ForwardMessagesConfig) method() string {
+	return "forwardMessages"
+}
+
 // CopyMessageConfig contains information about a copyMessage request.
 type CopyMessageConfig struct {
 	BaseChat
-	FromChatID          int64
-	FromChannelUsername string
-	MessageID           int
-	Caption             string
-	ParseMode           string
-	CaptionEntities     []MessageEntity
+	FromChat        ChatConfig
+	MessageID       int
+	Caption         string
+	ParseMode       string
+	CaptionEntities []MessageEntity
 }
 
 func (config CopyMessageConfig) params() (Params, error) {
@@ -389,7 +379,11 @@ func (config CopyMessageConfig) params() (Params, error) {
 		return params, err
 	}
 
-	params.AddFirstValid("from_chat_id", config.FromChatID, config.FromChannelUsername)
+	p1, err := config.FromChat.paramsWithKey("from_chat_id")
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 	params.AddNonZero("message_id", config.MessageID)
 	params.AddNonEmpty("caption", config.Caption)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
@@ -402,9 +396,39 @@ func (config CopyMessageConfig) method() string {
 	return "copyMessage"
 }
 
+// CopyMessagesConfig contains information about a copyMessages request.
+type CopyMessagesConfig struct {
+	BaseChat
+	FromChat      ChatConfig
+	MessageIDs    []int
+	RemoveCaption bool
+}
+
+func (config CopyMessagesConfig) params() (Params, error) {
+	params, err := config.BaseChat.params()
+	if err != nil {
+		return params, err
+	}
+
+	p1, err := config.FromChat.paramsWithKey("from_chat_id")
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
+	params.AddBool("remove_caption", config.RemoveCaption)
+	err = params.AddInterface("message_ids", config.MessageIDs)
+
+	return params, err
+}
+
+func (config CopyMessagesConfig) method() string {
+	return "copyMessages"
+}
+
 // PhotoConfig contains information about a SendPhoto request.
 type PhotoConfig struct {
 	BaseFile
+	BaseSpoiler
 	Thumb           RequestFileData
 	Caption         string
 	ParseMode       string
@@ -420,6 +444,15 @@ func (config PhotoConfig) params() (Params, error) {
 	params.AddNonEmpty("caption", config.Caption)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
 	err = params.AddInterface("caption_entities", config.CaptionEntities)
+	if err != nil {
+		return params, err
+	}
+
+	p1, err := config.BaseSpoiler.params()
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 
 	return params, err
 }
@@ -436,7 +469,7 @@ func (config PhotoConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -484,7 +517,7 @@ func (config AudioConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -524,7 +557,7 @@ func (config DocumentConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -534,11 +567,18 @@ func (config DocumentConfig) files() []RequestFile {
 
 // StickerConfig contains information about a SendSticker request.
 type StickerConfig struct {
+	//Emoji associated with the sticker; only for just uploaded stickers
+	Emoji string
 	BaseFile
 }
 
 func (config StickerConfig) params() (Params, error) {
-	return config.BaseChat.params()
+	params, err := config.BaseChat.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddNonEmpty("emoji", config.Emoji)
+	return params, err
 }
 
 func (config StickerConfig) method() string {
@@ -555,6 +595,7 @@ func (config StickerConfig) files() []RequestFile {
 // VideoConfig contains information about a SendVideo request.
 type VideoConfig struct {
 	BaseFile
+	BaseSpoiler
 	Thumb             RequestFileData
 	Duration          int
 	Caption           string
@@ -574,6 +615,15 @@ func (config VideoConfig) params() (Params, error) {
 	params.AddNonEmpty("parse_mode", config.ParseMode)
 	params.AddBool("supports_streaming", config.SupportsStreaming)
 	err = params.AddInterface("caption_entities", config.CaptionEntities)
+	if err != nil {
+		return params, err
+	}
+
+	p1, err := config.BaseSpoiler.params()
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 
 	return params, err
 }
@@ -590,7 +640,7 @@ func (config VideoConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -601,6 +651,7 @@ func (config VideoConfig) files() []RequestFile {
 // AnimationConfig contains information about a SendAnimation request.
 type AnimationConfig struct {
 	BaseFile
+	BaseSpoiler
 	Duration        int
 	Thumb           RequestFileData
 	Caption         string
@@ -618,6 +669,15 @@ func (config AnimationConfig) params() (Params, error) {
 	params.AddNonEmpty("caption", config.Caption)
 	params.AddNonEmpty("parse_mode", config.ParseMode)
 	err = params.AddInterface("caption_entities", config.CaptionEntities)
+	if err != nil {
+		return params, err
+	}
+
+	p1, err := config.BaseSpoiler.params()
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 
 	return params, err
 }
@@ -634,7 +694,7 @@ func (config AnimationConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -671,7 +731,7 @@ func (config VideoNoteConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -715,7 +775,7 @@ func (config VoiceConfig) files() []RequestFile {
 
 	if config.Thumb != nil {
 		files = append(files, RequestFile{
-			Name: "thumb",
+			Name: "thumbnail",
 			Data: config.Thumb,
 		})
 	}
@@ -912,13 +972,12 @@ func (config GameConfig) method() string {
 
 // SetGameScoreConfig allows you to update the game score in a chat.
 type SetGameScoreConfig struct {
+	BaseChatMessage
+
 	UserID             int64
 	Score              int
 	Force              bool
 	DisableEditMessage bool
-	ChatID             int64
-	ChannelUsername    string
-	MessageID          int
 	InlineMessageID    string
 }
 
@@ -932,8 +991,11 @@ func (config SetGameScoreConfig) params() (Params, error) {
 	if config.InlineMessageID != "" {
 		params["inline_message_id"] = config.InlineMessageID
 	} else {
-		params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-		params.AddNonZero("message_id", config.MessageID)
+		p1, err := config.BaseChatMessage.params()
+		if err != nil {
+			return params, err
+		}
+		params.Merge(p1)
 	}
 
 	return params, nil
@@ -945,10 +1007,9 @@ func (config SetGameScoreConfig) method() string {
 
 // GetGameHighScoresConfig allows you to fetch the high scores for a game.
 type GetGameHighScoresConfig struct {
+	BaseChatMessage
+
 	UserID          int64
-	ChatID          int64
-	ChannelUsername string
-	MessageID       int
 	InlineMessageID string
 }
 
@@ -960,8 +1021,11 @@ func (config GetGameHighScoresConfig) params() (Params, error) {
 	if config.InlineMessageID != "" {
 		params["inline_message_id"] = config.InlineMessageID
 	} else {
-		params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-		params.AddNonZero("message_id", config.MessageID)
+		p1, err := config.BaseChatMessage.params()
+		if err != nil {
+			return params, err
+		}
+		params.Merge(p1)
 	}
 
 	return params, nil
@@ -974,13 +1038,15 @@ func (config GetGameHighScoresConfig) method() string {
 // ChatActionConfig contains information about a SendChatAction request.
 type ChatActionConfig struct {
 	BaseChat
-	Action string // required
+	MessageThreadID int
+	Action          string // required
 }
 
 func (config ChatActionConfig) params() (Params, error) {
 	params, err := config.BaseChat.params()
 
 	params["action"] = config.Action
+	params.AddNonZero("message_thread_id", config.MessageThreadID)
 
 	return params, err
 }
@@ -992,10 +1058,10 @@ func (config ChatActionConfig) method() string {
 // EditMessageTextConfig allows you to modify the text in a message.
 type EditMessageTextConfig struct {
 	BaseEdit
-	Text                  string
-	ParseMode             string
-	Entities              []MessageEntity
-	DisableWebPagePreview bool
+	Text               string
+	ParseMode          string
+	Entities           []MessageEntity
+	LinkPreviewOptions LinkPreviewOptions
 }
 
 func (config EditMessageTextConfig) params() (Params, error) {
@@ -1006,8 +1072,11 @@ func (config EditMessageTextConfig) params() (Params, error) {
 
 	params["text"] = config.Text
 	params.AddNonEmpty("parse_mode", config.ParseMode)
-	params.AddBool("disable_web_page_preview", config.DisableWebPagePreview)
 	err = params.AddInterface("entities", config.Entities)
+	if err != nil {
+		return params, err
+	}
+	err = params.AddInterface("link_preview_options", config.LinkPreviewOptions)
 
 	return params, err
 }
@@ -1094,6 +1163,28 @@ func (StopPollConfig) method() string {
 	return "stopPoll"
 }
 
+// SetMessageReactionConfig changes reactions on a message. Returns true on success.
+type SetMessageReactionConfig struct {
+	BaseChatMessage
+	Reaction []ReactionType
+	IsBig    bool
+}
+
+func (config SetMessageReactionConfig) params() (Params, error) {
+	params, err := config.BaseChatMessage.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddBool("is_big", config.IsBig)
+	err = params.AddInterface("reaction", config.Reaction)
+
+	return params, err
+}
+
+func (SetMessageReactionConfig) method() string {
+	return "setMessageReaction"
+}
+
 // UserProfilePhotosConfig contains information about a
 // GetUserProfilePhotos request.
 type UserProfilePhotosConfig struct {
@@ -1164,6 +1255,7 @@ type WebhookConfig struct {
 	MaxConnections     int
 	AllowedUpdates     []string
 	DropPendingUpdates bool
+	SecretToken        string
 }
 
 func (config WebhookConfig) method() string {
@@ -1181,6 +1273,7 @@ func (config WebhookConfig) params() (Params, error) {
 	params.AddNonZero("max_connections", config.MaxConnections)
 	err := params.AddInterface("allowed_updates", config.AllowedUpdates)
 	params.AddBool("drop_pending_updates", config.DropPendingUpdates)
+	params.AddNonEmpty("secret_token", config.SecretToken)
 
 	return params, err
 }
@@ -1213,16 +1306,28 @@ func (config DeleteWebhookConfig) params() (Params, error) {
 	return params, nil
 }
 
+// InlineQueryResultsButton represents a button to be shown above inline query results. You must use exactly one of the optional fields.
+type InlineQueryResultsButton struct {
+	//Label text on the button
+	Text string `json:"text"`
+	//Description of the Web App that will be launched when the user presses the button. The Web App will be able to switch back to the inline mode using the method switchInlineQuery inside the Web App.
+	//
+	//Optional
+	WebApp *WebAppInfo `json:"web_app,omitempty"`
+	// Deep-linking parameter for the /start message sent to the bot when a user presses the button. 1-64 characters, only A-Z, a-z, 0-9, _ and - are allowed.
+	//
+	//Optional
+	StartParam string `json:"start_parameter,omitempty"`
+}
+
 // InlineConfig contains information on making an InlineQuery response.
 type InlineConfig struct {
-	InlineQueryID     string        `json:"inline_query_id"`
-	Results           []interface{} `json:"results"`
-	CacheTime         int           `json:"cache_time"`
-	IsPersonal        bool          `json:"is_personal"`
-	NextOffset        string        `json:"next_offset"`
-	SwitchPMText      string        `json:"switch_pm_text"`
-	SwitchPMParameter string        `json:"switch_pm_parameter"`
-	InlineQueryResultsButton interface{}        `json:"button"`
+	InlineQueryID string                    `json:"inline_query_id"`
+	Results       []interface{}             `json:"results"`
+	CacheTime     int                       `json:"cache_time"`
+	IsPersonal    bool                      `json:"is_personal"`
+	NextOffset    string                    `json:"next_offset"`
+	Button        *InlineQueryResultsButton `json:"button,omitempty"`
 }
 
 func (config InlineConfig) method() string {
@@ -1236,10 +1341,11 @@ func (config InlineConfig) params() (Params, error) {
 	params.AddNonZero("cache_time", config.CacheTime)
 	params.AddBool("is_personal", config.IsPersonal)
 	params.AddNonEmpty("next_offset", config.NextOffset)
-	params.AddNonEmpty("switch_pm_text", config.SwitchPMText)
-	params.AddNonEmpty("switch_pm_parameter", config.SwitchPMParameter)
-	params.AddInterface("button", config.InlineQueryResultsButton)
-	err := params.AddInterface("results", config.Results)
+	err := params.AddInterface("button", config.Button)
+	if err != nil {
+		return params, err
+	}
+	err = params.AddInterface("results", config.Results)
 
 	return params, err
 }
@@ -1295,10 +1401,17 @@ func (config CallbackConfig) params() (Params, error) {
 // ChatMemberConfig contains information about a user in a chat for use
 // with administrative functions such as kicking or unbanning a user.
 type ChatMemberConfig struct {
-	ChatID             int64
-	SuperGroupUsername string
-	ChannelUsername    string
-	UserID             int64
+	ChatConfig
+	UserID int64
+}
+
+func (config ChatMemberConfig) params() (Params, error) {
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddNonZero64("user_id", config.UserID)
+	return params, nil
 }
 
 // UnbanChatMemberConfig allows you to unban a user.
@@ -1312,10 +1425,11 @@ func (config UnbanChatMemberConfig) method() string {
 }
 
 func (config UnbanChatMemberConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatMemberConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername, config.ChannelUsername)
-	params.AddNonZero64("user_id", config.UserID)
 	params.AddBool("only_if_banned", config.OnlyIfBanned)
 
 	return params, nil
@@ -1333,10 +1447,11 @@ func (config BanChatMemberConfig) method() string {
 }
 
 func (config BanChatMemberConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatMemberConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
-	params.AddNonZero64("user_id", config.UserID)
 	params.AddNonZero64("until_date", config.UntilDate)
 	params.AddBool("revoke_messages", config.RevokeMessages)
 
@@ -1351,8 +1466,9 @@ type KickChatMemberConfig = BanChatMemberConfig
 // RestrictChatMemberConfig contains fields to restrict members of chat
 type RestrictChatMemberConfig struct {
 	ChatMemberConfig
-	UntilDate   int64
-	Permissions *ChatPermissions
+	UntilDate                     int64
+	UseIndependentChatPermissions bool
+	Permissions                   *ChatPermissions
 }
 
 func (config RestrictChatMemberConfig) method() string {
@@ -1360,13 +1476,14 @@ func (config RestrictChatMemberConfig) method() string {
 }
 
 func (config RestrictChatMemberConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatMemberConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername, config.ChannelUsername)
-	params.AddNonZero64("user_id", config.UserID)
-
-	err := params.AddInterface("permissions", config.Permissions)
+	params.AddBool("use_independent_chat_permissions", config.UseIndependentChatPermissions)
 	params.AddNonZero64("until_date", config.UntilDate)
+	err = params.AddInterface("permissions", config.Permissions)
 
 	return params, err
 }
@@ -1385,6 +1502,10 @@ type PromoteChatMemberConfig struct {
 	CanRestrictMembers  bool
 	CanPinMessages      bool
 	CanPromoteMembers   bool
+	CanPostStories      bool
+	CanEditStories      bool
+	CanDeleteStories    bool
+	CanManageTopics     bool
 }
 
 func (config PromoteChatMemberConfig) method() string {
@@ -1392,10 +1513,10 @@ func (config PromoteChatMemberConfig) method() string {
 }
 
 func (config PromoteChatMemberConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername, config.ChannelUsername)
-	params.AddNonZero64("user_id", config.UserID)
+	params, err := config.ChatMemberConfig.params()
+	if err != nil {
+		return params, err
+	}
 
 	params.AddBool("is_anonymous", config.IsAnonymous)
 	params.AddBool("can_manage_chat", config.CanManageChat)
@@ -1408,6 +1529,10 @@ func (config PromoteChatMemberConfig) params() (Params, error) {
 	params.AddBool("can_restrict_members", config.CanRestrictMembers)
 	params.AddBool("can_pin_messages", config.CanPinMessages)
 	params.AddBool("can_promote_members", config.CanPromoteMembers)
+	params.AddBool("can_post_stories", config.CanPostStories)
+	params.AddBool("can_edit_stories", config.CanEditStories)
+	params.AddBool("can_delete_stories", config.CanDeleteStories)
+	params.AddBool("can_manage_topics", config.CanManageTopics)
 
 	return params, nil
 }
@@ -1424,10 +1549,10 @@ func (SetChatAdministratorCustomTitle) method() string {
 }
 
 func (config SetChatAdministratorCustomTitle) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername, config.ChannelUsername)
-	params.AddNonZero64("user_id", config.UserID)
+	params, err := config.ChatMemberConfig.params()
+	if err != nil {
+		return params, err
+	}
 	params.AddNonEmpty("custom_title", config.CustomTitle)
 
 	return params, nil
@@ -1439,10 +1564,9 @@ func (config SetChatAdministratorCustomTitle) params() (Params, error) {
 // administrator in the supergroup or channel for this to work and must have the
 // appropriate administrator rights.
 type BanChatSenderChatConfig struct {
-	ChatID          int64
-	ChannelUsername string
-	SenderChatID    int64
-	UntilDate       int
+	ChatConfig
+	SenderChatID int64
+	UntilDate    int
 }
 
 func (config BanChatSenderChatConfig) method() string {
@@ -1450,9 +1574,10 @@ func (config BanChatSenderChatConfig) method() string {
 }
 
 func (config BanChatSenderChatConfig) params() (Params, error) {
-	params := make(Params)
-
-	_ = params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 	params.AddNonZero64("sender_chat_id", config.SenderChatID)
 	params.AddNonZero("until_date", config.UntilDate)
 
@@ -1463,9 +1588,8 @@ func (config BanChatSenderChatConfig) params() (Params, error) {
 // supergroup or channel. The bot must be an administrator for this to work and
 // must have the appropriate administrator rights.
 type UnbanChatSenderChatConfig struct {
-	ChatID          int64
-	ChannelUsername string
-	SenderChatID    int64
+	ChatConfig
+	SenderChatID int64
 }
 
 func (config UnbanChatSenderChatConfig) method() string {
@@ -1473,24 +1597,11 @@ func (config UnbanChatSenderChatConfig) method() string {
 }
 
 func (config UnbanChatSenderChatConfig) params() (Params, error) {
-	params := make(Params)
-
-	_ = params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 	params.AddNonZero64("sender_chat_id", config.SenderChatID)
-
-	return params, nil
-}
-
-// ChatConfig contains information about getting information on a chat.
-type ChatConfig struct {
-	ChatID             int64
-	SuperGroupUsername string
-}
-
-func (config ChatConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
 
 	return params, nil
 }
@@ -1527,7 +1638,8 @@ func (ChatAdministratorsConfig) method() string {
 // restrict members.
 type SetChatPermissionsConfig struct {
 	ChatConfig
-	Permissions *ChatPermissions
+	UseIndependentChatPermissions bool
+	Permissions                   *ChatPermissions
 }
 
 func (SetChatPermissionsConfig) method() string {
@@ -1535,10 +1647,13 @@ func (SetChatPermissionsConfig) method() string {
 }
 
 func (config SetChatPermissionsConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
-	err := params.AddInterface("permissions", config.Permissions)
+	params.AddBool("use_independent_chat_permissions", config.UseIndependentChatPermissions)
+	err = params.AddInterface("permissions", config.Permissions)
 
 	return params, err
 }
@@ -1555,11 +1670,7 @@ func (ChatInviteLinkConfig) method() string {
 }
 
 func (config ChatInviteLinkConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
-
-	return params, nil
+	return config.ChatConfig.params()
 }
 
 // CreateChatInviteLinkConfig allows you to create an additional invite link for
@@ -1579,10 +1690,12 @@ func (CreateChatInviteLinkConfig) method() string {
 }
 
 func (config CreateChatInviteLinkConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
 	params.AddNonEmpty("name", config.Name)
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
 	params.AddNonZero("expire_date", config.ExpireDate)
 	params.AddNonZero("member_limit", config.MemberLimit)
 	params.AddBool("creates_join_request", config.CreatesJoinRequest)
@@ -1607,9 +1720,11 @@ func (EditChatInviteLinkConfig) method() string {
 }
 
 func (config EditChatInviteLinkConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
 	params.AddNonEmpty("name", config.Name)
 	params["invite_link"] = config.InviteLink
 	params.AddNonZero("expire_date", config.ExpireDate)
@@ -1633,9 +1748,11 @@ func (RevokeChatInviteLinkConfig) method() string {
 }
 
 func (config RevokeChatInviteLinkConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
 	params["invite_link"] = config.InviteLink
 
 	return params, nil
@@ -1652,10 +1769,12 @@ func (ApproveChatJoinRequestConfig) method() string {
 }
 
 func (config ApproveChatJoinRequestConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
-	params.AddNonZero("user_id", int(config.UserID))
+	params.AddNonZero64("user_id", config.UserID)
 
 	return params, nil
 }
@@ -1671,18 +1790,18 @@ func (DeclineChatJoinRequest) method() string {
 }
 
 func (config DeclineChatJoinRequest) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
-	params.AddNonZero("user_id", int(config.UserID))
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddNonZero64("user_id", config.UserID)
 
 	return params, nil
 }
 
 // LeaveChatConfig allows you to leave a chat.
 type LeaveChatConfig struct {
-	ChatID          int64
-	ChannelUsername string
+	ChatConfig
 }
 
 func (config LeaveChatConfig) method() string {
@@ -1690,24 +1809,21 @@ func (config LeaveChatConfig) method() string {
 }
 
 func (config LeaveChatConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-
-	return params, nil
+	return config.ChatConfig.params()
 }
 
 // ChatConfigWithUser contains information about a chat and a user.
 type ChatConfigWithUser struct {
-	ChatID             int64
-	SuperGroupUsername string
-	UserID             int64
+	ChatConfig
+	UserID int64
 }
 
 func (config ChatConfigWithUser) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
 	params.AddNonZero64("user_id", config.UserID)
 
 	return params, nil
@@ -1786,6 +1902,64 @@ func (config InvoiceConfig) method() string {
 	return "sendInvoice"
 }
 
+// InvoiceLinkConfig contains information for createInvoiceLink method
+type InvoiceLinkConfig struct {
+	Title                     string         //Required
+	Description               string         //Required
+	Payload                   string         //Required
+	ProviderToken             string         //Required
+	Currency                  string         //Required
+	Prices                    []LabeledPrice //Required
+	MaxTipAmount              int
+	SuggestedTipAmounts       []int
+	ProviderData              string
+	PhotoURL                  string
+	PhotoSize                 int
+	PhotoWidth                int
+	PhotoHeight               int
+	NeedName                  bool
+	NeedPhoneNumber           bool
+	NeedEmail                 bool
+	NeedShippingAddress       bool
+	SendPhoneNumberToProvider bool
+	SendEmailToProvider       bool
+	IsFlexible                bool
+}
+
+func (config InvoiceLinkConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["title"] = config.Title
+	params["description"] = config.Description
+	params["payload"] = config.Payload
+	params["provider_token"] = config.ProviderToken
+	params["currency"] = config.Currency
+	if err := params.AddInterface("prices", config.Prices); err != nil {
+		return params, err
+	}
+
+	params.AddNonZero("max_tip_amount", config.MaxTipAmount)
+	err := params.AddInterface("suggested_tip_amounts", config.SuggestedTipAmounts)
+	params.AddNonEmpty("provider_data", config.ProviderData)
+	params.AddNonEmpty("photo_url", config.PhotoURL)
+	params.AddNonZero("photo_size", config.PhotoSize)
+	params.AddNonZero("photo_width", config.PhotoWidth)
+	params.AddNonZero("photo_height", config.PhotoHeight)
+	params.AddBool("need_name", config.NeedName)
+	params.AddBool("need_phone_number", config.NeedPhoneNumber)
+	params.AddBool("need_email", config.NeedEmail)
+	params.AddBool("need_shipping_address", config.NeedShippingAddress)
+	params.AddBool("send_phone_number_to_provider", config.SendPhoneNumberToProvider)
+	params.AddBool("send_email_to_provider", config.SendEmailToProvider)
+	params.AddBool("is_flexible", config.IsFlexible)
+
+	return params, err
+}
+
+func (config InvoiceLinkConfig) method() string {
+	return "createInvoiceLink"
+}
+
 // ShippingConfig contains information for answerShippingQuery request.
 type ShippingConfig struct {
 	ShippingQueryID string // required
@@ -1832,9 +2006,7 @@ func (config PreCheckoutConfig) params() (Params, error) {
 
 // DeleteMessageConfig contains information of a message in a chat to delete.
 type DeleteMessageConfig struct {
-	ChannelUsername string
-	ChatID          int64
-	MessageID       int
+	BaseChatMessage
 }
 
 func (config DeleteMessageConfig) method() string {
@@ -1842,19 +2014,25 @@ func (config DeleteMessageConfig) method() string {
 }
 
 func (config DeleteMessageConfig) params() (Params, error) {
-	params := make(Params)
+	return config.BaseChatMessage.params()
+}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-	params.AddNonZero("message_id", config.MessageID)
+// DeleteMessageConfig contains information of a messages in a chat to delete.
+type DeleteMessagesConfig struct {
+	BaseChatMessages
+}
 
-	return params, nil
+func (config DeleteMessagesConfig) method() string {
+	return "deleteMessages"
+}
+
+func (config DeleteMessagesConfig) params() (Params, error) {
+	return config.BaseChatMessages.params()
 }
 
 // PinChatMessageConfig contains information of a message in a chat to pin.
 type PinChatMessageConfig struct {
-	ChatID              int64
-	ChannelUsername     string
-	MessageID           int
+	BaseChatMessage
 	DisableNotification bool
 }
 
@@ -1863,10 +2041,11 @@ func (config PinChatMessageConfig) method() string {
 }
 
 func (config PinChatMessageConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.BaseChatMessage.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-	params.AddNonZero("message_id", config.MessageID)
 	params.AddBool("disable_notification", config.DisableNotification)
 
 	return params, nil
@@ -1876,9 +2055,7 @@ func (config PinChatMessageConfig) params() (Params, error) {
 //
 // If MessageID is not specified, it will unpin the most recent pin.
 type UnpinChatMessageConfig struct {
-	ChatID          int64
-	ChannelUsername string
-	MessageID       int
+	BaseChatMessage
 }
 
 func (config UnpinChatMessageConfig) method() string {
@@ -1886,19 +2063,13 @@ func (config UnpinChatMessageConfig) method() string {
 }
 
 func (config UnpinChatMessageConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-	params.AddNonZero("message_id", config.MessageID)
-
-	return params, nil
+	return config.BaseChatMessage.params()
 }
 
 // UnpinAllChatMessagesConfig contains information of all messages to unpin in
 // a chat.
 type UnpinAllChatMessagesConfig struct {
-	ChatID          int64
-	ChannelUsername string
+	ChatConfig
 }
 
 func (config UnpinAllChatMessagesConfig) method() string {
@@ -1906,11 +2077,7 @@ func (config UnpinAllChatMessagesConfig) method() string {
 }
 
 func (config UnpinAllChatMessagesConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-
-	return params, nil
+	return config.ChatConfig.params()
 }
 
 // SetChatPhotoConfig allows you to set a group, supergroup, or channel's photo.
@@ -1931,8 +2098,7 @@ func (config SetChatPhotoConfig) files() []RequestFile {
 
 // DeleteChatPhotoConfig allows you to delete a group, supergroup, or channel's photo.
 type DeleteChatPhotoConfig struct {
-	ChatID          int64
-	ChannelUsername string
+	ChatConfig
 }
 
 func (config DeleteChatPhotoConfig) method() string {
@@ -1940,18 +2106,12 @@ func (config DeleteChatPhotoConfig) method() string {
 }
 
 func (config DeleteChatPhotoConfig) params() (Params, error) {
-	params := make(Params)
-
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-
-	return params, nil
+	return config.ChatConfig.params()
 }
 
 // SetChatTitleConfig allows you to set the title of something other than a private chat.
 type SetChatTitleConfig struct {
-	ChatID          int64
-	ChannelUsername string
-
+	ChatConfig
 	Title string
 }
 
@@ -1960,9 +2120,11 @@ func (config SetChatTitleConfig) method() string {
 }
 
 func (config SetChatTitleConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
 	params["title"] = config.Title
 
 	return params, nil
@@ -1970,9 +2132,7 @@ func (config SetChatTitleConfig) params() (Params, error) {
 
 // SetChatDescriptionConfig allows you to set the description of a supergroup or channel.
 type SetChatDescriptionConfig struct {
-	ChatID          int64
-	ChannelUsername string
-
+	ChatConfig
 	Description string
 }
 
@@ -1981,9 +2141,11 @@ func (config SetChatDescriptionConfig) method() string {
 }
 
 func (config SetChatDescriptionConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
 	params["description"] = config.Description
 
 	return params, nil
@@ -2006,10 +2168,29 @@ func (config GetStickerSetConfig) params() (Params, error) {
 	return params, nil
 }
 
+// GetCustomEmojiStickersConfig get information about
+// custom emoji stickers by their identifiers.
+type GetCustomEmojiStickersConfig struct {
+	CustomEmojiIDs []string
+}
+
+func (config GetCustomEmojiStickersConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddInterface("custom_emoji_ids", config.CustomEmojiIDs)
+
+	return params, nil
+}
+
+func (config GetCustomEmojiStickersConfig) method() string {
+	return "getCustomEmojiStickers"
+}
+
 // UploadStickerConfig allows you to upload a sticker for use in a set later.
 type UploadStickerConfig struct {
-	UserID     int64
-	PNGSticker RequestFileData
+	UserID        int64
+	Sticker       RequestFile
+	StickerFormat string
 }
 
 func (config UploadStickerConfig) method() string {
@@ -2020,29 +2201,24 @@ func (config UploadStickerConfig) params() (Params, error) {
 	params := make(Params)
 
 	params.AddNonZero64("user_id", config.UserID)
+	params["sticker_format"] = config.StickerFormat
 
 	return params, nil
 }
 
 func (config UploadStickerConfig) files() []RequestFile {
-	return []RequestFile{{
-		Name: "png_sticker",
-		Data: config.PNGSticker,
-	}}
+	return []RequestFile{config.Sticker}
 }
 
 // NewStickerSetConfig allows creating a new sticker set.
-//
-// You must set either PNGSticker or TGSSticker.
 type NewStickerSetConfig struct {
-	UserID        int64
-	Name          string
-	Title         string
-	PNGSticker    RequestFileData
-	TGSSticker    RequestFileData
-	Emojis        string
-	ContainsMasks bool
-	MaskPosition  *MaskPosition
+	UserID          int64
+	Name            string
+	Title           string
+	Stickers        []InputSticker
+	StickerFormat   string
+	StickerType     string
+	NeedsRepainting bool //optional; Pass True if stickers in the sticker set must be repainted to the color of text when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context; for custom emoji sticker sets only
 }
 
 func (config NewStickerSetConfig) method() string {
@@ -2055,38 +2231,28 @@ func (config NewStickerSetConfig) params() (Params, error) {
 	params.AddNonZero64("user_id", config.UserID)
 	params["name"] = config.Name
 	params["title"] = config.Title
+	params["sticker_format"] = config.StickerFormat
 
-	params["emojis"] = config.Emojis
-
-	params.AddBool("contains_masks", config.ContainsMasks)
-
-	err := params.AddInterface("mask_position", config.MaskPosition)
+	params.AddBool("needs_repainting", config.NeedsRepainting)
+	params.AddNonEmpty("sticker_type", string(config.StickerType))
+	err := params.AddInterface("stickers", config.Stickers)
 
 	return params, err
 }
 
 func (config NewStickerSetConfig) files() []RequestFile {
-	if config.PNGSticker != nil {
-		return []RequestFile{{
-			Name: "png_sticker",
-			Data: config.PNGSticker,
-		}}
+	requestFiles := []RequestFile{}
+	for _, v := range config.Stickers {
+		requestFiles = append(requestFiles, v.Sticker)
 	}
-
-	return []RequestFile{{
-		Name: "tgs_sticker",
-		Data: config.TGSSticker,
-	}}
+	return requestFiles
 }
 
 // AddStickerConfig allows you to add a sticker to a set.
 type AddStickerConfig struct {
-	UserID       int64
-	Name         string
-	PNGSticker   RequestFileData
-	TGSSticker   RequestFileData
-	Emojis       string
-	MaskPosition *MaskPosition
+	UserID  int64
+	Name    string
+	Sticker InputSticker
 }
 
 func (config AddStickerConfig) method() string {
@@ -2098,26 +2264,12 @@ func (config AddStickerConfig) params() (Params, error) {
 
 	params.AddNonZero64("user_id", config.UserID)
 	params["name"] = config.Name
-	params["emojis"] = config.Emojis
-
-	err := params.AddInterface("mask_position", config.MaskPosition)
-
+	err := params.AddInterface("sticker", config.Sticker)
 	return params, err
 }
 
 func (config AddStickerConfig) files() []RequestFile {
-	if config.PNGSticker != nil {
-		return []RequestFile{{
-			Name: "png_sticker",
-			Data: config.PNGSticker,
-		}}
-	}
-
-	return []RequestFile{{
-		Name: "tgs_sticker",
-		Data: config.TGSSticker,
-	}}
-
+	return []RequestFile{config.Sticker.Sticker}
 }
 
 // SetStickerPositionConfig allows you to change the position of a sticker in a set.
@@ -2139,6 +2291,61 @@ func (config SetStickerPositionConfig) params() (Params, error) {
 	return params, nil
 }
 
+// SetCustomEmojiStickerSetThumbnailConfig allows you to set the thumbnail of a custom emoji sticker set
+type SetCustomEmojiStickerSetThumbnailConfig struct {
+	Name          string
+	CustomEmojiID string
+}
+
+func (config SetCustomEmojiStickerSetThumbnailConfig) method() string {
+	return "setCustomEmojiStickerSetThumbnail"
+}
+
+func (config SetCustomEmojiStickerSetThumbnailConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["name"] = config.Name
+	params.AddNonEmpty("position", config.CustomEmojiID)
+
+	return params, nil
+}
+
+// SetStickerSetTitle allows you to set the title of a created sticker set
+type SetStickerSetTitleConfig struct {
+	Name  string
+	Title string
+}
+
+func (config SetStickerSetTitleConfig) method() string {
+	return "setStickerSetTitle"
+}
+
+func (config SetStickerSetTitleConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["name"] = config.Name
+	params["title"] = config.Title
+
+	return params, nil
+}
+
+// DeleteStickerSetConfig allows you to delete a sticker set that was created by the bot.
+type DeleteStickerSetConfig struct {
+	Name string
+}
+
+func (config DeleteStickerSetConfig) method() string {
+	return "deleteStickerSet"
+}
+
+func (config DeleteStickerSetConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["name"] = config.Name
+
+	return params, nil
+}
+
 // DeleteStickerConfig allows you to delete a sticker from a set.
 type DeleteStickerConfig struct {
 	Sticker string
@@ -2156,6 +2363,63 @@ func (config DeleteStickerConfig) params() (Params, error) {
 	return params, nil
 }
 
+// SetStickerEmojiListConfig allows you to change the list of emoji assigned to a regular or custom emoji sticker. The sticker must belong to a sticker set created by the bot
+type SetStickerEmojiListConfig struct {
+	Sticker   string
+	EmojiList []string
+}
+
+func (config SetStickerEmojiListConfig) method() string {
+	return "setStickerEmojiList"
+}
+
+func (config SetStickerEmojiListConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["sticker"] = config.Sticker
+	err := params.AddInterface("emoji_list", config.EmojiList)
+
+	return params, err
+}
+
+// SetStickerKeywordsConfig allows you to change search keywords assigned to a regular or custom emoji sticker. The sticker must belong to a sticker set created by the bot.
+type SetStickerKeywordsConfig struct {
+	Sticker  string
+	Keywords []string
+}
+
+func (config SetStickerKeywordsConfig) method() string {
+	return "setStickerKeywords"
+}
+
+func (config SetStickerKeywordsConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["sticker"] = config.Sticker
+	err := params.AddInterface("keywords", config.Keywords)
+
+	return params, err
+}
+
+// SetStickerMaskPositionConfig allows you to  change the mask position of a mask sticker. The sticker must belong to a sticker set that was created by the bot
+type SetStickerMaskPositionConfig struct {
+	Sticker      string
+	MaskPosition *MaskPosition
+}
+
+func (config SetStickerMaskPositionConfig) method() string {
+	return "setStickerMaskPosition"
+}
+
+func (config SetStickerMaskPositionConfig) params() (Params, error) {
+	params := make(Params)
+
+	params["sticker"] = config.Sticker
+	err := params.AddInterface("keywords", config.MaskPosition)
+
+	return params, err
+}
+
 // SetStickerSetThumbConfig allows you to set the thumbnail for a sticker set.
 type SetStickerSetThumbConfig struct {
 	Name   string
@@ -2164,7 +2428,7 @@ type SetStickerSetThumbConfig struct {
 }
 
 func (config SetStickerSetThumbConfig) method() string {
-	return "setStickerSetThumb"
+	return "setStickerSetThumbnail"
 }
 
 func (config SetStickerSetThumbConfig) params() (Params, error) {
@@ -2178,15 +2442,14 @@ func (config SetStickerSetThumbConfig) params() (Params, error) {
 
 func (config SetStickerSetThumbConfig) files() []RequestFile {
 	return []RequestFile{{
-		Name: "thumb",
+		Name: "thumbnail",
 		Data: config.Thumb,
 	}}
 }
 
 // SetChatStickerSetConfig allows you to set the sticker set for a supergroup.
 type SetChatStickerSetConfig struct {
-	ChatID             int64
-	SuperGroupUsername string
+	ChatConfig
 
 	StickerSetName string
 }
@@ -2196,9 +2459,11 @@ func (config SetChatStickerSetConfig) method() string {
 }
 
 func (config SetChatStickerSetConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
 	params["sticker_set_name"] = config.StickerSetName
 
 	return params, nil
@@ -2206,8 +2471,7 @@ func (config SetChatStickerSetConfig) params() (Params, error) {
 
 // DeleteChatStickerSetConfig allows you to remove a supergroup's sticker set.
 type DeleteChatStickerSetConfig struct {
-	ChatID             int64
-	SuperGroupUsername string
+	ChatConfig
 }
 
 func (config DeleteChatStickerSetConfig) method() string {
@@ -2215,23 +2479,199 @@ func (config DeleteChatStickerSetConfig) method() string {
 }
 
 func (config DeleteChatStickerSetConfig) params() (Params, error) {
-	params := make(Params)
+	return config.ChatConfig.params()
+}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.SuperGroupUsername)
+// GetForumTopicIconStickersConfig allows you to get custom emoji stickers,
+// which can be used as a forum topic icon by any user.
+type GetForumTopicIconStickersConfig struct{}
+
+func (config GetForumTopicIconStickersConfig) method() string {
+	return "getForumTopicIconStickers"
+}
+
+func (config GetForumTopicIconStickersConfig) params() (Params, error) {
+	return nil, nil
+}
+
+// CreateForumTopicConfig allows you to create a topic
+// in a forum supergroup chat.
+type CreateForumTopicConfig struct {
+	ChatConfig
+	Name              string
+	IconColor         int
+	IconCustomEmojiID string
+}
+
+func (config CreateForumTopicConfig) method() string {
+	return "createForumTopic"
+}
+
+func (config CreateForumTopicConfig) params() (Params, error) {
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
+
+	params.AddNonEmpty("name", config.Name)
+	params.AddNonZero("icon_color", config.IconColor)
+	params.AddNonEmpty("icon_custom_emoji_id", config.IconCustomEmojiID)
 
 	return params, nil
+}
+
+type BaseForum struct {
+	ChatConfig
+	MessageThreadID int
+}
+
+func (base BaseForum) params() (Params, error) {
+	params, err := base.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddNonZero("message_thread_id", base.MessageThreadID)
+
+	return params, nil
+}
+
+// EditForumTopicConfig allows you to edit
+// name and icon of a topic in a forum supergroup chat.
+type EditForumTopicConfig struct {
+	BaseForum
+	Name              string
+	IconCustomEmojiID string
+}
+
+func (config EditForumTopicConfig) method() string {
+	return "editForumTopic"
+}
+
+func (config EditForumTopicConfig) params() (Params, error) {
+	params, err := config.BaseForum.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddNonEmpty("name", config.Name)
+	params.AddNonEmpty("icon_custom_emoji_id", config.IconCustomEmojiID)
+
+	return params, nil
+}
+
+// CloseForumTopicConfig allows you to close
+// an open topic in a forum supergroup chat.
+type CloseForumTopicConfig struct{ BaseForum }
+
+func (config CloseForumTopicConfig) method() string {
+	return "closeForumTopic"
+}
+
+// ReopenForumTopicConfig allows you to reopen
+// an closed topic in a forum supergroup chat.
+type ReopenForumTopicConfig struct{ BaseForum }
+
+func (config ReopenForumTopicConfig) method() string {
+	return "reopenForumTopic"
+}
+
+// DeleteForumTopicConfig allows you to delete a forum topic
+// along with all its messages in a forum supergroup chat.
+type DeleteForumTopicConfig struct{ BaseForum }
+
+func (config DeleteForumTopicConfig) method() string {
+	return "deleteForumTopic"
+}
+
+// UnpinAllForumTopicMessagesConfig allows you to clear the list
+// of pinned messages in a forum topic.
+type UnpinAllForumTopicMessagesConfig struct{ BaseForum }
+
+func (config UnpinAllForumTopicMessagesConfig) method() string {
+	return "unpinAllForumTopicMessages"
+}
+
+// UnpinAllForumTopicMessagesConfig allows you to edit the name of
+// the 'General' topic in a forum supergroup chat.
+// The bot must be an administrator in the chat for this to work
+// and must have can_manage_topics administrator rights. Returns True on success.
+type EditGeneralForumTopicConfig struct {
+	BaseForum
+	Name string
+}
+
+func (config EditGeneralForumTopicConfig) method() string {
+	return "editGeneralForumTopic"
+}
+
+func (config EditGeneralForumTopicConfig) params() (Params, error) {
+	params, err := config.BaseForum.params()
+	if err != nil {
+		return params, err
+	}
+	params.AddNonEmpty("name", config.Name)
+
+	return params, nil
+}
+
+// CloseGeneralForumTopicConfig allows you to to close an open 'General' topic
+// in a forum supergroup chat. The bot must be an administrator in the chat
+// for this to work and must have the can_manage_topics administrator rights.
+// Returns True on success.
+type CloseGeneralForumTopicConfig struct{ BaseForum }
+
+func (config CloseGeneralForumTopicConfig) method() string {
+	return "closeGeneralForumTopic"
+}
+
+// CloseGeneralForumTopicConfig allows you to reopen a closed 'General' topic
+// in a forum supergroup chat. The bot must be an administrator in the chat
+// for this to work and must have the can_manage_topics administrator rights.
+// The topic will be automatically unhidden if it was hidden.
+// Returns True on success.
+type ReopenGeneralForumTopicConfig struct{ BaseForum }
+
+func (config ReopenGeneralForumTopicConfig) method() string {
+	return "reopenGeneralForumTopic"
+}
+
+// HideGeneralForumTopicConfig allows you to hide the 'General' topic
+// in a forum supergroup chat. The bot must be an administrator in the chat
+// for this to work and must have the can_manage_topics administrator rights.
+// The topic will be automatically closed if it was open.
+// Returns True on success.
+type HideGeneralForumTopicConfig struct{ BaseForum }
+
+func (config HideGeneralForumTopicConfig) method() string {
+	return "hideGeneralForumTopic"
+}
+
+// UnhideGeneralForumTopicConfig allows you to unhide the 'General' topic
+// in a forum supergroup chat. The bot must be an administrator in the chat
+// for this to work and must have the can_manage_topics administrator rights.
+// Returns True on success.
+type UnhideGeneralForumTopicConfig struct{ BaseForum }
+
+func (config UnhideGeneralForumTopicConfig) method() string {
+	return "unhideGeneralForumTopic"
+}
+
+// UnpinAllGeneralForumTopicMessagesConfig allows you to to clear
+// the list of pinned messages in a General forum topic.
+// The bot must be an administrator in the chat for this to work
+// and must have the can_pin_messages administrator right in the supergroup.
+// Returns True on success.
+type UnpinAllGeneralForumTopicMessagesConfig struct{ BaseForum }
+
+func (config UnpinAllGeneralForumTopicMessagesConfig) method() string {
+	return "unpinAllGeneralForumTopicMessages"
 }
 
 // MediaGroupConfig allows you to send a group of media.
 //
 // Media consist of InputMedia items (InputMediaPhoto, InputMediaVideo).
 type MediaGroupConfig struct {
-	ChatID          int64
-	ChannelUsername string
-
-	Media               []interface{}
-	DisableNotification bool
-	ReplyToMessageID    int
+	BaseChat
+	Media []interface{}
 }
 
 func (config MediaGroupConfig) method() string {
@@ -2239,13 +2679,12 @@ func (config MediaGroupConfig) method() string {
 }
 
 func (config MediaGroupConfig) params() (Params, error) {
-	params := make(Params)
+	params, err := config.BaseChat.params()
+	if err != nil {
+		return nil, err
+	}
 
-	params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-	params.AddBool("disable_notification", config.DisableNotification)
-	params.AddNonZero("reply_to_message_id", config.ReplyToMessageID)
-
-	err := params.AddInterface("media", prepareInputMediaForParams(config.Media))
+	err = params.AddInterface("media", prepareInputMediaForParams(config.Media))
 
 	return params, err
 }
@@ -2276,6 +2715,26 @@ func (config DiceConfig) params() (Params, error) {
 	}
 
 	params.AddNonEmpty("emoji", config.Emoji)
+
+	return params, err
+}
+
+type GetUserChatBoostsConfig struct {
+	ChatConfig
+	UserID int64
+}
+
+func (config GetUserChatBoostsConfig) method() string {
+	return "getUserChatBoosts"
+}
+
+func (config GetUserChatBoostsConfig) params() (Params, error) {
+	params, err := config.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
+
+	params.AddNonZero64("user_id", config.UserID)
 
 	return params, err
 }
@@ -2340,11 +2799,125 @@ func (config DeleteMyCommandsConfig) params() (Params, error) {
 	return params, err
 }
 
+// SetMyNameConfig change the bot's name
+type SetMyNameConfig struct {
+	Name         string
+	LanguageCode string
+}
+
+func (config SetMyNameConfig) method() string {
+	return "setMyName"
+}
+
+func (config SetMyNameConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddNonEmpty("name", config.Name)
+	params.AddNonEmpty("language_code", config.LanguageCode)
+
+	return params, nil
+}
+
+type GetMyNameConfig struct {
+	LanguageCode string
+}
+
+func (config GetMyNameConfig) method() string {
+	return "getMyName"
+}
+
+func (config GetMyNameConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddNonEmpty("language_code", config.LanguageCode)
+
+	return params, nil
+}
+
+// GetMyDescriptionConfig get the current bot description for the given user language
+type GetMyDescriptionConfig struct {
+	LanguageCode string
+}
+
+func (config GetMyDescriptionConfig) method() string {
+	return "getMyDescription"
+}
+
+func (config GetMyDescriptionConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddNonEmpty("language_code", config.LanguageCode)
+
+	return params, nil
+}
+
+// SetMyDescroptionConfig sets the bot's description, which is shown in the chat with the bot if the chat is empty
+type SetMyDescriptionConfig struct {
+	// Pass an empty string to remove the dedicated description for the given language.
+	Description string
+	//If empty, the description will be applied to all users for whose language there is no dedicated description.
+	LanguageCode string
+}
+
+func (config SetMyDescriptionConfig) method() string {
+	return "setMyDescription"
+}
+
+func (config SetMyDescriptionConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddNonEmpty("description", config.Description)
+	params.AddNonEmpty("language_code", config.LanguageCode)
+
+	return params, nil
+}
+
+// GetMyShortDescriptionConfig get the current bot short description for the given user language
+type GetMyShortDescriptionConfig struct {
+	LanguageCode string
+}
+
+func (config GetMyShortDescriptionConfig) method() string {
+	return "getMyShortDescription"
+}
+
+func (config GetMyShortDescriptionConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddNonEmpty("language_code", config.LanguageCode)
+
+	return params, nil
+}
+
+// SetMyDescroptionConfig sets the bot's short description, which is shown on the bot's profile page and is sent together with the link when users share the bot.
+type SetMyShortDescriptionConfig struct {
+	// New short description for the bot; 0-120 characters.
+	//
+	//Pass an empty string to remove the dedicated short description for the given language.
+	ShortDescription string
+	//A two-letter ISO 639-1 language code.
+	//
+	//If empty, the short description will be applied to all users for whose language there is no dedicated short description.
+	LanguageCode string
+}
+
+func (config SetMyShortDescriptionConfig) method() string {
+	return "setMyShortDescription"
+}
+
+func (config SetMyShortDescriptionConfig) params() (Params, error) {
+	params := make(Params)
+
+	params.AddNonEmpty("short_description", config.ShortDescription)
+	params.AddNonEmpty("language_code", config.LanguageCode)
+
+	return params, nil
+}
+
 // SetChatMenuButtonConfig changes the bot's menu button in a private chat,
 // or the default menu button.
 type SetChatMenuButtonConfig struct {
-	ChatID          int64
-	ChannelUsername string
+	ChatConfig
 
 	MenuButton *MenuButton
 }
@@ -2354,19 +2927,18 @@ func (config SetChatMenuButtonConfig) method() string {
 }
 
 func (config SetChatMenuButtonConfig) params() (Params, error) {
-	params := make(Params)
-
-	if err := params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername); err != nil {
+	params, err := config.ChatConfig.params()
+	if err != nil {
 		return params, err
 	}
-	err := params.AddInterface("menu_button", config.MenuButton)
+
+	err = params.AddInterface("menu_button", config.MenuButton)
 
 	return params, err
 }
 
 type GetChatMenuButtonConfig struct {
-	ChatID          int64
-	ChannelUsername string
+	ChatConfig
 }
 
 func (config GetChatMenuButtonConfig) method() string {
@@ -2374,11 +2946,7 @@ func (config GetChatMenuButtonConfig) method() string {
 }
 
 func (config GetChatMenuButtonConfig) params() (Params, error) {
-	params := make(Params)
-
-	err := params.AddFirstValid("chat_id", config.ChatID, config.ChannelUsername)
-
-	return params, err
+	return config.ChatConfig.params()
 }
 
 type SetMyDefaultAdministratorRightsConfig struct {

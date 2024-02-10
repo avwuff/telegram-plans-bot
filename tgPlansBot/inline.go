@@ -38,9 +38,11 @@ func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 			}
 
 			loc := localizer.FromLanguage(event.Language())
-			button := map[string]interface{}{
-				"text":            loc.Sprintf("Click here to specify Guest names..."),
-				"start_parameter": GUEST_START_PREFIX + hash,
+
+			button := &tgbotapi.InlineQueryResultsButton{
+				Text:       loc.Sprintf("Click here to specify Guest names..."),
+				WebApp:     nil,
+				StartParam: GUEST_START_PREFIX + hash,
 			}
 
 			tgp.answerWithList(query, nil, button)
@@ -115,20 +117,22 @@ func (tgp *TGPlansBot) buildClickableStarter(event dbInterface.DBEvent, loc *loc
 	}
 
 	return tgbotapi.InputTextMessageContent{
-		Text:                  fmt.Sprintf("%s\n\n%s", event.Name(), loc.Sprintf("Click the button below to activate this event.")),
-		ParseMode:             ParseModeHtml,
-		DisableWebPagePreview: true,
+		Text:      fmt.Sprintf("%s\n\n%s", event.Name(), loc.Sprintf("Click the button below to activate this event.")),
+		ParseMode: ParseModeHtml,
+		LinkPreviewOptions: &tgbotapi.LinkPreviewOptions{
+			IsDisabled: true,
+		},
 	}, &keyb
 }
 
-func (tgp *TGPlansBot) answerWithList(query *tgbotapi.InlineQuery, results []interface{}, button interface{}) {
+func (tgp *TGPlansBot) answerWithList(query *tgbotapi.InlineQuery, results []interface{}, button *tgbotapi.InlineQueryResultsButton) {
 
 	inlineConf := tgbotapi.InlineConfig{
-		InlineQueryID:            query.ID,
-		IsPersonal:               true,
-		CacheTime:                1,
-		Results:                  results,
-		InlineQueryResultsButton: button,
+		InlineQueryID: query.ID,
+		IsPersonal:    true,
+		CacheTime:     1,
+		Results:       results,
+		Button:        button,
 	}
 
 	if _, err := tgp.tg.AnswerInlineQuery(inlineConf); err != nil {

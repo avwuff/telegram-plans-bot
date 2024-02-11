@@ -65,6 +65,8 @@ type DBEvent interface {
 	SetSharingAllowed(v bool) error
 	GetCanAttend() CanAttend
 	AmIAttending(id int64) bool
+	PictureURL() string
+	SetPictureURL(t string) error
 }
 
 type Attend struct {

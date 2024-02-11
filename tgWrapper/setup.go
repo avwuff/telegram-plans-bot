@@ -86,3 +86,9 @@ func (t *Telegram) AnswerCallbackQuery(c tgbotapi.CallbackConfig) (*tgbotapi.API
 func (t *Telegram) SetMyCommands(cmds tgbotapi.SetMyCommandsConfig) (*tgbotapi.APIResponse, error) {
 	return t.bot.Request(cmds)
 }
+func (t *Telegram) GetFile(config tgbotapi.FileConfig) (tgbotapi.File, error) {
+	return t.bot.GetFile(config)
+}
+func (t *Telegram) GetFileDirectURL(fileID string) (string, error) {
+	return t.bot.GetFileDirectURL(fileID)
+}

@@ -340,7 +340,18 @@ func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc 
 	mObj2.InlineMessageID = inlineId
 	mObj2.ParseMode = ParseModeHtml
 	mObj2.ReplyMarkup = &buttons
-	mObj2.LinkPreviewOptions.IsDisabled = true
+
+	// If there is a picture included, add the URL.
+	if event.PictureURL() != "" {
+		mObj2.LinkPreviewOptions.URL = event.PictureURL()
+		// There doesn't seem to be a difference between large and small media
+		//mObj2.LinkPreviewOptions.PreferLargeMedia = true
+		mObj2.LinkPreviewOptions.PreferSmallMedia = true
+		mObj2.LinkPreviewOptions.ShowAboveText = true
+	} else {
+		mObj2.LinkPreviewOptions.IsDisabled = true
+	}
+
 	mObj = mObj2
 
 	rsp, err := tgp.tg.Request(mObj)

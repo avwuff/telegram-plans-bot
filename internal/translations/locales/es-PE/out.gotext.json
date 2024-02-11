@@ -197,6 +197,11 @@
             "translation": ""
         },
         {
+            "id": "🖼 Add Picture",
+            "message": "🖼 Add Picture",
+            "translation": ""
+        },
+        {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
             "translation": ""
@@ -437,6 +442,16 @@
             "translation": ""
         },
         {
+            "id": "Send me a picture that will be included with your event.",
+            "message": "Send me a picture that will be included with your event.",
+            "translation": ""
+        },
+        {
+            "id": "Current picture:",
+            "message": "Current picture:",
+            "translation": ""
+        },
+        {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
             "translation": ""
@@ -487,6 +502,11 @@
         {
             "id": "The value you provided is not one of the choices.",
             "message": "The value you provided is not one of the choices.",
+            "translation": ""
+        },
+        {
+            "id": "Please send a picture to go with your event.",
+            "message": "Please send a picture to go with your event.",
             "translation": ""
         },
         {
@@ -542,6 +562,11 @@
         {
             "id": "Notes:",
             "message": "Notes:",
+            "translation": ""
+        },
+        {
+            "id": "🖼 Event includes a picture",
+            "message": "🖼 Event includes a picture",
             "translation": ""
         },
         {

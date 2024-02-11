@@ -197,6 +197,11 @@
             "translation": "📝 Notizen Hinzufügen"
         },
         {
+            "id": "🖼 Add Picture",
+            "message": "\uD83D\uDDBC Add Picture",
+            "translation": "\uD83D\uDDBC Bild hinzufügen"
+        },
+        {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
             "translation": "👫 Maximale Teilnehmerzahl Festlegen"
@@ -437,6 +442,16 @@
             "translation": "Gib den Namen des Veranstalters an."
         },
         {
+            "id": "Send me a picture that will be included with your event.",
+            "message": "Send me a picture that will be included with your event.",
+            "translation": "Schicken Sie mir ein Bild, das Ihrer Veranstaltung beigefügt wird."
+        },
+        {
+            "id": "Current picture:",
+            "message": "Current picture:",
+            "translation": "Aktuelles Bild:"
+        },
+        {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
             "translation": "Gib das Veranstaltungsdatum an:"
@@ -488,6 +503,11 @@
             "id": "The value you provided is not one of the choices.",
             "message": "The value you provided is not one of the choices.",
             "translation": "Der von dir angegebene Wert ist keine der Auswahlmöglichkeiten."
+        },
+        {
+            "id": "Please send a picture to go with your event.",
+            "message": "Please send a picture to go with your event.",
+            "translation": "Bitte senden Sie ein Bild zu Ihrer Veranstaltung."
         },
         {
             "id": "Please provide a valid number",
@@ -543,6 +563,11 @@
             "id": "Notes:",
             "message": "Notes:",
             "translation": "Weitere Informationen:"
+        },
+        {
+            "id": "🖼 Event includes a picture",
+            "message": "🖼 Event includes a picture",
+            "translation": "\uD83D\uDDBC Zur Veranstaltung gehört ein Bild"
         },
         {
             "id": "Error listing events: {Err}",
@@ -825,9 +850,9 @@
             "translation": "Leider ist es bei dieser Veranstaltung nicht gestattet, Gäste mitzubringen."
         },
         {
-            "id": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
-            "message": "Alright, tell me the name of each guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.",
-            "translation": "Okay, sagen Sie mir den Namen des ersten Gastes, den Sie zu <b>{Name}</b> mitbringen. Sie können bis zu {MaxGuests} aufrufen.\n\nSchicken Sie mir bitte jeweils einen Namen!",
+            "id": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "message": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "translation": "Okay, sag mir den Namen des ersten Gastes, den Sie zu <b>{Name}</b> mitbringst. Sie können bis zu {MaxGuests} erreichen.\n\nSchicken Sie mir bitte jeweils einen Namen!",
             "placeholders": [
                 {
                     "id": "Name",

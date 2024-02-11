@@ -1,12 +1,17 @@
 package tgPlansBot
 
 import (
+	"fmt"
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"io"
 	"log"
+	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -70,6 +75,10 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 		tgp.editStringItem(usrInfo, cb.From.ID, event.OwnerName(), event.SetOwnerName, loc.Sprintf("Specify the name of the person hosting the event."), false)
 	case "notes":
 		tgp.editStringItem(usrInfo, cb.From.ID, event.Notes(), event.SetNotes, loc.Sprintf("Specify any additional notes you'd like to show about the event."), true)
+
+	// PICTURES
+	case "picture":
+		tgp.editPictureItem(usrInfo, cb.From.ID, event.PictureURL(), event.SetPictureURL, loc.Sprintf("Send me a picture that will be included with your event."), loc.Sprintf("Current picture:"))
 
 	// SPECIAL EDITORS
 	case "date":
@@ -473,7 +482,7 @@ func (tgp *TGPlansBot) editStringItem(usrInfo *userManager.UserInfo, chatId int6
 	if sendExisting && EditItem != "" {
 		mObj := tgbotapi.NewMessage(chatId, EditItem)
 		mObj.ParseMode = ParseModeHtml
-		mObj.DisableWebPagePreview = true
+		mObj.LinkPreviewOptions.IsDisabled = true
 		_, _ = tgp.tg.Send(mObj)
 	}
 
@@ -510,6 +519,125 @@ func (tgp *TGPlansBot) edit_setString(usrInfo *userManager.UserInfo, msg *tgbota
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
 	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
 	tgp.updateEventUIAllPostings(event)
+}
+
+// editStringItem puts them into a mode where they are editing a text item
+func (tgp *TGPlansBot) editPictureItem(usrInfo *userManager.UserInfo, chatId int64, EditItem string, SetFunc setStringFunc, prompt string, picPrompt string) {
+	// Store a pointer to the string we are trying to set.
+	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
+
+	// Switch to picture edit mode
+	usrInfo.SetMode(userManager.MODE_EDIT_PICTURE)
+
+	// Send the current picture so we can see what it looks like
+	if EditItem != "" {
+		mObj := tgbotapi.NewMessage(chatId, picPrompt)
+		mObj.LinkPreviewOptions.PreferLargeMedia = true
+		mObj.LinkPreviewOptions.ShowAboveText = false
+		mObj.LinkPreviewOptions.URL = EditItem
+		_, _ = tgp.tg.Send(mObj)
+	}
+
+	mObj := tgbotapi.NewMessage(chatId, prompt)
+	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around
+	_, _ = tgp.tg.Send(mObj)
+}
+
+// Called from when the mode above is finished
+func (tgp *TGPlansBot) edit_setPicture(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	// See if we are in a valid mode.
+	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setStringFunc)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+
+	if len(msg.Photo) == 0 {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Please send a picture to go with your event."))
+		return
+	}
+
+	// Download the file to our picture cache here on the server.
+	url, err := tgp.saveLargestPhoto(event.ID(), msg.Photo)
+	if err != nil {
+		tgp.quickReply(msg, err.Error())
+		return
+	}
+
+	// Set the string to this value.  This should update it in the struct.
+	err = setFunc(url)
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		return
+	}
+
+	// switch back to normal mode and display the event details
+	usrInfo.SetMode(userManager.MODE_DEFAULT)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
+}
+
+func (tgp *TGPlansBot) saveLargestPhoto(eventID uint, photos []tgbotapi.PhotoSize) (string, error) {
+
+	largest := ""
+	size := 0
+	for _, photo := range photos {
+		if photo.Height*photo.Width > size {
+			size = photo.Height * photo.Width
+			largest = photo.FileID
+		}
+	}
+
+	return tgp.saveFile(eventID, largest)
+}
+
+// save this telegram file to disk in the cache
+func (tgp *TGPlansBot) saveFile(eventID uint, fileID string) (string, error) {
+	// generate a path for this file
+
+	fURL, err := tgp.tg.GetFileDirectURL(fileID)
+	if err != nil {
+		return "", fmt.Errorf("error getting file: %v", err)
+	}
+
+	// Download the file data.
+	// Use a hash for the filename so people can't guess the values
+	name := fmt.Sprintf("%v.jpg", helpers.CalenFeedMD5(tgp.saltValue, int64(eventID)))
+	cwd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	dir := filepath.Join(cwd, "html", "cache")
+	err = os.MkdirAll(dir, 0777)
+
+	fullpath := filepath.Join(dir, name)
+
+	// write this file to disk here.
+	resp, err := http.Get(fURL)
+	if err != nil {
+		return "", fmt.Errorf("error downloading file: %v", err)
+	}
+	defer resp.Body.Close()
+
+	log.Printf("Writing to %v", fullpath)
+	// Create the file
+	out, err := os.Create(fullpath)
+	if err != nil {
+		return "", fmt.Errorf("error creating file %v: %v", fullpath, err)
+	}
+	defer out.Close()
+
+	// Write the body to file
+	_, err = io.Copy(out, resp.Body)
+
+	// TODO: Remove hardcoded URL.
+	return fmt.Sprintf("https://plansbot.avbrand.com/cache/%v", name), nil
 }
 
 // editNumberItem puts them into a mode where they are editing a number item

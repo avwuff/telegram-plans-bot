@@ -60,7 +60,7 @@ func (sU *sendUpdate) sendText(text string) {
 			},
 			SenderChat: nil,
 			Date:       0,
-			Chat: &tgbotapi.Chat{
+			Chat: tgbotapi.Chat{
 				ID:        1234,
 				UserName:  "bob",
 				FirstName: "Bob",
@@ -83,7 +83,7 @@ func (sU *sendUpdate) sendButton(text string) {
 			},
 			Message: &tgbotapi.Message{
 				MessageID: 1111,
-				Chat: &tgbotapi.Chat{
+				Chat: tgbotapi.Chat{
 					ID:        1234,
 					UserName:  "bob",
 					FirstName: "Bob",

@@ -496,6 +496,15 @@ func (e *eventConnector) SetNotes(t string) error {
 	return e.updateEvent("Notes")
 }
 
+func (e *eventConnector) PictureURL() string {
+	return e.ev.PictureURL
+}
+
+func (e *eventConnector) SetPictureURL(t string) error {
+	e.ev.PictureURL = t
+	return e.updateEvent("PictureURL")
+}
+
 func (e *eventConnector) Language() string {
 	return e.ev.Language
 }

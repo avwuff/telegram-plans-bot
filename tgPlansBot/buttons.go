@@ -256,13 +256,19 @@ func eventEditButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbot
 	row = append(row, quickButton(loc.Sprintf("🏆 Edit Name"), fmt.Sprintf("edit:%v:name", event.ID())))
 	row = append(row, quickButton(loc.Sprintf("📆 Edit Date"), fmt.Sprintf("edit:%v:date", event.ID())))
 	buttons = append(buttons, row)
+
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	row = append(row, quickButton(loc.Sprintf("⏰ Edit Time"), fmt.Sprintf("edit:%v:time", event.ID())))
 	row = append(row, quickButton(loc.Sprintf("📍 Edit Location"), fmt.Sprintf("edit:%v:location", event.ID())))
 	buttons = append(buttons, row)
+
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	row = append(row, quickButton(loc.Sprintf("🕴 Edit Hosted By"), fmt.Sprintf("edit:%v:hostedby", event.ID())))
 	row = append(row, quickButton(loc.Sprintf("📝 Add Notes"), fmt.Sprintf("edit:%v:notes", event.ID())))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 0)
+	row = append(row, quickButton(loc.Sprintf("🖼 Add Picture"), fmt.Sprintf("edit:%v:picture", event.ID())))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)

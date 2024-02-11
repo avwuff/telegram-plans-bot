@@ -32,6 +32,7 @@ func (tgp *TGPlansBot) initEventCommands() {
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_CHOICE, Handler: tgp.edit_setChoice})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_DATE, Handler: tgp.edit_setDate})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_TIME, Handler: tgp.edit_setTime})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_PICTURE, Handler: tgp.edit_setPicture, SpecialMode: "photo"})
 
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_CREATE_EVENTDATE, Handler: tgp.create_ClickDate})
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "time", Mode: userManager.MODE_CREATE_EVENTTIME, Handler: tgp.create_ClickTime})
@@ -65,6 +66,9 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 	if event.Notes() != "" {
 		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
 	}
+	if event.PictureURL() != "" {
+		t += "\n<i>" + loc.Sprintf("🖼 Event includes a picture") + "</i>\n"
+	}
 
 	var buttons tgbotapi.InlineKeyboardMarkup
 	if showAdvancedButtons {
@@ -76,7 +80,7 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		mObj := tgbotapi.NewEditMessageText(chatId, editInPlace, t)
 		mObj.ParseMode = ParseModeHtml
 		mObj.ReplyMarkup = &buttons
-		mObj.DisableWebPagePreview = true
+		mObj.LinkPreviewOptions.IsDisabled = true
 		_, err := tgp.tg.Request(mObj)
 		if err != nil {
 			log.Println(err)
@@ -85,7 +89,7 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		mObj := tgbotapi.NewMessage(chatId, t)
 		mObj.ParseMode = ParseModeHtml
 		mObj.ReplyMarkup = buttons
-		mObj.DisableWebPagePreview = true
+		mObj.LinkPreviewOptions.IsDisabled = true
 		_, err := tgp.tg.Send(mObj)
 		if err != nil {
 			log.Println(err)

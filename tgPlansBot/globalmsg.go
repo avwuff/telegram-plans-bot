@@ -135,7 +135,7 @@ func (tgp *TGPlansBot) sendGlobalMsg(chatId int64) bool {
 
 	mObj := tgbotapi.NewMessage(chatId, globalMsg)
 	mObj.ParseMode = ParseModeHtml
-	mObj.DisableWebPagePreview = true
+	mObj.LinkPreviewOptions.IsDisabled = true
 
 	_, err := tgp.tg.Send(mObj)
 	if err != nil {

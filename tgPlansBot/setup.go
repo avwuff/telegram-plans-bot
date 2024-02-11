@@ -61,7 +61,7 @@ func (tgp *TGPlansBot) setup_askTimeZone(usrInfo *userManager.UserInfo, msg *tgb
 	mObj := tgbotapi.NewMessage(msg.Chat.ID, usrInfo.Locale.Sprintf(`In which time zone do you live?
 You can either send one of the time zones on <a href="https://github.com/Lewington-pitsos/golang-time-locations">this</a> list,
 or you can send your current 📍 Location by clicking the paperclip and choosing Location.`))
-	mObj.DisableWebPagePreview = true
+	mObj.LinkPreviewOptions.IsDisabled = true
 	mObj.ParseMode = ParseModeHtml
 
 	tzMap := localizer.GetTimeZoneChoicesMap()

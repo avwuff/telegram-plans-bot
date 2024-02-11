@@ -141,6 +141,7 @@ func simpleEvent(t *testing.T, name string, location string) *dbInterface.DBEven
 	mEvent.On("SharingAllowed").Return(false)
 	mEvent.On("MaxAttendees").Return(0)
 	mEvent.On("Closed").Return(false)
+	mEvent.On("PictureURL").Return("")
 	mEvent.On("DateTime").Return(time.Date(2023, 1, 1, 0, 0, 0, 0, time.Local))
 	return mEvent
 }

@@ -27,6 +27,8 @@ type Command struct {
 
 	// Private means the command is not included in the help or command list
 	Private bool
+
+	SpecialMode string
 }
 
 type Callback struct {
@@ -80,9 +82,18 @@ func (c *CommandList) BaseCommandList() []Command {
 
 func (c *CommandList) Process(usrInfo *userManager.UserInfo, msg *tgbotapi.Message) {
 	// Split the msg by spaces
-	if msg.Text == "" && msg.Location == nil {
+
+	//specialMode := ""
+
+	if msg.Text == "" && msg.Location == nil && msg.Photo == nil {
 		return
 	}
+
+	// Some messages represent special modes
+	//if msg.Photo != nil {
+	//	specialMode = "photo"
+	//}
+
 	sp := strings.Split(msg.Text, " ")
 	text := strings.Join(sp[1:], " ")
 

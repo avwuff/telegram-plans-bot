@@ -15,6 +15,8 @@ type TelegramBot interface {
 	AnswerInlineQuery(c tgbotapi.InlineConfig) (*tgbotapi.APIResponse, error)
 	AnswerCallbackQuery(c tgbotapi.CallbackConfig) (*tgbotapi.APIResponse, error)
 	SetMyCommands(cmds tgbotapi.SetMyCommandsConfig) (*tgbotapi.APIResponse, error)
+	GetFile(config tgbotapi.FileConfig) (tgbotapi.File, error)
+	GetFileDirectURL(fileID string) (string, error)
 }
 
 const (

@@ -191,7 +191,7 @@ func (tgp *TGPlansBot) create_SetNotes(usrInfo *userManager.UserInfo, msg *tgbot
 	}
 
 	// Now finish the event
-	eventId, err := tgp.createNewEvent(usrInfo, msg.Chat.ID, helpers.HtmlEntities(getOwnerName(msg.Chat)), selName, selDate, selLoc, notes)
+	eventId, err := tgp.createNewEvent(usrInfo, msg.Chat.ID, helpers.HtmlEntities(getOwnerName(&msg.Chat)), selName, selDate, selLoc, notes)
 	if err != nil {
 		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error creating event: %v", err))
 		return

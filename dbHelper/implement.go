@@ -86,6 +86,9 @@ func (c *Connector) GetEvent(eventId uint, ownerId int64) (dbInterface.DBEvent, 
 	if event.TimeZone != "" {
 		tz := localizer.FromTimeZone(event.TimeZone)
 		event.DateTime.Time = event.DateTime.Time.In(tz)
+		if event.EndDateTime.Valid {
+			event.EndDateTime.Time = event.EndDateTime.Time.In(tz)
+		}
 	}
 
 	return c.wrap(&event), nil
@@ -458,6 +461,17 @@ func (e *eventConnector) SetDateTime(d time.Time) error {
 		Valid: true,
 	}
 	return e.updateEvent("EventDateTime")
+}
+func (e *eventConnector) EndDateTime() time.Time {
+	return e.ev.EndDateTime.Time
+}
+
+func (e *eventConnector) SetEndDateTime(d time.Time) error {
+	e.ev.EndDateTime = sql.NullTime{
+		Time:  d,
+		Valid: true,
+	}
+	return e.updateEvent("EndDateTime")
 }
 
 func (e *eventConnector) TimeZone() string {

@@ -133,7 +133,14 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 		event.SetDtStampTime(time.Now())
 		event.SetModifiedAt(time.Now())
 		event.SetStartAt(ev.DateTime())
-		event.SetEndAt(ev.DateTime().Add(time.Hour))
+
+		// Proper support for multi-day events and durations
+		endsAt := ev.DateTime().Add(time.Hour)
+		if !ev.EndDateTime().IsZero() && ev.EndDateTime() != ev.DateTime() {
+			endsAt = ev.EndDateTime()
+		}
+
+		event.SetEndAt(endsAt)
 		event.SetSummary(helpers.StripHtmlRegex(ev.Name()))
 		event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
 		event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))

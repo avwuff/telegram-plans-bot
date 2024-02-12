@@ -86,6 +86,17 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 	case "time":
 		tgp.editTimeItem(usrInfo, cb.From.ID, event.DateTime(), event.SetDateTime, loc.Sprintf("Specify the time at which this event takes place:"), loc)
 
+	case "enddate":
+		if event.EndDateTime().IsZero() { // If it is unset, make it the same as the event date & time.
+			event.SetEndDateTime(event.DateTime())
+		}
+		tgp.editDateItem(usrInfo, cb.From.ID, event.EndDateTime(), event.SetEndDateTime, loc.Sprintf("Specify the date when this event ends:"), loc)
+	case "endtime":
+		if event.EndDateTime().IsZero() {
+			event.SetEndDateTime(event.DateTime())
+		}
+		tgp.editTimeItem(usrInfo, cb.From.ID, event.EndDateTime(), event.SetEndDateTime, loc.Sprintf("Specify the time when this event ends:"), loc)
+
 	// SIMPLE INTEGER
 	case "maxattend":
 		tgp.editNumberItem(usrInfo, cb.From.ID, event.MaxAttendees(), event.SetMaxAttendees, loc.Sprintf("Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0."))

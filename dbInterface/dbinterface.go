@@ -41,6 +41,8 @@ type DBEvent interface {
 	ID() uint
 	DateTime() time.Time
 	SetDateTime(d time.Time) error
+	EndDateTime() time.Time
+	SetEndDateTime(d time.Time) error
 	TimeZone() string
 	SetTimeZone(t string) error
 	OwnerName() string

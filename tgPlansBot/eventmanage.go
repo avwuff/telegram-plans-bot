@@ -52,6 +52,13 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 
 	t += "<b>" + loc.Sprintf("Name:") + "</b> " + event.Name() + "\n"
 	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime()) + "\n"
+
+	// Does it end at a different time?
+	if !event.EndDateTime().IsZero() && event.EndDateTime() != event.DateTime() {
+		// If just the time is different, then we just present the time.  Otherwise, we present the day and the time.
+		t += "<b>" + loc.Sprintf("Ends at:") + "</b> " + loc.FormatEndDateForLocale(event.DateTime(), event.EndDateTime()) + "\n"
+	}
+
 	t += "<b>" + loc.Sprintf("Location:") + "</b> " + event.Location() + "\n"
 	t += "<b>" + loc.Sprintf("Hosted By:") + "</b> " + event.OwnerName() + "\n"
 	if event.Suitwalk() {

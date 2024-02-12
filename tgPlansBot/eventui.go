@@ -221,7 +221,7 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
 
 	t := "<b>" + event.Name() + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName() + "\n"
-	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateForLocale(event.DateTime()) + "\n"
+	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateAndEndDateForLocale(event.DateTime(), event.EndDateTime(), "<b>"+loc.Sprintf("Ends:")+"</b> ") + "\n"
 	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location() + "</a>" + "\n"
 	if event.MaxAttendees() > 0 {
 		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees()) + "\n"

@@ -111,6 +111,20 @@ func (_m *DBEventMock) DisableMaybe() bool {
 	return r0
 }
 
+// EndDateTime provides a mock function with given fields:
+func (_m *DBEventMock) EndDateTime() time.Time {
+	ret := _m.Called()
+
+	var r0 time.Time
+	if rf, ok := ret.Get(0).(func() time.Time); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(time.Time)
+	}
+
+	return r0
+}
+
 // GetAttending provides a mock function with given fields: userId
 func (_m *DBEventMock) GetAttending(userId int64) ([]*Attend, error) {
 	ret := _m.Called(userId)
@@ -348,6 +362,20 @@ func (_m *DBEventMock) SetDisableMaybe(v bool) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(bool) error); ok {
 		r0 = rf(v)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SetEndDateTime provides a mock function with given fields: d
+func (_m *DBEventMock) SetEndDateTime(d time.Time) error {
+	ret := _m.Called(d)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(time.Time) error); ok {
+		r0 = rf(d)
 	} else {
 		r0 = ret.Error(0)
 	}

@@ -86,6 +86,9 @@ func (c *Connector) GetEvent(eventId uint, ownerId int64) (dbInterface.DBEvent, 
 	if event.TimeZone != "" {
 		tz := localizer.FromTimeZone(event.TimeZone)
 		event.DateTime.Time = event.DateTime.Time.In(tz)
+		if event.EndDateTime.Valid {
+			event.EndDateTime.Time = event.EndDateTime.Time.In(tz)
+		}
 	}
 
 	return c.wrap(&event), nil
@@ -118,7 +121,7 @@ func (c *Connector) GetEventByHash(hash string, saltValue string, shareMode bool
 	if shareMode {
 		sql = `SELECT * FROM furryplans WHERE 
             CONCAT('', MD5(CONCAT(eventID, ?))) = ? AND 
-            EventDateTime > NOW() - INTERVAL 2 DAY AND 
+            (EventDateTime > NOW() - INTERVAL 2 DAY OR EndDateTime > NOW() - INTERVAL 2 DAY) AND 
             AllowShare=1`
 
 	} else {
@@ -154,7 +157,7 @@ func (c *Connector) CalendarFeed(ownerId int64) ([]dbInterface.DBEvent, error) {
 		LEFT JOIN furryplans USING (eventID) 
 		WHERE furryplansattend.userid = ? 
 		AND furryplansattend.CanAttend IN (%v, %v, %v, %v) 
-		AND furryplans.EventDateTime > NOW() - INTERVAL 7 DAY 
+		AND (furryplans.EventDateTime > NOW() - INTERVAL 7 DAY  OR furryplans.EndDateTime > NOW() - INTERVAL 2 DAY) 
 		ORDER BY EventDateTime `, dbInterface.CANATTEND_YES, dbInterface.CANATTEND_MAYBE, dbInterface.CANATTEND_SUITING, dbInterface.CANATTEND_PHOTOGRAPHER)
 
 	var events []*FurryPlansWithAttend
@@ -183,7 +186,7 @@ func (c *Connector) SearchEvents(ownerId int64, searchText string) ([]dbInterfac
 	var events []*FurryPlans
 	query := c.db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Where("EventName LIKE ?", "%"+searchText+"%").Order("EventDateTime DESC")
 	// TODO: This query doesn't use time zones, it probably should.
-	query = query.Where("EventDateTime > NOW() - INTERVAL 2 DAY")
+	query = query.Where("EventDateTime > NOW() - INTERVAL 2 DAY OR EndDateTime > NOW() - INTERVAL 2 DAY")
 	err := query.Find(&events).Error
 	if err != nil {
 		return nil, err
@@ -201,7 +204,7 @@ func (c *Connector) GetEvents(ownerId int64, includeOld bool) ([]dbInterface.DBE
 	query := c.db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Order("EventDateTime DESC").Limit(100)
 	if !includeOld {
 		// TODO: This query doesn't use time zones, it probably should.
-		query = query.Where("EventDateTime > NOW() - INTERVAL 2 DAY")
+		query = query.Where("EventDateTime > NOW() - INTERVAL 2 DAY OR EndDateTime > NOW() - INTERVAL 2 DAY")
 	}
 	err := query.Find(&events).Error
 	if err != nil {
@@ -458,6 +461,17 @@ func (e *eventConnector) SetDateTime(d time.Time) error {
 		Valid: true,
 	}
 	return e.updateEvent("EventDateTime")
+}
+func (e *eventConnector) EndDateTime() time.Time {
+	return e.ev.EndDateTime.Time
+}
+
+func (e *eventConnector) SetEndDateTime(d time.Time) error {
+	e.ev.EndDateTime = sql.NullTime{
+		Time:  d,
+		Valid: true,
+	}
+	return e.updateEvent("EndDateTime")
 }
 
 func (e *eventConnector) TimeZone() string {

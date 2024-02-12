@@ -12,10 +12,11 @@ import (
 )
 
 const (
-	usDateFormat = "Monday, January 2, 2006 3:04 PM"
-	usTimeFormat = "3:04 PM"
-	euDateFormat = "Monday, 2. January 2006, 15:04"
-	euTimeFormat = "15:04"
+	usDateFormat     = "Monday, January 2, 2006 3:04 PM"
+	usJustDateFormat = "Monday, January 2, 2006"
+	usTimeFormat     = "3:04 PM"
+	euDateFormat     = "Monday, 2. January 2006, 15:04"
+	euTimeFormat     = "15:04"
 )
 
 type Localizer struct {
@@ -184,6 +185,31 @@ func (l *Localizer) FormatDateForLocale(date time.Time) string {
 	// Looks like the go x/text package doesn't support date formatting
 	// So we do it ourselves.
 	return l.FormatDate(date, l.dateFormat)
+}
+
+func (l *Localizer) FormatEndDateForLocale(startTime time.Time, endTime time.Time) string {
+	// If the day is different, present the day and the time.
+	if endTime.Format(usJustDateFormat) != startTime.Format(usJustDateFormat) {
+		return l.FormatDateForLocale(endTime)
+	}
+
+	// Otherwise, use just the time.
+	return l.FormatTimeForLocale(endTime)
+}
+
+func (l *Localizer) FormatDateAndEndDateForLocale(startTime time.Time, endTime time.Time, nextLine string) string {
+	t := l.FormatDateForLocale(startTime)
+	// Do we have an end date?
+	if endTime.IsZero() || endTime == startTime {
+		return t
+	}
+	// Is it a different day?
+	if endTime.Format(usJustDateFormat) != startTime.Format(usJustDateFormat) {
+		return t + "\n" + nextLine + l.FormatDateForLocale(endTime)
+	}
+
+	// same day, different time
+	return t + " - " + l.FormatTimeForLocale(endTime)
 }
 
 func (l *Localizer) FormatTimeForLocale(date time.Time) string {

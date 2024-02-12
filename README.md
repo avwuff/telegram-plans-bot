@@ -25,6 +25,8 @@ A bot to help plan, organize, disseminate, and coordinate events. Makes life eas
 - Faster
 - Rewritten in Golang
 - Open source!
+- Multi-day and multi-hour events
+- Include a picture with your event
 
 ### The event edit user interface
 ![Edit UI](imgs/editui.jpg?raw=true "The Edit UI")
@@ -51,10 +53,10 @@ As time allows, I'd like to bring a lot more features to this bot.
 Here's what is on my roadmap so far:
 - **Migrate to newer DB:** Right now the bot still runs on my old DB. 
 - **More languages and time zones** 
+- **Reoccurring events** Support for events that occur more than once
 - **Remove hardcoded URLs** Right now, plansbot.avbrand.com is hardcoded in a few places.
 - **Attendee management:** Allow the organize to see and remove attendees
 - **Better notes editor:** What if adding/editing notes worked in a popup?
-- **Duration** Specify how long the event is, currently all events default to one hour.
 - **and more!**
 
 ## Environment

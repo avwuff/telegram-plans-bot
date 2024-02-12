@@ -287,6 +287,16 @@
             "translation": ""
         },
         {
+            "id": "🗓 End Date",
+            "message": "🗓 End Date",
+            "translation": ""
+        },
+        {
+            "id": "⌛ End Time",
+            "message": "⌛ End Time",
+            "translation": ""
+        },
+        {
             "id": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
             "message": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
             "translation": "",
@@ -462,6 +472,16 @@
             "translation": ""
         },
         {
+            "id": "Specify the date when this event ends:",
+            "message": "Specify the date when this event ends:",
+            "translation": ""
+        },
+        {
+            "id": "Specify the time when this event ends:",
+            "message": "Specify the time when this event ends:",
+            "translation": ""
+        },
+        {
             "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "translation": ""
@@ -532,6 +552,11 @@
         {
             "id": "Date:",
             "message": "Date:",
+            "translation": ""
+        },
+        {
+            "id": "Ends at:",
+            "message": "Ends at:",
             "translation": ""
         },
         {
@@ -647,6 +672,11 @@
         {
             "id": "hosted by",
             "message": "hosted by",
+            "translation": ""
+        },
+        {
+            "id": "Ends:",
+            "message": "Ends:",
             "translation": ""
         },
         {

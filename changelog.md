@@ -2,6 +2,7 @@ Changelog
 
 Version 2.2 - Feb 2024
 - A picture can now be included with the event
+- It is now possible to specify the end date and time for an event.
 
 Version 2.1 - Sep 2023
 - **Ability to close an event.**

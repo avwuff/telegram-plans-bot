@@ -198,8 +198,8 @@
         },
         {
             "id": "🖼 Add Picture",
-            "message": "\uD83D\uDDBC Add Picture",
-            "translation": "\uD83D\uDDBC Bild hinzufügen"
+            "message": "🖼 Add Picture",
+            "translation": "🖼 Bild hinzufügen"
         },
         {
             "id": "👫 Set Max Attendees",
@@ -285,6 +285,16 @@
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
             "translation": "⌚ Zeitzone"
+        },
+        {
+            "id": "🗓 End Date",
+            "message": "🗓 End Date",
+            "translation": "\uD83D\uDDD3 Enddatum"
+        },
+        {
+            "id": "⌛ End Time",
+            "message": "⌛ End Time",
+            "translation": "⌛ Endzeit"
         },
         {
             "id": "👨‍👩‍👦 Max Guests (+1's): {MaxGuests}",
@@ -462,6 +472,16 @@
             "translation": "Gib die Veranstaltungszeit an:"
         },
         {
+            "id": "Specify the date when this event ends:",
+            "message": "Specify the date when this event ends:",
+            "translation": "Geben Sie das Datum an, an dem dieses Ereignis endet:"
+        },
+        {
+            "id": "Specify the time when this event ends:",
+            "message": "Specify the time when this event ends:",
+            "translation": "Geben Sie den Zeitpunkt an, zu dem dieses Ereignis endet:"
+        },
+        {
             "id": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "message": "Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.",
             "translation": "Gib die maximale Teilnehmerzahl an. Wenn diese erreicht ist, kann keiner mehr auf „Ich komme“ drücken.\n\nGib 0 für eine unbegrenzte Teilnehmerzahl an."
@@ -535,6 +555,11 @@
             "translation": "Datum:"
         },
         {
+            "id": "Ends at:",
+            "message": "Ends at:",
+            "translation": "Endet am:"
+        },
+        {
             "id": "Location:",
             "message": "Location:",
             "translation": "Ort:"
@@ -567,7 +592,7 @@
         {
             "id": "🖼 Event includes a picture",
             "message": "🖼 Event includes a picture",
-            "translation": "\uD83D\uDDBC Zur Veranstaltung gehört ein Bild"
+            "translation": "🖼 Zur Veranstaltung gehört ein Bild"
         },
         {
             "id": "Error listing events: {Err}",
@@ -648,6 +673,11 @@
             "id": "hosted by",
             "message": "hosted by",
             "translation": "veranstaltet von"
+        },
+        {
+            "id": "Ends:",
+            "message": "Ends:",
+            "translation": "Endet:"
         },
         {
             "id": "Suiting: {CSuiting}",
@@ -852,7 +882,7 @@
         {
             "id": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
             "message": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "translation": "Okay, sag mir den Namen des ersten Gastes, den Sie zu <b>{Name}</b> mitbringst. Sie können bis zu {MaxGuests} erreichen.\n\nSchicken Sie mir bitte jeweils einen Namen!",
+            "translation": "Okay, sag mir den Namen des ersten Gastes, den Sie zu \u003cb\u003e{Name}\u003c/b\u003e mitbringst. Sie können bis zu {MaxGuests} erreichen.\n\nSchicken Sie mir bitte jeweils einen Namen!",
             "placeholders": [
                 {
                     "id": "Name",

@@ -165,6 +165,20 @@ func (_m *DBEventMock) GetCanAttend() CanAttend {
 	return r0
 }
 
+// HideNames provides a mock function with given fields:
+func (_m *DBEventMock) HideNames() bool {
+	ret := _m.Called()
+
+	var r0 bool
+	if rf, ok := ret.Get(0).(func() bool); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	return r0
+}
+
 // ID provides a mock function with given fields:
 func (_m *DBEventMock) ID() uint {
 	ret := _m.Called()
@@ -376,6 +390,20 @@ func (_m *DBEventMock) SetEndDateTime(d time.Time) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(time.Time) error); ok {
 		r0 = rf(d)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SetHideNames provides a mock function with given fields: v
+func (_m *DBEventMock) SetHideNames(v bool) error {
+	ret := _m.Called(v)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(bool) error); ok {
+		r0 = rf(v)
 	} else {
 		r0 = ret.Error(0)
 	}

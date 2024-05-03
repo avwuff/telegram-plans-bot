@@ -305,6 +305,10 @@ func eventAdvancedButtons(event dbInterface.DBEvent, loc *localizer.Localizer) t
 	row[0] = quickButton(loc.Sprintf("🐕 Suitwalk: %v", iif(event.Suitwalk(), loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:suitwalk", event.ID()))
 	buttons = append(buttons, row)
 
+	row = make([]tgbotapi.InlineKeyboardButton, 1)
+	row[0] = quickButton(loc.Sprintf("🙈 Hide Names: %v", iif(event.HideNames(), loc.Sprintf("Yes"), loc.Sprintf("No"))), fmt.Sprintf("edit:%v:hidenames", event.ID()))
+	buttons = append(buttons, row)
+
 	row = make([]tgbotapi.InlineKeyboardButton, 2)
 	row[0] = quickButton(loc.Sprintf("🔠 Language"), fmt.Sprintf("edit:%v:language", event.ID()))
 	row[1] = quickButton(loc.Sprintf("⌚ Time Zone"), fmt.Sprintf("edit:%v:timezone", event.ID()))

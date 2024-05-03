@@ -1,5 +1,8 @@
 Changelog
 
+Version 2.3 - May 2024
+- Support for organizers to choose to hide the list of attendees
+
 Version 2.2 - Feb 2024
 - A picture can now be included with the event
 - It is now possible to specify the end date and time for an event.

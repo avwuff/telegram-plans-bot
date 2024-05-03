@@ -55,6 +55,8 @@ type DBEvent interface {
 	SetLanguage(t string) error
 	Suitwalk() bool
 	SetSuitwalk(v bool) error
+	HideNames() bool
+	SetHideNames(v bool) error
 	MaxGuests() int
 	SetMaxGuests(v int) error
 	Closed() bool

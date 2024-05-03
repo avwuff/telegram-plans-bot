@@ -539,8 +539,17 @@ func (e *eventConnector) SetSuitwalk(v bool) error {
 	}
 	e.ev.Suitwalk = 0
 	return e.updateEvent("Suitwalk")
-
 }
+
+func (e *eventConnector) HideNames() bool {
+	return e.ev.HideNames
+}
+
+func (e *eventConnector) SetHideNames(v bool) error {
+	e.ev.HideNames = v
+	return e.updateEvent("HideNames")
+}
+
 func (e *eventConnector) Closed() bool {
 	return e.ev.Closed
 }

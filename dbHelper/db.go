@@ -28,6 +28,24 @@ func InitDB(dsnFile string) (*Connector, error) {
 	}
 
 	// Migrate the schema
+
+	// These tables were present in the old schema also
+	err = db.AutoMigrate(&FurryPlans{})
+	if err != nil {
+		return nil, fmt.Errorf("db migration error: %v", err)
+	}
+
+	err = db.AutoMigrate(&FurryPlansAttend{})
+	if err != nil {
+		return nil, fmt.Errorf("db migration error: %v", err)
+	}
+
+	err = db.AutoMigrate(&FurryPlansWithAttend{})
+	if err != nil {
+		return nil, fmt.Errorf("db migration error: %v", err)
+	}
+
+	// New tables
 	err = db.AutoMigrate(&UserPrefs{})
 	if err != nil {
 		return nil, fmt.Errorf("db migration error: %v", err)

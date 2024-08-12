@@ -47,6 +47,7 @@ type FurryPlans struct {
 	// new items are being added as bools!
 	Closed    bool `gorm:"column:Closed"`
 	MaxGuests int  `gorm:"column:MaxGuests"`
+	HideNames bool `gorm:"column:HideNames"`
 }
 
 // FurryPlansWithAttend is the same as FurryPlans, and doesn't actually represent a table in the DB.

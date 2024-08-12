@@ -295,32 +295,44 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 	if event.Suitwalk() {
 		if len(tSuiting) > 0 {
 			t += "\n" + "<b>" + loc.Sprintf("Suiting: %v", cSuiting) + "</b>\n"
-			t += strings.Join(tSuiting, "\n") + "\n"
+			if !event.HideNames() {
+				t += strings.Join(tSuiting, "\n") + "\n"
+			}
 		}
 		if len(tPhoto) > 0 {
 			t += "\n" + "<b>" + loc.Sprintf("Photographers: %v", cPhoto) + "</b>\n"
-			t += strings.Join(tPhoto, "\n") + "\n"
+			if !event.HideNames() {
+				t += strings.Join(tPhoto, "\n") + "\n"
+			}
 		}
 		if len(tGoing) > 0 {
 			t += "\n" + "<b>" + loc.Sprintf("Spotting: %v", cGoing) + "</b>\n"
-			t += strings.Join(tGoing, "\n") + "\n"
+			if !event.HideNames() {
+				t += strings.Join(tGoing, "\n") + "\n"
+			}
 		}
 
 	} else {
 		if len(tGoing) > 0 {
 			t += "\n" + "<b>" + loc.Sprintf("Attending: %v", cGoing) + "</b>\n"
-			t += strings.Join(tGoing, "\n") + "\n"
+			if !event.HideNames() {
+				t += strings.Join(tGoing, "\n") + "\n"
+			}
 		}
 	}
 
 	if len(tMaybe) > 0 {
 		t += "\n" + "<b>" + loc.Sprintf("Maybe: %v", len(tMaybe)) + "</b>\n"
-		t += strings.Join(tMaybe, ", ") + "\n"
+		if !event.HideNames() {
+			t += strings.Join(tMaybe, ", ") + "\n"
+		}
 	}
 
 	if len(tNot) > 0 {
 		t += "\n" + "<b>" + loc.Sprintf("Can't make it: %v", len(tNot)) + "</b>\n"
-		t += strings.Join(tNot, ", ") + "\n"
+		if !event.HideNames() {
+			t += strings.Join(tNot, ", ") + "\n"
+		}
 	}
 
 	t += "\n<i>" + loc.Sprintf("Can you go? Use the buttons below.") + "</i>"

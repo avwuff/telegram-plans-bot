@@ -109,11 +109,13 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 
 	// TOGGLES
 	case "sharing":
-		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event, false)
+		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event, true)
 	case "setmaybe":
-		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event, false)
+		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event, true)
 	case "suitwalk":
-		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event, false)
+		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event, true)
+	case "hidenames":
+		tgp.toggleItem(usrInfo, cb, event.HideNames(), event.SetHideNames, event, true)
 	case "close": // When the event is no longer accepting attendees
 		tgp.toggleItem(usrInfo, cb, false, event.SetClosed, event, false)
 	case "reopen": // Reopen after closing

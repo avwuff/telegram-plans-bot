@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 	"os"
 	"regexp"
+	"strings"
 )
 
 // In the old version of the furry plans bot, for some reason, this syntax was used for special characters:
@@ -22,7 +23,11 @@ func InitDB(dsnFile string) (*Connector, error) {
 		return nil, err
 	}
 	//dsn := "telegram:telegram@tcp(10.1.0.60:3306)/telegram?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(string(dsn)), &gorm.Config{})
+
+	// Remove whitespace from the file
+	dsnData := strings.TrimSpace(string(dsn))
+
+	db, err := gorm.Open(mysql.Open(dsnData), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}

@@ -1,5 +1,8 @@
 Changelog
 
+Version 2.4 - May 2025
+- Time zone information now included in ICS file
+
 Version 2.3 - May 2024
 - Support for organizers to choose to hide the list of attendees
 

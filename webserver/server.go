@@ -127,12 +127,26 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 	cal.SetMethod(ics.MethodRequest)
 	cal.SetName("Furry Plans Attending Events")
 	cal.SetDescription("Furry Plans Calendar")
+
+	// make a list of the time zones in use in the event
+	tzList := map[string]bool{}
+	for _, ev := range events {
+		tzList[ev.DateTime().Location().String()] = true
+	}
+
+	// Grab time zone info for each time zone in the list and add it to the calendar
+	for tz := range tzList {
+		SetTimeZone(cal, tz)
+	}
+
 	for _, ev := range events {
 		event := cal.AddEvent(fmt.Sprintf("furryplans%v-plans@telegram.com", ev.ID()))
 		event.SetCreatedTime(time.Now())
 		event.SetDtStampTime(time.Now())
 		event.SetModifiedAt(time.Now())
-		event.SetStartAt(ev.DateTime())
+		//event.SetStartAt(ev.DateTime())
+
+		event.SetProperty(icsTz(ics.ComponentPropertyDtStart, ev.DateTime()), ev.DateTime().Format(IcalTimestampFormatTz))
 
 		// Proper support for multi-day events and durations
 		endsAt := ev.DateTime().Add(time.Hour)
@@ -140,7 +154,8 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 			endsAt = ev.EndDateTime()
 		}
 
-		event.SetEndAt(endsAt)
+		//event.SetEndAt(endsAt)
+		event.SetProperty(icsTz(ics.ComponentPropertyDtEnd, endsAt), endsAt.Format(IcalTimestampFormatTz))
 		event.SetSummary(helpers.StripHtmlRegex(ev.Name()))
 		event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
 		event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))
@@ -148,4 +163,31 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Add("Content-Type", "text/calendar")
 	w.Write([]byte(cal.Serialize()))
+}
+
+func icsTz(start ics.ComponentProperty, dateTime time.Time) ics.ComponentProperty {
+	// DTEND;TZID=Asia/Shanghai:20170324T213000
+	return ics.ComponentProperty(fmt.Sprintf("%v;TZID=%v", start, dateTime.Location().String()))
+}
+
+var IcalTimestampFormatTz = "20060102T150405"
+
+func SetTimeZone(calendar *ics.Calendar, location string) {
+	// download current time zone info from tzurl
+	// TODO: replace with a better source
+	url := fmt.Sprintf("https://www.tzurl.org/zoneinfo-outlook/%s", location)
+	res, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Timezone %v not found", location)
+		return
+	}
+	tzCal, err := ics.ParseCalendar(res.Body)
+	if err != nil {
+		fmt.Printf("Error parsing time zone %v: %v", location, err)
+		return
+	}
+	timeZones := tzCal.Timezones()
+	for _, tz := range timeZones {
+		calendar.AddVTimezone(tz)
+	}
 }

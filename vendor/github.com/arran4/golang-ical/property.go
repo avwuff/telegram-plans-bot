@@ -1,11 +1,13 @@
 package ics
 
 import (
-	"bytes"
+	"errors"
 	"fmt"
 	"io"
 	"log"
+	"net/url"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -26,7 +28,7 @@ type KeyValues struct {
 	Value []string
 }
 
-func (kv *KeyValues) KeyValue(s ...interface{}) (string, []string) {
+func (kv *KeyValues) KeyValue(_ ...interface{}) (string, []string) {
 	return kv.Key, kv.Value
 }
 
@@ -34,6 +36,21 @@ func WithCN(cn string) PropertyParameter {
 	return &KeyValues{
 		Key:   string(ParameterCn),
 		Value: []string{cn},
+	}
+}
+
+func WithTZID(tzid string) PropertyParameter {
+	return &KeyValues{
+		Key:   string(ParameterTzid),
+		Value: []string{tzid},
+	}
+}
+
+// WithAlternativeRepresentation takes what must be a valid URI in quotation marks
+func WithAlternativeRepresentation(uri *url.URL) PropertyParameter {
+	return &KeyValues{
+		Key:   string(ParameterAltrep),
+		Value: []string{uri.String()},
 	}
 }
 
@@ -67,62 +84,178 @@ func WithRSVP(b bool) PropertyParameter {
 
 func trimUT8StringUpTo(maxLength int, s string) string {
 	length := 0
-	lastSpace := -1
+	lastWordBoundary := -1
+	var lastRune rune
 	for i, r := range s {
-		if r == ' ' {
-			lastSpace = i
+		if r == ' ' || r == '<' {
+			lastWordBoundary = i
+		} else if lastRune == '>' {
+			lastWordBoundary = i
 		}
-
+		lastRune = r
 		newLength := length + utf8.RuneLen(r)
 		if newLength > maxLength {
 			break
 		}
 		length = newLength
 	}
-	if lastSpace > 0 {
-		return s[:lastSpace]
+	if lastWordBoundary > 0 {
+		return s[:lastWordBoundary]
 	}
 
 	return s[:length]
 }
 
-func (property *BaseProperty) serialize(w io.Writer) {
-	b := bytes.NewBufferString("")
-	fmt.Fprint(b, property.IANAToken)
-	for k, vs := range property.ICalParameters {
-		fmt.Fprint(b, ";")
-		fmt.Fprint(b, k)
-		fmt.Fprint(b, "=")
+func (bp *BaseProperty) parameterValue(param Parameter) (string, error) {
+	v, ok := bp.ICalParameters[string(param)]
+	if !ok || len(v) == 0 {
+		return "", fmt.Errorf("parameter %q not found in property", param)
+	}
+	if len(v) != 1 {
+		return "", fmt.Errorf("expected only one value for parameter %q in property, found %d", param, len(v))
+	}
+	return v[0], nil
+}
+
+func (bp *BaseProperty) GetValueType() ValueDataType {
+	for k, v := range bp.ICalParameters {
+		if Parameter(k) == ParameterValue && len(v) == 1 {
+			return ValueDataType(v[0])
+		}
+	}
+
+	// defaults from spec if unspecified
+	switch Property(bp.IANAToken) {
+	default:
+		fallthrough
+	case PropertyCalscale, PropertyMethod, PropertyProductId, PropertyVersion, PropertyCategories, PropertyClass,
+		PropertyComment, PropertyDescription, PropertyLocation, PropertyResources, PropertyStatus, PropertySummary,
+		PropertyTransp, PropertyTzid, PropertyTzname, PropertyContact, PropertyRelatedTo, PropertyUid, PropertyAction,
+		PropertyRequestStatus:
+		return ValueDataTypeText
+
+	case PropertyAttach, PropertyTzurl, PropertyUrl:
+		return ValueDataTypeUri
+
+	case PropertyGeo:
+		return ValueDataTypeFloat
+
+	case PropertyPercentComplete, PropertyPriority, PropertyRepeat, PropertySequence:
+		return ValueDataTypeInteger
+
+	case PropertyCompleted, PropertyDtend, PropertyDue, PropertyDtstart, PropertyRecurrenceId, PropertyExdate,
+		PropertyRdate, PropertyCreated, PropertyDtstamp, PropertyLastModified:
+		return ValueDataTypeDateTime
+
+	case PropertyDuration, PropertyTrigger:
+		return ValueDataTypeDuration
+
+	case PropertyFreebusy:
+		return ValueDataTypePeriod
+
+	case PropertyTzoffsetfrom, PropertyTzoffsetto:
+		return ValueDataTypeUtcOffset
+
+	case PropertyAttendee, PropertyOrganizer:
+		return ValueDataTypeCalAddress
+
+	case PropertyRrule:
+		return ValueDataTypeRecur
+	}
+}
+
+func (bp *BaseProperty) serialize(w io.Writer, serialConfig *SerializationConfiguration) error {
+	var b strings.Builder
+	b.WriteString(bp.IANAToken)
+
+	var keys []string
+	for k := range bp.ICalParameters {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	for _, k := range keys {
+		vs := bp.ICalParameters[k]
+		b.WriteByte(';')
+		b.WriteString(k)
+		b.WriteByte('=')
 		for vi, v := range vs {
 			if vi > 0 {
-				fmt.Fprint(b, ",")
+				b.WriteByte(',')
 			}
-			if strings.ContainsAny(v, ";:\\\",") {
-				v = strings.Replace(v, ";", "\\;", -1)
-				v = strings.Replace(v, ":", "\\:", -1)
-				v = strings.Replace(v, "\\", "\\\\", -1)
-				v = strings.Replace(v, "\"", "\\\"", -1)
-				v = strings.Replace(v, ",", "\\,", -1)
+			if Parameter(k).IsQuoted() {
+				v = quotedValueString(v)
+				b.WriteString(v)
+			} else {
+				v = escapeValueString(v)
+				b.WriteString(v)
 			}
-			fmt.Fprint(b, v)
 		}
 	}
-	fmt.Fprint(b, ":")
-	fmt.Fprint(b, property.Value)
+	b.WriteByte(':')
+	propertyValue := bp.Value
+	if bp.GetValueType() == ValueDataTypeText {
+		propertyValue = ToText(propertyValue)
+	}
+	b.WriteString(propertyValue)
 	r := b.String()
-	if len(r) > 75 {
-		l := trimUT8StringUpTo(75, r)
-		fmt.Fprint(w, l, "\r\n")
+	if len(r) > serialConfig.MaxLength {
+		l := trimUT8StringUpTo(serialConfig.MaxLength, r)
+		_, err := io.WriteString(w, l+serialConfig.NewLine)
+		if err != nil {
+			return fmt.Errorf("property %s serialization: %w", bp.IANAToken, err)
+		}
 		r = r[len(l):]
 
-		for len(r) > 74 {
-			l := trimUT8StringUpTo(74, r)
-			fmt.Fprint(w, " ", l, "\r\n")
+		for len(r) > serialConfig.MaxLength-1 {
+			l := trimUT8StringUpTo(serialConfig.MaxLength-1, r)
+			_, err = io.WriteString(w, " "+l+serialConfig.NewLine)
+			if err != nil {
+				return fmt.Errorf("property %s serialization: %w", bp.IANAToken, err)
+			}
 			r = r[len(l):]
 		}
-		fmt.Fprint(w, " ")
+		_, err = io.WriteString(w, " ")
+		if err != nil {
+			return fmt.Errorf("property %s serialization: %w", bp.IANAToken, err)
+		}
 	}
-	fmt.Fprint(w, r, "\r\n")
+	_, err := io.WriteString(w, r+serialConfig.NewLine)
+	if err != nil {
+		return fmt.Errorf("property %s serialization: %w", bp.IANAToken, err)
+	}
+	return nil
+}
+
+func escapeValueString(v string) string {
+	changed := 0
+	result := ""
+	for i, r := range v {
+		switch r {
+		case ',', '"', ';', ':', '\\', '\'':
+			result = result + v[changed:i] + "\\" + string(r)
+			changed = i + 1
+		}
+	}
+	if changed == 0 {
+		return v
+	}
+	return result + v[changed:]
+}
+
+func quotedValueString(v string) string {
+	changed := 0
+	result := ""
+	for i, r := range v {
+		switch r {
+		case '"', '\\':
+			result = result + v[changed:i] + "\\" + string(r)
+			changed = i + 1
+		}
+	}
+	if changed == 0 {
+		return `"` + v + `"`
+	}
+	return `"` + result + v[changed:] + `"`
 }
 
 type IANAProperty struct {
@@ -194,6 +327,9 @@ func parsePropertyParam(r *BaseProperty, contentLine string, p int) (*BaseProper
 	k, v := "", ""
 	k = string(contentLine[p : p+tokenPos[1]])
 	p += tokenPos[1]
+	if p >= len(contentLine) {
+		return nil, p, fmt.Errorf("missing property param operator for %s in %s", k, r.IANAToken)
+	}
 	switch rune(contentLine[p]) {
 	case '=':
 		p += 1
@@ -210,6 +346,9 @@ func parsePropertyParam(r *BaseProperty, contentLine string, p int) (*BaseProper
 			return nil, 0, fmt.Errorf("parse error: %w %s in %s", err, k, r.IANAToken)
 		}
 		r.ICalParameters[k] = append(r.ICalParameters[k], v)
+		if p >= len(contentLine) {
+			return nil, p, fmt.Errorf("unexpected end of property %s", r.IANAToken)
+		}
 		switch rune(contentLine[p]) {
 		case ',':
 			p += 1
@@ -258,6 +397,9 @@ func parsePropertyParamValue(s string, p int) (string, int, error) {
 			0x1C, 0x1D, 0x1E, 0x1F:
 			return "", 0, fmt.Errorf("unexpected char ascii:%d in property param value", s[p])
 		case '\\':
+			if p+2 >= len(s) {
+				return "", 0, errors.New("unexpected end of param value")
+			}
 			r = append(r, []byte(FromText(string(s[p+1:p+2])))...)
 			p++
 			continue
@@ -288,7 +430,10 @@ func parsePropertyValue(r *BaseProperty, contentLine string, p int) *BasePropert
 	if tokenPos == nil {
 		return nil
 	}
-	r.Value = string(contentLine[p : p+tokenPos[1]])
+	r.Value = contentLine[p : p+tokenPos[1]]
+	if r.GetValueType() == ValueDataTypeText {
+		r.Value = FromText(r.Value)
+	}
 	return r
 }
 

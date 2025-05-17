@@ -35,7 +35,7 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 
 	srv := &http.Server{
 		Handler: logging(log.Default())(r),
-		Addr:    ":16300",
+		Addr:    ":8080",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

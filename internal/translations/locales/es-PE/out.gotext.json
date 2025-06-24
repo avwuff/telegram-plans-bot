@@ -202,6 +202,16 @@
             "translation": ""
         },
         {
+            "id": "🔒 Remove from Directory",
+            "message": "🔒 Remove from Directory",
+            "translation": ""
+        },
+        {
+            "id": "🌎 List in Public Directory",
+            "message": "🌎 List in Public Directory",
+            "translation": ""
+        },
+        {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
             "translation": ""
@@ -273,6 +283,21 @@
                     "underlyingType": "string",
                     "argNum": 1,
                     "expr": "iif(event.Suitwalk(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                }
+            ]
+        },
+        {
+            "id": "🙈 Hide Names: {SprintfNo}",
+            "message": "🙈 Hide Names: {SprintfNo}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "SprintfNo",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "iif(event.HideNames(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
                 }
             ]
         },
@@ -462,6 +487,11 @@
             "translation": ""
         },
         {
+            "id": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "message": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "translation": ""
+        },
+        {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
             "translation": ""
@@ -522,6 +552,11 @@
         {
             "id": "The value you provided is not one of the choices.",
             "message": "The value you provided is not one of the choices.",
+            "translation": ""
+        },
+        {
+            "id": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
+            "message": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
             "translation": ""
         },
         {
@@ -587,6 +622,11 @@
         {
             "id": "Notes:",
             "message": "Notes:",
+            "translation": ""
+        },
+        {
+            "id": "🌎 Event is listed in public directory",
+            "message": "🌎 Event is listed in public directory",
             "translation": ""
         },
         {
@@ -948,6 +988,46 @@
             "translation": ""
         },
         {
+            "id": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "message": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "translation": ""
+        },
+        {
+            "id": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "message": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "translation": ""
+        },
+        {
+            "id": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "message": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "translation": ""
+        },
+        {
+            "id": "Check out these events in your local area:",
+            "message": "Check out these events in your local area:",
+            "translation": ""
+        },
+        {
+            "id": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "message": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "translation": ""
+        },
+        {
+            "id": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "message": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "ICalURL",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "ICalURL"
+                }
+            ]
+        },
+        {
             "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "translation": ""
@@ -1030,6 +1110,16 @@
         {
             "id": "See a list of all events you RSVPd to",
             "message": "See a list of all events you RSVPd to",
+            "translation": ""
+        },
+        {
+            "id": "See nearby events listed in our public directory",
+            "message": "See nearby events listed in our public directory",
+            "translation": ""
+        },
+        {
+            "id": "Get an ICS calendar feed of all nearby events",
+            "message": "Get an ICS calendar feed of all nearby events",
             "translation": ""
         },
         {

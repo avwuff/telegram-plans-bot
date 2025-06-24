@@ -202,6 +202,16 @@
             "translation": "🖼 Ajouter une image"
         },
         {
+            "id": "🔒 Remove from Directory",
+            "message": "🔒 Remove from Directory",
+            "translation": "\uD83D\uDD12 Supprimer du répertoire"
+        },
+        {
+            "id": "🌎 List in Public Directory",
+            "message": "🌎 List in Public Directory",
+            "translation": "\uD83C\uDF0E Liste dans l'annuaire public"
+        },
+        {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
             "translation": "👫 Définir le nombre maximum de participants"
@@ -277,6 +287,21 @@
             ]
         },
         {
+            "id": "🙈 Hide Names: {SprintfNo}",
+            "message": "🙈 Hide Names: {SprintfNo}",
+            "translation": "\uD83D\uDE48 Masquer les noms : {SprintfNo}",
+            "placeholders": [
+                {
+                    "id": "SprintfNo",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "iif(event.HideNames(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                }
+            ]
+        },
+        {
             "id": "🔠 Language",
             "message": "🔠 Language",
             "translation": "🔠 Langue"
@@ -289,7 +314,7 @@
         {
             "id": "🗓 End Date",
             "message": "🗓 End Date",
-            "translation": "\uD83D\uDDD3 Date de fin"
+            "translation": "🗓 Date de fin"
         },
         {
             "id": "⌛ End Time",
@@ -462,6 +487,11 @@
             "translation": "Photo actuelle:"
         },
         {
+            "id": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "message": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "translation": "En ajoutant votre événement à notre annuaire public, vous le rendez accessible à tous les habitants de votre région. Chacun peut choisir d'y assister ou de le partager. Nous vous recommandons d'utiliser cette fonctionnalité uniquement pour les grands événements, car la participation peut être difficile à gérer.\n\nSi vous souhaitez partager votre événement dans nos annuaires, envoyez une épingle de localisation (généralement via le menu \uD83D\uDCCE) proche du lieu de l'événement. Cela permettra aux personnes à proximité de le trouver.\n\nLes habitants pourront utiliser la commande /nearby pour voir les événements à proximité."
+        },
+        {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
             "translation": "Entrer la date de l'événement:"
@@ -523,6 +553,11 @@
             "id": "The value you provided is not one of the choices.",
             "message": "The value you provided is not one of the choices.",
             "translation": "La valeur fournie ne correspond pas à un choix disponible."
+        },
+        {
+            "id": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
+            "message": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
+            "translation": "Veuillez envoyer une position via la fonctionnalité «Envoyer la position» de Telegram. Elle doit être proche de l'événement, mais pas nécessairement exacte. Vérifiez dans le menu \uD83D\uDCCE."
         },
         {
             "id": "Please send a picture to go with your event.",
@@ -588,6 +623,11 @@
             "id": "Notes:",
             "message": "Notes:",
             "translation": "Notes:"
+        },
+        {
+            "id": "🌎 Event is listed in public directory",
+            "message": "🌎 Event is listed in public directory",
+            "translation": "\uD83C\uDF0E L'événement est répertorié dans l'annuaire public"
         },
         {
             "id": "🖼 Event includes a picture",
@@ -948,6 +988,46 @@
             "translation": "La langue française a été sélectionnée"
         },
         {
+            "id": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "message": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "translation": "Découvrez les événements qui se déroulent près de chez vous !\n\nEnvoyez-moi un repère de localisation via le menu \uD83D\uDCCE pour obtenir la liste des événements publics dans un rayon de 800 km."
+        },
+        {
+            "id": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "message": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "translation": "Veuillez envoyer une position via la fonction «Envoyer la position» de Telegram. Consultez le menu \uD83D\uDCCE."
+        },
+        {
+            "id": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "message": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "translation": "Malheureusement, aucun événement à proximité n'a été trouvé. N'est-ce pas une bonne occasion d'en /start un?"
+        },
+        {
+            "id": "Check out these events in your local area:",
+            "message": "Check out these events in your local area:",
+            "translation": "Consultez ces événements dans votre région :"
+        },
+        {
+            "id": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "message": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "translation": "Recevez un flux des événements près de chez vous!\n\nEnvoyez-moi un repère de localisation via le menu \uD83D\uDCCE pour recevoir en continu les événements dans un rayon de 800km."
+        },
+        {
+            "id": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "message": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "translation": "Super, voici un flux iCal de tous les événements se déroulant dans un rayon de 800 km autour de vous :\n\n{ICalURL}\n\nVous pouvez ajouter l'URL de ce flux à votre agenda Google ou Outlook. Tous les événements créés apparaîtront dans le flux et resteront à jour !\n\nUtilisez également la commande /feed pour obtenir un flux des événements auxquels vous participez.",
+            "placeholders": [
+                {
+                    "id": "ICalURL",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "ICalURL"
+                }
+            ]
+        },
+        {
             "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ecette\u003c/a\u003e liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
@@ -1031,6 +1111,16 @@
             "id": "See a list of all events you RSVPd to",
             "message": "See a list of all events you RSVPd to",
             "translation": "Voir une liste de tous les événements auxquels vous avez répondu"
+        },
+        {
+            "id": "See nearby events listed in our public directory",
+            "message": "See nearby events listed in our public directory",
+            "translation": "Consultez les événements à proximité répertoriés dans notre annuaire public"
+        },
+        {
+            "id": "Get an ICS calendar feed of all nearby events",
+            "message": "Get an ICS calendar feed of all nearby events",
+            "translation": "Obtenez un flux de calendrier ICS de tous les événements à proximité"
         },
         {
             "id": "Let's create some new plans.  First, send me the name of the event.",

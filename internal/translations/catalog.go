@@ -42,173 +42,187 @@ func init() {
 }
 
 var messageKeyToIndex = map[string]int{
-	"\nThis project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot": 158,
-	"A general error occurred.":              76,
-	"A list of all your events, old and new": 82,
-	"A list of your upcoming events":         81,
-	"Add '%v' to your Calendar":              163,
-	"Add to Calendar":                        160,
-	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n":                                     64,
-	"Alright, tell me the name of the first guest you are bringing to <b>%v</b>. You can bring up to %v.\n\nSend me one name at a time, please!": 132,
-	"Alright, you've been marked as attending.":        96,
-	"Alright, you've been marked as maybe.":            97,
-	"Alright, you've been marked as unable to attend.": 99,
+	"\nThis project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot": 172,
+	"A general error occurred.":              80,
+	"A list of all your events, old and new": 87,
+	"A list of your upcoming events":         86,
+	"Add '%v' to your Calendar":              177,
+	"Add to Calendar":                        174,
+	"Alright, I've created your event! You can now add additional content, or share it to another chat.\n\n":                                     67,
+	"Alright, tell me the name of the first guest you are bringing to <b>%v</b>. You can bring up to %v.\n\nSend me one name at a time, please!": 138,
+	"Alright, you've been marked as attending.":        102,
+	"Alright, you've been marked as maybe.":            103,
+	"Alright, you've been marked as unable to attend.": 105,
 	"April":         3,
-	"Attending: %v": 107,
+	"Attending: %v": 113,
 	"August":        7,
-	"Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29": 144,
-	"Can you go? Use the buttons below.":             110,
-	"Can't make it: %v":                              109,
-	"Change the language":                            151,
-	"Choose the display language for this event.":    74,
-	"Choose the time zone for this event.":           75,
-	"Click here to specify Guest names...":           136,
-	"Click the button below to activate this event.": 138,
+	"Before you continue, please read and accept our privacy policy.\n\nhttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29": 156,
+	"Can you go? Use the buttons below.": 116,
+	"Can't make it: %v":                  115,
+	"Change the language":                163,
+	"Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.": 146,
+	"Check out these events in your local area:\n\n": 149,
+	"Choose the display language for this event.":    78,
+	"Choose the time zone for this event.":           79,
+	"Click here to specify Guest names...":           142,
+	"Click the button below to activate this event.": 144,
 	"Continue with Date: %v":                         26,
 	"Continue with Time: %v":                         27,
-	"Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n%v\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!": 52,
-	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 55,
-	"Could not parse the time you provided. Please send it in the format 22:03.":      58,
-	"Create a new set of plans": 148,
-	"Current picture:":          68,
-	"Date selected: %v":         54,
-	"Date:":                     84,
+	"Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n%v\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'": 151,
+	"Cool, here is an iCal feed of all the events you've said 'Yes' or 'Maybe' to:\n\n%v\n\nYou can add this feed URL to your Google Calendar or Outlook, and any events you've said 'Yes' or 'Maybe' to will appear in your Calendar automatically, and stay up to date!":                                          55,
+	"Could not parse the date you provided. Please send it in the format YYYY-MM-DD.": 58,
+	"Could not parse the time you provided. Please send it in the format 22:03.":      61,
+	"Create a new set of plans": 160,
+	"Current picture:":          71,
+	"Date selected: %v":         57,
+	"Date:":                     89,
 	"December":                  11,
-	"Did you know?":             161,
-	"Display the help message":  149,
-	"Ends at:":                  85,
-	"Ends:":                     103,
-	"Error listing events: %v":  93,
-	"Event is closed, please contact the host for more information.": 101,
-	"Event is ready to be used!":                                     100,
-	"Event not found":                                                63,
+	"Did you know?":             175,
+	"Display the help message":  161,
+	"Ends at:":                  90,
+	"Ends:":                     109,
+	"Error listing events: %v":  99,
+	"Event is closed, please contact the host for more information.": 107,
+	"Event is ready to be used!":                                     106,
+	"Event not found":                                                66,
 	"February":                                                       1,
 	"Fr":                                                             24,
 	"Friday":                                                         17,
-	"Get a custom calendar feed":                                     150,
-	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 53,
-	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    56,
-	"Got it.  Who's the next guest?  If that's the last one, click /done.":                               134,
-	"Guest Names...":                        123,
-	"Here is a list of available commands:": 156,
-	"Hosted By:":                            87,
-	"I accept":                              145,
-	"I don't understand that command. Send /help for help.": 159,
-	"If you don't have any notes, just click /skip.":        61,
-	"In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.": 140,
+	"Get a custom calendar feed":                                     162,
+	"Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.": 150,
+	"Get an ICS calendar feed of all nearby events":                                                      168,
+	"Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue.": 56,
+	"Got it.  Choose a Time for the event by clicking on the times below and then clicking Continue.":    59,
+	"Got it.  Who's the next guest?  If that's the last one, click /done.":                               140,
+	"Guest Names...":                        129,
+	"Here is a list of available commands:": 170,
+	"Hosted By:":                            92,
+	"I accept":                              157,
+	"I don't understand that command. Send /help for help.": 173,
+	"If you don't have any notes, just click /skip.":        64,
+	"In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.":                                                                                                                                                                                                                                                                              152,
+	"Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.": 72,
 	"January":                  0,
 	"July":                     6,
 	"June":                     5,
-	"Language:":                90,
-	"Learn more about the bot": 153,
-	"Let's create some new plans.  First, send me the name of the event.": 155,
-	"Location:":                       86,
+	"Language:":                95,
+	"Learn more about the bot": 165,
+	"Let's create some new plans.  First, send me the name of the event.": 169,
+	"Location:":                       91,
 	"March":                           2,
-	"Max Attendees:":                  89,
+	"Max Attendees:":                  94,
 	"May":                             4,
-	"Maybe: %v":                       108,
-	"Me +1":                           122,
+	"Maybe: %v":                       114,
+	"Me +1":                           128,
 	"Mo":                              20,
 	"Monday":                          13,
-	"Name:":                           83,
-	"No":                              38,
-	"Not an event you are attending.": 129,
-	"Notes:":                          91,
+	"Name:":                           88,
+	"No":                              40,
+	"Not an event you are attending.": 135,
+	"Notes:":                          96,
 	"November":                        10,
 	"October":                         9,
-	"Photographers: %v":               105,
-	"Please check the policy again to see how to finish.": 146,
-	"Please provide a valid number":                       80,
-	"Please send a picture to go with your event.":        79,
+	"Photographers: %v":               111,
+	"Please check the policy again to see how to finish.":                                      158,
+	"Please provide a valid number":                                                            85,
+	"Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.": 147,
+	"Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.": 83,
+	"Please send a picture to go with your event.": 84,
 	"Sa":                                    25,
 	"Saturday":                              18,
-	"See a list of all events you RSVPd to": 154,
-	"Select an event to edit:\n%v":          94,
-	"Selected: %v":                          142,
-	"Send me a picture that will be included with your event.": 67,
+	"See a list of all events you RSVPd to": 166,
+	"See nearby events listed in our public directory":         167,
+	"Select an event to edit:\n%v":                             100,
+	"Selected: %v":                                             154,
+	"Send me a picture that will be included with your event.": 70,
 	"September":                      8,
 	"Share these plans in a chat ✅🔜": 28,
-	"Sorry, I wasn't able to find the event.  Try again.":           130,
-	"Sorry, but this event does not allow you to bring any guests.": 131,
-	"Sorry, this event is currently full!":                          98,
-	"Specified Time Zone not found.":                                141,
-	"Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.": 143,
-	"Specify any additional notes you'd like to show about the event.": 60,
-	"Specify the date on which this event takes place:":                69,
-	"Specify the date when this event ends:":                           71,
-	"Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.": 73,
-	"Specify the name of the event.":                    65,
-	"Specify the name of the person hosting the event.": 66,
-	"Specify the time at which this event takes place:": 70,
-	"Specify the time when this event ends:":            72,
-	"Spotting: %v":                                      106,
-	"Start the Setup process":                           152,
+	"Sorry, I wasn't able to find the event.  Try again.":           136,
+	"Sorry, but this event does not allow you to bring any guests.": 137,
+	"Sorry, this event is currently full!":                          104,
+	"Specified Time Zone not found.":                                153,
+	"Specified Time Zone not found.  Please choose a time zone from the list.  If the list is not appearing, please click the button that looks like four boxes in the text entry field to bring up the choices.": 155,
+	"Specify any additional notes you'd like to show about the event.": 63,
+	"Specify the date on which this event takes place:":                73,
+	"Specify the date when this event ends:":                           75,
+	"Specify the maximum number of people that can attend.  Once the maximum is reached, users will no longer be able to click 'I'm Going'.\n\nTo disable, send a 0.": 77,
+	"Specify the name of the event.":                    68,
+	"Specify the name of the person hosting the event.": 69,
+	"Specify the time at which this event takes place:": 74,
+	"Specify the time when this event ends:":            76,
+	"Spotting: %v":                                      112,
+	"Start the Setup process":                           164,
 	"Su":                                                19,
-	"Suiting: %v":                                       104,
-	"Suitwalk:":                                         88,
+	"Suiting: %v":                                       110,
+	"Suitwalk:":                                         93,
 	"Sunday":                                            12,
 	"Th":                                                23,
-	"Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.": 147,
-	"The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.": 162,
-	"The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:": 157,
-	"The language has been set to English.":             139,
-	"The value you provided is not one of the choices.": 78,
+	"Thanks!  You're all set to start using the Furry Plans Bot!  Type /start to create a new set of plans.": 159,
+	"The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.": 176,
+	"The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:": 171,
+	"The language has been set to English.":             145,
+	"The value you provided is not one of the choices.": 82,
 	"Thursday":                     16,
-	"Time selected: %v":            57,
+	"Time selected: %v":            60,
 	"Tu":                           21,
 	"Tuesday":                      14,
-	"Unable to parse event ID: %v": 95,
-	"We":                           22,
-	"Wednesday":                    15,
-	"Where does the event take place?  Specify the name or address as you might type into Google Maps.": 59,
-	"Woah, slow down!  Just give me the name of the attendee.":                                          133,
-	"Yes": 39,
-	"You're all set!  I've added those people as your guests at <b>%v</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!": 135,
-	"You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.\n\n":                                                                128,
-	"error creating event: %v":              62,
-	"error updating event: %v":              77,
-	"hosted by":                             102,
-	"⌚ Time Zone":                           46,
-	"⌛ End Time":                            48,
+	"Unable to parse event ID: %v": 101,
+	"Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?": 148,
+	"We":        22,
+	"Wednesday": 15,
+	"Where does the event take place?  Specify the name or address as you might type into Google Maps.": 62,
+	"Woah, slow down!  Just give me the name of the attendee.":                                          139,
+	"Yes": 41,
+	"You're all set!  I've added those people as your guests at <b>%v</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!": 141,
+	"You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.\n\n":                                                                134,
+	"error creating event: %v":              65,
+	"error updating event: %v":              81,
+	"hosted by":                             108,
+	"⌚ Time Zone":                           49,
+	"⌛ End Time":                            51,
 	"⏰ Edit Time":                           31,
-	"⚙ ADVANCED OPTIONS ⚙":                  43,
-	"⚙ Advanced Options...":                 42,
-	"❌ Close Event":                         50,
-	"❌️ Event Closed":                       111,
-	"❌️ I can't make it":                    125,
-	"🏁 Event is closed. Reopen!":            40,
+	"⚙ ADVANCED OPTIONS ⚙":                  45,
+	"⚙ Advanced Options...":                 44,
+	"❌ Close Event":                         53,
+	"❌️ Event Closed":                       117,
+	"❌️ I can't make it":                    131,
+	"🌎 Event is listed in public directory": 97,
+	"🌎 List in Public Directory":            37,
+	"🏁 Event is closed. Reopen!":            42,
 	"🏆 Edit Name":                           29,
-	"🐕 Suitwalk: %v":                        44,
-	"🐕\u200d🦺 I'm Suiting":                  112,
-	"🐕\u200d🦺🐱 Suiting +1":                  113,
-	"🐕\u200d🦺🐾 Suiting +2":                  114,
-	"👉 CLICK TO ACTIVATE EVENT 👈":           137,
-	"👨\u200d👩\u200d👦 Max Guests (+1's): %v": 49,
-	"👫 Set Max Attendees":                   36,
-	"💔 Allow Maybe: %v":                     37,
-	"📆 Add to Calendar":                     126,
+	"🐕 Suitwalk: %v":                        46,
+	"🐕\u200d🦺 I'm Suiting":                  118,
+	"🐕\u200d🦺🐱 Suiting +1":                  119,
+	"🐕\u200d🦺🐾 Suiting +2":                  120,
+	"👉 CLICK TO ACTIVATE EVENT 👈":           143,
+	"👨\u200d👩\u200d👦 Max Guests (+1's): %v": 52,
+	"👫 Set Max Attendees":                   38,
+	"💔 Allow Maybe: %v":                     39,
+	"📆 Add to Calendar":                     132,
 	"📆 Edit Date":                           30,
 	"📍 Edit Location":                       32,
 	"📝 Add Notes":                           34,
-	"📩 Allow Sharing: %v":                   41,
-	"📩 Share to another chat...":            127,
-	"📷 Photographer":                        115,
-	"📷🎞 Photo +2":                           117,
-	"📷🎥 Photo +1":                           116,
-	"🔙 Back":                                51,
-	"🔠 Language":                            45,
+	"📩 Allow Sharing: %v":                   43,
+	"📩 Share to another chat...":            133,
+	"📷 Photographer":                        121,
+	"📷🎞 Photo +2":                           123,
+	"📷🎥 Photo +1":                           122,
+	"🔒 Remove from Directory":               36,
+	"🔙 Back":                                54,
+	"🔠 Language":                            48,
 	"🕴 Edit Hosted By":                      33,
 	"🖼 Add Picture":                         35,
-	"🖼 Event includes a picture":            92,
-	"🗓 End Date":                            47,
-	"🙋\u200d♂️ I'm going!":                  121,
-	"🙋\u200d♂️ Spotting":                    118,
-	"🙋\u200d♂️👭 Spotting +2":                120,
-	"🙋\u200d♂️🕺 Spotting +1":                119,
-	"🤔️ Maybe":                              124,
+	"🖼 Event includes a picture":            98,
+	"🗓 End Date":                            50,
+	"🙈 Hide Names: %v":                      47,
+	"🙋\u200d♂️ I'm going!":                  127,
+	"🙋\u200d♂️ Spotting":                    124,
+	"🙋\u200d♂️👭 Spotting +2":                126,
+	"🙋\u200d♂️🕺 Spotting +1":                125,
+	"🤔️ Maybe":                              130,
 }
 
-var de_DEIndex = []uint32{ // 165 elements
+var de_DEIndex = []uint32{ // 179 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000007, 0x0000000f, 0x00000015,
 	0x0000001b, 0x0000001f, 0x00000024, 0x00000029,
@@ -220,156 +234,188 @@ var de_DEIndex = []uint32{ // 165 elements
 	0x000000d7, 0x00000100, 0x00000113, 0x00000126,
 	// Entry 20 - 3F
 	0x0000013a, 0x0000014b, 0x00000165, 0x0000017e,
-	0x00000194, 0x000001bb, 0x000001da, 0x000001df,
-	0x000001e2, 0x00000204, 0x0000021f, 0x00000237,
-	0x00000253, 0x00000268, 0x00000275, 0x00000282,
-	0x00000290, 0x0000029c, 0x000002c7, 0x000002df,
-	0x000002ec, 0x00000447, 0x000004b4, 0x000004cf,
-	0x00000533, 0x000005a2, 0x000005be, 0x00000620,
-	0x000006a0, 0x000006f7, 0x00000734, 0x00000760,
+	0x00000194, 0x000001af, 0x000001c9, 0x000001f0,
+	0x0000020f, 0x00000214, 0x00000217, 0x00000239,
+	0x00000254, 0x0000026c, 0x00000288, 0x0000029d,
+	0x000002ba, 0x000002c7, 0x000002d4, 0x000002e2,
+	0x000002ee, 0x00000319, 0x00000331, 0x0000033e,
+	0x00000499, 0x00000506, 0x00000521, 0x00000585,
+	0x000005f4, 0x00000610, 0x00000672, 0x000006f2,
 	// Entry 40 - 5F
-	0x0000077d, 0x0000080a, 0x00000835, 0x00000859,
-	0x0000089d, 0x000008ad, 0x000008cd, 0x000008ec,
-	0x00000922, 0x0000095c, 0x000009f8, 0x00000a2b,
-	0x00000a58, 0x00000a82, 0x00000aae, 0x00000aef,
-	0x00000b21, 0x00000b3f, 0x00000b6e, 0x00000ba1,
-	0x00000ba7, 0x00000bae, 0x00000bb8, 0x00000bbd,
-	0x00000bcb, 0x00000bd5, 0x00000bee, 0x00000bf7,
-	0x00000c0e, 0x00000c36, 0x00000c6b, 0x00000c9f,
+	0x00000749, 0x00000786, 0x000007b2, 0x000007cf,
+	0x0000085c, 0x00000887, 0x000008ab, 0x000008ef,
+	0x000008ff, 0x00000b82, 0x00000ba2, 0x00000bc1,
+	0x00000bf7, 0x00000c31, 0x00000ccd, 0x00000d00,
+	0x00000d2d, 0x00000d57, 0x00000d83, 0x00000dc4,
+	0x00000e77, 0x00000ea9, 0x00000ec7, 0x00000ef6,
+	0x00000f29, 0x00000f2f, 0x00000f36, 0x00000f40,
+	0x00000f45, 0x00000f53, 0x00000f5d, 0x00000f76,
 	// Entry 60 - 7F
-	0x00000cce, 0x00000d01, 0x00000d3a, 0x00000d65,
-	0x00000da9, 0x00000ddd, 0x00000e43, 0x00000e54,
-	0x00000e5b, 0x00000e69, 0x00000e7b, 0x00000e8a,
-	0x00000e9c, 0x00000eb2, 0x00000ec7, 0x00000eed,
-	0x00000f0e, 0x00000f21, 0x00000f30, 0x00000f3f,
-	0x00000f4d, 0x00000f55, 0x00000f5d, 0x00000f73,
-	0x00000f84, 0x00000f95, 0x00000fae, 0x00000fb5,
-	0x00000fc2, 0x00000fd5, 0x00000feb, 0x00001009,
+	0x00000f7f, 0x00000f96, 0x00000fda, 0x00001002,
+	0x00001037, 0x0000106b, 0x0000109a, 0x000010cd,
+	0x00001106, 0x00001131, 0x00001175, 0x000011a9,
+	0x0000120f, 0x00001220, 0x00001227, 0x00001235,
+	0x00001247, 0x00001256, 0x00001268, 0x0000127e,
+	0x00001293, 0x000012b9, 0x000012da, 0x000012ed,
+	0x000012fc, 0x0000130b, 0x00001319, 0x00001321,
+	0x00001329, 0x0000133f, 0x00001350, 0x00001361,
 	// Entry 80 - 9F
-	0x0000102f, 0x000010d5, 0x00001101, 0x0000114c,
-	0x00001199, 0x00001239, 0x00001282, 0x000012d8,
-	0x000013b0, 0x000013dc, 0x000013ff, 0x0000143d,
-	0x00001465, 0x00001583, 0x000015b1, 0x000015c4,
-	0x000016d0, 0x00001767, 0x00001776, 0x000017dc,
-	0x0000186b, 0x0000188c, 0x0000189f, 0x000018d4,
-	0x000018e8, 0x00001902, 0x0000191e, 0x0000196b,
-	0x000019b9, 0x000019e7, 0x00001a5a, 0x00001ac5,
+	0x0000137a, 0x00001381, 0x0000138e, 0x000013a1,
+	0x000013b7, 0x000013d5, 0x000013fb, 0x000014a1,
+	0x000014cd, 0x00001518, 0x00001565, 0x00001605,
+	0x0000164e, 0x000016a4, 0x0000177c, 0x000017a8,
+	0x000017cb, 0x00001809, 0x00001831, 0x00001905,
+	0x0000197a, 0x000019ed, 0x00001a2d, 0x00001b0c,
+	0x00001beb, 0x00001d09, 0x00001d37, 0x00001d4a,
+	0x00001e56, 0x00001eed, 0x00001efc, 0x00001f62,
 	// Entry A0 - BF
-	0x00001afe, 0x00001b17, 0x00001b24, 0x00001c7c,
-	0x00001cab,
-} // Size: 684 bytes
+	0x00001ff1, 0x00002012, 0x00002025, 0x0000205a,
+	0x0000206e, 0x00002088, 0x000020a4, 0x000020f1,
+	0x0000215b, 0x000021a3, 0x000021f1, 0x0000221f,
+	0x00002292, 0x000022fd, 0x00002336, 0x0000234f,
+	0x0000235c, 0x000024b4, 0x000024e3,
+} // Size: 740 bytes
 
-const de_DEData string = "" + // Size: 7339 bytes
+const de_DEData string = "" + // Size: 9443 bytes
 	"\x02Januar\x02Februar\x02März\x02April\x02Mai\x02Juni\x02Juli\x02August" +
 	"\x02September\x02Oktober\x02November\x02Dezember\x02Sonntag\x02Montag" +
 	"\x02Dienstag\x02Mittwoch\x02Donnerstag\x02Freitag\x02Samstag\x02So\x02Mo" +
 	"\x02Di\x02Mi\x02Do\x02Fr\x02Sa\x02Weiter mit Datum: %[1]v\x02Weiter mit " +
 	"Uhrzeit: %[1]v\x02Teile diese Pläne in einem Chat ✅🔜\x02🏆 Namen Ändern" +
 	"\x02📆 Datum Ändern\x02⏰ Uhrzeit Ändern\x02📍 Ort Ändern\x02🕴 Veranstalter" +
-	" Ändern\x02📝 Notizen Hinzufügen\x02🖼 Bild hinzufügen\x02👫 Maximale Teiln" +
-	"ehmerzahl Festlegen\x02💔 Vielleicht Erlaubt: %[1]v\x02Nein\x02Ja\x02🏁 Ge" +
-	"schlossen. Wieder öffnen!\x02📩 Teilen Erlaubt: %[1]v\x02⚙ Erweiterte Opt" +
-	"ionen\x02⚙ ERWEITERTE OPTIONEN ⚙\x02🐕 Suitwalk: %[1]v\x02🔠 Sprache\x02⌚ " +
-	"Zeitzone\x02🗓 Enddatum\x02⌛ Endzeit\x02👨\u200d👩\u200d👦 Max. Gäste (+1): " +
-	"%[1]v\x02❌ Ereignis schließen\x02🔙 Zurück\x02Cool, hier ist ein iCal-Fee" +
-	"d für alle Veranstaltungen, bei denen du fest oder vielleicht zugesagt h" +
-	"ast: \x0a\x0a%[1]v\x0a\x0aDu kannst diesen Feed in deinem Google Kalende" +
-	"r oder bei Outlook hinzufügen, damit alle Veranstaltungen, bei denen du " +
-	"fest oder vielleicht zusagst, automatisch in deinem Kalender auftauchen " +
-	"und du immer auf dem neuesten Stand bist!\x02Alles klar.  Bestimme das V" +
-	"eranstaltungsdatum, indem du unten auswählst und dann auf „Weiter“ drück" +
-	"st.\x02Ausgewähltes Darum: %[1]v\x02Das von dir angegebene Datum konnte " +
-	"nicht eingelesen werden. Bitte schicke es im Format YYYY-MM-DD.\x02Alles" +
-	" klar.  Wähle eine Veranstaltungszeit, indem du sie unten auswählst und " +
-	"dann auf „Weiter“ drückst.\x02Ausgewählte Uhrzeit: %[1]v\x02Die von dir " +
-	"angegebene Uhrzeit konnte nicht eingelesen werden. Bitte schicke sie im " +
-	"Format HH:mm.\x02Wo findet die Veranstaltung statt?  Gebe den Namen oder" +
-	" die Adresse des Orts so an, wie man es bei Google Maps eingeben würde." +
-	"\x02Gib beliebige weitere Informationen an, die zur Veranstaltung angeze" +
-	"igt werden sollen.\x02Wenn Sie keine Notizen haben, klicken Sie einfach " +
-	"auf /skip.\x02Fehler bei der Erstellung des Events: %[1]v\x02Veranstaltu" +
-	"ng nicht gefunden\x04\x00\x02\x0a\x0a\x86\x01\x02Okay, ich habe deine Ve" +
-	"ranstaltung erstellt! Du kannst jetzt zusätzliche Informationen angeben " +
-	"oder es in einem anderen Chat teilen.\x02Gib einen Namen für die Veranst" +
-	"altung an.\x02Gib den Namen des Veranstalters an.\x02Schicken Sie mir ei" +
-	"n Bild, das Ihrer Veranstaltung beigefügt wird.\x02Aktuelles Bild:\x02Gi" +
-	"b das Veranstaltungsdatum an:\x02Gib die Veranstaltungszeit an:\x02Geben" +
-	" Sie das Datum an, an dem dieses Ereignis endet:\x02Geben Sie den Zeitpu" +
-	"nkt an, zu dem dieses Ereignis endet:\x02Gib die maximale Teilnehmerzahl" +
-	" an. Wenn diese erreicht ist, kann keiner mehr auf „Ich komme“ drücken." +
-	"\x0a\x0aGib 0 für eine unbegrenzte Teilnehmerzahl an.\x02Wähle eine Anze" +
-	"igesprache für die Veranstaltung.\x02Wähle eine Zeitzone für die Veranst" +
-	"altung.\x02Es ist ein genereller Fehler aufgetreten.\x02Fehler beim Aktu" +
-	"alisieren des Events: %[1]v\x02Der von dir angegebene Wert ist keine der" +
-	" Auswahlmöglichkeiten.\x02Bitte senden Sie ein Bild zu Ihrer Veranstaltu" +
-	"ng.\x02Bitte gib eine valide Zahl an\x02Eine Liste deiner zukünftigen Ve" +
-	"ranstaltungen\x02Eine Liste all deiner Veranstaltungen, alt wie neu\x02N" +
-	"ame:\x02Datum:\x02Endet am:\x02Ort:\x02Veranstalter:\x02Suitwalk:\x02Max" +
-	"imale Teilnehmerzahl:\x02Sprache:\x02Weitere Informationen:\x02🖼 Zur Ver" +
-	"anstaltung gehört ein Bild\x02Fehler bei der Auflistung der Veranstaltun" +
-	"gen: %[1]v\x02Wähle eine Veranstaltung zum Bearbeiten aus:\x0a%[1]v\x02K" +
-	"onnte Veranstaltungs-ID nicht einlesen: %[1]v\x02Alles klar, du wurdest " +
-	"als Teilnehmer eingetragen.\x02Alles klar, du wurdest als „Vielleicht“ e" +
-	"ingetragen.\x02Die Veranstaltung ist aktuell leider voll!\x02Alles klar," +
-	" du wurdest als „Kann nicht teilnehmen“ eingetragen.\x02Die Veranstaltun" +
-	"g ist bereit, um genutzt zu werden!\x02Die Veranstaltung ist geschlossen" +
-	". Für weitere Informationen wenden Sie sich bitte an den Gastgeber.\x02v" +
-	"eranstaltet von\x02Endet:\x02Suiter: %[1]v\x02Fotografen: %[1]v\x02Spott" +
-	"er: %[1]v\x02Teilnehmer: %[1]v\x02Unentschiedene: %[1]v\x02Können nicht:" +
-	" %[1]v\x02Kommst du? Benutze die Buttons unten.\x02❌️ Veranstaltung gesc" +
-	"hlossen\x02🐕\u200d🦺 Suiter\x02🐕\u200d🦺 +1\x02🐕\u200d🦺 +2\x02📷 Fotograf" +
-	"\x02📷 +1\x02📷 +2\x02🙋\u200d♂️ Spotter\x02🙋\u200d♂️ +1\x02🙋\u200d♂️ +2" +
-	"\x02🙋\u200d♂️ Ich komme!\x02Ich +1\x02Gastnamen...\x02🤔️ Vielleicht\x02❌" +
-	"️ Ich kann nicht\x02📆 Zum Kalender hinzufügen\x02📩 Mit einem anderen C" +
-	"hat teilen...\x04\x00\x02\x0a\x0a\x9f\x01\x02Sie ✅ planen oder 🤔️ erwäge" +
-	"n die Teilnahme an den folgenden Veranstaltungen. Klicken Sie auf eine V" +
-	"eranstaltung, um weitere Informationen zu erhalten.\x02Keine Veranstaltu" +
-	"ng, an der Sie teilnehmen.\x02Leider konnte ich die Veranstaltung nicht " +
-	"finden. Versuchen Sie es erneut.\x02Leider ist es bei dieser Veranstaltu" +
-	"ng nicht gestattet, Gäste mitzubringen.\x02Okay, sag mir den Namen des e" +
-	"rsten Gastes, den Sie zu <b>%[1]v</b> mitbringst. Sie können bis zu %[2]" +
-	"v erreichen.\x0a\x0aSchicken Sie mir bitte jeweils einen Namen!\x02Boah," +
-	" mach mal langsam! Geben Sie mir einfach den Namen des Teilnehmers.\x02S" +
-	"ehr gut. Wer ist der nächste Gast? Wenn dies der letzte ist, klicken Sie" +
-	" auf /done.\x02Sie sind bereit! Ich habe diese Personen als Ihre Gäste u" +
-	"nter <b>%[1]v</b> hinzugefügt. Sie können nun zu dem Chat zurückkehren, " +
-	"in dem Sie sich zuvor befanden.\x0a\x0aVielen Dank, dass Sie den Furry P" +
-	"lans Bot nutzen!\x02Klicken Sie hier, um Gastnamen anzugeben...\x02👉 VER" +
-	"ANSTALTUNG AKTIVIEREN 👈\x02Drücke den Button unten, um die Veranstaltung" +
-	" zu aktivieren.\x02Die Sprache wurde auf Deutsch gestellt.\x02In welcher" +
-	" Zeitzone leben Sie?\x0aSie können entweder eine der Zeitzonen auf <a hr" +
-	"ef=\x22https://github.com/Lewington-pitsos/golang-time-locations\x22>die" +
-	"ser</a> Liste senden,\x0aOder Sie können Ihren aktuellen 📍Standort sende" +
-	"n, indem Sie auf die Büroklammer klicken und Standort auswählen.\x02Die " +
-	"angegebene Zeitzone wurde nicht gefunden.\x02Ausgewählt: %[1]v\x02Die an" +
-	"gegebene Zeitzone wurde nicht gefunden. Bitte wählen Sie eine Zeitzone a" +
-	"us der Liste aus. Wenn die Liste nicht angezeigt wird, klicken Sie bitte" +
-	" auf die Schaltfläche, die wie vier Kästchen im Texteingabefeld aussieht" +
-	", um die Auswahlmöglichkeiten aufzurufen.\x02Bevor Sie fortfahren, lesen" +
-	" Sie bitte unsere Datenschutzerklärung und akzeptieren Sie diese.\x0a" +
-	"\x0ahttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\x02Ich akzep" +
-	"tiere\x02Bitte prüfe die Bestimmungen noch einmal, um herauszufinden, wi" +
-	"e du den Vorgang abschließen kannst.\x02Danke!  Es ist jetzt alles berei" +
-	"t, damit du den Furry-Veranstaltungsbot benutzen kannst! Sende /start um" +
-	" eine neue Veranstaltung zu erstellen.\x02Erstelle eine neue Veranstaltu" +
-	"ng\x02Zeige die Hilfe an\x02Bekomme einen auf dich zugeschnittenen Kalen" +
-	"der-Feed\x02Ändere die Sprache\x02Starten den Setup-Vorgang\x02Erfahren " +
-	"mehr über den Bot\x02Sehen Sie sich eine Liste aller Ereignisse an, zu d" +
-	"enen Sie zugestimmt haben\x02Lass uns eine neue Veranstaltung erstellen." +
-	"  Schick mir als erstes den Namen.\x02Hier ist eine Liste der verfügbare" +
-	"n Befehle:\x02Der Furry Plans-Bot wurde von 🐕\u200d🦺<b>Av</b> (www.avbra" +
-	"nd.com) erstellt.\x0a\x0aÜbersetzungen bereitgestellt von:\x04\x01\x0a" +
-	"\x00f\x02Dieses Projekt ist Open Source! Erfahren Sie mehr unter: https:" +
-	"//github.com/avwuff/telegram-plans-bot\x02Den Befehl verstehe ich nicht." +
-	" Benutze /help für Hilfe.\x02Zum Kalender hinzufügen\x02Wussten Sie?\x02" +
-	"Der Furry Plans Bot bietet einen iCal-Feed aller Ereignisse, die Sie mit" +
-	" „Ja“ oder „Vielleicht“ markiert haben.\x0aSie können diesen Feed zu Goo" +
-	"gle Kalender oder anderen Kalendern hinzufügen, und Ereignisse werden au" +
-	"tomatisch angezeigt!\x0aUm die Feed-URL zu erhalten, chatten Sie mit @fu" +
-	"rryplansbot und senden Sie den Befehl <b>/feed</b>.\x02Fügen Sie „%[1]v“" +
-	" zu Ihrem Kalender hinzu"
+	" Ändern\x02📝 Notizen Hinzufügen\x02🖼 Bild hinzufügen\x02🔒 Verzeichnis en" +
+	"tfernen\x02🌎 Liste im Verzeichnis\x02👫 Maximale Teilnehmerzahl Festlegen" +
+	"\x02💔 Vielleicht Erlaubt: %[1]v\x02Nein\x02Ja\x02🏁 Geschlossen. Wieder ö" +
+	"ffnen!\x02📩 Teilen Erlaubt: %[1]v\x02⚙ Erweiterte Optionen\x02⚙ ERWEITER" +
+	"TE OPTIONEN ⚙\x02🐕 Suitwalk: %[1]v\x02🙈 Namen ausblenden: %[1]v\x02🔠 Spr" +
+	"ache\x02⌚ Zeitzone\x02🗓 Enddatum\x02⌛ Endzeit\x02👨\u200d👩\u200d👦 Max. Gä" +
+	"ste (+1): %[1]v\x02❌ Ereignis schließen\x02🔙 Zurück\x02Cool, hier ist ei" +
+	"n iCal-Feed für alle Veranstaltungen, bei denen du fest oder vielleicht " +
+	"zugesagt hast: \x0a\x0a%[1]v\x0a\x0aDu kannst diesen Feed in deinem Goog" +
+	"le Kalender oder bei Outlook hinzufügen, damit alle Veranstaltungen, bei" +
+	" denen du fest oder vielleicht zusagst, automatisch in deinem Kalender a" +
+	"uftauchen und du immer auf dem neuesten Stand bist!\x02Alles klar.  Best" +
+	"imme das Veranstaltungsdatum, indem du unten auswählst und dann auf „Wei" +
+	"ter“ drückst.\x02Ausgewähltes Darum: %[1]v\x02Das von dir angegebene Dat" +
+	"um konnte nicht eingelesen werden. Bitte schicke es im Format YYYY-MM-DD" +
+	".\x02Alles klar.  Wähle eine Veranstaltungszeit, indem du sie unten ausw" +
+	"ählst und dann auf „Weiter“ drückst.\x02Ausgewählte Uhrzeit: %[1]v\x02D" +
+	"ie von dir angegebene Uhrzeit konnte nicht eingelesen werden. Bitte schi" +
+	"cke sie im Format HH:mm.\x02Wo findet die Veranstaltung statt?  Gebe den" +
+	" Namen oder die Adresse des Orts so an, wie man es bei Google Maps einge" +
+	"ben würde.\x02Gib beliebige weitere Informationen an, die zur Veranstalt" +
+	"ung angezeigt werden sollen.\x02Wenn Sie keine Notizen haben, klicken Si" +
+	"e einfach auf /skip.\x02Fehler bei der Erstellung des Events: %[1]v\x02V" +
+	"eranstaltung nicht gefunden\x04\x00\x02\x0a\x0a\x86\x01\x02Okay, ich hab" +
+	"e deine Veranstaltung erstellt! Du kannst jetzt zusätzliche Informatione" +
+	"n angeben oder es in einem anderen Chat teilen.\x02Gib einen Namen für d" +
+	"ie Veranstaltung an.\x02Gib den Namen des Veranstalters an.\x02Schicken " +
+	"Sie mir ein Bild, das Ihrer Veranstaltung beigefügt wird.\x02Aktuelles B" +
+	"ild:\x02Wenn Sie Ihre Veranstaltung in unser öffentliches Veranstaltungs" +
+	"verzeichnis aufnehmen, ist sie für alle in Ihrer Nähe zugänglich. Jeder " +
+	"kann Ihre Veranstaltung besuchen oder teilen. Wir empfehlen diese Funkti" +
+	"on nur für große Veranstaltungen, da die Teilnehmerzahl schwer zu kontro" +
+	"llieren ist.\x0a\x0aWenn Sie Ihre Veranstaltung in unseren Verzeichnisse" +
+	"n teilen möchten, senden Sie uns bitte eine Standort-PIN (normalerweise " +
+	"über das 📎-Menü) in der Nähe des Veranstaltungsortes. So können leute i" +
+	"n der Nähe Ihre Veranstaltung finden.\x0a\x0aMit dem Befehl /nearby könn" +
+	"en sich lokale Personen Veranstaltungen in ihrer Nähe anzeigen lassen." +
+	"\x02Gib das Veranstaltungsdatum an:\x02Gib die Veranstaltungszeit an:" +
+	"\x02Geben Sie das Datum an, an dem dieses Ereignis endet:\x02Geben Sie d" +
+	"en Zeitpunkt an, zu dem dieses Ereignis endet:\x02Gib die maximale Teiln" +
+	"ehmerzahl an. Wenn diese erreicht ist, kann keiner mehr auf „Ich komme“ " +
+	"drücken.\x0a\x0aGib 0 für eine unbegrenzte Teilnehmerzahl an.\x02Wähle e" +
+	"ine Anzeigesprache für die Veranstaltung.\x02Wähle eine Zeitzone für die" +
+	" Veranstaltung.\x02Es ist ein genereller Fehler aufgetreten.\x02Fehler b" +
+	"eim Aktualisieren des Events: %[1]v\x02Der von dir angegebene Wert ist k" +
+	"eine der Auswahlmöglichkeiten.\x02Bitte sende einen Standort über die Fu" +
+	"nktion 'Standort senden' von Telegram. Er sollte in der Nähe des Ereigni" +
+	"sses liegen, muss aber nicht genau sein. Schau im 📎-Menü nach.\x02Bitte " +
+	"senden Sie ein Bild zu Ihrer Veranstaltung.\x02Bitte gib eine valide Zah" +
+	"l an\x02Eine Liste deiner zukünftigen Veranstaltungen\x02Eine Liste all " +
+	"deiner Veranstaltungen, alt wie neu\x02Name:\x02Datum:\x02Endet am:\x02O" +
+	"rt:\x02Veranstalter:\x02Suitwalk:\x02Maximale Teilnehmerzahl:\x02Sprache" +
+	":\x02Weitere Informationen:\x02🌎 Die Veranstaltung ist im öffentlichen V" +
+	"erzeichnis aufgeführt\x02🖼 Zur Veranstaltung gehört ein Bild\x02Fehler b" +
+	"ei der Auflistung der Veranstaltungen: %[1]v\x02Wähle eine Veranstaltung" +
+	" zum Bearbeiten aus:\x0a%[1]v\x02Konnte Veranstaltungs-ID nicht einlesen" +
+	": %[1]v\x02Alles klar, du wurdest als Teilnehmer eingetragen.\x02Alles k" +
+	"lar, du wurdest als „Vielleicht“ eingetragen.\x02Die Veranstaltung ist a" +
+	"ktuell leider voll!\x02Alles klar, du wurdest als „Kann nicht teilnehmen" +
+	"“ eingetragen.\x02Die Veranstaltung ist bereit, um genutzt zu werden!" +
+	"\x02Die Veranstaltung ist geschlossen. Für weitere Informationen wenden " +
+	"Sie sich bitte an den Gastgeber.\x02veranstaltet von\x02Endet:\x02Suiter" +
+	": %[1]v\x02Fotografen: %[1]v\x02Spotter: %[1]v\x02Teilnehmer: %[1]v\x02U" +
+	"nentschiedene: %[1]v\x02Können nicht: %[1]v\x02Kommst du? Benutze die Bu" +
+	"ttons unten.\x02❌️ Veranstaltung geschlossen\x02🐕\u200d🦺 Suiter\x02🐕" +
+	"\u200d🦺 +1\x02🐕\u200d🦺 +2\x02📷 Fotograf\x02📷 +1\x02📷 +2\x02🙋\u200d♂️ Spo" +
+	"tter\x02🙋\u200d♂️ +1\x02🙋\u200d♂️ +2\x02🙋\u200d♂️ Ich komme!\x02Ich +1" +
+	"\x02Gastnamen...\x02🤔️ Vielleicht\x02❌️ Ich kann nicht\x02📆 Zum Kalender" +
+	" hinzufügen\x02📩 Mit einem anderen Chat teilen...\x04\x00\x02\x0a\x0a" +
+	"\x9f\x01\x02Sie ✅ planen oder 🤔️ erwägen die Teilnahme an den folgenden " +
+	"Veranstaltungen. Klicken Sie auf eine Veranstaltung, um weitere Informat" +
+	"ionen zu erhalten.\x02Keine Veranstaltung, an der Sie teilnehmen.\x02Lei" +
+	"der konnte ich die Veranstaltung nicht finden. Versuchen Sie es erneut." +
+	"\x02Leider ist es bei dieser Veranstaltung nicht gestattet, Gäste mitzub" +
+	"ringen.\x02Okay, sag mir den Namen des ersten Gastes, den Sie zu <b>%[1]" +
+	"v</b> mitbringst. Sie können bis zu %[2]v erreichen.\x0a\x0aSchicken Sie" +
+	" mir bitte jeweils einen Namen!\x02Boah, mach mal langsam! Geben Sie mir" +
+	" einfach den Namen des Teilnehmers.\x02Sehr gut. Wer ist der nächste Gas" +
+	"t? Wenn dies der letzte ist, klicken Sie auf /done.\x02Sie sind bereit! " +
+	"Ich habe diese Personen als Ihre Gäste unter <b>%[1]v</b> hinzugefügt. S" +
+	"ie können nun zu dem Chat zurückkehren, in dem Sie sich zuvor befanden." +
+	"\x0a\x0aVielen Dank, dass Sie den Furry Plans Bot nutzen!\x02Klicken Sie" +
+	" hier, um Gastnamen anzugeben...\x02👉 VERANSTALTUNG AKTIVIEREN 👈\x02Drüc" +
+	"ke den Button unten, um die Veranstaltung zu aktivieren.\x02Die Sprache " +
+	"wurde auf Deutsch gestellt.\x02Informieren Sie sich über die Veranstaltu" +
+	"ngen in Ihrer Nähe!\x0a\x0aSenden Sie mir über das 📎-Menü eine Standortm" +
+	"arkierung, um eine Liste öffentlicher Veranstaltungen im Umkreis von 800" +
+	" Kilometern zu erhalten.\x02Bitte senden Sie einen Standort über die Fun" +
+	"ktion „Standort senden“ von Telegram. Sehen Sie im 📎-Menü nach.\x02Leide" +
+	"r wurden keine Veranstaltungen in der Nähe gefunden. Ist das nicht eine " +
+	"gute Gelegenheit, eine zu /start en?\x04\x00\x02\x0a\x0a:\x02Schauen Sie" +
+	" sich diese Veranstaltungen in Ihrer Nähe an:\x02Erhalten Sie einen Feed" +
+	" der Veranstaltungen in Ihrer Nähe!\x0a\x0aSenden Sie mir über das 📎-Men" +
+	"ü eine Standortmarkierung, um einen ständig aktualisierten Feed mit Ver" +
+	"anstaltungen im Umkreis von 800 Kilometern zu erhalten.\x02Erhalten Sie " +
+	"einen Feed der Veranstaltungen in Ihrer Nähe!\x0a\x0aSenden Sie mir über" +
+	" das 📎-Menü eine Standortmarkierung, um einen ständig aktualisierten Fee" +
+	"d mit Veranstaltungen im Umkreis von 800 Kilometern zu erhalten.\x02In w" +
+	"elcher Zeitzone leben Sie?\x0aSie können entweder eine der Zeitzonen auf" +
+	" <a href=\x22https://github.com/Lewington-pitsos/golang-time-locations" +
+	"\x22>dieser</a> Liste senden,\x0aOder Sie können Ihren aktuellen 📍Stando" +
+	"rt senden, indem Sie auf die Büroklammer klicken und Standort auswählen." +
+	"\x02Die angegebene Zeitzone wurde nicht gefunden.\x02Ausgewählt: %[1]v" +
+	"\x02Die angegebene Zeitzone wurde nicht gefunden. Bitte wählen Sie eine " +
+	"Zeitzone aus der Liste aus. Wenn die Liste nicht angezeigt wird, klicken" +
+	" Sie bitte auf die Schaltfläche, die wie vier Kästchen im Texteingabefel" +
+	"d aussieht, um die Auswahlmöglichkeiten aufzurufen.\x02Bevor Sie fortfah" +
+	"ren, lesen Sie bitte unsere Datenschutzerklärung und akzeptieren Sie die" +
+	"se.\x0a\x0ahttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\x02Ic" +
+	"h akzeptiere\x02Bitte prüfe die Bestimmungen noch einmal, um herauszufin" +
+	"den, wie du den Vorgang abschließen kannst.\x02Danke!  Es ist jetzt alle" +
+	"s bereit, damit du den Furry-Veranstaltungsbot benutzen kannst! Sende /s" +
+	"tart um eine neue Veranstaltung zu erstellen.\x02Erstelle eine neue Vera" +
+	"nstaltung\x02Zeige die Hilfe an\x02Bekomme einen auf dich zugeschnittene" +
+	"n Kalender-Feed\x02Ändere die Sprache\x02Starten den Setup-Vorgang\x02Er" +
+	"fahren mehr über den Bot\x02Sehen Sie sich eine Liste aller Ereignisse a" +
+	"n, zu denen Sie zugestimmt haben\x02Sehen Sie sich Veranstaltungen in de" +
+	"r Nähe an, die in unserem öffentlichen Verzeichnis aufgeführt sind\x02Er" +
+	"halten Sie einen ICS-Kalender-Feed aller Veranstaltungen in der Nähe\x02" +
+	"Lass uns eine neue Veranstaltung erstellen.  Schick mir als erstes den N" +
+	"amen.\x02Hier ist eine Liste der verfügbaren Befehle:\x02Der Furry Plans" +
+	"-Bot wurde von 🐕\u200d🦺<b>Av</b> (www.avbrand.com) erstellt.\x0a\x0aÜber" +
+	"setzungen bereitgestellt von:\x04\x01\x0a\x00f\x02Dieses Projekt ist Ope" +
+	"n Source! Erfahren Sie mehr unter: https://github.com/avwuff/telegram-pl" +
+	"ans-bot\x02Den Befehl verstehe ich nicht. Benutze /help für Hilfe.\x02Zu" +
+	"m Kalender hinzufügen\x02Wussten Sie?\x02Der Furry Plans Bot bietet eine" +
+	"n iCal-Feed aller Ereignisse, die Sie mit „Ja“ oder „Vielleicht“ markier" +
+	"t haben.\x0aSie können diesen Feed zu Google Kalender oder anderen Kalen" +
+	"dern hinzufügen, und Ereignisse werden automatisch angezeigt!\x0aUm die " +
+	"Feed-URL zu erhalten, chatten Sie mit @furryplansbot und senden Sie den " +
+	"Befehl <b>/feed</b>.\x02Fügen Sie „%[1]v“ zu Ihrem Kalender hinzu"
 
-var en_USIndex = []uint32{ // 165 elements
+var en_USIndex = []uint32{ // 179 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000008, 0x00000011, 0x00000017,
 	0x0000001d, 0x00000021, 0x00000026, 0x0000002b,
@@ -381,137 +427,165 @@ var en_USIndex = []uint32{ // 165 elements
 	0x000000d8, 0x000000fc, 0x0000010b, 0x0000011a,
 	// Entry 20 - 3F
 	0x00000128, 0x0000013b, 0x0000014f, 0x0000015e,
-	0x0000016f, 0x0000017f, 0x00000191, 0x00000194,
-	0x00000198, 0x000001b6, 0x000001cc, 0x000001d9,
-	0x000001f2, 0x00000207, 0x00000215, 0x00000223,
-	0x00000231, 0x0000023e, 0x0000026a, 0x0000027a,
-	0x00000284, 0x00000388, 0x000003eb, 0x00000400,
-	0x00000450, 0x000004b0, 0x000004c5, 0x00000510,
-	0x00000572, 0x000005b3, 0x000005e2, 0x000005fe,
+	0x0000016f, 0x0000018a, 0x000001a8, 0x000001b8,
+	0x000001ca, 0x000001cd, 0x000001d1, 0x000001ef,
+	0x00000205, 0x00000212, 0x0000022b, 0x00000240,
+	0x00000257, 0x00000265, 0x00000273, 0x00000281,
+	0x0000028e, 0x000002ba, 0x000002ca, 0x000002d4,
+	0x000003d8, 0x0000043b, 0x00000450, 0x000004a0,
+	0x00000500, 0x00000515, 0x00000560, 0x000005c2,
 	// Entry 40 - 5F
-	0x0000060e, 0x00000677, 0x00000696, 0x000006c8,
-	0x00000701, 0x00000712, 0x00000744, 0x00000776,
-	0x0000079d, 0x000007c4, 0x00000862, 0x0000088e,
-	0x000008b3, 0x000008cd, 0x000008e9, 0x0000091b,
-	0x00000948, 0x00000966, 0x00000985, 0x000009ac,
-	0x000009b2, 0x000009b8, 0x000009c1, 0x000009cb,
-	0x000009d6, 0x000009e0, 0x000009ef, 0x000009f9,
-	0x00000a00, 0x00000a1e, 0x00000a3a, 0x00000a59,
+	0x00000603, 0x00000632, 0x0000064e, 0x0000065e,
+	0x000006c7, 0x000006e6, 0x00000718, 0x00000751,
+	0x00000762, 0x0000096b, 0x0000099d, 0x000009cf,
+	0x000009f6, 0x00000a1d, 0x00000abb, 0x00000ae7,
+	0x00000b0c, 0x00000b26, 0x00000b42, 0x00000b74,
+	0x00000c0b, 0x00000c38, 0x00000c56, 0x00000c75,
+	0x00000c9c, 0x00000ca2, 0x00000ca8, 0x00000cb1,
+	0x00000cbb, 0x00000cc6, 0x00000cd0, 0x00000cdf,
 	// Entry 60 - 7F
-	0x00000a79, 0x00000aa3, 0x00000ac9, 0x00000aee,
-	0x00000b1f, 0x00000b3a, 0x00000b79, 0x00000b83,
-	0x00000b89, 0x00000b98, 0x00000bad, 0x00000bbd,
-	0x00000bce, 0x00000bdb, 0x00000bf0, 0x00000c13,
-	0x00000c27, 0x00000c3f, 0x00000c4e, 0x00000c5d,
-	0x00000c6f, 0x00000c7d, 0x00000c8b, 0x00000ca2,
-	0x00000cb3, 0x00000cc4, 0x00000cdd, 0x00000ce3,
-	0x00000cf2, 0x00000d00, 0x00000d17, 0x00000d2c,
+	0x00000ce9, 0x00000cf0, 0x00000d19, 0x00000d37,
+	0x00000d53, 0x00000d72, 0x00000d92, 0x00000dbc,
+	0x00000de2, 0x00000e07, 0x00000e38, 0x00000e53,
+	0x00000e92, 0x00000e9c, 0x00000ea2, 0x00000eb1,
+	0x00000ec6, 0x00000ed6, 0x00000ee7, 0x00000ef4,
+	0x00000f09, 0x00000f2c, 0x00000f40, 0x00000f58,
+	0x00000f67, 0x00000f76, 0x00000f88, 0x00000f96,
+	0x00000fa4, 0x00000fbb, 0x00000fcc, 0x00000fdd,
 	// Entry 80 - 9F
-	0x00000d4a, 0x00000dba, 0x00000dda, 0x00000e0e,
-	0x00000e4c, 0x00000edb, 0x00000f14, 0x00000f59,
-	0x00001000, 0x00001025, 0x00001047, 0x00001076,
-	0x0000109c, 0x00001198, 0x000011b7, 0x000011c7,
-	0x00001293, 0x0000130c, 0x00001315, 0x00001349,
-	0x000013b0, 0x000013ca, 0x000013e3, 0x000013fe,
-	0x00001412, 0x0000142a, 0x00001443, 0x00001469,
-	0x000014ad, 0x000014d3, 0x00001538, 0x00001596,
+	0x00000ff6, 0x00000ffc, 0x0000100b, 0x00001019,
+	0x00001030, 0x00001045, 0x00001063, 0x000010d3,
+	0x000010f3, 0x00001127, 0x00001165, 0x000011f4,
+	0x0000122d, 0x00001272, 0x00001319, 0x0000133e,
+	0x00001360, 0x0000138f, 0x000013b5, 0x0000143f,
+	0x0000149b, 0x000014f0, 0x00001521, 0x000015bd,
+	0x000016e8, 0x000017e4, 0x00001803, 0x00001813,
+	0x000018df, 0x00001958, 0x00001961, 0x00001995,
 	// Entry A0 - BF
-	0x000015cc, 0x000015dc, 0x000015ea, 0x00001701,
-	0x0000171e,
-} // Size: 684 bytes
+	0x000019fc, 0x00001a16, 0x00001a2f, 0x00001a4a,
+	0x00001a5e, 0x00001a76, 0x00001a8f, 0x00001ab5,
+	0x00001ae6, 0x00001b14, 0x00001b58, 0x00001b7e,
+	0x00001be3, 0x00001c41, 0x00001c77, 0x00001c87,
+	0x00001c95, 0x00001dac, 0x00001dc9,
+} // Size: 740 bytes
 
-const en_USData string = "" + // Size: 5918 bytes
+const en_USData string = "" + // Size: 7625 bytes
 	"\x02January\x02February\x02March\x02April\x02May\x02June\x02July\x02Augu" +
 	"st\x02September\x02October\x02November\x02December\x02Sunday\x02Monday" +
 	"\x02Tuesday\x02Wednesday\x02Thursday\x02Friday\x02Saturday\x02Su\x02Mo" +
 	"\x02Tu\x02We\x02Th\x02Fr\x02Sa\x02Continue with Date: %[1]v\x02Continue " +
 	"with Time: %[1]v\x02Share these plans in a chat ✅🔜\x02🏆 Edit Name\x02📆 E" +
 	"dit Date\x02⏰ Edit Time\x02📍 Edit Location\x02🕴 Edit Hosted By\x02📝 Add " +
-	"Notes\x02🖼 Add Picture\x02👫 Max People\x02💔 Maybe: %[1]v\x02No\x02Yes" +
-	"\x02🏁 Event is closed. Reopen!\x02📩 Can Share: %[1]v\x02⚙ Advanced\x02⚙ " +
-	"ADVANCED OPTIONS ⚙\x02🐕 Suitwalk: %[1]v\x02🔠 Language\x02⌚ Time Zone\x02" +
-	"🗓 End Date\x02⌛ End Time\x02👨\u200d👩\u200d👦 Max Guests (+1's): %[1]v" +
-	"\x02❌ Close Event\x02🔙 Back\x02Cool, here is an iCal feed of all the eve" +
-	"nts you've said 'Yes' or 'Maybe' to:\x0a\x0a%[1]v\x0a\x0aYou can add thi" +
-	"s feed URL to your Google Calendar or Outlook, and any events you've sai" +
-	"d 'Yes' or 'Maybe' to will appear in your Calendar automatically, and st" +
-	"ay up to date!\x02Got it.  Choose a Date for the event by clicking on th" +
-	"e Calendar below and then clicking Continue.\x02Date selected: %[1]v\x02" +
-	"Could not parse the date you provided. Please send it in the format YYYY" +
-	"-MM-DD.\x02Got it.  Choose a Time for the event by clicking on the times" +
-	" below and then clicking Continue.\x02Time selected: %[1]v\x02Could not " +
-	"parse the time you provided. Please send it in the format 22:03.\x02Wher" +
-	"e does the event take place?  Specify the name or address as you might t" +
-	"ype into Google Maps.\x02Specify any additional notes you'd like to show" +
-	" about the event.\x02If you don't have any notes, just click /skip.\x02e" +
-	"rror creating event: %[1]v\x02Event not found\x04\x00\x02\x0a\x0ac\x02Al" +
-	"right, I've created your event! You can now add additional content, or s" +
-	"hare it to another chat.\x02Specify the name of the event.\x02Specify th" +
-	"e name of the person hosting the event.\x02Send me a picture that will b" +
-	"e included with your event.\x02Current picture:\x02Specify the date on w" +
-	"hich this event takes place:\x02Specify the time at which this event tak" +
-	"es place:\x02Specify the date when this event ends:\x02Specify the time " +
-	"when this event ends:\x02Specify the maximum number of people that can a" +
-	"ttend.  Once the maximum is reached, users will no longer be able to cli" +
-	"ck 'I'm Going'.\x0a\x0aTo disable, send a 0.\x02Choose the display langu" +
-	"age for this event.\x02Choose the time zone for this event.\x02A general" +
-	" error occurred.\x02error updating event: %[1]v\x02The value you provide" +
-	"d is not one of the choices.\x02Please send a picture to go with your ev" +
-	"ent.\x02Please provide a valid number\x02A list of your upcoming events" +
-	"\x02A list of all your events, old and new\x02Name:\x02Date:\x02Ends at:" +
-	"\x02Location:\x02Hosted By:\x02Suitwalk:\x02Max Attendees:\x02Language:" +
-	"\x02Notes:\x02🖼 Event includes a picture\x02Error listing events: %[1]v" +
-	"\x02Select an event to edit:\x0a%[1]v\x02Unable to parse event ID: %[1]v" +
-	"\x02Alright, you've been marked as attending.\x02Alright, you've been ma" +
-	"rked as maybe.\x02Sorry, this event is currently full!\x02Alright, you'v" +
-	"e been marked as unable to attend.\x02Event is ready to be used!\x02Even" +
-	"t is closed, please contact the host for more information.\x02hosted by" +
-	"\x02Ends:\x02Suiting: %[1]v\x02Photographers: %[1]v\x02Spotting: %[1]v" +
-	"\x02Attending: %[1]v\x02Maybe: %[1]v\x02Can't make it: %[1]v\x02Can you " +
-	"go? Use the buttons below.\x02❌️ Event Closed\x02🐕\u200d🦺 I'm Suiting" +
-	"\x02🐕\u200d🦺 +1\x02🐕\u200d🦺 +2\x02📷 Photographer\x02📷 Photo +1\x02📷 Phot" +
-	"o +2\x02🙋\u200d♂️ Spotting\x02🙋\u200d♂️ +1\x02🙋\u200d♂️ +2\x02🙋\u200d♂️ " +
-	"I'm going!\x02Me +1\x02Guest Names...\x02🤔️ Maybe\x02❌️ I can't make it" +
-	"\x02📆 Add to Calendar\x02📩 Share to another chat...\x04\x00\x02\x0a\x0aj" +
-	"\x02You're ✅ planning or 🤔️ considering attending the following events. " +
-	" Click an event for more info.\x02Not an event you are attending.\x02Sor" +
-	"ry, I wasn't able to find the event.  Try again.\x02Sorry, but this even" +
-	"t does not allow you to bring any guests.\x02Alright, tell me the name o" +
-	"f the first guest you are bringing to <b>%[1]v</b>. You can bring up to " +
-	"%[2]v.\x0a\x0aSend me one name at a time, please!\x02Woah, slow down!  J" +
-	"ust give me the name of the attendee.\x02Got it.  Who's the next guest? " +
-	" If that's the last one, click /done.\x02You're all set!  I've added tho" +
-	"se people as your guests at <b>%[1]v</b>. You can now return to the chat" +
-	" you were in previously.\x0a\x0aThanks for using the Furry Plans Bot!" +
-	"\x02Click here to specify Guest names...\x02👉 CLICK TO ACTIVATE EVENT 👈" +
-	"\x02Click the button below to activate this event.\x02The language has b" +
-	"een set to English.\x02In which time zone do you live?\x0aYou can either" +
-	" send one of the time zones on <a href=\x22https://github.com/Lewington-" +
-	"pitsos/golang-time-locations\x22>this</a> list,\x0aor you can send your " +
-	"current 📍 Location by clicking the paperclip and choosing Location.\x02S" +
-	"pecified Time Zone not found.\x02Selected: %[1]v\x02Specified Time Zone " +
-	"not found.  Please choose a time zone from the list.  If the list is not" +
-	" appearing, please click the button that looks like four boxes in the te" +
-	"xt entry field to bring up the choices.\x02Before you continue, please r" +
-	"ead and accept our privacy policy.\x0a\x0ahttps://telegra.ph/Furry-Plans" +
-	"-Bot-Privacy-Policy-06-29\x02I accept\x02Please check the policy again t" +
-	"o see how to finish.\x02Thanks!  You're all set to start using the Furry" +
-	" Plans Bot!  Type /start to create a new set of plans.\x02Create a new s" +
-	"et of plans\x02Display the help message\x02Get a custom calendar feed" +
-	"\x02Change the language\x02Start the Setup process\x02Learn more about t" +
-	"he bot\x02See a list of all events you RSVPd to\x02Let's create some new" +
-	" plans.  First, send me the name of the event.\x02Here is a list of avai" +
-	"lable commands:\x02The Furry Plans bot was created by 🐕\u200d🦺<b>Av</b> " +
-	"(www.avbrand.com)\x0a\x0aTranslations provided by:\x04\x01\x0a\x00Y\x02T" +
-	"his project is open source! Learn more at: https://github.com/avwuff/tel" +
-	"egram-plans-bot\x02I don't understand that command. Send /help for help." +
-	"\x02Add to Calendar\x02Did you know?\x02The Furry Plans Bot provides an " +
-	"iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \x0aYou" +
-	" can add this feed to Google Calendar or other calendars, and events wil" +
-	"l appear automatically! \x0aTo get the feed URL, chat with @furryplansbo" +
-	"t and send the command <b>/feed</b>.\x02Add '%[1]v' to your Calendar"
+	"Notes\x02🖼 Add Picture\x02🔒 Remove from Directory\x02🌎 List in Public Di" +
+	"rectory\x02👫 Max People\x02💔 Maybe: %[1]v\x02No\x02Yes\x02🏁 Event is clo" +
+	"sed. Reopen!\x02📩 Can Share: %[1]v\x02⚙ Advanced\x02⚙ ADVANCED OPTIONS ⚙" +
+	"\x02🐕 Suitwalk: %[1]v\x02🙈 Hide Names: %[1]v\x02🔠 Language\x02⌚ Time Zon" +
+	"e\x02🗓 End Date\x02⌛ End Time\x02👨\u200d👩\u200d👦 Max Guests (+1's): %[1]" +
+	"v\x02❌ Close Event\x02🔙 Back\x02Cool, here is an iCal feed of all the ev" +
+	"ents you've said 'Yes' or 'Maybe' to:\x0a\x0a%[1]v\x0a\x0aYou can add th" +
+	"is feed URL to your Google Calendar or Outlook, and any events you've sa" +
+	"id 'Yes' or 'Maybe' to will appear in your Calendar automatically, and s" +
+	"tay up to date!\x02Got it.  Choose a Date for the event by clicking on t" +
+	"he Calendar below and then clicking Continue.\x02Date selected: %[1]v" +
+	"\x02Could not parse the date you provided. Please send it in the format " +
+	"YYYY-MM-DD.\x02Got it.  Choose a Time for the event by clicking on the t" +
+	"imes below and then clicking Continue.\x02Time selected: %[1]v\x02Could " +
+	"not parse the time you provided. Please send it in the format 22:03.\x02" +
+	"Where does the event take place?  Specify the name or address as you mig" +
+	"ht type into Google Maps.\x02Specify any additional notes you'd like to " +
+	"show about the event.\x02If you don't have any notes, just click /skip." +
+	"\x02error creating event: %[1]v\x02Event not found\x04\x00\x02\x0a\x0ac" +
+	"\x02Alright, I've created your event! You can now add additional content" +
+	", or share it to another chat.\x02Specify the name of the event.\x02Spec" +
+	"ify the name of the person hosting the event.\x02Send me a picture that " +
+	"will be included with your event.\x02Current picture:\x02Including your " +
+	"event in our public event directory makes it available to anyone in the " +
+	"local area.  Anyone can choose to attend or share your event.  We recomm" +
+	"end you use this feature only for large events, as attendance can be har" +
+	"d to control.\x0a\x0aIf you would like to share your event in our direct" +
+	"ories, send a Location pin (usually via the 📎 menu) that is close to whe" +
+	"re the event will take place. This allows nearby people to find your eve" +
+	"nt.\x0a\x0aLocals will be able to use the command /nearby to see events " +
+	"near them.\x02Specify the date on which this event takes place:\x02Speci" +
+	"fy the time at which this event takes place:\x02Specify the date when th" +
+	"is event ends:\x02Specify the time when this event ends:\x02Specify the " +
+	"maximum number of people that can attend.  Once the maximum is reached, " +
+	"users will no longer be able to click 'I'm Going'.\x0a\x0aTo disable, se" +
+	"nd a 0.\x02Choose the display language for this event.\x02Choose the tim" +
+	"e zone for this event.\x02A general error occurred.\x02error updating ev" +
+	"ent: %[1]v\x02The value you provided is not one of the choices.\x02Pleas" +
+	"e send a Location via Telegram's 'Send Location' feature.  It should be " +
+	"near the event but doesn't have to be exact.  Check inside the 📎 menu." +
+	"\x02Please send a picture to go with your event.\x02Please provide a val" +
+	"id number\x02A list of your upcoming events\x02A list of all your events" +
+	", old and new\x02Name:\x02Date:\x02Ends at:\x02Location:\x02Hosted By:" +
+	"\x02Suitwalk:\x02Max Attendees:\x02Language:\x02Notes:\x02🌎 Event is lis" +
+	"ted in public directory\x02🖼 Event includes a picture\x02Error listing e" +
+	"vents: %[1]v\x02Select an event to edit:\x0a%[1]v\x02Unable to parse eve" +
+	"nt ID: %[1]v\x02Alright, you've been marked as attending.\x02Alright, yo" +
+	"u've been marked as maybe.\x02Sorry, this event is currently full!\x02Al" +
+	"right, you've been marked as unable to attend.\x02Event is ready to be u" +
+	"sed!\x02Event is closed, please contact the host for more information." +
+	"\x02hosted by\x02Ends:\x02Suiting: %[1]v\x02Photographers: %[1]v\x02Spot" +
+	"ting: %[1]v\x02Attending: %[1]v\x02Maybe: %[1]v\x02Can't make it: %[1]v" +
+	"\x02Can you go? Use the buttons below.\x02❌️ Event Closed\x02🐕\u200d🦺 I'" +
+	"m Suiting\x02🐕\u200d🦺 +1\x02🐕\u200d🦺 +2\x02📷 Photographer\x02📷 Photo +1" +
+	"\x02📷 Photo +2\x02🙋\u200d♂️ Spotting\x02🙋\u200d♂️ +1\x02🙋\u200d♂️ +2\x02" +
+	"🙋\u200d♂️ I'm going!\x02Me +1\x02Guest Names...\x02🤔️ Maybe\x02❌️ I c" +
+	"an't make it\x02📆 Add to Calendar\x02📩 Share to another chat...\x04\x00" +
+	"\x02\x0a\x0aj\x02You're ✅ planning or 🤔️ considering attending the follo" +
+	"wing events.  Click an event for more info.\x02Not an event you are atte" +
+	"nding.\x02Sorry, I wasn't able to find the event.  Try again.\x02Sorry, " +
+	"but this event does not allow you to bring any guests.\x02Alright, tell " +
+	"me the name of the first guest you are bringing to <b>%[1]v</b>. You can" +
+	" bring up to %[2]v.\x0a\x0aSend me one name at a time, please!\x02Woah, " +
+	"slow down!  Just give me the name of the attendee.\x02Got it.  Who's the" +
+	" next guest?  If that's the last one, click /done.\x02You're all set!  I" +
+	"'ve added those people as your guests at <b>%[1]v</b>. You can now retur" +
+	"n to the chat you were in previously.\x0a\x0aThanks for using the Furry " +
+	"Plans Bot!\x02Click here to specify Guest names...\x02👉 CLICK TO ACTIVAT" +
+	"E EVENT 👈\x02Click the button below to activate this event.\x02The langu" +
+	"age has been set to English.\x02Check out the events happening near you!" +
+	"\x0a\x0aSend me a location pin using the 📎 menu for a list of public eve" +
+	"nts within 500 miles of you.\x02Please send a Location via Telegram's 'S" +
+	"end Location' feature.  Check inside the 📎 menu.\x02Unfortunately, no ne" +
+	"arby events found.  Isn't this a good opportunity to /start one?\x04\x00" +
+	"\x02\x0a\x0a+\x02Check out these events in your local area:\x02Get a fee" +
+	"d of the events happening near you!\x0a\x0aSend me a location pin using " +
+	"the 📎 menu for a continually updating feed of events within 500 miles of" +
+	" you.\x02Cool, here is an iCal feed of all the events happening within 5" +
+	"00 miles of you:\x0a\x0a%[1]v\x0a\x0aYou can add this feed URL to your G" +
+	"oogle Calendar or Outlook. Any events that are created will appear in th" +
+	"e feed, and stay up to date!\x0a\x0aChheck out the /feed command also fo" +
+	"r a feed of events you're attending.'\x02In which time zone do you live?" +
+	"\x0aYou can either send one of the time zones on <a href=\x22https://git" +
+	"hub.com/Lewington-pitsos/golang-time-locations\x22>this</a> list,\x0aor " +
+	"you can send your current 📍 Location by clicking the paperclip and choos" +
+	"ing Location.\x02Specified Time Zone not found.\x02Selected: %[1]v\x02Sp" +
+	"ecified Time Zone not found.  Please choose a time zone from the list.  " +
+	"If the list is not appearing, please click the button that looks like fo" +
+	"ur boxes in the text entry field to bring up the choices.\x02Before you " +
+	"continue, please read and accept our privacy policy.\x0a\x0ahttps://tele" +
+	"gra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\x02I accept\x02Please check " +
+	"the policy again to see how to finish.\x02Thanks!  You're all set to sta" +
+	"rt using the Furry Plans Bot!  Type /start to create a new set of plans." +
+	"\x02Create a new set of plans\x02Display the help message\x02Get a custo" +
+	"m calendar feed\x02Change the language\x02Start the Setup process\x02Lea" +
+	"rn more about the bot\x02See a list of all events you RSVPd to\x02See ne" +
+	"arby events listed in our public directory\x02Get an ICS calendar feed o" +
+	"f all nearby events\x02Let's create some new plans.  First, send me the " +
+	"name of the event.\x02Here is a list of available commands:\x02The Furry" +
+	" Plans bot was created by 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\x0a\x0aTra" +
+	"nslations provided by:\x04\x01\x0a\x00Y\x02This project is open source! " +
+	"Learn more at: https://github.com/avwuff/telegram-plans-bot\x02I don't u" +
+	"nderstand that command. Send /help for help.\x02Add to Calendar\x02Did y" +
+	"ou know?\x02The Furry Plans Bot provides an iCal feed of all events that" +
+	" you've marked as 'Yes' or 'Maybe'.  \x0aYou can add this feed to Google" +
+	" Calendar or other calendars, and events will appear automatically! \x0a" +
+	"To get the feed URL, chat with @furryplansbot and send the command <b>/f" +
+	"eed</b>.\x02Add '%[1]v' to your Calendar"
 
-var es_PEIndex = []uint32{ // 165 elements
+var es_PEIndex = []uint32{ // 179 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -559,12 +633,15 @@ var es_PEIndex = []uint32{ // 165 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	// Entry A0 - BF
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-	0x00000000,
-} // Size: 684 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 740 bytes
 
 const es_PEData string = ""
 
-var fr_CAIndex = []uint32{ // 165 elements
+var fr_CAIndex = []uint32{ // 179 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000008, 0x00000011, 0x00000016,
 	0x0000001c, 0x00000020, 0x00000025, 0x0000002d,
@@ -576,46 +653,49 @@ var fr_CAIndex = []uint32{ // 165 elements
 	0x000000e6, 0x00000112, 0x00000127, 0x0000013d,
 	// Entry 20 - 3F
 	0x00000152, 0x0000016a, 0x00000187, 0x0000019e,
-	0x000001b5, 0x000001e5, 0x00000209, 0x0000020d,
-	0x00000211, 0x00000237, 0x00000259, 0x00000272,
-	0x0000028c, 0x000002a8, 0x000002b4, 0x000002c7,
-	0x000002d8, 0x000002e9, 0x0000031b, 0x00000334,
-	0x00000340, 0x00000490, 0x000004f7, 0x00000512,
-	0x00000565, 0x000005cd, 0x000005e9, 0x00000638,
-	0x00000693, 0x000006ec, 0x00000727, 0x00000756,
+	0x000001b5, 0x000001d3, 0x000001f5, 0x00000225,
+	0x00000249, 0x0000024d, 0x00000251, 0x00000277,
+	0x00000299, 0x000002b2, 0x000002cc, 0x000002e8,
+	0x00000307, 0x00000313, 0x00000326, 0x00000337,
+	0x00000348, 0x0000037a, 0x00000393, 0x0000039f,
+	0x000004ef, 0x00000556, 0x00000571, 0x000005c4,
+	0x0000062c, 0x00000648, 0x00000697, 0x000006f2,
 	// Entry 40 - 5F
-	0x0000076b, 0x000007ed, 0x0000080c, 0x00000836,
-	0x00000875, 0x00000885, 0x000008a6, 0x000008d7,
-	0x00000911, 0x0000094e, 0x000009d1, 0x00000a02,
-	0x00000a30, 0x00000a4a, 0x00000a7d, 0x00000ab9,
-	0x00000af8, 0x00000b15, 0x00000b38, 0x00000b6c,
-	0x00000b71, 0x00000b77, 0x00000b80, 0x00000b8d,
-	0x00000b9c, 0x00000bac, 0x00000bcc, 0x00000bd4,
-	0x00000bdb, 0x00000c01, 0x00000c2c, 0x00000c56,
+	0x0000074b, 0x00000786, 0x000007b5, 0x000007ca,
+	0x0000084c, 0x0000086b, 0x00000895, 0x000008d4,
+	0x000008e4, 0x00000b6b, 0x00000b8c, 0x00000bbd,
+	0x00000bf7, 0x00000c34, 0x00000cb7, 0x00000ce8,
+	0x00000d16, 0x00000d30, 0x00000d63, 0x00000d9f,
+	0x00000e60, 0x00000e9f, 0x00000ebc, 0x00000edf,
+	0x00000f13, 0x00000f18, 0x00000f1e, 0x00000f27,
+	0x00000f34, 0x00000f43, 0x00000f53, 0x00000f73,
 	// Entry 60 - 7F
-	0x00000c87, 0x00000cb6, 0x00000ce4, 0x00000d07,
-	0x00000d37, 0x00000d60, 0x00000daf, 0x00000dbd,
-	0x00000dc8, 0x00000ddb, 0x00000df0, 0x00000e01,
-	0x00000e16, 0x00000e29, 0x00000e3d, 0x00000e6d,
-	0x00000e8a, 0x00000ea1, 0x00000eb0, 0x00000ebf,
-	0x00000eca, 0x00000ed2, 0x00000eda, 0x00000ef1,
-	0x00000f02, 0x00000f13, 0x00000f2c, 0x00000f33,
-	0x00000f48, 0x00000f5b, 0x00000f6f, 0x00000f8a,
+	0x00000f7b, 0x00000f82, 0x00000fbd, 0x00000fe3,
+	0x0000100e, 0x00001038, 0x00001069, 0x00001098,
+	0x000010c6, 0x000010e9, 0x00001119, 0x00001142,
+	0x00001191, 0x0000119f, 0x000011aa, 0x000011bd,
+	0x000011d2, 0x000011e3, 0x000011f8, 0x0000120b,
+	0x0000121f, 0x0000124f, 0x0000126c, 0x00001283,
+	0x00001292, 0x000012a1, 0x000012ac, 0x000012b4,
+	0x000012bc, 0x000012d3, 0x000012e4, 0x000012f5,
 	// Entry 80 - 9F
-	0x00000fb2, 0x0000103b, 0x0000106d, 0x000010b9,
-	0x00001100, 0x000011a6, 0x000011e5, 0x00001239,
-	0x000012fe, 0x00001333, 0x00001360, 0x0000139f,
-	0x000013cb, 0x000014f0, 0x00001517, 0x0000152c,
-	0x00001622, 0x000016ae, 0x000016b8, 0x00001708,
-	0x00001780, 0x00001797, 0x000017b2, 0x000017de,
-	0x000017f0, 0x00001808, 0x00001822, 0x00001866,
-	0x000018b2, 0x000018da, 0x00001944, 0x000019a8,
+	0x0000130e, 0x00001315, 0x0000132a, 0x0000133d,
+	0x00001351, 0x0000136c, 0x00001394, 0x0000141d,
+	0x0000144f, 0x0000149b, 0x000014e2, 0x00001588,
+	0x000015c7, 0x0000161b, 0x000016e0, 0x00001715,
+	0x00001742, 0x00001781, 0x000017ad, 0x00001873,
+	0x000018de, 0x00001952, 0x00001989, 0x00001a39,
+	0x00001bac, 0x00001cd1, 0x00001cf8, 0x00001d0d,
+	0x00001e03, 0x00001e8f, 0x00001e99, 0x00001ee9,
 	// Entry A0 - BF
-	0x000019e8, 0x000019fe, 0x00001a0b, 0x00001b59,
-	0x00001b7d,
-} // Size: 684 bytes
+	0x00001f61, 0x00001f78, 0x00001f93, 0x00001fbf,
+	0x00001fd1, 0x00001fe9, 0x00002003, 0x00002047,
+	0x00002099, 0x000020e2, 0x0000212e, 0x00002156,
+	0x000021c0, 0x00002224, 0x00002264, 0x0000227a,
+	0x00002287, 0x000023d5, 0x000023f9,
+} // Size: 740 bytes
 
-const fr_CAData string = "" + // Size: 7037 bytes
+const fr_CAData string = "" + // Size: 9209 bytes
 	"\x02Janvier\x02Février\x02Mars\x02Avril\x02Mai\x02Juin\x02Juillet\x02Aoû" +
 	"t\x02Septembre\x02Octobre\x02Novembre\x02Décembre\x02Dimanche\x02Lundi" +
 	"\x02Mardi\x02Mercredi\x02Jeudi\x02Vendredi\x02Samedi\x02Dim\x02Lun\x02Ma" +
@@ -623,103 +703,134 @@ const fr_CAData string = "" + // Size: 7037 bytes
 	"nuer avec l'heure : %[1]v\x02Partager ces plans dans un échange ✅🔜\x02🏆 " +
 	"Modifier le nom\x02📆 Modifier la date\x02⏰ Modifier l'heure\x02📍 Modifie" +
 	"r l'adresse\x02🕴 Modifier l'organisateur\x02📝 Ajouter des notes\x02🖼 Ajo" +
-	"uter une image\x02👫 Définir le nombre maximum de participants\x02💔 Autor" +
-	"iser \x22peut-être\x22 : %[1]v\x02Non\x02Oui\x02🏁 L'événement terminé. R" +
-	"ouvrir!\x02📩 Autoriser le partage : %[1]v\x02⚙ Options avancées...\x02⚙ " +
-	"OPTIONS AVANCÉES ⚙\x02🐕 Sortie fursuit : %[1]v\x02🔠 Langue\x02⌚ Fuseau h" +
-	"oraire\x02🗓 Date de fin\x02⌛ Heure de fin\x02👨\u200d👩\u200d👦 Maximum d'i" +
-	"nvités (+1): %[1]v\x02❌ Fermer l'événement\x02🔙 Retour\x02Cool, voici un" +
-	" flux iCal de tous les événements dont vous avez sélectionné 'Oui' ou 'P" +
-	"eut-être' a:\x0a\x0a%[1]v\x0a\x0a Vous pouvez ajouter ce flux URL à votr" +
-	"e calendrier Google ou Outlook et tous les événements dont vous avez sél" +
-	"ectionné 'Oui' ou 'Peut-être' vont apparaitre et être mis-à-jours automa" +
-	"tiquement dans votre calendrier \x02Reçu.  Sélectionner la date de l'évé" +
-	"nement sur le calendrier ci-dessous puis sélectionner Suivant\x02Date sé" +
-	"lectionnée: %[1]v\x02Impossible de comprendre la date fournie. Merci de " +
-	"l'envoyer au format AAAA-MM-JJ.\x02Reçu. Choisir l'heure de l'événement " +
-	"en sélectionnant l'heure ci-dessous puis sélectionner Suivant\x02Heure s" +
-	"électionnée: %[1]v\x02Impossible de comprendre l'horaire fourni. Merci " +
-	"de l'envoyer au format 22:03.\x02Où se déroule l'événement?  Enter le no" +
-	"m ou l'adresse tel qu'utilisé sur Google Maps \x02Entrer toutes notes ad" +
-	"ditionnelles que vous aimeriez ajouter à propos de l'événement.\x02Si vo" +
-	"us n'avez pas de notes, cliquez simplement sur /skip.\x02error à la créa" +
-	"tion de l'évènement : %[1]v\x02Événement manquant\x04\x00\x02\x0a\x0a|" +
-	"\x02Très bien, j'ai créé l'évènement ! Vous pouvez maintenant y ajouter " +
-	"du contenu, ou le partager dans un autre échange.\x02Entrer le nom de l'" +
-	"événement\x02Entrer le nom de l'hôte de l'événement\x02Envoyez-moi une " +
-	"photo qui sera incluse avec votre événement.\x02Photo actuelle:\x02Entre" +
-	"r la date de l'événement:\x02Entrer à quelle heure l'événement se tiendr" +
-	"a:\x02Précisez la date à laquelle cet événement se termine:\x02Spécifiez" +
-	" l'heure à laquelle cet événement se termine\u00a0:\x02Entrer le nombre " +
-	"maximum de participants.  Une fois le maximum atteint les utilisateurs n" +
-	"e pourrons plus sélectionner 'Participe'\x02Choisir la langue affichée p" +
-	"our cet événement\x02Choisir le fuseau horaire de cet évènement.\x02Une " +
-	"erreur s'est produite\x02erreur à la mise à jour de l'évènement : %[1]v" +
-	"\x02La valeur fournie ne correspond pas à un choix disponible.\x02Veuill" +
-	"ez envoyer une photo pour accompagner votre événement.\x02SVP entrer un " +
-	"numéro valide\x02Liste de vos événements à venir\x02Liste de tous vos év" +
-	"énements, anciens et récents\x02Nom:\x02Date:\x02Fini à:\x02Emplacement" +
-	":\x02Organisé par:\x02Sortie fursuit:\x02Nombre maximum de participants:" +
-	"\x02Langue:\x02Notes:\x02🖼 L'événement comprend une photo\x02Erreur en l" +
-	"istant les évènements : %[1]v\x02Choisir un évènement à modifier:\x0a%[1" +
-	"]v\x02Impossible d'analyser l'ID d'évènement : %[1]v\x02Parfait, vous êt" +
-	"es marqués comme participant\x02Parfait, vous êtes marqués comme peut-êt" +
-	"re\x02Désolé cet événement est plein\x02Parfait, vous êtes marqués comme" +
-	" indisponible\x02L'événement est prêt a être utilisé\x02L'événement est " +
-	"fermé, veuillez contacter l'hôte pour plus d'informations.\x02organisé p" +
-	"ar\x02Prend fin:\x02Fursuiters : %[1]v\x02Photographes : %[1]v\x02Spotte" +
-	"ur : %[1]v\x02Participants : %[1]v\x02Peut-être : %[1]v\x02Indisponible:" +
-	" %[1]v\x02Peux-tu venir?  Utilise les boutons ci-dessous.\x02❌️ Événemen" +
-	"t clôturé\x02🐕\u200d🦺 Je fursuit\x02🐕\u200d🦺 +1\x02🐕\u200d🦺 +2\x02📷 Phot" +
-	"o\x02📷 +1\x02📷 +2\x02🙋\u200d♂️ Spotteur\x02🙋\u200d♂️ +1\x02🙋\u200d♂️ +2" +
-	"\x02🙋\u200d♂️ Participe!\x02Moi +1\x02Noms des invités...\x02🤔️ Peut-êtr" +
-	"e\x02❌️ Indisponible\x02📆 Ajouter au calendrier\x02📩 Partager dans un au" +
-	"tre échange...\x04\x00\x02\x0a\x0a\x82\x01\x02Vous ✅ planifiez ou 🤔️ env" +
-	"isagez d'assister aux événements suivants. Cliquez sur l'événement pour " +
-	"plus d'informations.\x02Ce n'est pas un événement auquel vous assistez." +
-	"\x02Désolé, je n'ai pas réussi à trouver l'événement. Essayer à nouveau." +
-	"\x02Désolé, mais cet événement ne vous permet pas d'amener d'invités." +
-	"\x02Très bien, dites-moi le nom du premier invité que vous amenez à <b>%" +
-	"[1]v</b>. Vous pouvez amener jusqu'à %[2]v.\x0a\x0aEnvoyez-moi un nom à " +
-	"la fois, s'il vous plaît!\x02Waouh, ralentis ! Donnez-moi simplement le " +
-	"nom du participant.\x02J'ai compris. Qui est le prochain invité ? Si c'e" +
-	"st le dernier, cliquez sur /done.\x02Vous êtes prêt! J'ai ajouté ces per" +
-	"sonnes comme invités sur <b>%[1]v</b>. Vous pouvez maintenant revenir au" +
-	" chat dans lequel vous étiez précédemment.\x0a\x0aMerci d'utiliser le ro" +
-	"bot Furry Plans!\x02Cliquez ici pour spécifier les noms des invités..." +
-	"\x02👉 CLIQUER POUR ACTIVER L'ÉVÈNEMENT 👈\x02Cliquer sur le bouton ci-des" +
-	"sous pour activer cet évènement.\x02La langue française a été sélectionn" +
-	"ée\x02Dans quel fuseau horaire habitez-vous\u00a0?\x0aVous pouvez soit " +
-	"envoyer l'un des fuseaux horaires sur <a href=\x22https://github.com/Lew" +
-	"ington-pitsos/golang-time-locations\x22>cette</a> liste,\x0aou vous pouv" +
-	"ez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en " +
-	"choisissant Emplacement.\x02Fuseau horaire spécifié introuvable.\x02Séle" +
-	"ctionné: %[1]v\x02Fuseau horaire spécifié introuvable. Veuillez choisir " +
-	"un fuseau horaire dans la liste. Si la liste n'apparaît pas, veuillez cl" +
-	"iquer sur le bouton qui ressemble à quatre cases dans le champ de saisie" +
-	" de texte pour faire apparaître les choix.\x02Avant de continuer, veuill" +
-	"ez lire et accepter notre politique de confidentialité.\x0a\x0ahttps://t" +
-	"elegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\x02J'accepte\x02SVP vérif" +
-	"ier à nouveau la politique de confidentialité pour pouvoir terminer\x02M" +
-	"erci! Vous pouvez commencé d'utiliser Le planificateur de plans furry! É" +
-	"crire /start pour commencer un nouveau plan.\x02Créer un nouveau plan" +
-	"\x02Afficher le message d'aide\x02Recevoir un flux de calendrier persona" +
-	"lisé\x02Changer la langue\x02Start the Setup process\x02En savoir plus s" +
-	"ur le Bot\x02Voir une liste de tous les événements auxquels vous avez ré" +
-	"pondu\x02Commençons un nouveau plan.  Premièrement écrire le nom de l'év" +
-	"énement\x02Voici la liste des commandes disponible\x02Le robot Furry Pl" +
-	"ans a été créé par 🐕\u200d🦺<b>Av</b> (www.avbrand.com)\x0a\x0aTraduction" +
-	"s fournies par:\x04\x01\x0a\x00_\x02Ce projet est open source ! En savoi" +
-	"r plus sur\u00a0: https://github.com/avwuff/telegram-plans-bot\x02Je ne " +
-	"comprend pas cette commande. Écrire /help pour de l'aide\x02Ajouter au c" +
-	"alendrier\x02Saviez-vous?\x02Le bot Furry Plans fournit un flux iCal de " +
-	"tous les événements que vous avez marqués comme \x22Oui\x22 ou \x22Peut-" +
-	"être\x22.\x0aVous pouvez ajouter ce flux à Google\u00a0Agenda ou à d'au" +
-	"tres agendas, et les événements apparaîtront automatiquement\u00a0!\x0aP" +
-	"our obtenir l'URL du flux, discutez avec @furryplansbot et envoyez la co" +
-	"mmande <b>/feed</b>.\x02Ajouter '%[1]v' à votre calendrier"
+	"uter une image\x02🔒 Supprimer du répertoire\x02🌎 Liste dans l'annuaire p" +
+	"ublic\x02👫 Définir le nombre maximum de participants\x02💔 Autoriser \x22" +
+	"peut-être\x22 : %[1]v\x02Non\x02Oui\x02🏁 L'événement terminé. Rouvrir!" +
+	"\x02📩 Autoriser le partage : %[1]v\x02⚙ Options avancées...\x02⚙ OPTIONS" +
+	" AVANCÉES ⚙\x02🐕 Sortie fursuit : %[1]v\x02🙈 Masquer les noms\u00a0: %[1" +
+	"]v\x02🔠 Langue\x02⌚ Fuseau horaire\x02🗓 Date de fin\x02⌛ Heure de fin" +
+	"\x02👨\u200d👩\u200d👦 Maximum d'invités (+1): %[1]v\x02❌ Fermer l'événemen" +
+	"t\x02🔙 Retour\x02Cool, voici un flux iCal de tous les événements dont vo" +
+	"us avez sélectionné 'Oui' ou 'Peut-être' a:\x0a\x0a%[1]v\x0a\x0a Vous po" +
+	"uvez ajouter ce flux URL à votre calendrier Google ou Outlook et tous le" +
+	"s événements dont vous avez sélectionné 'Oui' ou 'Peut-être' vont appara" +
+	"itre et être mis-à-jours automatiquement dans votre calendrier \x02Reçu." +
+	"  Sélectionner la date de l'événement sur le calendrier ci-dessous puis " +
+	"sélectionner Suivant\x02Date sélectionnée: %[1]v\x02Impossible de compre" +
+	"ndre la date fournie. Merci de l'envoyer au format AAAA-MM-JJ.\x02Reçu. " +
+	"Choisir l'heure de l'événement en sélectionnant l'heure ci-dessous puis " +
+	"sélectionner Suivant\x02Heure sélectionnée: %[1]v\x02Impossible de compr" +
+	"endre l'horaire fourni. Merci de l'envoyer au format 22:03.\x02Où se dér" +
+	"oule l'événement?  Enter le nom ou l'adresse tel qu'utilisé sur Google M" +
+	"aps \x02Entrer toutes notes additionnelles que vous aimeriez ajouter à p" +
+	"ropos de l'événement.\x02Si vous n'avez pas de notes, cliquez simplement" +
+	" sur /skip.\x02error à la création de l'évènement : %[1]v\x02Événement m" +
+	"anquant\x04\x00\x02\x0a\x0a|\x02Très bien, j'ai créé l'évènement ! Vous " +
+	"pouvez maintenant y ajouter du contenu, ou le partager dans un autre éch" +
+	"ange.\x02Entrer le nom de l'événement\x02Entrer le nom de l'hôte de l'év" +
+	"énement\x02Envoyez-moi une photo qui sera incluse avec votre événement." +
+	"\x02Photo actuelle:\x02En ajoutant votre événement à notre annuaire publ" +
+	"ic, vous le rendez accessible à tous les habitants de votre région. Chac" +
+	"un peut choisir d'y assister ou de le partager. Nous vous recommandons d" +
+	"'utiliser cette fonctionnalité uniquement pour les grands événements, ca" +
+	"r la participation peut être difficile à gérer.\x0a\x0aSi vous souhaitez" +
+	" partager votre événement dans nos annuaires, envoyez une épingle de loc" +
+	"alisation (généralement via le menu 📎) proche du lieu de l'événement. Ce" +
+	"la permettra aux personnes à proximité de le trouver.\x0a\x0aLes habitan" +
+	"ts pourront utiliser la commande /nearby pour voir les événements à prox" +
+	"imité.\x02Entrer la date de l'événement:\x02Entrer à quelle heure l'évén" +
+	"ement se tiendra:\x02Précisez la date à laquelle cet événement se termin" +
+	"e:\x02Spécifiez l'heure à laquelle cet événement se termine\u00a0:\x02En" +
+	"trer le nombre maximum de participants.  Une fois le maximum atteint les" +
+	" utilisateurs ne pourrons plus sélectionner 'Participe'\x02Choisir la la" +
+	"ngue affichée pour cet événement\x02Choisir le fuseau horaire de cet évè" +
+	"nement.\x02Une erreur s'est produite\x02erreur à la mise à jour de l'évè" +
+	"nement : %[1]v\x02La valeur fournie ne correspond pas à un choix disponi" +
+	"ble.\x02Veuillez envoyer une position via la fonctionnalité «Envoyer la " +
+	"position» de Telegram. Elle doit être proche de l'événement, mais pas né" +
+	"cessairement exacte. Vérifiez dans le menu 📎.\x02Veuillez envoyer une ph" +
+	"oto pour accompagner votre événement.\x02SVP entrer un numéro valide\x02" +
+	"Liste de vos événements à venir\x02Liste de tous vos événements, anciens" +
+	" et récents\x02Nom:\x02Date:\x02Fini à:\x02Emplacement:\x02Organisé par:" +
+	"\x02Sortie fursuit:\x02Nombre maximum de participants:\x02Langue:\x02Not" +
+	"es:\x02🌎 L'événement est répertorié dans l'annuaire public\x02🖼 L'événem" +
+	"ent comprend une photo\x02Erreur en listant les évènements : %[1]v\x02Ch" +
+	"oisir un évènement à modifier:\x0a%[1]v\x02Impossible d'analyser l'ID d'" +
+	"évènement : %[1]v\x02Parfait, vous êtes marqués comme participant\x02Pa" +
+	"rfait, vous êtes marqués comme peut-être\x02Désolé cet événement est ple" +
+	"in\x02Parfait, vous êtes marqués comme indisponible\x02L'événement est p" +
+	"rêt a être utilisé\x02L'événement est fermé, veuillez contacter l'hôte p" +
+	"our plus d'informations.\x02organisé par\x02Prend fin:\x02Fursuiters : %" +
+	"[1]v\x02Photographes : %[1]v\x02Spotteur : %[1]v\x02Participants : %[1]v" +
+	"\x02Peut-être : %[1]v\x02Indisponible: %[1]v\x02Peux-tu venir?  Utilise " +
+	"les boutons ci-dessous.\x02❌️ Événement clôturé\x02🐕\u200d🦺 Je fursuit" +
+	"\x02🐕\u200d🦺 +1\x02🐕\u200d🦺 +2\x02📷 Photo\x02📷 +1\x02📷 +2\x02🙋\u200d♂️ S" +
+	"potteur\x02🙋\u200d♂️ +1\x02🙋\u200d♂️ +2\x02🙋\u200d♂️ Participe!\x02Moi +" +
+	"1\x02Noms des invités...\x02🤔️ Peut-être\x02❌️ Indisponible\x02📆 Ajouter" +
+	" au calendrier\x02📩 Partager dans un autre échange...\x04\x00\x02\x0a" +
+	"\x0a\x82\x01\x02Vous ✅ planifiez ou 🤔️ envisagez d'assister aux événemen" +
+	"ts suivants. Cliquez sur l'événement pour plus d'informations.\x02Ce n'e" +
+	"st pas un événement auquel vous assistez.\x02Désolé, je n'ai pas réussi " +
+	"à trouver l'événement. Essayer à nouveau.\x02Désolé, mais cet événement" +
+	" ne vous permet pas d'amener d'invités.\x02Très bien, dites-moi le nom d" +
+	"u premier invité que vous amenez à <b>%[1]v</b>. Vous pouvez amener jusq" +
+	"u'à %[2]v.\x0a\x0aEnvoyez-moi un nom à la fois, s'il vous plaît!\x02Waou" +
+	"h, ralentis ! Donnez-moi simplement le nom du participant.\x02J'ai compr" +
+	"is. Qui est le prochain invité ? Si c'est le dernier, cliquez sur /done." +
+	"\x02Vous êtes prêt! J'ai ajouté ces personnes comme invités sur <b>%[1]v" +
+	"</b>. Vous pouvez maintenant revenir au chat dans lequel vous étiez préc" +
+	"édemment.\x0a\x0aMerci d'utiliser le robot Furry Plans!\x02Cliquez ici " +
+	"pour spécifier les noms des invités...\x02👉 CLIQUER POUR ACTIVER L'ÉVÈNE" +
+	"MENT 👈\x02Cliquer sur le bouton ci-dessous pour activer cet évènement." +
+	"\x02La langue française a été sélectionnée\x02Découvrez les événements q" +
+	"ui se déroulent près de chez vous\u00a0!\x0a\x0aEnvoyez-moi un repère de" +
+	" localisation via le menu 📎 pour obtenir la liste des événements publics" +
+	" dans un rayon de 800\u00a0km.\x02Veuillez envoyer une position via la f" +
+	"onction «Envoyer la position» de Telegram. Consultez le menu 📎.\x02Malhe" +
+	"ureusement, aucun événement à proximité n'a été trouvé. N'est-ce pas une" +
+	" bonne occasion d'en /start un?\x04\x00\x02\x0a\x0a1\x02Consultez ces év" +
+	"énements dans votre région\u00a0:\x02Recevez un flux des événements prè" +
+	"s de chez vous!\x0a\x0aEnvoyez-moi un repère de localisation via le menu" +
+	" 📎 pour recevoir en continu les événements dans un rayon de 800km.\x02Su" +
+	"per, voici un flux iCal de tous les événements se déroulant dans un rayo" +
+	"n de 800 km autour de vous\u00a0:\x0a\x0a%[1]v\x0a\x0aVous pouvez ajoute" +
+	"r l'URL de ce flux à votre agenda Google ou Outlook. Tous les événements" +
+	" créés apparaîtront dans le flux et resteront à jour\u00a0!\x0a\x0aUtili" +
+	"sez également la commande /feed pour obtenir un flux des événements auxq" +
+	"uels vous participez.\x02Dans quel fuseau horaire habitez-vous\u00a0?" +
+	"\x0aVous pouvez soit envoyer l'un des fuseaux horaires sur <a href=\x22h" +
+	"ttps://github.com/Lewington-pitsos/golang-time-locations\x22>cette</a> l" +
+	"iste,\x0aou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant s" +
+	"ur le trombone et en choisissant Emplacement.\x02Fuseau horaire spécifié" +
+	" introuvable.\x02Sélectionné: %[1]v\x02Fuseau horaire spécifié introuvab" +
+	"le. Veuillez choisir un fuseau horaire dans la liste. Si la liste n'appa" +
+	"raît pas, veuillez cliquer sur le bouton qui ressemble à quatre cases da" +
+	"ns le champ de saisie de texte pour faire apparaître les choix.\x02Avant" +
+	" de continuer, veuillez lire et accepter notre politique de confidential" +
+	"ité.\x0a\x0ahttps://telegra.ph/Furry-Plans-Bot-Privacy-Policy-06-29\x02J" +
+	"'accepte\x02SVP vérifier à nouveau la politique de confidentialité pour " +
+	"pouvoir terminer\x02Merci! Vous pouvez commencé d'utiliser Le planificat" +
+	"eur de plans furry! Écrire /start pour commencer un nouveau plan.\x02Cré" +
+	"er un nouveau plan\x02Afficher le message d'aide\x02Recevoir un flux de " +
+	"calendrier personalisé\x02Changer la langue\x02Start the Setup process" +
+	"\x02En savoir plus sur le Bot\x02Voir une liste de tous les événements a" +
+	"uxquels vous avez répondu\x02Consultez les événements à proximité répert" +
+	"oriés dans notre annuaire public\x02Obtenez un flux de calendrier ICS de" +
+	" tous les événements à proximité\x02Commençons un nouveau plan.  Premièr" +
+	"ement écrire le nom de l'événement\x02Voici la liste des commandes dispo" +
+	"nible\x02Le robot Furry Plans a été créé par 🐕\u200d🦺<b>Av</b> (www.avbr" +
+	"and.com)\x0a\x0aTraductions fournies par:\x04\x01\x0a\x00_\x02Ce projet " +
+	"est open source ! En savoir plus sur\u00a0: https://github.com/avwuff/te" +
+	"legram-plans-bot\x02Je ne comprend pas cette commande. Écrire /help pour" +
+	" de l'aide\x02Ajouter au calendrier\x02Saviez-vous?\x02Le bot Furry Plan" +
+	"s fournit un flux iCal de tous les événements que vous avez marqués comm" +
+	"e \x22Oui\x22 ou \x22Peut-être\x22.\x0aVous pouvez ajouter ce flux à Goo" +
+	"gle\u00a0Agenda ou à d'autres agendas, et les événements apparaîtront au" +
+	"tomatiquement\u00a0!\x0aPour obtenir l'URL du flux, discutez avec @furry" +
+	"plansbot et envoyez la commande <b>/feed</b>.\x02Ajouter '%[1]v' à votre" +
+	" calendrier"
 
-var fr_FRIndex = []uint32{ // 165 elements
+var fr_FRIndex = []uint32{ // 179 elements
 	// Entry 0 - 1F
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -767,9 +878,12 @@ var fr_FRIndex = []uint32{ // 165 elements
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
 	// Entry A0 - BF
 	0x00000000, 0x00000000, 0x00000000, 0x00000000,
-	0x00000000,
-} // Size: 684 bytes
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000, 0x00000000,
+	0x00000000, 0x00000000, 0x00000000,
+} // Size: 740 bytes
 
 const fr_FRData string = ""
 
-// Total table size 23714 bytes (23KiB); checksum: 1C346076
+// Total table size 29977 bytes (29KiB); checksum: 44DF8EFB

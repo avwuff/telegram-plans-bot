@@ -117,9 +117,9 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 
 	// TOGGLES
 	case "sharing":
-		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event, true)
+		tgp.toggleItem(usrInfo, cb, event.SharingAllowed(), event.SetSharingAllowed, event, false)
 	case "setmaybe":
-		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event, true)
+		tgp.toggleItem(usrInfo, cb, event.DisableMaybe(), event.SetDisableMaybe, event, false)
 	case "suitwalk":
 		tgp.toggleItem(usrInfo, cb, event.Suitwalk(), event.SetSuitwalk, event, true)
 	case "hidenames":

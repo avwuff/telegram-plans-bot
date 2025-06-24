@@ -23,6 +23,7 @@ type DBFeatures interface {
 	GlobalShouldSend(id int64) bool
 	GlobalMarkBadUser(id int64)
 	GlobalSent(id int64)
+	NearbyFeed(latitude float64, longitude float64, distKM int) ([]DBEvent, error)
 }
 
 // DBEvent provides access to features on the event.
@@ -71,6 +72,9 @@ type DBEvent interface {
 	AmIAttending(id int64) bool
 	PictureURL() string
 	SetPictureURL(t string) error
+	Public() (bool, float64, float64)
+	SetPublic(v bool, lat float64, lon float64) error
+	SetPublicOnly(v bool) error
 }
 
 type Attend struct {

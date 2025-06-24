@@ -38,16 +38,19 @@ type FurryPlans struct {
 	PictureURL  string       `gorm:"column:PictureURL"`
 	Language    string       `gorm:"column:Language"`
 
-	// Should really have been BOOLs
+	// Should really have been BOOLs, they are ints for compatibility with the old system
 	Suitwalk     int `gorm:"column:Suitwalk"`
 	MaxAttendees int `gorm:"column:MaxAttendees"`
 	DisableMaybe int `gorm:"column:DisableMaybe"`
 	AllowShare   int `gorm:"column:AllowShare"`
 
 	// new items are being added as bools!
-	Closed    bool `gorm:"column:Closed"`
-	MaxGuests int  `gorm:"column:MaxGuests"`
-	HideNames bool `gorm:"column:HideNames"`
+	Closed    bool    `gorm:"column:Closed"`
+	MaxGuests int     `gorm:"column:MaxGuests"`
+	HideNames bool    `gorm:"column:HideNames"`
+	Public    bool    `gorm:"column:Public"`   // Whether or not the event is open to the general public
+	Latitude  float64 `gorm:"column:Latitude"` // The lat & long, generally not shown to the end user, for public feeds
+	Longitude float64 `gorm:"column:Longitude"`
 }
 
 // FurryPlansWithAttend is the same as FurryPlans, and doesn't actually represent a table in the DB.

@@ -267,8 +267,17 @@ func eventEditButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbot
 	row = append(row, quickButton(loc.Sprintf("📝 Add Notes"), fmt.Sprintf("edit:%v:notes", event.ID())))
 	buttons = append(buttons, row)
 
+	isPublic, _, _ := event.Public()
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	row = append(row, quickButton(loc.Sprintf("🖼 Add Picture"), fmt.Sprintf("edit:%v:picture", event.ID())))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 0)
+	if isPublic {
+		row = append(row, quickButton(loc.Sprintf("🔒 Remove from Directory"), fmt.Sprintf("edit:%v:notpublic", event.ID())))
+	} else {
+		row = append(row, quickButton(loc.Sprintf("🌎 List in Public Directory"), fmt.Sprintf("edit:%v:public", event.ID())))
+	}
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)

@@ -88,6 +88,11 @@ func (tgp *TGPlansBot) goingMoreInfo(usrInfo *userManager.UserInfo, cb *tgbotapi
 	// Make sure this is an event they are actually attending.
 	if !event.AmIAttending(cb.Message.Chat.ID) {
 		tgp.quickReply(cb.Message, usrInfo.Locale.Sprintf("Not an event you are attending."))
+		// Only allow public events to be shown to people who aren't attending.
+		isPublic, _, _ := event.Public()
+		if !isPublic {
+			return
+		}
 	}
 
 	// Now display the event UI here, allowing the user to change their attendance status.

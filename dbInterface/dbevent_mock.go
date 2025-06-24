@@ -331,6 +331,37 @@ func (_m *DBEventMock) Postings() ([]Posting, error) {
 	return r0, r1
 }
 
+// Public provides a mock function with given fields:
+func (_m *DBEventMock) Public() (bool, float64, float64) {
+	ret := _m.Called()
+
+	var r0 bool
+	var r1 float64
+	var r2 float64
+	if rf, ok := ret.Get(0).(func() (bool, float64, float64)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() bool); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(bool)
+	}
+
+	if rf, ok := ret.Get(1).(func() float64); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Get(1).(float64)
+	}
+
+	if rf, ok := ret.Get(2).(func() float64); ok {
+		r2 = rf()
+	} else {
+		r2 = ret.Get(2).(float64)
+	}
+
+	return r0, r1, r2
+}
+
 // SavePosting provides a mock function with given fields: MessageID
 func (_m *DBEventMock) SavePosting(MessageID string) {
 	_m.Called(MessageID)
@@ -516,6 +547,34 @@ func (_m *DBEventMock) SetPictureURL(t string) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(string) error); ok {
 		r0 = rf(t)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SetPublic provides a mock function with given fields: v, lat, lon
+func (_m *DBEventMock) SetPublic(v bool, lat float64, lon float64) error {
+	ret := _m.Called(v, lat, lon)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(bool, float64, float64) error); ok {
+		r0 = rf(v, lat, lon)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SetPublicOnly provides a mock function with given fields: v
+func (_m *DBEventMock) SetPublicOnly(v bool) error {
+	ret := _m.Called(v)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(bool) error); ok {
+		r0 = rf(v)
 	} else {
 		r0 = ret.Error(0)
 	}

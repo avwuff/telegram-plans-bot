@@ -34,6 +34,7 @@ type setStringFunc func(t string) error
 type setIntFunc func(t int) error
 type setBoolFunc func(t bool) error
 type setTimeFunc func(t time.Time) error
+type setPublicFunc func(v bool, lat float64, lon float64) error
 
 // This handles one of the callback functions for when an 'edit' button is clicked.
 func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
@@ -80,6 +81,12 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 	// PICTURES
 	case "picture":
 		tgp.editPictureItem(usrInfo, cb.From.ID, event.PictureURL(), event.SetPictureURL, loc.Sprintf("Send me a picture that will be included with your event."), loc.Sprintf("Current picture:"))
+
+	// PUBLIC
+	case "public":
+		tgp.editPublicItem(usrInfo, cb.From.ID, event.SetPublic, loc.Sprintf("Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them."))
+	case "notpublic": // Make the event no longer public
+		tgp.toggleItem(usrInfo, cb, true /* true so it toggles to false */, event.SetPublicOnly, event, false)
 
 	// SPECIAL EDITORS
 	case "date":
@@ -531,6 +538,52 @@ func (tgp *TGPlansBot) edit_setString(usrInfo *userManager.UserInfo, msg *tgbota
 
 	// Set the string to this value.  This should update it in the struct.
 	err := setFunc(htmlText)
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		return
+	}
+
+	// switch back to normal mode and display the event details
+	usrInfo.SetMode(userManager.MODE_DEFAULT)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
+}
+
+// editPublicItem puts them into a mode where they are setting the public location
+func (tgp *TGPlansBot) editPublicItem(usrInfo *userManager.UserInfo, chatId int64, SetFunc setPublicFunc, prompt string) {
+	// Store a pointer to the string we are trying to set.
+	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
+
+	// Switch to public location edit mode
+	usrInfo.SetMode(userManager.MODE_EDIT_PUBLIC)
+
+	mObj := tgbotapi.NewMessage(chatId, prompt)
+	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around
+	_, _ = tgp.tg.Send(mObj)
+}
+
+// Called from when the mode above is finished
+func (tgp *TGPlansBot) edit_setPublic(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	// See if we are in a valid mode.
+	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setPublicFunc)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+
+	if msg.Location == nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu."))
+		return
+	}
+
+	// Set the string to this value.  This should update it in the struct.
+	err := setFunc(true, msg.Location.Latitude, msg.Location.Longitude)
 	if err != nil {
 		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return

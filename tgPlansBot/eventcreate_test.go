@@ -26,7 +26,7 @@ func Test_EventCreate(t *testing.T) {
 		loc, _ := time.LoadLocation("America/Los_Angeles")
 
 		// Now the event will be created
-		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "bob", "My house", "en-US", "Some notes").Return(uint(1200), nil)
+		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "@bob", "My house", "en-US", "Some notes").Return(uint(1200), nil)
 		db.On("GetEvent", uint(1200), int64(1234)).Return(mEvent, nil)
 	}
 	dummy2 := func(t *testing.T, db *dbInterface.DBFeaturesMock) {
@@ -36,7 +36,7 @@ func Test_EventCreate(t *testing.T) {
 		loc, _ := time.LoadLocation("America/Los_Angeles")
 
 		// Now the event will be created
-		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "bob", "My house", "en-US", "").Return(uint(1200), nil)
+		db.On("CreateEvent", int64(1234), "Test Event", time.Date(2023, 1, 1, 20, 0, 0, 0, loc), "America/Los_Angeles", "@bob", "My house", "en-US", "").Return(uint(1200), nil)
 		db.On("GetEvent", uint(1200), int64(1234)).Return(mEvent, nil)
 	}
 
@@ -142,6 +142,7 @@ func simpleEvent(t *testing.T, name string, location string) *dbInterface.DBEven
 	mEvent.On("MaxAttendees").Return(0)
 	mEvent.On("Closed").Return(false)
 	mEvent.On("PictureURL").Return("")
+	mEvent.On("Public").Return(false, float64(0), float64(0))
 	mEvent.On("DateTime").Return(time.Date(2023, 1, 1, 0, 0, 0, 0, time.Local))
 	mEvent.On("EndDateTime").Return(time.Time{})
 	return mEvent

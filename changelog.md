@@ -1,6 +1,11 @@
-Changelog
+# Changelog
 
 ### Version 2.5 - Jun 2025
+#### New Features
+- Events can now be marked as Public, and appear in a public directory that can be accessed by sending /nearby
+- Additionally, you can get an ICS feed of nearby events by sending /nearbyfeed
+- When marking an event as public, you send a Location pin which is used to keep the events local.
+
 #### Bug Fixes
 - Changing stuff on Advanced keeps you there after you've made the change
 - Hosted by now defaults to @ in front of the username so the name becomes clickable.

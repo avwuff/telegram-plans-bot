@@ -56,6 +56,8 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.cmds.Add(tgCommands.Command{Command: "/setup", Handler: tgp.setupHandler, HelpText: loc.Sprintf("Start the Setup process")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/about", Handler: tgp.aboutHandler, HelpText: loc.Sprintf("Learn more about the bot")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/going", Handler: tgp.goingHandler, HelpText: loc.Sprintf("See a list of all events you RSVPd to")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/nearby", Handler: tgp.nearbyHandler, HelpText: loc.Sprintf("See nearby events listed in our public directory")})
+	tgp.cmds.Add(tgCommands.Command{Command: "/nearbyfeed", Handler: tgp.nearbyFeedHandler, HelpText: loc.Sprintf("Get an ICS calendar feed of all nearby events")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/globalmsg", Handler: tgp.sendGlobalMessage, Private: true})
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "moreinfo", Handler: tgp.goingMoreInfo})
 	tgp.cmds.SetUnknown(tgp.unknownHandler)
@@ -70,6 +72,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.initUICommands()
 	tgp.initGlobalMsgCommands()
 	tgp.initGuestCommands()
+	tgp.initNearbyCommands()
 
 }
 

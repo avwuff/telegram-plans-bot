@@ -30,6 +30,7 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 	// This will serve files under http://localhost:8000/static/<filename>
 	r.HandleFunc("/add/{key}.html", addToCalendarHandler)
 	r.HandleFunc("/guests/nameguests.html", nameGuestsHandler)
+	r.HandleFunc("/feed/nearby/{lat}/{lon}/plans.ics", generateNearbyFeed)
 	r.HandleFunc("/feed/{user}/{key}/plans.ics", generateCalFeed)
 	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./html"))))
 
@@ -104,6 +105,27 @@ func nameGuestsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(tmpl))
 }
 
+// Create a feed of nearby events
+func generateNearbyFeed(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	lat := vars["lat"]
+	lon := vars["lon"]
+	latitude, err := strconv.ParseFloat(lat, 64)
+	if err != nil {
+		errorMessage(w, "invalid coords")
+		return
+	}
+	longitude, err := strconv.ParseFloat(lon, 64)
+	if err != nil {
+		errorMessage(w, "invalid coords")
+		return
+	}
+
+	// Get the list of events this owner has decided to go to.
+	events, err := db.NearbyFeed(latitude, longitude, 800)
+	addEvents(w, events, "Furry Plans Nearby Events")
+}
+
 // Create an ICS calendar feed for this user.
 func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -123,9 +145,14 @@ func generateCalFeed(w http.ResponseWriter, r *http.Request) {
 	// Get the list of events this owner has decided to go to.
 	events, err := db.CalendarFeed(int64(owner))
 
+	addEvents(w, events, "Furry Plans Attending Events")
+}
+
+func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string) {
+
 	cal := ics.NewCalendar()
 	cal.SetMethod(ics.MethodRequest)
-	cal.SetName("Furry Plans Attending Events")
+	cal.SetName(name)
 	cal.SetDescription("Furry Plans Calendar")
 
 	// make a list of the time zones in use in the event

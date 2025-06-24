@@ -218,6 +218,43 @@ func (c *Connector) GetEvents(ownerId int64, includeOld bool) ([]dbInterface.DBE
 	return list, nil
 }
 
+func (c *Connector) NearbyFeed(Latitude float64, Longitude float64, distMiles int) ([]dbInterface.DBEvent, error) {
+
+	sql := `SELECT *  
+		FROM furryplans
+		WHERE Public=true 
+		AND (6371 * acos( 
+                cos( radians( Latitude) ) 
+              * cos( radians( ? ) ) 
+              * cos( radians( ? ) - radians(Longitude) ) 
+              + sin( radians( Latitude ) ) 
+              * sin( radians( ? ) )
+        ) ) < ? 
+		AND (EventDateTime > NOW() - INTERVAL 7 DAY  OR EndDateTime > NOW() - INTERVAL 2 DAY) 
+		ORDER BY EventDateTime `
+
+	var events []*FurryPlansWithAttend
+	res := c.db.Raw(sql, Latitude, Longitude, Latitude, distMiles).Scan(&events)
+	if res.Error != nil {
+		return nil, res.Error
+	}
+
+	// Clean up the old syntax from the previous event bot
+	list := make([]dbInterface.DBEvent, len(events))
+	for i, event := range events {
+		event.cleanOldSyntax()
+
+		// Update the time on the event to match the time zone.
+		if event.TimeZone != "" {
+			tz := localizer.FromTimeZone(event.TimeZone)
+			event.DateTime.Time = event.DateTime.Time.In(tz)
+		}
+		list[i] = c.wrapWithAttend(event)
+	}
+
+	return list, nil
+}
+
 // GLOBAL MESSAGING SYSTEM
 
 // GetAllUsers will return a list of ALL users that have EVER created an event with this bot.
@@ -269,8 +306,13 @@ type eventConnector struct {
 	canAttend dbInterface.CanAttend
 }
 
-func (e *eventConnector) updateEvent(column string) error {
-	return e.db.Where(&FurryPlans{EventID: e.ev.EventID}).Select(column).Updates(e.ev).Error
+func (e *eventConnector) updateEvent(columns ...string) error {
+	q := e.db.Where(&FurryPlans{EventID: e.ev.EventID})
+
+	// Select all the columns we need to update
+	q = q.Select(columns)
+
+	return q.Updates(e.ev).Error
 }
 
 func (e *eventConnector) GetAttending(userId int64) ([]*dbInterface.Attend, error) {
@@ -517,6 +559,22 @@ func (e *eventConnector) PictureURL() string {
 func (e *eventConnector) SetPictureURL(t string) error {
 	e.ev.PictureURL = t
 	return e.updateEvent("PictureURL")
+}
+
+func (e *eventConnector) Public() (bool, float64, float64) {
+	return e.ev.Public, e.ev.Latitude, e.ev.Longitude
+}
+
+func (e *eventConnector) SetPublic(v bool, lat float64, lon float64) error {
+	e.ev.Public = v
+	e.ev.Latitude = lat
+	e.ev.Longitude = lon
+	return e.updateEvent("Public", "Latitude", "Longitude")
+}
+
+func (e *eventConnector) SetPublicOnly(v bool) error {
+	e.ev.Public = v
+	return e.updateEvent("Public")
 }
 
 func (e *eventConnector) Language() string {

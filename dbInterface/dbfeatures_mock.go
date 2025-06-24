@@ -215,6 +215,32 @@ func (_m *DBFeaturesMock) GlobalShouldSend(id int64) bool {
 	return r0
 }
 
+// NearbyFeed provides a mock function with given fields: latitude, longitude, distKM
+func (_m *DBFeaturesMock) NearbyFeed(latitude float64, longitude float64, distKM int) ([]DBEvent, error) {
+	ret := _m.Called(latitude, longitude, distKM)
+
+	var r0 []DBEvent
+	var r1 error
+	if rf, ok := ret.Get(0).(func(float64, float64, int) ([]DBEvent, error)); ok {
+		return rf(latitude, longitude, distKM)
+	}
+	if rf, ok := ret.Get(0).(func(float64, float64, int) []DBEvent); ok {
+		r0 = rf(latitude, longitude, distKM)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]DBEvent)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(float64, float64, int) error); ok {
+		r1 = rf(latitude, longitude, distKM)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SavePrefs provides a mock function with given fields: userid, prefs, colName
 func (_m *DBFeaturesMock) SavePrefs(userid int64, prefs Prefs, colName string) error {
 	ret := _m.Called(userid, prefs, colName)

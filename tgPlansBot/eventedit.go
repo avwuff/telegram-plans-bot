@@ -18,13 +18,14 @@ import (
 )
 
 const (
-	EDIT_EVENTID      = "EDIT_EVENTID"
-	EDIT_EVENT        = "EDIT_EVENT"
-	EDIT_EVENTDATE    = "EDIT_EVENTDATE"
-	EDIT_EVENTSTRING  = "EDIT_EVENTSTRING"
-	EDIT_EVENTNUMBER  = "EDIT_EVENTNUMBER"
-	EDIT_EVENTCHOICES = "EDIT_EVENTCHOICES"
-	EDIT_EVENTSETFUNC = "EDIT_EVENTSETFUNC"
+	EDIT_EVENTID               = "EDIT_EVENTID"
+	EDIT_EVENT                 = "EDIT_EVENT"
+	EDIT_EVENTDATE             = "EDIT_EVENTDATE"
+	EDIT_EVENTSTRING           = "EDIT_EVENTSTRING"
+	EDIT_EVENTNUMBER           = "EDIT_EVENTNUMBER"
+	EDIT_EVENTCHOICES          = "EDIT_EVENTCHOICES"
+	EDIT_EVENTSETFUNC          = "EDIT_EVENTSETFUNC"
+	EDIT_EVENT_RETURN_ADVANCED = "EDIT_EVENT_RETURN_ADVANCED" // whether or not to return to the 'advanced' view after making the choice
 )
 
 const GENERAL_ERROR = "A general error occurred."
@@ -103,9 +104,9 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 
 	// CHOICE
 	case "language":
-		tgp.editChoiceItem(usrInfo, cb.From.ID, event.SetLanguage, loc.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesList())
+		tgp.editChoiceItem(usrInfo, cb.From.ID, event.SetLanguage, loc.Sprintf("Choose the display language for this event."), localizer.GetLanguageChoicesList(), true)
 	case "timezone":
-		tgp.editChoiceItem(usrInfo, cb.From.ID, event.SetTimeZone, loc.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesList())
+		tgp.editChoiceItem(usrInfo, cb.From.ID, event.SetTimeZone, loc.Sprintf("Choose the time zone for this event."), localizer.GetTimeZoneChoicesList(), true)
 
 	// TOGGLES
 	case "sharing":
@@ -409,10 +410,11 @@ func (tgp *TGPlansBot) directSetItem(usrInfo *userManager.UserInfo, cb *tgbotapi
 	tgp.updateEventUIAllPostings(event)
 }
 
-func (tgp *TGPlansBot) editChoiceItem(usrInfo *userManager.UserInfo, chatId int64, SetFunc setStringFunc, prompt string, choices []helpers.Tuple) {
+func (tgp *TGPlansBot) editChoiceItem(usrInfo *userManager.UserInfo, chatId int64, SetFunc setStringFunc, prompt string, choices []helpers.Tuple, advanced bool) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTCHOICES, choices)
 	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
+	usrInfo.SetData(EDIT_EVENT_RETURN_ADVANCED, advanced)
 
 	// Switch to string edit mode
 	usrInfo.SetMode(userManager.MODE_EDIT_CHOICE)
@@ -450,6 +452,12 @@ func (tgp *TGPlansBot) edit_setChoice(usrInfo *userManager.UserInfo, msg *tgbota
 		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
 		return
 	}
+	advanced, ok := usrInfo.GetData(EDIT_EVENT_RETURN_ADVANCED).(bool)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+
 	// Get the original list of choices
 	choices, ok := usrInfo.GetData(EDIT_EVENTCHOICES).([]helpers.Tuple)
 	if !ok {
@@ -479,7 +487,7 @@ func (tgp *TGPlansBot) edit_setChoice(usrInfo *userManager.UserInfo, msg *tgbota
 
 	// switch back to normal mode and display the event details
 	usrInfo.SetMode(userManager.MODE_DEFAULT)
-	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, advanced)
 	tgp.updateEventUIAllPostings(event)
 }
 

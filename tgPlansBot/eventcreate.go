@@ -211,7 +211,8 @@ func (tgp *TGPlansBot) create_SetNotes(usrInfo *userManager.UserInfo, msg *tgbot
 
 func getOwnerName(chat *tgbotapi.Chat) string {
 	if chat.UserName != "" {
-		return chat.UserName
+		// Add an @ to the front of the name so it becomes clickable
+		return "@" + chat.UserName
 	}
 	return strings.TrimSpace(chat.FirstName + " " + chat.LastName)
 }

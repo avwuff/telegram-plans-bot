@@ -17,6 +17,8 @@ const (
 	usTimeFormat     = "3:04 PM"
 	euDateFormat     = "Monday, 2. January 2006, 15:04"
 	euTimeFormat     = "15:04"
+	frDateFormat     = "Monday 2 January 2006, 15 h 04"
+	frTimeFormat     = "15 h 04"
 )
 
 type Localizer struct {
@@ -40,17 +42,17 @@ func InitLang() {
 			printer:    message.NewPrinter(language.MustParse("de-DE")),
 		},
 		"fr-FR": { // France (French)
-			name:       "Française (France)",
+			name:       "Français (France)",
 			iso639code: "fr",
-			dateFormat: euDateFormat,
-			timeFormat: euTimeFormat,
+			dateFormat: frDateFormat,
+			timeFormat: frTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("fr-FR")),
 		},
 		"fr-CA": { // Canada (French)
-			name:       "Française (Quebec)",
+			name:       "Français (Québec)",
 			iso639code: "fr",
-			dateFormat: euDateFormat,
-			timeFormat: euTimeFormat,
+			dateFormat: frDateFormat,
+			timeFormat: frTimeFormat,
 			printer:    message.NewPrinter(language.MustParse("fr-CA")),
 		},
 		"en-US": { // United States

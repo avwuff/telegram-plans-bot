@@ -270,6 +270,7 @@ func eventEditButtons(event dbInterface.DBEvent, loc *localizer.Localizer) tgbot
 	isPublic, _, _ := event.Public()
 	row = make([]tgbotapi.InlineKeyboardButton, 0)
 	row = append(row, quickButton(loc.Sprintf("🖼 Add Picture"), fmt.Sprintf("edit:%v:picture", event.ID())))
+	row = append(row, quickButton(loc.Sprintf("💰 Recoup Costs"), fmt.Sprintf("edit:%v:costs", event.ID())))
 	buttons = append(buttons, row)
 
 	row = make([]tgbotapi.InlineKeyboardButton, 0)

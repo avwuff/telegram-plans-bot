@@ -72,6 +72,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.initUICommands()
 	tgp.initGlobalMsgCommands()
 	tgp.initGuestCommands()
+	tgp.initDonateCommands()
 	tgp.initNearbyCommands()
 
 }
@@ -110,6 +111,11 @@ func (tgp *TGPlansBot) startHandler(usrInfo *userManager.UserInfo, msg *tgbotapi
 	// /start SetGuestNames_8265bf4ef5c0b7afd8336d620fed2dee
 	if strings.HasPrefix(text, GUEST_START_PREFIX) {
 		tgp.handleGuestStart(usrInfo, msg, text)
+		return
+	}
+
+	if strings.HasPrefix(text, DONATE_START_PREFIX) {
+		tgp.handleDonateStart(usrInfo, msg, text)
 		return
 	}
 

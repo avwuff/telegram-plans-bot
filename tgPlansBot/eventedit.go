@@ -25,6 +25,8 @@ const (
 	EDIT_EVENTNUMBER           = "EDIT_EVENTNUMBER"
 	EDIT_EVENTCHOICES          = "EDIT_EVENTCHOICES"
 	EDIT_EVENTSETFUNC          = "EDIT_EVENTSETFUNC"
+	EDIT_EVENTSETFUNC2         = "EDIT_EVENTSETFUNC2"
+	EDIT_EVENTNEXTPROMPT       = "EDIT_EVENTNEXTPROMPT"
 	EDIT_EVENT_RETURN_ADVANCED = "EDIT_EVENT_RETURN_ADVANCED" // whether or not to return to the 'advanced' view after making the choice
 )
 
@@ -81,6 +83,13 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 	// PICTURES
 	case "picture":
 		tgp.editPictureItem(usrInfo, cb.From.ID, event.PictureURL(), event.SetPictureURL, loc.Sprintf("Send me a picture that will be included with your event."), loc.Sprintf("Current picture:"))
+
+	// Allow the event owner to recoup costs from the event
+	case "costs":
+		tgp.editCostsItem(usrInfo, cb.From.ID, event.TotalCost(), event.CostInfo(), event.SetTotalCost, event.SetCostInfo, fmt.Sprintf("%s\n\n%s",
+			loc.Sprintf("This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system."),
+			loc.Sprintf("First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0")),
+			loc.Sprintf("How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate."))
 
 	// PUBLIC
 	case "public":
@@ -595,7 +604,100 @@ func (tgp *TGPlansBot) edit_setPublic(usrInfo *userManager.UserInfo, msg *tgbota
 	tgp.updateEventUIAllPostings(event)
 }
 
-// editStringItem puts them into a mode where they are editing a text item
+func (tgp *TGPlansBot) editCostsItem(usrInfo *userManager.UserInfo, chatId int64, cost int, costinfo string, SetTotalCost setIntFunc, SetCostInfo setStringFunc, prompt string, prompt2 string) {
+
+	// Store a pointer to the string we are trying to set.
+	usrInfo.SetData(EDIT_EVENTSETFUNC, SetTotalCost)
+	usrInfo.SetData(EDIT_EVENTSETFUNC2, SetCostInfo)
+	usrInfo.SetData(EDIT_EVENTNEXTPROMPT, prompt2)
+
+	// Switch to costs edit mode
+	usrInfo.SetMode(userManager.MODE_EDIT_COSTS1)
+
+	mObj := tgbotapi.NewMessage(chatId, prompt)
+	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around
+	_, _ = tgp.tg.Send(mObj)
+
+}
+
+// Called from when the mode above is finished
+func (tgp *TGPlansBot) edit_setTotalCost(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	// See if we are in a valid mode.
+	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC).(setIntFunc)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+
+	prompt, ok := usrInfo.GetData(EDIT_EVENTNEXTPROMPT).(string)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+
+	// Convert the input text to a number.
+	// Quickly remove currency symbols
+	text = strings.ReplaceAll(text, "$", "")
+	text = strings.ReplaceAll(text, "€", "")
+	cost, _ := strconv.ParseInt(text, 10, 64)
+
+	// If it is zero or less than zero, exit early.
+	if cost <= 0 {
+		err := setFunc(0)
+		if err != nil {
+			tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+			return
+		}
+	}
+
+	// Set the cost and move on to the next thing
+	err := setFunc(int(cost))
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		return
+	}
+
+	// Issue the next prompt
+	usrInfo.SetMode(userManager.MODE_EDIT_COSTS2)
+
+	mObj := tgbotapi.NewMessage(msg.Chat.ID, prompt)
+	mObj.ReplyMarkup = tgbotapi.NewRemoveKeyboard(false) // Remove the keyboard in case it is still kicking around
+	_, _ = tgp.tg.Send(mObj)
+}
+
+// Called from when the mode above is finished
+func (tgp *TGPlansBot) edit_setCostInfo(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	// See if we are in a valid mode.
+	event, ok := usrInfo.GetData(EDIT_EVENT).(dbInterface.DBEvent)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+	setFunc, ok := usrInfo.GetData(EDIT_EVENTSETFUNC2).(setStringFunc)
+	if !ok {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf(GENERAL_ERROR))
+		return
+	}
+
+	htmlText := helpers.ConvertEntitiesToHTML(text, msg.Entities)
+
+	// Set the string to this value.  This should update it in the struct.
+	err := setFunc(htmlText)
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
+		return
+	}
+
+	// switch back to normal mode and display the event details
+	usrInfo.SetMode(userManager.MODE_DEFAULT)
+	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+	tgp.updateEventUIAllPostings(event)
+
+}
+
+// editPictureItem allows a picture to be set
 func (tgp *TGPlansBot) editPictureItem(usrInfo *userManager.UserInfo, chatId int64, EditItem string, SetFunc setStringFunc, prompt string, picPrompt string) {
 	// Store a pointer to the string we are trying to set.
 	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)

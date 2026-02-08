@@ -9,6 +9,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"log"
 	"strconv"
+	"strings"
 )
 
 func (tgp *TGPlansBot) initEventCommands() {
@@ -18,6 +19,7 @@ func (tgp *TGPlansBot) initEventCommands() {
 	tgp.cmds.Add(tgCommands.Command{Command: "/myevents", Handler: tgp.listEvents, HelpText: loc.Sprintf("A list of your upcoming events")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/oldevents", Handler: tgp.listEventsOld, HelpText: loc.Sprintf("A list of all your events, old and new")})
 	tgp.cmds.Add(tgCommands.Command{Command: "/edit", Handler: tgp.selectEvent, Underscore: true})
+	tgp.cmds.Add(tgCommands.Command{Command: "/cost", Handler: tgp.costDashboard, Underscore: true})
 
 	// Create commands
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_CREATE_EVENTNAME, Handler: tgp.create_SetName})
@@ -33,6 +35,8 @@ func (tgp *TGPlansBot) initEventCommands() {
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_DATE, Handler: tgp.edit_setDate})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_TIME, Handler: tgp.edit_setTime})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_PICTURE, Handler: tgp.edit_setPicture, SpecialMode: "photo"})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_COSTS1, Handler: tgp.edit_setTotalCost})
+	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_COSTS2, Handler: tgp.edit_setCostInfo})
 	tgp.cmds.Add(tgCommands.Command{Mode: userManager.MODE_EDIT_PUBLIC, Handler: tgp.edit_setPublic, SpecialMode: "public"})
 
 	tgp.cmds.AddCB(tgCommands.Callback{DataPrefix: "calen", Mode: userManager.MODE_CREATE_EVENTDATE, Handler: tgp.create_ClickDate})
@@ -81,6 +85,9 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 
 	if event.PictureURL() != "" {
 		t += "\n<i>" + loc.Sprintf("🖼 Event includes a picture") + "</i>\n"
+	}
+	if event.TotalCost() > 0 {
+		t += "\n<i>" + strings.ReplaceAll(loc.Sprintf("💰 Accepting donations to cover cost of %v. Click XXXX for totals", event.TotalCost()), "XXXX", fmt.Sprintf("/cost_%d", event.ID())) + "</i>\n"
 	}
 
 	var buttons tgbotapi.InlineKeyboardMarkup
@@ -157,4 +164,67 @@ func (tgp *TGPlansBot) selectEvent(usrInfo *userManager.UserInfo, msg *tgbotapi.
 
 	// Display the event information now.
 	tgp.eventDetails(usrInfo, msg.Chat.ID, event, "", 0, false)
+}
+
+func (tgp *TGPlansBot) costDashboard(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+	// Find this event.
+	eventId, err := strconv.Atoi(text)
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Unable to parse event ID: %v", err))
+		return
+	}
+
+	// Load the details about the event from the database.
+	event, err := tgp.db.GetEvent(uint(eventId), msg.Chat.ID)
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Event not found"))
+		return
+	}
+
+	donors, err := event.GetDonors()
+	if err != nil {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("Error getting donors"))
+		return
+	}
+
+	// Display information about the cost of the event here.
+	loc := localizer.FromLanguage(event.Language())
+
+	// Start with an optional message at the top.
+	t := "<b>" + loc.Sprintf("This event is collecting donations in the amount of %d."+"</b>", event.TotalCost()) + "\n\n"
+
+	t += "<b>" + loc.Sprintf("Collected so far:") + "</b>\n"
+	if len(donors) == 0 {
+		t += "<i>" + loc.Sprintf("No donations collected yet") + "</i>\n"
+	} else {
+		for _, donor := range donors {
+			t += fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>: %.2f`+"\n", donor.UserID, donor.UserName, donor.Amount)
+		}
+	}
+	t += "\n"
+	t += "<b>" + loc.Sprintf("Information shown to donors:") + "</b>\n"
+	t += event.CostInfo()
+
+	var buttons [][]tgbotapi.InlineKeyboardButton
+	row := make([]tgbotapi.InlineKeyboardButton, 0)
+	row = append(row, quickButton(loc.Sprintf("💰 Edit recovery information"), fmt.Sprintf("edit:%v:costs", event.ID())))
+	buttons = append(buttons, row)
+
+	row = make([]tgbotapi.InlineKeyboardButton, 0)
+	row = append(row, quickButton(loc.Sprintf("Back to Event"), fmt.Sprintf("edit:%v:back", event.ID())))
+	buttons = append(buttons, row)
+
+	buttonsMarkup := tgbotapi.InlineKeyboardMarkup{
+		InlineKeyboard: buttons,
+	}
+
+	mObj := tgbotapi.NewMessage(msg.Chat.ID, t)
+	mObj.ParseMode = ParseModeHtml
+	mObj.ReplyMarkup = buttonsMarkup
+	mObj.LinkPreviewOptions.IsDisabled = true
+	_, err = tgp.tg.Send(mObj)
+	if err != nil {
+		log.Println(err)
+	}
+
 }

@@ -14,8 +14,10 @@ import (
 const SHARE_PREFIX = "FPBSHARE-"
 const POST_PREFIX = "POST:"
 const GUESTS_PREFIX = "GUESTS:"
+const DONATE_PREFIX = "DONATE:"
 const GUEST_HASH_EXTRA = "2oi3mi2o" // Add some extra crap to the hash so that the guest hash doesn't match the main hash
 const GUEST_START_PREFIX = "SetGuestNames_"
+const DONATE_START_PREFIX = "Donate_"
 
 // handleInline comes from the user typing @furryplansbot followed by a query
 // Generally this means we want to post the event in a chat.
@@ -28,8 +30,25 @@ func (tgp *TGPlansBot) handleInline(query *tgbotapi.InlineQuery) {
 
 		// There are several ways the inline mode can be used.
 
-		// Specifying guests
-		if strings.HasPrefix(query.Query, GUESTS_PREFIX) {
+		if strings.HasPrefix(query.Query, DONATE_PREFIX) { // Donations
+			hash := query.Query[len(DONATE_PREFIX):] // strip off the post prefix
+			event, _, err := tgp.db.GetEventByHash(hash, tgp.saltValue+GUEST_HASH_EXTRA, false)
+			if err != nil {
+				tgp.answerWithList(query, nil, nil)
+				return
+			}
+
+			loc := localizer.FromLanguage(event.Language())
+
+			button := &tgbotapi.InlineQueryResultsButton{
+				Text:       loc.Sprintf("Click here for donation information..."),
+				WebApp:     nil,
+				StartParam: DONATE_START_PREFIX + hash,
+			}
+
+			tgp.answerWithList(query, nil, button)
+
+		} else if strings.HasPrefix(query.Query, GUESTS_PREFIX) { // Specifying guests
 			hash := query.Query[len(GUESTS_PREFIX):] // strip off the post prefix
 			event, _, err := tgp.db.GetEventByHash(hash, tgp.saltValue+GUEST_HASH_EXTRA, false)
 			if err != nil {

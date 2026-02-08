@@ -37,6 +37,8 @@ type FurryPlans struct {
 	Notes       string       `gorm:"column:Notes"`
 	PictureURL  string       `gorm:"column:PictureURL"`
 	Language    string       `gorm:"column:Language"`
+	TotalCost   int          `gorm:"column:TotalCost"`
+	CostInfo    string       `gorm:"column:CostInfo"`
 
 	// Should really have been BOOLs, they are ints for compatibility with the old system
 	Suitwalk     int `gorm:"column:Suitwalk"`
@@ -90,4 +92,17 @@ type FurryPlansPosted struct {
 
 func (FurryPlansPosted) TableName() string {
 	return "furryplansposted"
+}
+
+// FurryPlansDonations keeps track of who has donated to the event
+type FurryPlansDonations struct {
+	EventID   uint         `gorm:"primarykey;column:eventID"`
+	UserID    int64        `gorm:"primarykey;column:userID"`
+	UserName  string       `gorm:"column:UserName"`
+	Amount    float64      `gorm:"column:Amount"`
+	CreatedAt sql.NullTime `gorm:"column:CreatedAt"`
+}
+
+func (FurryPlansDonations) TableName() string {
+	return "furryplansdonations"
 }

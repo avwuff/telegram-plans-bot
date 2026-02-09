@@ -226,6 +226,11 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 	if event.MaxAttendees() > 0 {
 		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees()) + "\n"
 	}
+	if event.TotalCost() > 0 {
+		donationsSoFar, _ := event.GetDonationTotal()
+
+		t += loc.Sprintf("💰 <b>Help cover the cost of this event!</b> We're at <b>%.2f</b> of <b>%d</b>. Use the Donate button below to donate.", donationsSoFar, event.TotalCost()) + "\n"
+	}
 	if event.Notes() != "" {
 		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
 	}
@@ -491,6 +496,20 @@ func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.
 	})
 
 	buttons = append(buttons, row)
+
+	if event.TotalCost() > 0 {
+
+		row = make([]tgbotapi.InlineKeyboardButton, 0)
+
+		// Create the text for the button for inline, to get the guest ID sharing UI
+		specDonateText := fmt.Sprintf("%v%v", DONATE_PREFIX, helpers.CalenFeedMD5(tgp.saltValue+GUEST_HASH_EXTRA, int64(event.ID())))
+		row = append(row, tgbotapi.InlineKeyboardButton{
+			Text:                         loc.Sprintf("💰 Donate! Help Cover Costs!"),
+			SwitchInlineQueryCurrentChat: &specDonateText,
+		})
+
+		buttons = append(buttons, row)
+	}
 
 	if event.SharingAllowed() {
 		row := make([]tgbotapi.InlineKeyboardButton, 0)

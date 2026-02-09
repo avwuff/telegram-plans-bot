@@ -345,6 +345,67 @@ func (e *eventConnector) GetAttending(userId int64) ([]*dbInterface.Attend, erro
 	return list, nil
 }
 
+func (e *eventConnector) RecordDonation(amount float64, donorId int64, donorName string) error {
+	// Record this person's donation in the database
+
+	// If the amount is zero, clear out the donation.
+	if amount == 0 {
+		return e.db.Model(&FurryPlansDonations{}).Unscoped().Delete(&FurryPlansDonations{
+			EventID: e.ev.EventID,
+			UserID:  donorId,
+		}).Error
+	}
+
+	donation := FurryPlansDonations{
+		EventID:   e.ev.EventID,
+		UserID:    donorId,
+		UserName:  donorName,
+		Amount:    amount,
+		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
+	}
+
+	if e.db.Model(&FurryPlansDonations{}).Where(&FurryPlansDonations{EventID: e.ev.EventID, UserID: donorId}).Select("*").Updates(&donation).RowsAffected == 0 {
+		e.db.Create(&donation)
+	}
+
+	return nil
+}
+
+func (e *eventConnector) GetDonationTotal() (float64, error) {
+	// Total up the donations for this event.
+	// See how many people are currently attending.
+	sql := `SELECT SUM(Amount)  as Total 
+		FROM furryplansdonations WHERE EventID=?`
+
+	var total *float64
+	res := e.db.Raw(sql, e.ev.EventID).Scan(&total)
+	if res.Error != nil {
+		return 0, fmt.Errorf("get donation total: %w", res.Error)
+	}
+
+	return *total, nil
+}
+
+func (e *eventConnector) GetDonors() ([]*dbInterface.Donors, error) {
+	var donations []*FurryPlansDonations
+	query := e.db.Where(&FurryPlansDonations{EventID: e.ev.EventID})
+	query = query.Order("CreatedAt ASC")
+	err := query.Find(&donations).Error
+	if err != nil {
+		return nil, err
+	}
+	list := make([]*dbInterface.Donors, len(donations))
+	for i, att := range donations {
+
+		list[i] = &dbInterface.Donors{
+			UserID:   att.UserID,
+			UserName: cleanOldSyntaxText(att.UserName),
+			Amount:   att.Amount,
+		}
+	}
+	return list, nil
+}
+
 // AmIAttending returns true or false depending on whether or not this user is attending this event
 func (e *eventConnector) AmIAttending(id int64) bool {
 	attending, err := e.GetAttending(id)
@@ -559,6 +620,24 @@ func (e *eventConnector) PictureURL() string {
 func (e *eventConnector) SetPictureURL(t string) error {
 	e.ev.PictureURL = t
 	return e.updateEvent("PictureURL")
+}
+
+func (e *eventConnector) TotalCost() int {
+	return e.ev.TotalCost
+}
+
+func (e *eventConnector) SetTotalCost(v int) error {
+	e.ev.TotalCost = v
+	return e.updateEvent("TotalCost")
+}
+
+func (e *eventConnector) CostInfo() string {
+	return e.ev.CostInfo
+}
+
+func (e *eventConnector) SetCostInfo(t string) error {
+	e.ev.CostInfo = t
+	return e.updateEvent("CostInfo")
 }
 
 func (e *eventConnector) Public() (bool, float64, float64) {

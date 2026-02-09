@@ -274,6 +274,27 @@
             "fuzzy": true
         },
         {
+            "id": "💰 Recoup Costs",
+            "message": "💰 Recoup Costs",
+            "translation": "💰 Recoup Costs",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "🔒 Remove from Directory",
+            "message": "🔒 Remove from Directory",
+            "translation": "🔒 Remove from Directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "🌎 List in Public Directory",
+            "message": "🌎 List in Public Directory",
+            "translation": "🌎 List in Public Directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "👫 Set Max Attendees",
             "message": "👫 Set Max Attendees",
             "translation": "👫 Max People",
@@ -363,6 +384,23 @@
             "fuzzy": true
         },
         {
+            "id": "🙈 Hide Names: {SprintfNo}",
+            "message": "🙈 Hide Names: {SprintfNo}",
+            "translation": "🙈 Hide Names: {SprintfNo}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "SprintfNo",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "iif(event.HideNames(), loc.Sprintf(\"Yes\"), loc.Sprintf(\"No\"))"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
             "id": "🔠 Language",
             "message": "🔠 Language",
             "translation": "🔠 Language",
@@ -373,6 +411,20 @@
             "id": "⌚ Time Zone",
             "message": "⌚ Time Zone",
             "translation": "⌚ Time Zone",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "🗓 End Date",
+            "message": "🗓 End Date",
+            "translation": "🗓 End Date",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "⌛ End Time",
+            "message": "⌛ End Time",
+            "translation": "⌛ End Time",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -422,6 +474,87 @@
                     "expr": "ICalURL"
                 }
             ],
+            "fuzzy": true
+        },
+        {
+            "id": "Sorry, I wasn't able to find the event.  Try again.",
+            "message": "Sorry, I wasn't able to find the event.  Try again.",
+            "translation": "Sorry, I wasn't able to find the event.  Try again.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sorry, but this event is not requesting donations.",
+            "message": "Sorry, but this event is not requesting donations.",
+            "translation": "Sorry, but this event is not requesting donations.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "💰 Custom Amount",
+            "message": "💰 Custom Amount",
+            "translation": "💰 Custom Amount",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "❌ Remove my Donation",
+            "message": "❌ Remove my Donation",
+            "translation": "❌ Remove my Donation",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "message": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "translation": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                },
+                {
+                    "id": "CostInfo",
+                    "string": "%[2]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "event.CostInfo()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "How much did you donate?",
+            "message": "How much did you donate?",
+            "translation": "How much did you donate?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Thank you for your donation!",
+            "message": "Thank you for your donation!",
+            "translation": "Thank you for your donation!",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "message": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "translation": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "That seems like a bad number.",
+            "message": "That seems like a bad number.",
+            "translation": "That seems like a bad number.",
+            "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
@@ -582,6 +715,34 @@
             "fuzzy": true
         },
         {
+            "id": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "message": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "translation": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "message": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "translation": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
+            "message": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
+            "translation": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "message": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "translation": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Specify the date on which this event takes place:",
             "message": "Specify the date on which this event takes place:",
             "translation": "Specify the date on which this event takes place:",
@@ -592,6 +753,20 @@
             "id": "Specify the time at which this event takes place:",
             "message": "Specify the time at which this event takes place:",
             "translation": "Specify the time at which this event takes place:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Specify the date when this event ends:",
+            "message": "Specify the date when this event ends:",
+            "translation": "Specify the date when this event ends:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Specify the time when this event ends:",
+            "message": "Specify the time when this event ends:",
+            "translation": "Specify the time when this event ends:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -651,6 +826,13 @@
             "fuzzy": true
         },
         {
+            "id": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
+            "message": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
+            "translation": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Please send a picture to go with your event.",
             "message": "Please send a picture to go with your event.",
             "translation": "Please send a picture to go with your event.",
@@ -689,6 +871,13 @@
             "id": "Date:",
             "message": "Date:",
             "translation": "Date:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Ends at:",
+            "message": "Ends at:",
+            "translation": "Ends at:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -735,10 +924,34 @@
             "fuzzy": true
         },
         {
+            "id": "🌎 Event is listed in public directory",
+            "message": "🌎 Event is listed in public directory",
+            "translation": "🌎 Event is listed in public directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "🖼 Event includes a picture",
             "message": "🖼 Event includes a picture",
             "translation": "🖼 Event includes a picture",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "message": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "translation": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "TotalCost",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.TotalCost()"
+                }
+            ],
             "fuzzy": true
         },
         {
@@ -793,6 +1006,65 @@
             "fuzzy": true
         },
         {
+            "id": "Error getting donors",
+            "message": "Error getting donors",
+            "translation": "Error getting donors",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "This event is collecting donations in the amount of {TotalCost}.",
+            "message": "This event is collecting donations in the amount of {TotalCost}.",
+            "translation": "This event is collecting donations in the amount of {TotalCost}.",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "TotalCost",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.TotalCost()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Collected so far:",
+            "message": "Collected so far:",
+            "translation": "Collected so far:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "No donations collected yet",
+            "message": "No donations collected yet",
+            "translation": "No donations collected yet",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Information shown to donors:",
+            "message": "Information shown to donors:",
+            "translation": "Information shown to donors:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "💰 Edit recovery information",
+            "message": "💰 Edit recovery information",
+            "translation": "💰 Edit recovery information",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Back to Event",
+            "message": "Back to Event",
+            "translation": "Back to Event",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Alright, you've been marked as attending.",
             "message": "Alright, you've been marked as attending.",
             "translation": "Alright, you've been marked as attending.",
@@ -839,6 +1111,38 @@
             "message": "hosted by",
             "translation": "hosted by",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Ends:",
+            "message": "Ends:",
+            "translation": "Ends:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "message": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "translation": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "DonationsSoFar",
+                    "string": "%.2[1]f",
+                    "type": "float64",
+                    "underlyingType": "float64",
+                    "argNum": 1,
+                    "expr": "donationsSoFar"
+                },
+                {
+                    "id": "TotalCost",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.TotalCost()"
+                }
+            ],
             "fuzzy": true
         },
         {
@@ -1063,6 +1367,13 @@
             "fuzzy": true
         },
         {
+            "id": "💰 Donate! Help Cover Costs!",
+            "message": "💰 Donate! Help Cover Costs!",
+            "translation": "💰 Donate! Help Cover Costs!",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
             "translation": "📩 Share to another chat...",
@@ -1080,13 +1391,6 @@
             "id": "Not an event you are attending.",
             "message": "Not an event you are attending.",
             "translation": "Not an event you are attending.",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "Sorry, I wasn't able to find the event.  Try again.",
-            "message": "Sorry, I wasn't able to find the event.  Try again.",
-            "translation": "Sorry, I wasn't able to find the event.  Try again.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1154,6 +1458,13 @@
             "fuzzy": true
         },
         {
+            "id": "Click here for donation information...",
+            "message": "Click here for donation information...",
+            "translation": "Click here for donation information...",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Click here to specify Guest names...",
             "message": "Click here to specify Guest names...",
             "translation": "Click here to specify Guest names...",
@@ -1179,6 +1490,58 @@
             "message": "The language has been set to English.",
             "translation": "The language has been set to English.",
             "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "message": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "translation": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "message": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "translation": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "message": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "translation": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Check out these events in your local area:",
+            "message": "Check out these events in your local area:",
+            "translation": "Check out these events in your local area:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "message": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "translation": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "message": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "translation": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "ICalURL",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "ICalURL"
+                }
+            ],
             "fuzzy": true
         },
         {
@@ -1293,6 +1656,20 @@
             "id": "See a list of all events you RSVPd to",
             "message": "See a list of all events you RSVPd to",
             "translation": "See a list of all events you RSVPd to",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "See nearby events listed in our public directory",
+            "message": "See nearby events listed in our public directory",
+            "translation": "See nearby events listed in our public directory",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Get an ICS calendar feed of all nearby events",
+            "message": "Get an ICS calendar feed of all nearby events",
+            "translation": "Get an ICS calendar feed of all nearby events",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

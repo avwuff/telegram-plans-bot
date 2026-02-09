@@ -72,9 +72,16 @@ type DBEvent interface {
 	AmIAttending(id int64) bool
 	PictureURL() string
 	SetPictureURL(t string) error
+	TotalCost() int
+	CostInfo() string
+	SetTotalCost(v int) error
+	SetCostInfo(t string) error
 	Public() (bool, float64, float64)
 	SetPublic(v bool, lat float64, lon float64) error
 	SetPublicOnly(v bool) error
+	RecordDonation(amount float64, donorId int64, donorName string) error
+	GetDonationTotal() (float64, error)
+	GetDonors() ([]*Donors, error)
 }
 
 type Attend struct {
@@ -84,6 +91,12 @@ type Attend struct {
 	CanAttend int
 	PlusMany  int
 	Guests    []string
+}
+
+type Donors struct {
+	UserID   int64
+	UserName string
+	Amount   float64
 }
 
 type CanAttend int

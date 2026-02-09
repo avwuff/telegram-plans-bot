@@ -202,14 +202,19 @@
             "translation": "🖼 Bild hinzufügen"
         },
         {
+            "id": "💰 Recoup Costs",
+            "message": "💰 Recoup Costs",
+            "translation": "\uD83D\uDCB0 Kosten hereinholen"
+        },
+        {
             "id": "🔒 Remove from Directory",
             "message": "🔒 Remove from Directory",
-            "translation": "\uD83D\uDD12 Verzeichnis entfernen"
+            "translation": "🔒 Verzeichnis entfernen"
         },
         {
             "id": "🌎 List in Public Directory",
             "message": "🌎 List in Public Directory",
-            "translation": "\uD83C\uDF0E Liste im Verzeichnis"
+            "translation": "🌎 Liste im Verzeichnis"
         },
         {
             "id": "👫 Set Max Attendees",
@@ -289,7 +294,7 @@
         {
             "id": "🙈 Hide Names: {SprintfNo}",
             "message": "🙈 Hide Names: {SprintfNo}",
-            "translation": "\uD83D\uDE48 Namen ausblenden: {SprintfNo}",
+            "translation": "🙈 Namen ausblenden: {SprintfNo}",
             "placeholders": [
                 {
                     "id": "SprintfNo",
@@ -360,6 +365,69 @@
                     "expr": "ICalURL"
                 }
             ]
+        },
+        {
+            "id": "Sorry, I wasn't able to find the event.  Try again.",
+            "message": "Sorry, I wasn't able to find the event.  Try again.",
+            "translation": "Leider konnte ich die Veranstaltung nicht finden. Versuchen Sie es erneut."
+        },
+        {
+            "id": "Sorry, but this event is not requesting donations.",
+            "message": "Sorry, but this event is not requesting donations.",
+            "translation": "Es tut uns leid, aber bei dieser Veranstaltung werden keine Spenden gesammelt."
+        },
+        {
+            "id": "💰 Custom Amount",
+            "message": "💰 Custom Amount",
+            "translation": "\uD83D\uDCB0 Benutzerdefinierter Betrag"
+        },
+        {
+            "id": "❌ Remove my Donation",
+            "message": "❌ Remove my Donation",
+            "translation": "❌ Meine Spende entfernen"
+        },
+        {
+            "id": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "message": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "translation": "Helfen Sie mit, die Kosten für {Name} zu decken! Sie können dem Veranstalter auf folgende Weise spenden:\n\n{CostInfo}\n\nNach Ihrer Spende kehren Sie bitte hierher zurück und klicken Sie auf eine der Schaltflächen. Falls Sie bereits gespendet haben, geben Sie bitte den Gesamtbetrag an, da dieser Ihre vorherige Spende ersetzt.",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                },
+                {
+                    "id": "CostInfo",
+                    "string": "%[2]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "event.CostInfo()"
+                }
+            ]
+        },
+        {
+            "id": "How much did you donate?",
+            "message": "How much did you donate?",
+            "translation": "Wie viel haben Sie gespendet?"
+        },
+        {
+            "id": "Thank you for your donation!",
+            "message": "Thank you for your donation!",
+            "translation": "Vielen Dank für Ihre Spende!"
+        },
+        {
+            "id": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "message": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "translation": "Ich bin mir nicht sicher, was Sie meinen. Versuchen Sie, nur die Zahl ohne Kommas oder Währungssymbole zu senden."
+        },
+        {
+            "id": "That seems like a bad number.",
+            "message": "That seems like a bad number.",
+            "translation": "Das scheint eine schlechte Zahl zu sein."
         },
         {
             "id": [
@@ -487,9 +555,24 @@
             "translation": "Aktuelles Bild:"
         },
         {
+            "id": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "message": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "translation": "Diese Funktion ermöglicht es Ihnen, einen Teil der Kosten Ihrer Veranstaltung durch Spenden Ihrer Gäste zu decken. Dieser Bot nimmt keine Zahlungen entgegen und verwaltet auch keine Gelder. Stattdessen geben Sie Informationen wie Ihre PayPal- oder Venmo-Adresse an, damit Ihre Gäste Ihnen direkt bezahlen können. Anschließend können sie hier auf einen Button klicken, um die Zahlung zu bestätigen. Dies basiert auf Vertrauen."
+        },
+        {
+            "id": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "message": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "translation": "Wie viel Geld möchten Sie durch Spenden zurückerhalten? Bitte geben Sie kein Währungssymbol an. Um die Spendenfunktion zu deaktivieren, senden Sie 0."
+        },
+        {
+            "id": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
+            "message": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
+            "translation": "Wie können die Leute Sie bezahlen? Geben Sie Ihre PayPal-, Venmo-, Cash App-, Interac E-Transfer-, Zelle- oder andere Zahlungsinformationen an. Was Sie hier eingeben, wird Ihren Gästen angezeigt, wenn diese spenden möchten."
+        },
+        {
             "id": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
             "message": "Including your event in our public event directory makes it available to anyone in the local area.  Anyone can choose to attend or share your event.  We recommend you use this feature only for large events, as attendance can be hard to control.\n\nIf you would like to share your event in our directories, send a Location pin (usually via the 📎 menu) that is close to where the event will take place. This allows nearby people to find your event.\n\nLocals will be able to use the command /nearby to see events near them.",
-            "translation": "Wenn Sie Ihre Veranstaltung in unser öffentliches Veranstaltungsverzeichnis aufnehmen, ist sie für alle in Ihrer Nähe zugänglich. Jeder kann Ihre Veranstaltung besuchen oder teilen. Wir empfehlen diese Funktion nur für große Veranstaltungen, da die Teilnehmerzahl schwer zu kontrollieren ist.\n\nWenn Sie Ihre Veranstaltung in unseren Verzeichnissen teilen möchten, senden Sie uns bitte eine Standort-PIN (normalerweise über das \uD83D\uDCCE-Menü) in der Nähe des Veranstaltungsortes. So können leute in der Nähe Ihre Veranstaltung finden.\n\nMit dem Befehl /nearby können sich lokale Personen Veranstaltungen in ihrer Nähe anzeigen lassen."
+            "translation": "Wenn Sie Ihre Veranstaltung in unser öffentliches Veranstaltungsverzeichnis aufnehmen, ist sie für alle in Ihrer Nähe zugänglich. Jeder kann Ihre Veranstaltung besuchen oder teilen. Wir empfehlen diese Funktion nur für große Veranstaltungen, da die Teilnehmerzahl schwer zu kontrollieren ist.\n\nWenn Sie Ihre Veranstaltung in unseren Verzeichnissen teilen möchten, senden Sie uns bitte eine Standort-PIN (normalerweise über das 📎-Menü) in der Nähe des Veranstaltungsortes. So können leute in der Nähe Ihre Veranstaltung finden.\n\nMit dem Befehl /nearby können sich lokale Personen Veranstaltungen in ihrer Nähe anzeigen lassen."
         },
         {
             "id": "Specify the date on which this event takes place:",
@@ -557,7 +640,7 @@
         {
             "id": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
             "message": "Please send a Location via Telegram's 'Send Location' feature.  It should be near the event but doesn't have to be exact.  Check inside the 📎 menu.",
-            "translation": "Bitte sende einen Standort über die Funktion 'Standort senden' von Telegram. Er sollte in der Nähe des Ereignisses liegen, muss aber nicht genau sein. Schau im \uD83D\uDCCE-Menü nach."
+            "translation": "Bitte sende einen Standort über die Funktion 'Standort senden' von Telegram. Er sollte in der Nähe des Ereignisses liegen, muss aber nicht genau sein. Schau im 📎-Menü nach."
         },
         {
             "id": "Please send a picture to go with your event.",
@@ -627,12 +710,27 @@
         {
             "id": "🌎 Event is listed in public directory",
             "message": "🌎 Event is listed in public directory",
-            "translation": "\uD83C\uDF0E Die Veranstaltung ist im öffentlichen Verzeichnis aufgeführt"
+            "translation": "🌎 Die Veranstaltung ist im öffentlichen Verzeichnis aufgeführt"
         },
         {
             "id": "🖼 Event includes a picture",
             "message": "🖼 Event includes a picture",
             "translation": "🖼 Zur Veranstaltung gehört ein Bild"
+        },
+        {
+            "id": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "message": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "translation": "\uD83D\uDCB0 Wir nehmen Spenden entgegen, um die Kosten von {TotalCost} zu decken. Klicken Sie auf XXXX, um die Gesamtkosten einzusehen.",
+            "placeholders": [
+                {
+                    "id": "TotalCost",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.TotalCost()"
+                }
+            ]
         },
         {
             "id": "Error listing events: {Err}",
@@ -680,6 +778,51 @@
             ]
         },
         {
+            "id": "Error getting donors",
+            "message": "Error getting donors",
+            "translation": "Fehler beim Abrufen der Spenderdaten"
+        },
+        {
+            "id": "This event is collecting donations in the amount of {TotalCost}.",
+            "message": "This event is collecting donations in the amount of {TotalCost}.",
+            "translation": "Bei dieser Veranstaltung werden Spenden in Höhe von {TotalCost} gesammelt.",
+            "placeholders": [
+                {
+                    "id": "TotalCost",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.TotalCost()"
+                }
+            ]
+        },
+        {
+            "id": "Collected so far:",
+            "message": "Collected so far:",
+            "translation": "Bisher gesammelt:"
+        },
+        {
+            "id": "No donations collected yet",
+            "message": "No donations collected yet",
+            "translation": "Es wurden noch keine Spenden gesammelt."
+        },
+        {
+            "id": "Information shown to donors:",
+            "message": "Information shown to donors:",
+            "translation": "Informationen, die den Spendern angezeigt werden:"
+        },
+        {
+            "id": "💰 Edit recovery information",
+            "message": "💰 Edit recovery information",
+            "translation": "\uD83D\uDCB0 Wiederherstellungsinformationen bearbeiten"
+        },
+        {
+            "id": "Back to Event",
+            "message": "Back to Event",
+            "translation": "Zurück zur Veranstaltung"
+        },
+        {
             "id": "Alright, you've been marked as attending.",
             "message": "Alright, you've been marked as attending.",
             "translation": "Alles klar, du wurdest als Teilnehmer eingetragen."
@@ -718,6 +861,29 @@
             "id": "Ends:",
             "message": "Ends:",
             "translation": "Endet:"
+        },
+        {
+            "id": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "message": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "translation": "\uD83D\uDCB0 <b>Helfen Sie uns, die Kosten für diese Veranstaltung zu decken!</b> Wir haben bereits <b>{DonationsSoFar}</b> von <b>{TotalCost}</b> gesammelt. Nutzen Sie den untenstehenden Spenden-Button, um zu spenden.",
+            "placeholders": [
+                {
+                    "id": "DonationsSoFar",
+                    "string": "%.2[1]f",
+                    "type": "float64",
+                    "underlyingType": "float64",
+                    "argNum": 1,
+                    "expr": "donationsSoFar"
+                },
+                {
+                    "id": "TotalCost",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.TotalCost()"
+                }
+            ]
         },
         {
             "id": "Suiting: {CSuiting}",
@@ -895,6 +1061,11 @@
             "translation": "📆 Zum Kalender hinzufügen"
         },
         {
+            "id": "💰 Donate! Help Cover Costs!",
+            "message": "💰 Donate! Help Cover Costs!",
+            "translation": "\uD83D\uDCB0 Spenden Sie! Helfen Sie mit, die Kosten!"
+        },
+        {
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
             "translation": "📩 Mit einem anderen Chat teilen..."
@@ -908,11 +1079,6 @@
             "id": "Not an event you are attending.",
             "message": "Not an event you are attending.",
             "translation": "Keine Veranstaltung, an der Sie teilnehmen."
-        },
-        {
-            "id": "Sorry, I wasn't able to find the event.  Try again.",
-            "message": "Sorry, I wasn't able to find the event.  Try again.",
-            "translation": "Leider konnte ich die Veranstaltung nicht finden. Versuchen Sie es erneut."
         },
         {
             "id": "Sorry, but this event does not allow you to bring any guests.",
@@ -968,6 +1134,11 @@
             ]
         },
         {
+            "id": "Click here for donation information...",
+            "message": "Click here for donation information...",
+            "translation": "Klicken Sie hier für Informationen zu Spenden..."
+        },
+        {
             "id": "Click here to specify Guest names...",
             "message": "Click here to specify Guest names...",
             "translation": "Klicken Sie hier, um Gastnamen anzugeben..."
@@ -990,12 +1161,12 @@
         {
             "id": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
             "message": "Check out the events happening near you!\n\nSend me a location pin using the 📎 menu for a list of public events within 500 miles of you.",
-            "translation": "Informieren Sie sich über die Veranstaltungen in Ihrer Nähe!\n\nSenden Sie mir über das \uD83D\uDCCE-Menü eine Standortmarkierung, um eine Liste öffentlicher Veranstaltungen im Umkreis von 800 Kilometern zu erhalten."
+            "translation": "Informieren Sie sich über die Veranstaltungen in Ihrer Nähe!\n\nSenden Sie mir über das 📎-Menü eine Standortmarkierung, um eine Liste öffentlicher Veranstaltungen im Umkreis von 800 Kilometern zu erhalten."
         },
         {
             "id": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
             "message": "Please send a Location via Telegram's 'Send Location' feature.  Check inside the 📎 menu.",
-            "translation": "Bitte senden Sie einen Standort über die Funktion „Standort senden“ von Telegram. Sehen Sie im \uD83D\uDCCE-Menü nach."
+            "translation": "Bitte senden Sie einen Standort über die Funktion „Standort senden“ von Telegram. Sehen Sie im 📎-Menü nach."
         },
         {
             "id": "Unfortunately, no nearby events found.  Isn't this a good opportunity to /start one?",
@@ -1010,12 +1181,12 @@
         {
             "id": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
             "message": "Get a feed of the events happening near you!\n\nSend me a location pin using the 📎 menu for a continually updating feed of events within 500 miles of you.",
-            "translation": "Erhalten Sie einen Feed der Veranstaltungen in Ihrer Nähe!\n\nSenden Sie mir über das \uD83D\uDCCE-Menü eine Standortmarkierung, um einen ständig aktualisierten Feed mit Veranstaltungen im Umkreis von 800 Kilometern zu erhalten."
+            "translation": "Erhalten Sie einen Feed der Veranstaltungen in Ihrer Nähe!\n\nSenden Sie mir über das 📎-Menü eine Standortmarkierung, um einen ständig aktualisierten Feed mit Veranstaltungen im Umkreis von 800 Kilometern zu erhalten."
         },
         {
             "id": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
             "message": "Cool, here is an iCal feed of all the events happening within 500 miles of you:\n\n{ICalURL}\n\nYou can add this feed URL to your Google Calendar or Outlook. Any events that are created will appear in the feed, and stay up to date!\n\nChheck out the /feed command also for a feed of events you're attending.'",
-            "translation": "Erhalten Sie einen Feed der Veranstaltungen in Ihrer Nähe!\n\nSenden Sie mir über das \uD83D\uDCCE-Menü eine Standortmarkierung, um einen ständig aktualisierten Feed mit Veranstaltungen im Umkreis von 800 Kilometern zu erhalten.",
+            "translation": "Erhalten Sie einen Feed der Veranstaltungen in Ihrer Nähe!\n\nSenden Sie mir über das 📎-Menü eine Standortmarkierung, um einen ständig aktualisierten Feed mit Veranstaltungen im Umkreis von 800 Kilometern zu erhalten.",
             "placeholders": [
                 {
                     "id": "ICalURL",

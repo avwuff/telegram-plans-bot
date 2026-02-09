@@ -37,11 +37,6 @@ func (tgp *TGPlansBot) handleDonateStart(usrInfo *userManager.UserInfo, msg *tgb
 		return
 	}
 
-	// Switch them into Set Guest Names mode.
-	//usrInfo.SetMode(userManager.MODE_GUESTS_SET_GUESTS)
-	//usrInfo.SetData("GuestEvent", event.ID())
-	//usrInfo.SetData("GuestList", []string{})
-
 	var buttons [][]tgbotapi.InlineKeyboardButton
 	row := make([]tgbotapi.InlineKeyboardButton, 0)
 	row = append(row, quickButton(loc.Sprintf("💰 5"), fmt.Sprintf("donate:%v:5", event.ID())))
@@ -99,7 +94,7 @@ func (tgp *TGPlansBot) manage_clickDonate(usrInfo *userManager.UserInfo, cb *tgb
 		return
 	}
 
-	event, err := tgp.db.GetEvent(uint(eventId), cb.From.ID)
+	event, err := tgp.db.GetEvent(uint(eventId), -1)
 	if err != nil {
 		return
 	}

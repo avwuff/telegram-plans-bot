@@ -191,7 +191,7 @@ func (tgp *TGPlansBot) costDashboard(usrInfo *userManager.UserInfo, msg *tgbotap
 	loc := localizer.FromLanguage(event.Language())
 
 	// Start with an optional message at the top.
-	t := "<b>" + loc.Sprintf("This event is collecting donations in the amount of %d."+"</b>", event.TotalCost()) + "\n\n"
+	t := "<b>" + loc.Sprintf("This event is collecting donations in the amount of %d.", event.TotalCost()) + "</b>" + "\n\n"
 
 	t += "<b>" + loc.Sprintf("Collected so far:") + "</b>\n"
 	if len(donors) == 0 {

@@ -9,6 +9,7 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"io"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -782,9 +783,12 @@ func (tgp *TGPlansBot) saveFile(eventID uint, fileID string) (string, error) {
 		return "", fmt.Errorf("error getting file: %v", err)
 	}
 
+	// Generate a random number here
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
 	// Download the file data.
 	// Use a hash for the filename so people can't guess the values
-	name := fmt.Sprintf("%v.jpg", helpers.CalenFeedMD5(tgp.saltValue, int64(eventID)))
+	name := fmt.Sprintf("%v.jpg", helpers.CalenFeedMD5(fmt.Sprintf("%s%v", tgp.saltValue, r.Int()), int64(eventID)))
 	cwd, err := os.Getwd()
 	if err != nil {
 		return "", err

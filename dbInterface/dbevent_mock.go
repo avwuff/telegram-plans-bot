@@ -55,6 +55,20 @@ func (_m *DBEventMock) Closed() bool {
 	return r0
 }
 
+// CostInfo provides a mock function with given fields:
+func (_m *DBEventMock) CostInfo() string {
+	ret := _m.Called()
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+
+	return r0
+}
+
 // DateTime provides a mock function with given fields:
 func (_m *DBEventMock) DateTime() time.Time {
 	ret := _m.Called()
@@ -163,6 +177,56 @@ func (_m *DBEventMock) GetCanAttend() CanAttend {
 	}
 
 	return r0
+}
+
+// GetDonationTotal provides a mock function with given fields:
+func (_m *DBEventMock) GetDonationTotal() (float64, error) {
+	ret := _m.Called()
+
+	var r0 float64
+	var r1 error
+	if rf, ok := ret.Get(0).(func() (float64, error)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() float64); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(float64)
+	}
+
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetDonors provides a mock function with given fields:
+func (_m *DBEventMock) GetDonors() ([]*Donors, error) {
+	ret := _m.Called()
+
+	var r0 []*Donors
+	var r1 error
+	if rf, ok := ret.Get(0).(func() ([]*Donors, error)); ok {
+		return rf()
+	}
+	if rf, ok := ret.Get(0).(func() []*Donors); ok {
+		r0 = rf()
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]*Donors)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // HideNames provides a mock function with given fields:
@@ -362,6 +426,20 @@ func (_m *DBEventMock) Public() (bool, float64, float64) {
 	return r0, r1, r2
 }
 
+// RecordDonation provides a mock function with given fields: amount, donorId, donorName
+func (_m *DBEventMock) RecordDonation(amount float64, donorId int64, donorName string) error {
+	ret := _m.Called(amount, donorId, donorName)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(float64, int64, string) error); ok {
+		r0 = rf(amount, donorId, donorName)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // SavePosting provides a mock function with given fields: MessageID
 func (_m *DBEventMock) SavePosting(MessageID string) {
 	_m.Called(MessageID)
@@ -379,6 +457,20 @@ func (_m *DBEventMock) SetClosed(v bool) error {
 	var r0 error
 	if rf, ok := ret.Get(0).(func(bool) error); ok {
 		r0 = rf(v)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// SetCostInfo provides a mock function with given fields: t
+func (_m *DBEventMock) SetCostInfo(t string) error {
+	ret := _m.Called(t)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string) error); ok {
+		r0 = rf(t)
 	} else {
 		r0 = ret.Error(0)
 	}
@@ -624,6 +716,20 @@ func (_m *DBEventMock) SetTimeZone(t string) error {
 	return r0
 }
 
+// SetTotalCost provides a mock function with given fields: v
+func (_m *DBEventMock) SetTotalCost(v int) error {
+	ret := _m.Called(v)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int) error); ok {
+		r0 = rf(v)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // SharingAllowed provides a mock function with given fields:
 func (_m *DBEventMock) SharingAllowed() bool {
 	ret := _m.Called()
@@ -661,6 +767,20 @@ func (_m *DBEventMock) TimeZone() string {
 		r0 = rf()
 	} else {
 		r0 = ret.Get(0).(string)
+	}
+
+	return r0
+}
+
+// TotalCost provides a mock function with given fields:
+func (_m *DBEventMock) TotalCost() int {
+	ret := _m.Called()
+
+	var r0 int
+	if rf, ok := ret.Get(0).(func() int); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(int)
 	}
 
 	return r0

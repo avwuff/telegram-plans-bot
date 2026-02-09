@@ -1,5 +1,14 @@
 # Changelog
 
+### Version 2.6 - Feb 2026
+#### New Features
+- Events can now request to recoup costs. A total is shown on the event page, and guests are prompted to donate. 
+The bot does not manage any funds, instead it shows guests the host's options for how to pay. 
+Payment totals are based on the honor system.
+
+#### Bug Fixes
+- Fixed bug where it was not possible to change the image associated with an event.
+
 ### Version 2.5 - Jun 2025
 #### New Features
 - Events can now be marked as Public, and appear in a public directory that can be accessed by sending /nearby

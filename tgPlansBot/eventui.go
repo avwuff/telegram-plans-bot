@@ -2,16 +2,17 @@ package tgPlansBot
 
 import (
 	"fmt"
+	"log"
+	"net/url"
+	"strconv"
+	"strings"
+
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"log"
-	"net/url"
-	"strconv"
-	"strings"
 )
 
 func (tgp *TGPlansBot) initUICommands() {
@@ -41,9 +42,19 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 	// Save where this was posted
 	// We can use a Gofunc here since it isn't important to have this saved before we continue
 	if cb.InlineMessageID != "" {
-		go event.SavePosting(cb.InlineMessageID)
+		go func() {
+			err := event.SavePosting(cb.InlineMessageID)
+			if err != nil {
+				log.Println(err)
+			}
+		}()
 	} else {
-		go event.SavePostingRegular(cb.Message.Chat.ID, cb.Message.MessageID)
+		go func() {
+			err := event.SavePostingRegular(cb.Message.Chat.ID, cb.Message.MessageID)
+			if err != nil {
+				log.Println(err)
+			}
+		}()
 	}
 
 	// HTML format the name so it works properly.

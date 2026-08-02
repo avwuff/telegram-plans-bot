@@ -4,10 +4,11 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"time"
+
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/localizer"
 	"gorm.io/gorm"
-	"time"
 )
 
 // Connector is an implementation of the dbinterface.
@@ -379,6 +380,9 @@ func (e *eventConnector) GetDonationTotal() (float64, error) {
 
 	var total *float64
 	res := e.db.Raw(sql, e.ev.EventID).Scan(&total)
+	if res == nil { // no total rows
+		return 0, nil
+	}
 	if res.Error != nil {
 		return 0, fmt.Errorf("get donation total: %w", res.Error)
 	}
@@ -485,24 +489,20 @@ func (e *eventConnector) updateAttendTable(userId int64, name string, attendVal 
 }
 
 // SavePosting stores the inline message ID of the posting so the event can be refreshed later
-func (e *eventConnector) SavePosting(MessageID string) {
+func (e *eventConnector) SavePosting(MessageID string) error {
 	posting := &FurryPlansPosted{
 		EventID:   e.ev.EventID,
 		MessageID: MessageID,
 	}
-	if e.db.Model(&FurryPlansPosted{}).Updates(&posting).RowsAffected == 0 {
-		e.db.Create(&posting)
-	}
+	return e.db.Model(&FurryPlansPosted{}).Save(&posting).Error
 }
-func (e *eventConnector) SavePostingRegular(chatId int64, messageId int) {
+func (e *eventConnector) SavePostingRegular(chatId int64, messageId int) error {
 	posting := &FurryPlansPosted{
 		EventID: e.ev.EventID,
 		ChatID:  chatId,
 		LocalID: messageId,
 	}
-	if e.db.Model(&FurryPlansPosted{}).Updates(&posting).RowsAffected == 0 {
-		e.db.Create(&posting)
-	}
+	return e.db.Model(&FurryPlansPosted{}).Save(&posting).Error
 }
 
 func (e *eventConnector) Postings() ([]dbInterface.Posting, error) {

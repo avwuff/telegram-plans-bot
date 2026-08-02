@@ -1,8 +1,9 @@
 package dbInterface
 
 import (
-	"furryplansbot.avbrand.com/localizer"
 	"time"
+
+	"furryplansbot.avbrand.com/localizer"
 )
 
 // Generate mocks of these interfaces for testing
@@ -30,8 +31,8 @@ type DBFeatures interface {
 type DBEvent interface {
 	GetAttending(userId int64) ([]*Attend, error)
 	Attending(userId int64, name string, attendType CanAttend, plusPeople int, guests []string) AttendMsgs
-	SavePosting(MessageID string)
-	SavePostingRegular(chatId int64, messageId int)
+	SavePosting(MessageID string) error
+	SavePostingRegular(chatId int64, messageId int) error
 	Postings() ([]Posting, error)
 	DeletePosting(MessageID string) error
 	DeletePostingRegular(chatId int64, messageId int) error

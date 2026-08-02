@@ -387,6 +387,9 @@ func (e *eventConnector) GetDonationTotal() (float64, error) {
 		return 0, fmt.Errorf("get donation total: %w", res.Error)
 	}
 
+	if total == nil {
+		return 0, nil
+	}
 	return *total, nil
 }
 

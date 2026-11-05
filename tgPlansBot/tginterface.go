@@ -2,7 +2,7 @@ package tgPlansBot
 
 import (
 	"context"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 )
 
 //go:generate go run github.com/vektra/mockery/v2 --name=TelegramBot --structname TelegramBotMock --filename telegrambot_mock.go --inpackage

@@ -19,11 +19,16 @@ func (base ChatConfig) paramsWithKey(key string) (Params, error) {
 // BaseChat is base type for all chat config types.
 type BaseChat struct {
 	ChatConfig
-	MessageThreadID     int
-	ProtectContent      bool
-	ReplyMarkup         interface{}
-	DisableNotification bool
-	ReplyParameters     ReplyParameters
+	BusinessConnectionID    BusinessConnectionID
+	MessageThreadID         int
+	DirectMessagesTopicID   int
+	ProtectContent          bool
+	ReplyMarkup             any
+	DisableNotification     bool
+	AllowPaidBroadcast      bool
+	MessageEffectID         string // for private chats only
+	ReplyParameters         ReplyParameters
+	SuggestedPostParameters *SuggestedPostParameters
 }
 
 func (chat *BaseChat) params() (Params, error) {
@@ -31,16 +36,28 @@ func (chat *BaseChat) params() (Params, error) {
 	if err != nil {
 		return params, err
 	}
+	p1, err := chat.BusinessConnectionID.params()
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 
 	params.AddNonZero("message_thread_id", chat.MessageThreadID)
+	params.AddNonZero("direct_messages_topic_id", chat.DirectMessagesTopicID)
 	params.AddBool("disable_notification", chat.DisableNotification)
+	params.AddBool("allow_paid_broadcast", chat.AllowPaidBroadcast)
 	params.AddBool("protect_content", chat.ProtectContent)
+	params.AddNonEmpty("message_effect_id", chat.MessageEffectID)
 
 	err = params.AddInterface("reply_markup", chat.ReplyMarkup)
 	if err != nil {
 		return params, err
 	}
-	err = params.AddInterface("reply_parameters", chat.ReplyParameters)
+	err = params.AddInterfaceNonZero("reply_parameters", chat.ReplyParameters)
+	if err != nil {
+		return params, err
+	}
+	err = params.AddInterface("suggested_post_parameters", chat.SuggestedPostParameters)
 	return params, err
 }
 
@@ -79,6 +96,25 @@ func (edit BaseEdit) params() (Params, error) {
 	return params, err
 }
 
+// BaseEphemeralMessage identifies an ephemeral message received by a user.
+type BaseEphemeralMessage struct {
+	ChatConfig
+	ReceiverUserID     int64
+	EphemeralMessageID int
+}
+
+func (message BaseEphemeralMessage) params() (Params, error) {
+	params, err := message.ChatConfig.params()
+	if err != nil {
+		return params, err
+	}
+
+	params.AddNonZero64("receiver_user_id", message.ReceiverUserID)
+	params.AddNonZero("ephemeral_message_id", message.EphemeralMessageID)
+
+	return params, nil
+}
+
 // BaseSpoiler is base type of structures with spoilers.
 type BaseSpoiler struct {
 	HasSpoiler bool
@@ -97,7 +133,8 @@ func (spoiler BaseSpoiler) params() (Params, error) {
 // BaseChatMessage is a base type for all messages in chats.
 type BaseChatMessage struct {
 	ChatConfig
-	MessageID int
+	MessageID            int
+	BusinessConnectionID BusinessConnectionID
 }
 
 func (base BaseChatMessage) params() (Params, error) {
@@ -105,15 +142,21 @@ func (base BaseChatMessage) params() (Params, error) {
 	if err != nil {
 		return params, err
 	}
+	p1, err := base.BusinessConnectionID.params()
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 	params.AddNonZero("message_id", base.MessageID)
 
-	return params, nil
+	return params, err
 }
 
 // BaseChatMessages is a base type for all messages in chats.
 type BaseChatMessages struct {
 	ChatConfig
-	MessageIDs []int
+	MessageIDs           []int
+	BusinessConnectionID BusinessConnectionID
 }
 
 func (base BaseChatMessages) params() (Params, error) {
@@ -121,6 +164,11 @@ func (base BaseChatMessages) params() (Params, error) {
 	if err != nil {
 		return params, err
 	}
+	p1, err := base.BusinessConnectionID.params()
+	if err != nil {
+		return params, err
+	}
+	params.Merge(p1)
 	err = params.AddInterface("message_ids", base.MessageIDs)
 
 	return params, err

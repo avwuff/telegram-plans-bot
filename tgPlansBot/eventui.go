@@ -227,7 +227,37 @@ func (tgp *TGPlansBot) answerCallback(query *tgbotapi.CallbackQuery, Text string
 	}
 }
 
+// eventPictureMediaID is the name used to refer to the event picture inside a rich message.
+const eventPictureMediaID = "eventpicture"
+
+// collapseListsOver is how many people a list of people can have before a rich message collapses it.
+const collapseListsOver = 50
+
+// makeEventUIText creates the event text for a classic message.
 func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer.Localizer) string {
+	return tgp.buildEventUIText(event, loc, false)
+}
+
+// makeEventUIRichHtml creates the event text for a rich message.
+func (tgp *TGPlansBot) makeEventUIRichHtml(event dbInterface.DBEvent, loc *localizer.Localizer) string {
+	return helpers.TelegramHtmlToRichHtml(tgp.buildEventUIText(event, loc, true))
+}
+
+// makeEventUIRichMessage creates the rich message for an event, with the picture at the top if it has one.
+func (tgp *TGPlansBot) makeEventUIRichMessage(event dbInterface.DBEvent, loc *localizer.Localizer) tgbotapi.InputRichMessage {
+	rich := tgbotapi.InputRichMessage{HTML: tgp.makeEventUIRichHtml(event, loc)}
+
+	if fileID := event.PictureFileID(); fileID != "" {
+		photo := tgbotapi.NewInputMediaPhoto(tgbotapi.FileID(fileID))
+		rich.HTML = `<img src="tg://photo?id=` + eventPictureMediaID + `"/>` + rich.HTML
+		rich.Media = []tgbotapi.InputRichMessageMedia{{ID: eventPictureMediaID, Media: &photo}}
+	}
+	return rich
+}
+
+// buildEventUIText creates the event text in classic Telegram HTML.
+// If rich is set, it can also include details blocks, which only rich messages support.
+func (tgp *TGPlansBot) buildEventUIText(event dbInterface.DBEvent, loc *localizer.Localizer, rich bool) string {
 
 	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
 
@@ -307,6 +337,8 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 		}
 	}
 
+	attendingCollapsed := false
+
 	// Fursuit walks display different event messages
 	if event.Suitwalk() {
 		if len(tSuiting) > 0 {
@@ -329,62 +361,95 @@ func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer
 		}
 
 	} else {
+		attendingCollapsed = rich && cGoing > collapseListsOver
 		if len(tGoing) > 0 {
-			t += "\n" + "<b>" + loc.Sprintf("Attending: %v", cGoing) + "</b>\n"
-			if !event.HideNames() {
-				t += strings.Join(tGoing, "\n") + "\n"
-			}
+			t += eventUIListSection(loc.Sprintf("Attending: %v", cGoing), tGoing, "\n", event.HideNames(), attendingCollapsed)
 		}
 	}
 
+	// Maybe and Can't make it are never left open when Attending is collapsed.
 	if len(tMaybe) > 0 {
-		t += "\n" + "<b>" + loc.Sprintf("Maybe: %v", len(tMaybe)) + "</b>\n"
-		if !event.HideNames() {
-			t += strings.Join(tMaybe, ", ") + "\n"
-		}
+		collapsed := rich && (attendingCollapsed || len(tMaybe) > collapseListsOver)
+		t += eventUIListSection(loc.Sprintf("Maybe: %v", len(tMaybe)), tMaybe, ", ", event.HideNames(), collapsed)
 	}
 
 	if len(tNot) > 0 {
-		t += "\n" + "<b>" + loc.Sprintf("Can't make it: %v", len(tNot)) + "</b>\n"
-		if !event.HideNames() {
-			t += strings.Join(tNot, ", ") + "\n"
-		}
+		collapsed := rich && (attendingCollapsed || len(tNot) > collapseListsOver)
+		t += eventUIListSection(loc.Sprintf("Can't make it: %v", len(tNot)), tNot, ", ", event.HideNames(), collapsed)
 	}
 
 	t += "\n<i>" + loc.Sprintf("Can you go? Use the buttons below.") + "</i>"
 	return t
 }
 
+// eventUIListSection creates one of the lists of people, with a heading.
+// A collapsed list is a details block, which only rich messages support. It has no 'open' attribute, so it starts closed.
+func eventUIListSection(heading string, names []string, separator string, hideNames bool, collapsed bool) string {
+	heading = "<b>" + heading + "</b>"
+	if hideNames {
+		return "\n" + heading + "\n"
+	}
+	list := strings.Join(names, separator)
+	if collapsed {
+		return "\n<details><summary>" + heading + "</summary>" + helpers.TelegramHtmlToRichHtml(list) + "</details>\n"
+	}
+	return "\n" + heading + "\n" + list + "\n"
+}
+
 // makeEventUI displays the main event UI.
 func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, inlineId string) (int, error) {
 
-	t := tgp.makeEventUIText(event, loc)
+	buttons := tgp.eventUIButtons(event, loc)
 
-	var mObj tgbotapi.Chattable
+	rich := tgbotapi.NewEditMessageText(chatId, 0, "")
+	rich.InlineMessageID = inlineId
+	rich.RichMessage = tgp.makeEventUIRichMessage(event, loc)
+	rich.ReplyMarkup = &buttons
+
+	retryAfter, err := tgp.requestEventEdit(rich)
+	if !shouldFallBackToClassic(err) {
+		return retryAfter, err
+	}
+	log.Printf("Rich edit of inline message %v failed, falling back to classic: %v\n", inlineId, err)
+
+	mObj := tgbotapi.NewEditMessageText(chatId, 0, tgp.makeEventUIText(event, loc))
+	mObj.InlineMessageID = inlineId
+	mObj.ParseMode = ParseModeHtml
+	mObj.ReplyMarkup = &buttons
+	mObj.LinkPreviewOptions.IsDisabled = true
+
+	return tgp.requestEventEdit(mObj)
+}
+
+// makeEventUIRegular displays the main event UI for non-inline messages
+func (tgp *TGPlansBot) makeEventUIRegular(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, messageId int) (int, error) {
 
 	buttons := tgp.eventUIButtons(event, loc)
 
-	mObj2 := tgbotapi.NewEditMessageText(chatId, 0, t)
-	mObj2.InlineMessageID = inlineId
-	mObj2.ParseMode = ParseModeHtml
-	mObj2.ReplyMarkup = &buttons
+	rich := tgbotapi.NewEditMessageText(chatId, messageId, "")
+	rich.RichMessage = tgp.makeEventUIRichMessage(event, loc)
+	rich.ReplyMarkup = &buttons
 
-	// If there is a picture included, add the URL.
-	if event.PictureURL() != "" {
-		mObj2.LinkPreviewOptions.URL = event.PictureURL()
-		// This seems to affect the media size on iOS only.  We will target the large media.
-		mObj2.LinkPreviewOptions.PreferLargeMedia = true
-		//mObj2.LinkPreviewOptions.PreferSmallMedia = true
-		mObj2.LinkPreviewOptions.ShowAboveText = true
-	} else {
-		mObj2.LinkPreviewOptions.IsDisabled = true
+	retryAfter, err := tgp.requestEventEdit(rich)
+	if !shouldFallBackToClassic(err) {
+		return retryAfter, err
 	}
+	log.Printf("Rich edit of message %v in chat %v failed, falling back to classic: %v\n", messageId, chatId, err)
 
-	mObj = mObj2
+	mObj := tgbotapi.NewEditMessageText(chatId, messageId, tgp.makeEventUIText(event, loc))
+	mObj.ParseMode = ParseModeHtml
+	mObj.ReplyMarkup = &buttons
+	mObj.LinkPreviewOptions.IsDisabled = true
 
-	rsp, err := tgp.tg.Request(mObj)
+	return tgp.requestEventEdit(mObj)
+}
+
+// requestEventEdit sends an edit to Telegram, and returns how long to wait before retrying if we were rate limited.
+func (tgp *TGPlansBot) requestEventEdit(edit tgbotapi.Chattable) (int, error) {
+	rsp, err := tgp.tg.Request(edit)
 	if err != nil {
-		if rsp.Parameters != nil {
+		// The response is nil if the request never got an answer from Telegram.
+		if rsp != nil && rsp.Parameters != nil {
 			return rsp.Parameters.RetryAfter, err
 		}
 		return 0, err
@@ -392,30 +457,18 @@ func (tgp *TGPlansBot) makeEventUI(chatId int64, event dbInterface.DBEvent, loc 
 	return 0, nil
 }
 
-// makeEventUIRegular displays the main event UI for non-inline messages
-func (tgp *TGPlansBot) makeEventUIRegular(chatId int64, event dbInterface.DBEvent, loc *localizer.Localizer, messageId int) (int, error) {
-
-	t := tgp.makeEventUIText(event, loc)
-
-	var mObj tgbotapi.Chattable
-
-	buttons := tgp.eventUIButtons(event, loc)
-
-	mObj2 := tgbotapi.NewEditMessageText(chatId, 0, t)
-	mObj2.MessageID = messageId
-	mObj2.ParseMode = ParseModeHtml
-	mObj2.ReplyMarkup = &buttons
-	mObj2.LinkPreviewOptions.IsDisabled = true
-	mObj = mObj2
-
-	rsp, err := tgp.tg.Request(mObj)
-	if err != nil {
-		if rsp.Parameters != nil {
-			return rsp.Parameters.RetryAfter, err
-		}
-		return 0, err
+// shouldFallBackToClassic decides if a failed rich edit is worth retrying as a classic message.
+// Telegram could reject the rich content itself, but these errors would apply to a classic edit too.
+func shouldFallBackToClassic(err error) bool {
+	if err == nil {
+		return false
 	}
-	return 0, nil
+	for _, msg := range []string{"Too Many Requests", "MESSAGE_ID_INVALID", "message to edit not found", "message is not modified"} {
+		if strings.Contains(err.Error(), msg) {
+			return false
+		}
+	}
+	return true
 }
 
 // eventEditButtons creates the buttons that help you edit an event.

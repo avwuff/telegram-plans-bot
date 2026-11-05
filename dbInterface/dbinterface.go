@@ -25,6 +25,7 @@ type DBFeatures interface {
 	GlobalMarkBadUser(id int64)
 	GlobalSent(id int64)
 	NearbyFeed(latitude float64, longitude float64, distKM int) ([]DBEvent, error)
+	EventsMissingPictureFileID() ([]DBEvent, error)
 }
 
 // DBEvent provides access to features on the event.
@@ -73,6 +74,8 @@ type DBEvent interface {
 	AmIAttending(id int64) bool
 	PictureURL() string
 	SetPictureURL(t string) error
+	PictureFileID() string
+	SetPictureFileID(t string) error
 	TotalCost() int
 	CostInfo() string
 	SetTotalCost(v int) error

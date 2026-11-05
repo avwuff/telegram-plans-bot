@@ -104,3 +104,26 @@ func Test_ConvertEntitiesToHTML(t1 *testing.T) {
 		})
 	}
 }
+
+func TestTelegramHtmlToRichHtml(t *testing.T) {
+	tests := []struct {
+		name string
+		s    string
+		want string
+	}{
+		{name: "empty", s: "", want: ""},
+		{name: "line breaks", s: "<b>Title</b>\nline two\n\nafter blank", want: "<p><b>Title</b><br>line two<br><br>after blank</p>"},
+		{name: "outer line breaks are trimmed", s: "\n\nhello\n", want: "<p>hello</p>"},
+		{name: "windows line breaks", s: "one\r\ntwo", want: "<p>one<br>two</p>"},
+		{name: "indentation is kept", s: " - name\n   - <i>guest</i>", want: "<p>&nbsp;- name<br>&nbsp;&nbsp;&nbsp;- <i>guest</i></p>"},
+		{name: "formatting across a blank line stays in one block", s: "<b>one\n\ntwo</b>", want: "<p><b>one<br><br>two</b></p>"},
+		{name: "pre gets its own block and keeps its contents", s: "before\n<pre>  code\n  more</pre>\nafter", want: "<p>before</p><pre>  code\n  more</pre><p>after</p>"},
+		{name: "only pre", s: "<pre>code</pre>", want: "<pre>code</pre>"},
+		{name: "entities are left alone", s: "a &amp; b &#128512;", want: "<p>a &amp; b &#128512;</p>"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, TelegramHtmlToRichHtml(tt.s))
+		})
+	}
+}

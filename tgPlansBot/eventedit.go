@@ -7,12 +7,7 @@ import (
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/OvyFlash/telegram-bot-api"
-	"io"
 	"log"
-	"math/rand"
-	"net/http"
-	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -83,7 +78,7 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 
 	// PICTURES
 	case "picture":
-		tgp.editPictureItem(usrInfo, cb.From.ID, event.PictureURL(), event.SetPictureURL, loc.Sprintf("Send me a picture that will be included with your event."), loc.Sprintf("Current picture:"))
+		tgp.editPictureItem(usrInfo, cb.From.ID, event, loc.Sprintf("Send me a picture that will be included with your event."), loc.Sprintf("Current picture:"))
 
 	// Allow the event owner to recoup costs from the event
 	case "costs":
@@ -699,19 +694,24 @@ func (tgp *TGPlansBot) edit_setCostInfo(usrInfo *userManager.UserInfo, msg *tgbo
 }
 
 // editPictureItem allows a picture to be set
-func (tgp *TGPlansBot) editPictureItem(usrInfo *userManager.UserInfo, chatId int64, EditItem string, SetFunc setStringFunc, prompt string, picPrompt string) {
+func (tgp *TGPlansBot) editPictureItem(usrInfo *userManager.UserInfo, chatId int64, event dbInterface.DBEvent, prompt string, picPrompt string) {
 	// Store a pointer to the string we are trying to set.
-	usrInfo.SetData(EDIT_EVENTSETFUNC, SetFunc)
+	usrInfo.SetData(EDIT_EVENTSETFUNC, setStringFunc(event.SetPictureFileID))
 
 	// Switch to picture edit mode
 	usrInfo.SetMode(userManager.MODE_EDIT_PICTURE)
 
 	// Send the current picture so we can see what it looks like
-	if EditItem != "" {
+	if event.PictureFileID() != "" {
+		mObj := tgbotapi.NewPhoto(chatId, tgbotapi.FileID(event.PictureFileID()))
+		mObj.Caption = picPrompt
+		_, _ = tgp.tg.Send(mObj)
+	} else if event.PictureURL() != "" {
+		// An old picture that hasn't been uploaded to Telegram yet.
 		mObj := tgbotapi.NewMessage(chatId, picPrompt)
 		mObj.LinkPreviewOptions.PreferLargeMedia = true
 		mObj.LinkPreviewOptions.ShowAboveText = false
-		mObj.LinkPreviewOptions.URL = EditItem
+		mObj.LinkPreviewOptions.URL = event.PictureURL()
 		_, _ = tgp.tg.Send(mObj)
 	}
 
@@ -740,15 +740,8 @@ func (tgp *TGPlansBot) edit_setPicture(usrInfo *userManager.UserInfo, msg *tgbot
 		return
 	}
 
-	// Download the file to our picture cache here on the server.
-	url, err := tgp.saveLargestPhoto(event.ID(), msg.Photo)
-	if err != nil {
-		tgp.quickReply(msg, err.Error())
-		return
-	}
-
 	// Set the string to this value.  This should update it in the struct.
-	err = setFunc(url)
+	err := setFunc(largestPhotoFileID(msg.Photo))
 	if err != nil {
 		tgp.quickReply(msg, usrInfo.Locale.Sprintf("error updating event: %v", err))
 		return
@@ -760,8 +753,8 @@ func (tgp *TGPlansBot) edit_setPicture(usrInfo *userManager.UserInfo, msg *tgbot
 	tgp.updateEventUIAllPostings(event)
 }
 
-func (tgp *TGPlansBot) saveLargestPhoto(eventID uint, photos []tgbotapi.PhotoSize) (string, error) {
-
+// largestPhotoFileID finds the Telegram file ID of the largest size of a photo.
+func largestPhotoFileID(photos []tgbotapi.PhotoSize) string {
 	largest := ""
 	size := 0
 	for _, photo := range photos {
@@ -770,54 +763,7 @@ func (tgp *TGPlansBot) saveLargestPhoto(eventID uint, photos []tgbotapi.PhotoSiz
 			largest = photo.FileID
 		}
 	}
-
-	return tgp.saveFile(eventID, largest)
-}
-
-// save this telegram file to disk in the cache
-func (tgp *TGPlansBot) saveFile(eventID uint, fileID string) (string, error) {
-	// generate a path for this file
-
-	fURL, err := tgp.tg.GetFileDirectURL(fileID)
-	if err != nil {
-		return "", fmt.Errorf("error getting file: %v", err)
-	}
-
-	// Generate a random number here
-	r := rand.New(rand.NewSource(time.Now().UnixNano()))
-
-	// Download the file data.
-	// Use a hash for the filename so people can't guess the values
-	name := fmt.Sprintf("%v.jpg", helpers.CalenFeedMD5(fmt.Sprintf("%s%v", tgp.saltValue, r.Int()), int64(eventID)))
-	cwd, err := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-	dir := filepath.Join(cwd, "html", "cache")
-	err = os.MkdirAll(dir, 0777)
-
-	fullpath := filepath.Join(dir, name)
-
-	// write this file to disk here.
-	resp, err := http.Get(fURL)
-	if err != nil {
-		return "", fmt.Errorf("error downloading file: %v", err)
-	}
-	defer resp.Body.Close()
-
-	log.Printf("Writing to %v", fullpath)
-	// Create the file
-	out, err := os.Create(fullpath)
-	if err != nil {
-		return "", fmt.Errorf("error creating file %v: %v", fullpath, err)
-	}
-	defer out.Close()
-
-	// Write the body to file
-	_, err = io.Copy(out, resp.Body)
-
-	// TODO: Remove hardcoded URL.
-	return fmt.Sprintf("https://plansbot.avbrand.com/cache/%v", name), nil
+	return largest
 }
 
 // editNumberItem puts them into a mode where they are editing a number item

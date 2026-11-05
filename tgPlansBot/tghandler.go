@@ -71,6 +71,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.initSetupCommands()
 	tgp.initUICommands()
 	tgp.initGlobalMsgCommands()
+	tgp.initFixPicturesCommands()
 	tgp.initGuestCommands()
 	tgp.initDonateCommands()
 	tgp.initNearbyCommands()

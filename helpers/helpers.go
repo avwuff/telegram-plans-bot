@@ -4,12 +4,17 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"fmt"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"html"
 	"regexp"
 	"strconv"
+	"strings"
 	"unicode/utf16"
 )
+
+// richPreBlock finds the blocks in the text that can't be in a paragraph, so they are kept as they are.
+// Text from users has its HTML escaped, so the details tag can only come from the bot itself.
+var richPreBlock = regexp.MustCompile(`(?s)<pre>.*?</pre>|<details>.*?</details>`)
 
 // Tuple provides a simple 2-item type
 type Tuple struct {
@@ -30,6 +35,36 @@ func CalenFeedMD5(saltValue string, id int64) string {
 func StripHtmlRegex(s string) string {
 	r := regexp.MustCompile(`<.*?>`)
 	return html.UnescapeString(r.ReplaceAllString(s, ""))
+}
+
+// TelegramHtmlToRichHtml converts text in Telegram's classic HTML format to the format used by rich messages.
+// Classic messages keep their line breaks and spacing, but rich messages are made of blocks, so the text
+// goes in a paragraph with explicit line breaks. Pre-formatted text can't be in a paragraph, so it gets its own block.
+func TelegramHtmlToRichHtml(s string) string {
+	s = strings.ReplaceAll(s, "\r\n", "\n")
+
+	res := ""
+	last := 0
+	for _, loc := range richPreBlock.FindAllStringIndex(s, -1) {
+		res += richParagraph(s[last:loc[0]]) + s[loc[0]:loc[1]]
+		last = loc[1]
+	}
+	return res + richParagraph(s[last:])
+}
+
+// richParagraph wraps text in a paragraph, keeping its line breaks and the indentation of each line.
+func richParagraph(s string) string {
+	s = strings.Trim(s, "\n")
+	if strings.TrimSpace(s) == "" {
+		return ""
+	}
+
+	lines := strings.Split(s, "\n")
+	for i, line := range lines {
+		trimmed := strings.TrimLeft(line, " ")
+		lines[i] = strings.Repeat("&nbsp;", len(line)-len(trimmed)) + trimmed
+	}
+	return "<p>" + strings.Join(lines, "<br>") + "</p>"
 }
 
 // HtmlEntities turns characters that can't be represented in ascii into html entities

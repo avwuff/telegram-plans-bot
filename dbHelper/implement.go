@@ -200,6 +200,21 @@ func (c *Connector) SearchEvents(ownerId int64, searchText string) ([]dbInterfac
 	return list, nil
 }
 
+// EventsMissingPictureFileID finds the events that have a picture on disk that hasn't been uploaded to Telegram yet.
+func (c *Connector) EventsMissingPictureFileID() ([]dbInterface.DBEvent, error) {
+	var events []*FurryPlans
+	err := c.db.Where("PictureURL <> '' AND (PictureFileID IS NULL OR PictureFileID = '')").Order("eventID").Find(&events).Error
+	if err != nil {
+		return nil, err
+	}
+	list := make([]dbInterface.DBEvent, len(events))
+	for i, event := range events {
+		event.cleanOldSyntax()
+		list[i] = c.wrap(event)
+	}
+	return list, nil
+}
+
 func (c *Connector) GetEvents(ownerId int64, includeOld bool) ([]dbInterface.DBEvent, error) {
 	var events []*FurryPlans
 	query := c.db.Where(&FurryPlans{OwnerID: fmt.Sprintf("%v", ownerId)}).Order("EventDateTime DESC").Limit(100)
@@ -623,6 +638,15 @@ func (e *eventConnector) PictureURL() string {
 func (e *eventConnector) SetPictureURL(t string) error {
 	e.ev.PictureURL = t
 	return e.updateEvent("PictureURL")
+}
+
+func (e *eventConnector) PictureFileID() string {
+	return e.ev.PictureFileID
+}
+
+func (e *eventConnector) SetPictureFileID(t string) error {
+	e.ev.PictureFileID = t
+	return e.updateEvent("PictureFileID")
 }
 
 func (e *eventConnector) TotalCost() int {

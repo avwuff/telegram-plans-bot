@@ -5,7 +5,7 @@ package tgPlansBot
 import (
 	context "context"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	mock "github.com/stretchr/testify/mock"
 )
 

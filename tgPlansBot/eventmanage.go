@@ -6,7 +6,7 @@ import (
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"log"
 	"strconv"
 	"strings"
@@ -83,7 +83,7 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		t += "\n" + loc.Sprintf("🌎 Event is listed in public directory") + "\n"
 	}
 
-	if event.PictureURL() != "" {
+	if event.PictureURL() != "" || event.PictureFileID() != "" {
 		t += "\n<i>" + loc.Sprintf("🖼 Event includes a picture") + "</i>\n"
 	}
 	if event.TotalCost() > 0 {

@@ -25,20 +25,21 @@ type GlobalSend struct {
 }
 
 type FurryPlans struct {
-	EventID     uint         `gorm:"primarykey;column:eventID"`
-	OwnerID     string       `gorm:"column:ownerID"` // Should be an int64
-	Name        string       `gorm:"column:EventName"`
-	DateTime    sql.NullTime `gorm:"column:EventDateTime"`
-	EndDateTime sql.NullTime `gorm:"column:EndDateTime"`
-	TimeZone    string       `gorm:"column:TimeZone"`
-	CreatedAt   sql.NullTime `gorm:"column:CreatedAt"`
-	OwnerName   string       `gorm:"column:ownerName"`
-	Location    string       `gorm:"column:EventLocation"`
-	Notes       string       `gorm:"column:Notes"`
-	PictureURL  string       `gorm:"column:PictureURL"`
-	Language    string       `gorm:"column:Language"`
-	TotalCost   int          `gorm:"column:TotalCost"`
-	CostInfo    string       `gorm:"column:CostInfo"`
+	EventID       uint         `gorm:"primarykey;column:eventID"`
+	OwnerID       string       `gorm:"column:ownerID"` // Should be an int64
+	Name          string       `gorm:"column:EventName"`
+	DateTime      sql.NullTime `gorm:"column:EventDateTime"`
+	EndDateTime   sql.NullTime `gorm:"column:EndDateTime"`
+	TimeZone      string       `gorm:"column:TimeZone"`
+	CreatedAt     sql.NullTime `gorm:"column:CreatedAt"`
+	OwnerName     string       `gorm:"column:ownerName"`
+	Location      string       `gorm:"column:EventLocation"`
+	Notes         string       `gorm:"column:Notes"`
+	PictureURL    string       `gorm:"column:PictureURL"`    // Old pictures served from disk. New pictures use PictureFileID.
+	PictureFileID string       `gorm:"column:PictureFileID"` // The Telegram file ID of the picture
+	Language      string       `gorm:"column:Language"`
+	TotalCost     int          `gorm:"column:TotalCost"`
+	CostInfo      string       `gorm:"column:CostInfo"`
 
 	// Should really have been BOOLs, they are ints for compatibility with the old system
 	Suitwalk     int `gorm:"column:Suitwalk"`

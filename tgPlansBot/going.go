@@ -5,7 +5,7 @@ import (
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"log"
 	"strconv"
 	"strings"
@@ -96,10 +96,21 @@ func (tgp *TGPlansBot) goingMoreInfo(usrInfo *userManager.UserInfo, cb *tgbotapi
 	}
 
 	// Now display the event UI here, allowing the user to change their attendance status.
-	txt := tgp.makeEventUIText(event, usrInfo.Locale)
 	buttons := tgp.eventUIButtons(event, usrInfo.Locale)
 
-	mObj := tgbotapi.NewMessage(cb.Message.Chat.ID, txt)
+	rich := tgbotapi.NewSendRichMessage(cb.Message.Chat.ID, tgp.makeEventUIRichMessage(event, usrInfo.Locale))
+	rich.ReplyMarkup = &buttons
+
+	_, err = tgp.tg.Send(rich)
+	if !shouldFallBackToClassic(err) {
+		if err != nil {
+			log.Println(err)
+		}
+		return
+	}
+	log.Printf("Rich send of event %v failed, falling back to classic: %v\n", eventId, err)
+
+	mObj := tgbotapi.NewMessage(cb.Message.Chat.ID, tgp.makeEventUIText(event, usrInfo.Locale))
 	mObj.ReplyMarkup = &buttons
 	mObj.ParseMode = ParseModeHtml
 	mObj.LinkPreviewOptions.IsDisabled = true

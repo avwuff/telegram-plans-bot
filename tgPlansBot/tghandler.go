@@ -7,7 +7,7 @@ import (
 	"furryplansbot.avbrand.com/localizer"
 	"furryplansbot.avbrand.com/tgCommands"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"log"
 	"strings"
 	"sync"
@@ -71,6 +71,7 @@ func (tgp *TGPlansBot) initCommands() {
 	tgp.initSetupCommands()
 	tgp.initUICommands()
 	tgp.initGlobalMsgCommands()
+	tgp.initFixPicturesCommands()
 	tgp.initGuestCommands()
 	tgp.initDonateCommands()
 	tgp.initNearbyCommands()

@@ -369,6 +369,34 @@ func (_m *DBEventMock) PictureURL() string {
 	return r0
 }
 
+// PictureFileID provides a mock function with given fields:
+func (_m *DBEventMock) PictureFileID() string {
+	ret := _m.Called()
+
+	var r0 string
+	if rf, ok := ret.Get(0).(func() string); ok {
+		r0 = rf()
+	} else {
+		r0 = ret.Get(0).(string)
+	}
+
+	return r0
+}
+
+// SetPictureFileID provides a mock function with given fields: t
+func (_m *DBEventMock) SetPictureFileID(t string) error {
+	ret := _m.Called(t)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string) error); ok {
+		r0 = rf(t)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // Postings provides a mock function with given fields:
 func (_m *DBEventMock) Postings() ([]Posting, error) {
 	ret := _m.Called()
@@ -441,13 +469,31 @@ func (_m *DBEventMock) RecordDonation(amount float64, donorId int64, donorName s
 }
 
 // SavePosting provides a mock function with given fields: MessageID
-func (_m *DBEventMock) SavePosting(MessageID string) {
-	_m.Called(MessageID)
+func (_m *DBEventMock) SavePosting(MessageID string) error {
+	ret := _m.Called(MessageID)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(string) error); ok {
+		r0 = rf(MessageID)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // SavePostingRegular provides a mock function with given fields: chatId, messageId
-func (_m *DBEventMock) SavePostingRegular(chatId int64, messageId int) {
-	_m.Called(chatId, messageId)
+func (_m *DBEventMock) SavePostingRegular(chatId int64, messageId int) error {
+	ret := _m.Called(chatId, messageId)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(int64, int) error); ok {
+		r0 = rf(chatId, messageId)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
 }
 
 // SetClosed provides a mock function with given fields: v

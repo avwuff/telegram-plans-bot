@@ -3,7 +3,7 @@ package localizer
 import (
 	"errors"
 	"furryplansbot.avbrand.com/helpers"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 	"sort"

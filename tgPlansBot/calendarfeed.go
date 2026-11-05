@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"furryplansbot.avbrand.com/helpers"
 	"furryplansbot.avbrand.com/userManager"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 )
 
 // calendarFeed provides a calendar feed URL that can provide a feed of events.

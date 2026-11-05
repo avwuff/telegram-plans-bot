@@ -1,5 +1,13 @@
 # Changelog
 
+### Version 2.7 - Nov 2026
+#### New Features
+- Event messages now use Telegram Rich Messages, which allows for much longer event text.
+Event pictures are now stored on Telegram, rather than on the server, and are shown at the top of event messages.
+
+#### Maintenance
+- Upgraded to Go 1.27 and the latest version of the Telegram bot library.
+
 ### Version 2.6 - Feb 2026
 #### New Features
 - Events can now request to recoup costs. A total is shown on the event page, and guests are prompted to donate. 

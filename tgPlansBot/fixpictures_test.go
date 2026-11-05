@@ -38,6 +38,15 @@ func fixPicturesEvent(t *testing.T, id uint, file string) *dbInterface.DBEventMo
 	return ev
 }
 
+// fixPicturesBot makes a bot where none of the events have been given a new picture during the run.
+func fixPicturesBot(t *testing.T, tg *TelegramBotMock) *TGPlansBot {
+	current := dbInterface.NewDBEventMock(t)
+	current.On("PictureFileID").Return("").Maybe()
+	db := dbInterface.NewDBFeaturesMock(t)
+	db.On("GetEvent", mock.Anything, int64(-1)).Return(current, nil).Maybe()
+	return &TGPlansBot{tg: tg, db: db}
+}
+
 func sentPhoto(fileID string) tgbotapi.Message {
 	return tgbotapi.Message{Photo: []tgbotapi.PhotoSize{
 		{FileID: "small", Width: 10, Height: 10},
@@ -61,7 +70,7 @@ func Test_uploadPictures(t *testing.T) {
 		b := fixPicturesEvent(t, 2, "b.jpg")
 		b.On("SetPictureFileID", "big").Return(nil).Once()
 
-		pb := &TGPlansBot{tg: tg}
+		pb := fixPicturesBot(t, tg)
 		summary := pb.uploadPictures(-100, []dbInterface.DBEvent{a, b})
 
 		assert.Equal(t, "Uploaded 2 pictures.", summary)
@@ -83,7 +92,7 @@ func Test_uploadPictures(t *testing.T) {
 		b := fixPicturesEvent(t, 2, "b.jpg")
 		b.On("SetPictureFileID", "big").Return(nil).Once()
 
-		pb := &TGPlansBot{tg: tg}
+		pb := fixPicturesBot(t, tg)
 		summary := pb.uploadPictures(-100, []dbInterface.DBEvent{a, b})
 
 		assert.Contains(t, summary, "Uploaded 1 pictures.")
@@ -100,7 +109,7 @@ func Test_uploadPictures(t *testing.T) {
 			events = append(events, fixPicturesEvent(t, uint(100000+i), "a.jpg"))
 		}
 
-		pb := &TGPlansBot{tg: tg}
+		pb := fixPicturesBot(t, tg)
 		summary := pb.uploadPictures(-100, events)
 
 		assert.Empty(t, *sleeps)
@@ -122,7 +131,7 @@ func Test_uploadPictures(t *testing.T) {
 		c := fixPicturesEvent(t, 3, "c.jpg")
 		c.On("SetPictureFileID", "big").Return(nil).Once()
 
-		pb := &TGPlansBot{tg: tg}
+		pb := fixPicturesBot(t, tg)
 		pb.uploadPictures(-100, []dbInterface.DBEvent{
 			fixPicturesEvent(t, 1, "missing.jpg"), b, fixPicturesEvent(t, 4, "missing.jpg"), fixPicturesEvent(t, 5, "missing.jpg"), c,
 		})
@@ -142,9 +151,57 @@ func Test_uploadPictures(t *testing.T) {
 		a := fixPicturesEvent(t, 1, "a.jpg")
 		a.On("SetPictureFileID", "big").Return(nil).Once()
 
+		pb := fixPicturesBot(t, tg)
+		b := fixPicturesEvent(t, 2, "a.jpg")
+		b.On("SetPictureFileID", "big").Return(nil).Once()
+		tg.On("Send", mock.Anything).Return(sentPhoto("big"), nil).Once()
+
+		assert.Equal(t, "Uploaded 2 pictures.", pb.uploadPictures(-100, []dbInterface.DBEvent{a, b}))
+
+		// It waits as long as it was asked to and a bit more, then slows down for the rest of the run.
+		assert.Equal(t, []time.Duration{10 * time.Second, 2 * fixPicturesDelay}, *sleeps)
+	})
+
+	t.Run("the delay has a maximum", func(t *testing.T) {
+		fixPicturesSetup(t)
+
+		limited := &tgbotapi.Error{Code: 429, ResponseParameters: tgbotapi.ResponseParameters{RetryAfter: 1}}
+		tg := NewTelegramBotMock(t)
+		tg.On("Send", mock.Anything).Return(tgbotapi.Message{}, limited).Times(fixPicturesRetries + 1)
+
+		delay := fixPicturesMaxDelay - time.Second
 		pb := &TGPlansBot{tg: tg}
-		assert.Equal(t, "Uploaded 1 pictures.", pb.uploadPictures(-100, []dbInterface.DBEvent{a}))
-		assert.Equal(t, []time.Duration{9 * time.Second}, *sleeps)
+		_, err := pb.sendPictureWithRetry(tgbotapi.PhotoConfig{}, &delay)
+
+		assert.ErrorIs(t, err, limited, "should give up after the retries")
+		assert.Equal(t, fixPicturesMaxDelay, delay)
+	})
+
+	t.Run("a new picture set during the run is not overwritten", func(t *testing.T) {
+		sleeps := fixPicturesSetup(t, "a.jpg", "b.jpg")
+
+		current := dbInterface.NewDBEventMock(t)
+		current.On("PictureFileID").Return("NEWPICTURE").Once()
+		db := dbInterface.NewDBFeaturesMock(t)
+		db.On("GetEvent", uint(1), int64(-1)).Return(current, nil).Once()
+
+		notSet := dbInterface.NewDBEventMock(t)
+		notSet.On("PictureFileID").Return("").Once()
+		db.On("GetEvent", uint(2), int64(-1)).Return(notSet, nil).Once()
+
+		// The mocks fail the test if the picture is uploaded or stored for the first event.
+		tg := NewTelegramBotMock(t)
+		tg.On("Send", mock.Anything).Return(sentPhoto("big"), nil).Once()
+		a := fixPicturesEvent(t, 1, "a.jpg")
+		b := fixPicturesEvent(t, 2, "b.jpg")
+		b.On("SetPictureFileID", "big").Return(nil).Once()
+
+		pb := &TGPlansBot{tg: tg, db: db}
+		summary := pb.uploadPictures(-100, []dbInterface.DBEvent{a, b})
+
+		assert.Contains(t, summary, "Uploaded 1 pictures.")
+		assert.Contains(t, summary, "Skipped 1 events that got a new picture")
+		assert.Empty(t, *sleeps, "skipping shouldn't wait")
 	})
 
 	t.Run("stops when everything is failing", func(t *testing.T) {
@@ -158,7 +215,7 @@ func Test_uploadPictures(t *testing.T) {
 			events = append(events, fixPicturesEvent(t, uint(i+1), "a.jpg"))
 		}
 
-		pb := &TGPlansBot{tg: tg}
+		pb := fixPicturesBot(t, tg)
 		summary := pb.uploadPictures(-100, events)
 
 		assert.Contains(t, summary, "Failed for 5 events: 1, 2, 3, 4, 5")
@@ -172,7 +229,7 @@ func Test_uploadPictures(t *testing.T) {
 		tg := NewTelegramBotMock(t)
 		tg.On("Send", mock.Anything).Return(tgbotapi.Message{}, nil).Once()
 
-		pb := &TGPlansBot{tg: tg}
+		pb := fixPicturesBot(t, tg)
 		assert.Contains(t, pb.uploadPictures(-100, []dbInterface.DBEvent{fixPicturesEvent(t, 1, "a.jpg")}), "Failed for 1 events: 1")
 	})
 }

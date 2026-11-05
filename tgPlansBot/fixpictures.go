@@ -23,8 +23,12 @@ import (
 // Once that's done, remove this file, its test, and the call to initFixPicturesCommands.
 
 const (
-	// Telegram allows about 20 messages a minute to the same chat.
-	fixPicturesDelay = 3100 * time.Millisecond
+	// Telegram allows 20 messages a minute in a group, and doesn't publish a limit for channels.
+	// This stays well under that, at 15 a minute.
+	fixPicturesDelay = 4 * time.Second
+
+	// If Telegram tells us to slow down, the delay doubles for the rest of the run, up to this much.
+	fixPicturesMaxDelay = 30 * time.Second
 
 	// How many times to retry a picture that is being rate limited.
 	fixPicturesRetries = 3
@@ -37,6 +41,7 @@ const (
 )
 
 var errPictureFileMissing = errors.New("picture file is missing from disk")
+var errPictureAlreadySet = errors.New("event already has a new picture")
 
 var fixPicturesRunning atomic.Bool
 
@@ -88,24 +93,31 @@ func (tgp *TGPlansBot) fixPictures(usrInfo *userManager.UserInfo, msg *tgbotapi.
 func (tgp *TGPlansBot) uploadPictures(channelId int64, events []dbInterface.DBEvent) string {
 	fixed := 0
 	failuresInARow := 0
+	alreadySet := 0
 	var missing, failed []string
 	needsDelay := false
+	delay := fixPicturesDelay
 
 	for i, event := range events {
 		if needsDelay {
-			fixPicturesSleep(fixPicturesDelay)
+			fixPicturesSleep(delay)
 		}
 
-		err := tgp.uploadPicture(channelId, event)
+		err := tgp.uploadPicture(channelId, event, &delay)
 
-		// A file that isn't on this server is skipped without contacting Telegram, so there's no need to wait after it.
-		// It also isn't marked as done, so the server that does have the file can still upload it.
-		needsDelay = !errors.Is(err, errPictureFileMissing)
+		// A picture that is skipped doesn't contact Telegram, so there's no need to wait after it.
+		// A missing file also isn't marked as done, so the server that does have the file can still upload it.
+		needsDelay = !errors.Is(err, errPictureFileMissing) && !errors.Is(err, errPictureAlreadySet)
 
 		switch {
 		case err == nil:
 			fixed++
 			failuresInARow = 0
+			if fixed%100 == 0 {
+				log.Printf("fixpictures: uploaded %v, checked %v of %v, delay is %v\n", fixed, i+1, len(events), delay)
+			}
+		case errors.Is(err, errPictureAlreadySet):
+			alreadySet++
 		case errors.Is(err, errPictureFileMissing):
 			log.Printf("fixpictures: event %v: %v\n", event.ID(), err)
 			missing = append(missing, fmt.Sprint(event.ID()))
@@ -116,15 +128,18 @@ func (tgp *TGPlansBot) uploadPictures(channelId int64, events []dbInterface.DBEv
 		}
 
 		if failuresInARow >= fixPicturesMaxFailuresInARow {
-			return fixPicturesSummary(fixed, missing, failed) +
+			return fixPicturesSummary(fixed, alreadySet, missing, failed) +
 				fmt.Sprintf("\n\nStopped after %v failures in a row, with %v events not tried. Is the bot an admin of the channel? Last error: %v", failuresInARow, len(events)-i-1, err)
 		}
 	}
-	return fixPicturesSummary(fixed, missing, failed)
+	return fixPicturesSummary(fixed, alreadySet, missing, failed)
 }
 
-func fixPicturesSummary(fixed int, missing []string, failed []string) string {
+func fixPicturesSummary(fixed int, alreadySet int, missing []string, failed []string) string {
 	t := fmt.Sprintf("Uploaded %v pictures.", fixed)
+	if alreadySet > 0 {
+		t += fmt.Sprintf("\n\nSkipped %v events that got a new picture during the run.", alreadySet)
+	}
 	if len(missing) > 0 {
 		t += fmt.Sprintf("\n\nFile missing from disk for %v events: %v", len(missing), fixPicturesIDList(missing))
 	}
@@ -143,7 +158,7 @@ func fixPicturesIDList(ids []string) string {
 }
 
 // uploadPicture uploads the picture for one event from disk, and stores the file ID Telegram gives it.
-func (tgp *TGPlansBot) uploadPicture(channelId int64, event dbInterface.DBEvent) error {
+func (tgp *TGPlansBot) uploadPicture(channelId int64, event dbInterface.DBEvent, delay *time.Duration) error {
 	file, err := pictureCachePath(event.PictureURL())
 	if err != nil {
 		return err
@@ -152,10 +167,19 @@ func (tgp *TGPlansBot) uploadPicture(channelId int64, event dbInterface.DBEvent)
 		return fmt.Errorf("%w: %v", errPictureFileMissing, file)
 	}
 
+	// A run takes hours, so the owner may have set a new picture since it started. Don't overwrite it.
+	current, err := tgp.db.GetEvent(event.ID(), -1)
+	if err != nil {
+		return err
+	}
+	if current.PictureFileID() != "" {
+		return errPictureAlreadySet
+	}
+
 	photo := tgbotapi.NewPhoto(channelId, tgbotapi.FilePath(file))
 	photo.DisableNotification = true
 
-	sent, err := tgp.sendPictureWithRetry(photo)
+	sent, err := tgp.sendPictureWithRetry(photo, delay)
 	if err != nil {
 		return err
 	}
@@ -168,7 +192,8 @@ func (tgp *TGPlansBot) uploadPicture(channelId int64, event dbInterface.DBEvent)
 }
 
 // sendPictureWithRetry sends the picture, waiting and trying again if Telegram asks us to slow down.
-func (tgp *TGPlansBot) sendPictureWithRetry(photo tgbotapi.PhotoConfig) (tgbotapi.Message, error) {
+// It also increases the delay between uploads, so that we don't keep running into the limit.
+func (tgp *TGPlansBot) sendPictureWithRetry(photo tgbotapi.PhotoConfig, delay *time.Duration) (tgbotapi.Message, error) {
 	for attempt := 0; ; attempt++ {
 		sent, err := tgp.tg.Send(photo)
 
@@ -176,7 +201,9 @@ func (tgp *TGPlansBot) sendPictureWithRetry(photo tgbotapi.PhotoConfig) (tgbotap
 		if err == nil || attempt >= fixPicturesRetries || !errors.As(err, &tgErr) || tgErr.RetryAfter == 0 {
 			return sent, err
 		}
-		fixPicturesSleep(time.Duration(tgErr.RetryAfter) * time.Second)
+		*delay = min(*delay*2, fixPicturesMaxDelay)
+		log.Printf("fixpictures: rate limited, waiting %v seconds, delay is now %v\n", tgErr.RetryAfter, *delay)
+		fixPicturesSleep(time.Duration(tgErr.RetryAfter+1) * time.Second)
 	}
 }
 

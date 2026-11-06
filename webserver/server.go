@@ -6,10 +6,11 @@ import (
 	"furryplansbot.avbrand.com/helpers"
 	ics "github.com/arran4/golang-ical"
 	"github.com/gorilla/mux"
-	"html"
+	"html/template"
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -20,7 +21,15 @@ import (
 var saltValue string
 var db dbInterface.DBFeatures
 
-const layoutIsoFull = "2006-01-02 15:04:05"
+// Calendar links use UTC, so that the event is at the right moment no matter what time zone the person is in.
+const (
+	layoutCalendarLink = "20060102T150405Z"
+	layoutOutlookLink  = "2006-01-02T15:04:05Z"
+)
+
+// maxLinkNotes is how much of an event's notes go in a calendar link, since very long links get rejected.
+// The calendar file always has all of them.
+const maxLinkNotes = 1000
 
 // feedRefreshInterval is how often calendar apps should check a feed for changes, as an iCalendar duration.
 const feedRefreshInterval = "PT1H"
@@ -58,11 +67,10 @@ var (
 
 // staticFiles are the only files served from the html folder. The stylesheets are used by the 'add to calendar' page.
 var staticFiles = map[string]string{
-	"/":                   "index.html",
-	"/robots.txt":         "robots.txt",
-	"/normalize.css":      "normalize.css",
-	"/skeleton.css":       "skeleton.css",
-	"/atc-style-blue.css": "atc-style-blue.css",
+	"/":              "index.html",
+	"/robots.txt":    "robots.txt",
+	"/normalize.css": "normalize.css",
+	"/skeleton.css":  "skeleton.css",
 }
 
 // StartServer provides a basic web server for handling 'add to calendar'
@@ -90,6 +98,7 @@ func newRouter() *mux.Router {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/add/{key:[0-9a-fA-F]{32}}.html", limitConcurrent(maxAddPageRequests, addToCalendarHandler))
+	r.HandleFunc("/add/{key:[0-9a-fA-F]{32}}.ics", limitConcurrent(maxAddPageRequests, eventFileHandler))
 	r.HandleFunc("/guests/nameguests.html", nameGuestsHandler)
 	r.HandleFunc("/feed/nearby/{lat}/{lon}/plans.ics", limitConcurrent(maxNearbyRequests, generateNearbyFeed))
 	r.HandleFunc("/feed/{user}/{key}/plans.ics", limitConcurrent(maxUserFeedRequests, generateCalFeed))
@@ -144,32 +153,103 @@ func addToCalendarHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Use a file template instead of this
-	// TODO: Copy the JS file from addtocalendar.com
-	// Make the template page.
-	tmpl := ADDTOCALENDAR_PAGE
-	tmpl = strings.ReplaceAll(tmpl, "%TITLE%", loc.Sprintf("Add to Calendar"))
-	tmpl = strings.ReplaceAll(tmpl, "%DIDYOUKNOW%", loc.Sprintf("Did you know?"))
-	tmpl = strings.ReplaceAll(tmpl, "%FEEDMSG%", loc.Sprintf(`The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  
-You can add this feed to Google Calendar or other calendars, and events will appear automatically! 
-To get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.`))
+	name := helpers.StripHtmlRegex(event.Name())
+	location := helpers.StripHtmlRegex(event.Location())
+	notes := shortenForLink(helpers.StripHtmlRegex(event.Notes()))
+	start := event.DateTime().UTC()
+	end := eventEnd(event).UTC()
 
-	tmpl = strings.ReplaceAll(tmpl, "%INSTRUCTION%", loc.Sprintf("Add '%v' to your Calendar", pageText(event.Name())))
-	tmpl = strings.ReplaceAll(tmpl, "%DATESTART%", event.DateTime().Format(layoutIsoFull))
-	tmpl = strings.ReplaceAll(tmpl, "%DATEEND%", event.DateTime().Add(time.Hour).Format(layoutIsoFull)) // Just make it one hour long always
-	tmpl = strings.ReplaceAll(tmpl, "%TIMEZONE%", html.EscapeString(event.TimeZone()))
-	tmpl = strings.ReplaceAll(tmpl, "%EVENTNAME%", pageText(event.Name()))
-	tmpl = strings.ReplaceAll(tmpl, "%NOTES%", pageText(event.Notes()))
-	tmpl = strings.ReplaceAll(tmpl, "%HOST%", pageText(event.OwnerName()))
-	tmpl = strings.ReplaceAll(tmpl, "%LOCATION%", pageText(event.Location()))
+	page := addToCalendarData{
+		Title:       loc.Sprintf("Add to Calendar"),
+		Instruction: loc.Sprintf("Add '%v' to your Calendar", name),
+		DidYouKnow:  loc.Sprintf("Did you know?"),
+		FeedMessage: template.HTML(loc.Sprintf(`The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.
+You can add this feed to Google Calendar or other calendars, and events will appear automatically!
+To get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.`)),
+		FileLabel: loc.Sprintf("Apple Calendar, Outlook app or other (.ics file)"),
+		FileURL:   vars["key"] + ".ics",
+		GoogleURL: calendarLink("https://calendar.google.com/calendar/render", url.Values{
+			"action":   {"TEMPLATE"},
+			"text":     {name},
+			"dates":    {start.Format(layoutCalendarLink) + "/" + end.Format(layoutCalendarLink)},
+			"details":  {notes},
+			"location": {location},
+		}),
+		OutlookURL:   outlookLink("https://outlook.live.com", name, location, notes, start, end),
+		Office365URL: outlookLink("https://outlook.office.com", name, location, notes, start, end),
+		YahooURL: calendarLink("https://calendar.yahoo.com/", url.Values{
+			"v":      {"60"},
+			"title":  {name},
+			"st":     {start.Format(layoutCalendarLink)},
+			"et":     {end.Format(layoutCalendarLink)},
+			"desc":   {notes},
+			"in_loc": {location},
+		}),
+	}
 
-	w.Write([]byte(tmpl))
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	if err := addToCalendarTemplate.Execute(w, page); err != nil {
+		log.Println("Unable to show the add to calendar page:", err)
+	}
 }
 
-// pageText makes text from an event safe to put on a web page. Events are stored as Telegram HTML, which
-// came from the user and might have been saved before links were escaped, so it is turned into plain text.
-func pageText(s string) string {
-	return html.EscapeString(helpers.StripHtmlRegex(s))
+// addToCalendarData is what goes on the 'add to calendar' page. FeedMessage comes from the translations
+// and not from any user, which is why it's allowed to have HTML in it.
+type addToCalendarData struct {
+	Title, Instruction, DidYouKnow string
+	FeedMessage                    template.HTML
+	FileLabel, FileURL             string
+	GoogleURL, OutlookURL          string
+	Office365URL, YahooURL         string
+}
+
+// calendarLink makes a link to a calendar service. Spaces are written as %20, because
+// Outlook can show the + form as a literal plus sign.
+func calendarLink(base string, params url.Values) string {
+	return base + "?" + strings.ReplaceAll(params.Encode(), "+", "%20")
+}
+
+// outlookLink makes a link for the personal and work versions of Outlook, which only differ by their address.
+func outlookLink(site, name, location, notes string, start, end time.Time) string {
+	return calendarLink(site+"/calendar/0/deeplink/compose", url.Values{
+		"path":     {"/calendar/action/compose"},
+		"rru":      {"addevent"},
+		"subject":  {name},
+		"startdt":  {start.Format(layoutOutlookLink)},
+		"enddt":    {end.Format(layoutOutlookLink)},
+		"body":     {notes},
+		"location": {location},
+	})
+}
+
+// shortenForLink cuts text down to maxLinkNotes characters.
+func shortenForLink(s string) string {
+	chars := []rune(s)
+	if len(chars) <= maxLinkNotes {
+		return s
+	}
+	return strings.TrimSpace(string(chars[:maxLinkNotes])) + "…"
+}
+
+// eventFileHandler provides a single event as a calendar file. The times are in UTC, because a time zone would
+// need its VTIMEZONE information to be in the file, and for one event nothing is lost by leaving it out.
+func eventFileHandler(w http.ResponseWriter, r *http.Request) {
+	event, _, err := db.GetEventByHash(mux.Vars(r)["key"], saltValue, false)
+	if err != nil {
+		errorMessage(w, "Event not found")
+		return
+	}
+
+	cal := ics.NewCalendar()
+	cal.SetMethod(ics.MethodPublish)
+
+	calEvent := newCalendarEvent(cal, event)
+	calEvent.SetStartAt(event.DateTime())
+	calEvent.SetEndAt(eventEnd(event))
+
+	w.Header().Set("Content-Type", "text/calendar; charset=utf-8")
+	w.Header().Set("Content-Disposition", `attachment; filename="event.ics"`)
+	w.Write([]byte(cal.Serialize()))
 }
 
 func nameGuestsHandler(w http.ResponseWriter, r *http.Request) {
@@ -247,26 +327,14 @@ func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string)
 	}
 
 	for _, ev := range events {
-		event := cal.AddEvent(fmt.Sprintf("furryplans%v-plans@telegram.com", ev.ID()))
-		event.SetCreatedTime(time.Now())
-		event.SetDtStampTime(time.Now())
-		event.SetModifiedAt(time.Now())
+		event := newCalendarEvent(cal, ev)
 		//event.SetStartAt(ev.DateTime())
 
 		event.SetProperty(icsTz(ics.ComponentPropertyDtStart, ev.DateTime()), ev.DateTime().Format(IcalTimestampFormatTz))
 
-		// Proper support for multi-day events and durations
-		endsAt := ev.DateTime().Add(time.Hour)
-		if !ev.EndDateTime().IsZero() && ev.EndDateTime() != ev.DateTime() {
-			endsAt = ev.EndDateTime()
-		}
-
+		endsAt := eventEnd(ev)
 		//event.SetEndAt(endsAt)
 		event.SetProperty(icsTz(ics.ComponentPropertyDtEnd, endsAt), endsAt.Format(IcalTimestampFormatTz))
-		event.SetSummary(helpers.StripHtmlRegex(ev.Name()))
-		event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
-		event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))
-		event.SetOrganizer(icsSingleLine(helpers.StripHtmlRegex(ev.OwnerName())))
 
 		if ev.GetCanAttend() == dbInterface.CANATTEND_MAYBE {
 			event.SetStatus(ics.ObjectStatusTentative)
@@ -274,6 +342,27 @@ func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string)
 	}
 	w.Header().Add("Content-Type", "text/calendar; charset=utf-8")
 	w.Write([]byte(cal.Serialize()))
+}
+
+// newCalendarEvent adds an event to the calendar with everything except its start and end times.
+func newCalendarEvent(cal *ics.Calendar, ev dbInterface.DBEvent) *ics.VEvent {
+	event := cal.AddEvent(fmt.Sprintf("furryplans%v-plans@telegram.com", ev.ID()))
+	event.SetCreatedTime(time.Now())
+	event.SetDtStampTime(time.Now())
+	event.SetModifiedAt(time.Now())
+	event.SetSummary(helpers.StripHtmlRegex(ev.Name()))
+	event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
+	event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))
+	event.SetOrganizer(icsSingleLine(helpers.StripHtmlRegex(ev.OwnerName())))
+	return event
+}
+
+// eventEnd is when an event finishes. Events without an end time are treated as being an hour long.
+func eventEnd(ev dbInterface.DBEvent) time.Time {
+	if !ev.EndDateTime().IsZero() && ev.EndDateTime() != ev.DateTime() {
+		return ev.EndDateTime()
+	}
+	return ev.DateTime().Add(time.Hour)
 }
 
 // icsSingleLine removes line breaks. Unlike the other event fields, the calendar library doesn't escape the

@@ -1,82 +1,43 @@
 package webserver
 
-const ADDTOCALENDAR_PAGE = `
-<!DOCTYPE html>
+import "html/template"
+
+// addToCalendarTemplate is checked when the bot starts. Everything put in it is escaped to suit where it goes.
+var addToCalendarTemplate = template.Must(template.New("add").Parse(ADDTOCALENDAR_PAGE))
+
+const ADDTOCALENDAR_PAGE = `<!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
-  <title>%TITLE%</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <title>{{.Title}}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
-
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!-- The address of this page shouldn't be passed on to the calendar services that it links to. -->
+  <meta name="referrer" content="no-referrer">
   <link rel="stylesheet" href="../normalize.css">
   <link rel="stylesheet" href="../skeleton.css">
-  <link rel="stylesheet" href="../atc-style-blue.css" type="text/css">
-
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="images/favicon.png">
-
+  <style>
+    /* Long labels have to wrap on a phone, which the normal Skeleton buttons don't do. */
+    .button { height: auto; padding: 10px 20px; line-height: 1.4; white-space: normal; }
+  </style>
 </head>
 <body>
-
-    <!-- 2. Include script -->
-    <script type="text/javascript">(function () {
-            if (window.addtocalendar)if(typeof window.addtocalendar.start == "function")return;
-            if (window.ifaddtocalendar == undefined) { window.ifaddtocalendar = 1;
-                var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-                s.type = 'text/javascript';s.charset = 'UTF-8';s.async = true;
-                s.src = ('https:' == window.location.protocol ? 'https' : 'http')+'://addtocalendar.com/atc/1.5/atc.min.js';
-                var h = d[g]('body')[0];h.appendChild(s); }})();
-    </script>
-
-
-  <!-- Primary Page Layout
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
-        <h4>%INSTRUCTION%</h4>
+      <div class="one-half column" style="margin-top: 10%">
+        <h4>{{.Instruction}}</h4>
         <p>
-		<span class="addtocalendar atc-style-blue">
-			<var class="atc_event">
-				<var class="atc_date_start">%DATESTART%</var>
-				<var class="atc_date_end">%DATEEND%</var>
-				<var class="atc_timezone">%TIMEZONE%</var>
-				<var class="atc_title">%EVENTNAME%</var>
-				<var class="atc_description">%NOTES%</var>
-				<var class="atc_location">%LOCATION%</var>
-				<var class="atc_organizer">%HOST%</var>
-			</var>
-		</span>
-		</p>
-		
-		
-		<h4>%DIDYOUKNOW%</h4>
-		
-		<p>
-		%FEEDMSG%
-		</p>
-		
+          <a class="button button-primary u-full-width" href="{{.FileURL}}">{{.FileLabel}}</a>
+          <a class="button u-full-width" href="{{.GoogleURL}}">Google Calendar</a>
+          <a class="button u-full-width" href="{{.OutlookURL}}">Outlook.com</a>
+          <a class="button u-full-width" href="{{.Office365URL}}">Microsoft 365</a>
+          <a class="button u-full-width" href="{{.YahooURL}}">Yahoo Calendar</a>
+        </p>
+
+        <h4>{{.DidYouKnow}}</h4>
+        <p>{{.FeedMessage}}</p>
       </div>
     </div>
   </div>
-
-<!-- End Document
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
 </html>
 `

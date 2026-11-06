@@ -8,6 +8,7 @@ Event pictures are now stored on Telegram, rather than on the server, and are sh
 - Event messages have a new layout, with headings, a countdown to the event, spots left, notes in a quote, and real lists of attendees.
 - Events now say when they're closed or full, and stop asking for donations once fully funded.
 - Long lists on fursuit walks now collapse.
+- The 'Add to Calendar' page no longer uses an outside service. It offers a calendar file to download and direct links for Google, Outlook and Yahoo, and uses the event's end time.
 
 #### Maintenance
 - Upgraded to Go 1.27 and the latest version of the Telegram bot library.

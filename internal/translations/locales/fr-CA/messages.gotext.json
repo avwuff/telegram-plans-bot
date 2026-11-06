@@ -943,14 +943,14 @@
             "translation": "L'événement est fermé, veuillez contacter l'hôte pour plus d'informations."
         },
         {
-            "id": "💰 <b>Fully funded, thank you!</b>",
-            "message": "💰 <b>Fully funded, thank you!</b>",
-            "translation": "💰 <b>Entièrement financé, merci!</b>"
+            "id": "💰 \u003cb\u003eFully funded, thank you!\u003c/b\u003e",
+            "message": "💰 \u003cb\u003eFully funded, thank you!\u003c/b\u003e",
+            "translation": "💰 \u003cb\u003eEntièrement financé, merci!\u003c/b\u003e"
         },
         {
-            "id": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
-            "message": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
-            "translation": "💰 <b>Aidez-nous à couvrir les frais de cet événement!</b> Nous en sommes à <b>{DonationsSoFar}</b> sur <b>{TotalCost}</b>. Utilisez le bouton «Faire un don» ci-dessous pour faire un don.",
+            "id": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "message": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "translation": "💰 \u003cb\u003eAidez-nous à couvrir les frais de cet événement!\u003c/b\u003e Nous en sommes à \u003cb\u003e{DonationsSoFar}\u003c/b\u003e sur \u003cb\u003e{TotalCost}\u003c/b\u003e. Utilisez le bouton «Faire un don» ci-dessous pour faire un don.",
             "placeholders": [
                 {
                     "id": "DonationsSoFar",
@@ -1255,6 +1255,16 @@
             "translation": "Vous ✅ planifiez ou 🤔️ envisagez d'assister aux événements suivants. Cliquez sur l'événement pour plus d'informations."
         },
         {
+            "id": "You haven't said you can't make it to any upcoming events.",
+            "message": "You haven't said you can't make it to any upcoming events.",
+            "translation": "Vous n'avez indiqué aucun événement à venir auquel vous ne pouvez pas assister."
+        },
+        {
+            "id": "You said ❌ you can't make it to the following events.  Click an event for more info.",
+            "message": "You said ❌ you can't make it to the following events.  Click an event for more info.",
+            "translation": "Vous avez indiqué ❌ ne pas pouvoir assister aux événements suivants. Cliquez sur l'événement pour plus d'informations."
+        },
+        {
             "id": "Not an event you are attending.",
             "message": "Not an event you are attending.",
             "translation": "Ce n'est pas un événement auquel vous assistez."
@@ -1265,9 +1275,9 @@
             "translation": "Désolé, mais cet événement ne vous permet pas d'amener d'invités."
         },
         {
-            "id": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "message": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "translation": "Très bien, dites-moi le nom du premier invité que vous amenez à <b>{Name}</b>. Vous pouvez amener jusqu'à {MaxGuests}.\n\nEnvoyez-moi un nom à la fois, s'il vous plaît!",
+            "id": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "message": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "translation": "Très bien, dites-moi le nom du premier invité que vous amenez à \u003cb\u003e{Name}\u003c/b\u003e. Vous pouvez amener jusqu'à {MaxGuests}.\n\nEnvoyez-moi un nom à la fois, s'il vous plaît!",
             "placeholders": [
                 {
                     "id": "Name",
@@ -1298,9 +1308,9 @@
             "translation": "J'ai compris. Qui est le prochain invité ? Si c'est le dernier, cliquez sur /done."
         },
         {
-            "id": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
-            "message": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
-            "translation": "Vous êtes prêt! J'ai ajouté ces personnes comme invités sur <b>{Name}</b>. Vous pouvez maintenant revenir au chat dans lequel vous étiez précédemment.\n\nMerci d'utiliser le robot Furry Plans!",
+            "id": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "message": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "translation": "Vous êtes prêt! J'ai ajouté ces personnes comme invités sur \u003cb\u003e{Name}\u003c/b\u003e. Vous pouvez maintenant revenir au chat dans lequel vous étiez précédemment.\n\nMerci d'utiliser le robot Furry Plans!",
             "placeholders": [
                 {
                     "id": "Name",
@@ -1378,9 +1388,9 @@
             ]
         },
         {
-            "id": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "message": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">cette</a> liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
+            "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ecette\u003c/a\u003e liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
         },
         {
             "id": "Specified Time Zone not found.",
@@ -1463,6 +1473,11 @@
             "translation": "Voir une liste de tous les événements auxquels vous avez répondu"
         },
         {
+            "id": "See a list of all events you said you can't make it to",
+            "message": "See a list of all events you said you can't make it to",
+            "translation": "Voir une liste de tous les événements auxquels vous avez indiqué ne pas pouvoir assister"
+        },
+        {
             "id": "See nearby events listed in our public directory",
             "message": "See nearby events listed in our public directory",
             "translation": "Consultez les événements à proximité répertoriés dans notre annuaire public"
@@ -1483,9 +1498,9 @@
             "translation": "Voici la liste des commandes disponible"
         },
         {
-            "id": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
-            "message": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
-            "translation": "Le robot Furry Plans a été créé par 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTraductions fournies par:"
+            "id": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "message": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "translation": "Le robot Furry Plans a été créé par 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTraductions fournies par:"
         },
         {
             "id": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
@@ -1503,16 +1518,6 @@
             "translation": "Ajouter au calendrier"
         },
         {
-            "id": "Did you know?",
-            "message": "Did you know?",
-            "translation": "Saviez-vous?"
-        },
-        {
-            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
-            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
-            "translation": "Le bot Furry Plans fournit un flux iCal de tous les événements que vous avez marqués comme \"Oui\" ou \"Peut-être\".\nVous pouvez ajouter ce flux à Google Agenda ou à d'autres agendas, et les événements apparaîtront automatiquement !\nPour obtenir l'URL du flux, discutez avec @furryplansbot et envoyez la commande <b>/feed</b>."
-        },
-        {
             "id": "Add '{Name}' to your Calendar",
             "message": "Add '{Name}' to your Calendar",
             "translation": "Ajouter '{Name}' à votre calendrier",
@@ -1523,9 +1528,24 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "event.Name()"
+                    "expr": "name"
                 }
             ]
+        },
+        {
+            "id": "Did you know?",
+            "message": "Did you know?",
+            "translation": "Saviez-vous?"
+        },
+        {
+            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.\nYou can add this feed to Google Calendar or other calendars, and events will appear automatically!\nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.\nYou can add this feed to Google Calendar or other calendars, and events will appear automatically!\nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "translation": "Le bot Furry Plans fournit un flux iCal de tous les événements que vous avez marqués comme \"Oui\" ou \"Peut-être\".\nVous pouvez ajouter ce flux à Google Agenda ou à d'autres agendas, et les événements apparaîtront automatiquement !\nPour obtenir l'URL du flux, discutez avec @furryplansbot et envoyez la commande \u003cb\u003e/feed\u003c/b\u003e."
+        },
+        {
+            "id": "Apple Calendar, Outlook app or other (.ics file)",
+            "message": "Apple Calendar, Outlook app or other (.ics file)",
+            "translation": "Calendrier Apple, application Outlook ou autre (fichier .ics)"
         }
     ]
 }

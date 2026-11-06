@@ -153,16 +153,26 @@ func (c *Connector) GetEventByHash(hash string, saltValue string, shareMode bool
 }
 
 func (c *Connector) CalendarFeed(ownerId int64) ([]dbInterface.DBEvent, error) {
+	return c.eventsByAttendance(ownerId, dbInterface.CANATTEND_YES, dbInterface.CANATTEND_MAYBE, dbInterface.CANATTEND_SUITING, dbInterface.CANATTEND_PHOTOGRAPHER)
+}
 
-	sql := fmt.Sprintf(`SELECT furryplans.*, furryplansattend.CanAttend FROM furryplansattend 
-		LEFT JOIN furryplans USING (eventID) 
-		WHERE furryplansattend.userid = ? 
-		AND furryplansattend.CanAttend IN (%v, %v, %v, %v) 
-		AND (furryplans.EventDateTime > NOW() - INTERVAL 7 DAY  OR furryplans.EndDateTime > NOW() - INTERVAL 2 DAY) 
-		ORDER BY EventDateTime `, dbInterface.CANATTEND_YES, dbInterface.CANATTEND_MAYBE, dbInterface.CANATTEND_SUITING, dbInterface.CANATTEND_PHOTOGRAPHER)
+// NotGoingEvents returns the events this user specifically said they can't make it to.
+func (c *Connector) NotGoingEvents(userId int64) ([]dbInterface.DBEvent, error) {
+	return c.eventsByAttendance(userId, dbInterface.CANATTEND_NO)
+}
+
+// eventsByAttendance returns the recent and upcoming events where this user has one of these attendance statuses.
+func (c *Connector) eventsByAttendance(userId int64, statuses ...dbInterface.CanAttend) ([]dbInterface.DBEvent, error) {
+
+	sql := `SELECT furryplans.*, furryplansattend.CanAttend FROM furryplansattend
+		LEFT JOIN furryplans USING (eventID)
+		WHERE furryplansattend.userid = ?
+		AND furryplansattend.CanAttend IN (?)
+		AND (furryplans.EventDateTime > NOW() - INTERVAL 7 DAY  OR furryplans.EndDateTime > NOW() - INTERVAL 2 DAY)
+		ORDER BY EventDateTime `
 
 	var events []*FurryPlansWithAttend
-	res := c.db.Raw(sql, ownerId).Scan(&events)
+	res := c.db.Raw(sql, userId, statuses).Scan(&events)
 	if res.Error != nil {
 		return nil, res.Error
 	}

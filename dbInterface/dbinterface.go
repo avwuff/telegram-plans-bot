@@ -18,6 +18,7 @@ type DBFeatures interface {
 	GetEvent(eventId uint, ownerId int64) (DBEvent, error)
 	GetEventByHash(hash string, saltValue string, shareMode bool) (DBEvent, *localizer.Localizer, error)
 	CalendarFeed(ownerId int64) ([]DBEvent, error)
+	NotGoingEvents(userId int64) ([]DBEvent, error)
 	SearchEvents(ownerId int64, searchText string) ([]DBEvent, error)
 	GetEvents(ownerId int64, includeOld bool) ([]DBEvent, error)
 	GetAllUsers() ([]int64, error)

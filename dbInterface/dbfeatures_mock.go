@@ -241,6 +241,32 @@ func (_m *DBFeaturesMock) NearbyFeed(latitude float64, longitude float64, distKM
 	return r0, r1
 }
 
+// NotGoingEvents provides a mock function with given fields: userId
+func (_m *DBFeaturesMock) NotGoingEvents(userId int64) ([]DBEvent, error) {
+	ret := _m.Called(userId)
+
+	var r0 []DBEvent
+	var r1 error
+	if rf, ok := ret.Get(0).(func(int64) ([]DBEvent, error)); ok {
+		return rf(userId)
+	}
+	if rf, ok := ret.Get(0).(func(int64) []DBEvent); ok {
+		r0 = rf(userId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).([]DBEvent)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(int64) error); ok {
+		r1 = rf(userId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // SavePrefs provides a mock function with given fields: userid, prefs, colName
 func (_m *DBFeaturesMock) SavePrefs(userid int64, prefs Prefs, colName string) error {
 	ret := _m.Called(userid, prefs, colName)

@@ -20,6 +20,27 @@ func (tgp *TGPlansBot) goingHandler(usrInfo *userManager.UserInfo, msg *tgbotapi
 		return
 	}
 	txt := usrInfo.Locale.Sprintf("You're ✅ planning or 🤔️ considering attending the following events.  Click an event for more info.\n\n")
+	tgp.sendEventList(usrInfo, msg, txt, events)
+}
+
+// notGoingHandler lists out all the events you said you can't make it to.
+func (tgp *TGPlansBot) notGoingHandler(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, text string) {
+
+	events, err := tgp.db.NotGoingEvents(msg.Chat.ID)
+	if err != nil {
+		tgp.quickReply(msg, err.Error())
+		return
+	}
+	if len(events) == 0 {
+		tgp.quickReply(msg, usrInfo.Locale.Sprintf("You haven't said you can't make it to any upcoming events."))
+		return
+	}
+	txt := usrInfo.Locale.Sprintf("You said ❌ you can't make it to the following events.  Click an event for more info.\n\n")
+	tgp.sendEventList(usrInfo, msg, txt, events)
+}
+
+// sendEventList sends a message with a button for each of these events, showing the user's attendance status.
+func (tgp *TGPlansBot) sendEventList(usrInfo *userManager.UserInfo, msg *tgbotapi.Message, txt string, events []dbInterface.DBEvent) {
 
 	var buttons [][]tgbotapi.InlineKeyboardButton
 
@@ -28,6 +49,8 @@ func (tgp *TGPlansBot) goingHandler(usrInfo *userManager.UserInfo, msg *tgbotapi
 
 		state := ""
 		switch event.GetCanAttend() {
+		case dbInterface.CANATTEND_NO:
+			state = "❌"
 		case dbInterface.CANATTEND_YES:
 			if event.Suitwalk() {
 				state = "🙋"
@@ -55,10 +78,24 @@ func (tgp *TGPlansBot) goingHandler(usrInfo *userManager.UserInfo, msg *tgbotapi
 		InlineKeyboard: buttons,
 	}
 
-	_, err = tgp.tg.Send(mObj)
+	_, err := tgp.tg.Send(mObj)
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+// hasDeclined returns true if this user specifically said they can't make it to this event.
+func hasDeclined(event dbInterface.DBEvent, userId int64) bool {
+	attending, err := event.GetAttending(userId)
+	if err != nil {
+		return false
+	}
+	for _, attend := range attending {
+		if dbInterface.CanAttend(attend.CanAttend) == dbInterface.CANATTEND_NO {
+			return true
+		}
+	}
+	return false
 }
 
 func (tgp *TGPlansBot) goingMoreInfo(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
@@ -85,8 +122,8 @@ func (tgp *TGPlansBot) goingMoreInfo(usrInfo *userManager.UserInfo, cb *tgbotapi
 		return
 	}
 
-	// Make sure this is an event they are actually attending.
-	if !event.AmIAttending(cb.Message.Chat.ID) {
+	// Make sure this is an event they are actually attending, or said they can't make it to, so they can change their mind.
+	if !event.AmIAttending(cb.Message.Chat.ID) && !hasDeclined(event, cb.Message.Chat.ID) {
 		tgp.quickReply(cb.Message, usrInfo.Locale.Sprintf("Not an event you are attending."))
 		// Only allow public events to be shown to people who aren't attending.
 		isPublic, _, _ := event.Public()

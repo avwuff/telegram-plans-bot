@@ -9,6 +9,7 @@ Event pictures are now stored on Telegram, rather than on the server, and are sh
 - Events now say when they're closed or full, and stop asking for donations once fully funded.
 - Long lists on fursuit walks now collapse.
 - The 'Add to Calendar' page no longer uses an outside service. It offers a calendar file to download and direct links for Google, Outlook and Yahoo, and uses the event's end time.
+- New /notgoing command lists the events you said you can't make it to, so you can change your mind.
 
 #### Maintenance
 - Upgraded to Go 1.27 and the latest version of the Telegram bot library.

@@ -1255,6 +1255,16 @@
             "translation": ""
         },
         {
+            "id": "You haven't said you can't make it to any upcoming events.",
+            "message": "You haven't said you can't make it to any upcoming events.",
+            "translation": ""
+        },
+        {
+            "id": "You said ❌ you can't make it to the following events.  Click an event for more info.",
+            "message": "You said ❌ you can't make it to the following events.  Click an event for more info.",
+            "translation": ""
+        },
+        {
             "id": "Not an event you are attending.",
             "message": "Not an event you are attending.",
             "translation": ""
@@ -1463,6 +1473,11 @@
             "translation": ""
         },
         {
+            "id": "See a list of all events you said you can't make it to",
+            "message": "See a list of all events you said you can't make it to",
+            "translation": ""
+        },
+        {
             "id": "See nearby events listed in our public directory",
             "message": "See nearby events listed in our public directory",
             "translation": ""
@@ -1503,16 +1518,6 @@
             "translation": ""
         },
         {
-            "id": "Did you know?",
-            "message": "Did you know?",
-            "translation": ""
-        },
-        {
-            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
-            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
-            "translation": ""
-        },
-        {
             "id": "Add '{Name}' to your Calendar",
             "message": "Add '{Name}' to your Calendar",
             "translation": "",
@@ -1523,9 +1528,24 @@
                     "type": "string",
                     "underlyingType": "string",
                     "argNum": 1,
-                    "expr": "event.Name()"
+                    "expr": "name"
                 }
             ]
+        },
+        {
+            "id": "Did you know?",
+            "message": "Did you know?",
+            "translation": ""
+        },
+        {
+            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.\nYou can add this feed to Google Calendar or other calendars, and events will appear automatically!\nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.\nYou can add this feed to Google Calendar or other calendars, and events will appear automatically!\nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "translation": ""
+        },
+        {
+            "id": "Apple Calendar, Outlook app or other (.ics file)",
+            "message": "Apple Calendar, Outlook app or other (.ics file)",
+            "translation": ""
         }
     ]
 }

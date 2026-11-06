@@ -1,7 +1,7 @@
 # TODO
 
 ## Generate calendar feed time zones locally
-`SetTimeZone` in `webserver/server.go` downloads each zone's `VTIMEZONE` from tzurl.org on every feed request.
+`SetTimeZone` in `webserver/server.go` downloads each zone's `VTIMEZONE` from tzurl.org and caches it for a day.
 Generate them from Go's time zone data instead, so the feeds don't depend on that site.
 
 **Approach:** for each zone in a feed, use `ZoneBounds()` to walk the offset changes, from the period in effect at the

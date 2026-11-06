@@ -68,7 +68,7 @@ func (tgp *TGPlansBot) goingMoreInfo(usrInfo *userManager.UserInfo, cb *tgbotapi
 	// Find this event.
 
 	data := strings.Split(cb.Data, ":")
-	if len(data) < 1 {
+	if len(data) < 2 {
 		return
 	}
 

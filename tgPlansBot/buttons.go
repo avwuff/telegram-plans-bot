@@ -98,6 +98,9 @@ func processDateClicks(selDate time.Time, cmd string) (outDate time.Time, finish
 	case "nothing":
 		// do nothing
 	case "month": // go to a different month
+		if len(data) < 3 {
+			return
+		}
 
 		switch data[2] {
 		case "P": // previous month

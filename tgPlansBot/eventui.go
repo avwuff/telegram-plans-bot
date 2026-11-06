@@ -29,6 +29,9 @@ func (tgp *TGPlansBot) initUICommands() {
 func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.CallbackQuery) {
 	// note that usrInfo may represent a user who has never used the bot.
 	data := strings.Split(cb.Data, ":")
+	if len(data) < 2 {
+		return
+	}
 	eventId, err := strconv.Atoi(data[1])
 	if err != nil {
 		return
@@ -43,19 +46,19 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 	// Save where this was posted
 	// We can use a Gofunc here since it isn't important to have this saved before we continue
 	if cb.InlineMessageID != "" {
-		go func() {
+		safeGo(func() {
 			err := event.SavePosting(cb.InlineMessageID)
 			if err != nil {
 				log.Println(err)
 			}
-		}()
+		})
 	} else {
-		go func() {
+		safeGo(func() {
 			err := event.SavePostingRegular(cb.Message.Chat.ID, cb.Message.MessageID)
 			if err != nil {
 				log.Println(err)
 			}
-		}()
+		})
 	}
 
 	// HTML format the name so it works properly.
@@ -76,19 +79,13 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 		reply = dbInterface.ATTEND_CLOSED
 	case "attending":
 		// How many people are they bringing?
-		people, err := strconv.Atoi(data[2])
-		if err != nil {
+		if len(data) < 3 {
 			return
 		}
-
-		canAtt := dbInterface.CANATTEND_YES
-		if people >= int(dbInterface.CANATTEND_PHOTOGRAPHER) {
-			canAtt = dbInterface.CANATTEND_PHOTOGRAPHER
-			people -= int(dbInterface.CANATTEND_PHOTOGRAPHER)
-		}
-		if people >= int(dbInterface.CANATTEND_SUITING) {
-			canAtt = dbInterface.CANATTEND_SUITING
-			people -= int(dbInterface.CANATTEND_SUITING)
+		canAtt, people, ok := attendChoice(event, data[2])
+		if !ok {
+			tgp.answerCallback(cb, loc.Sprintf("A general error occurred."))
+			return
 		}
 
 		// If we had previously specified the names of our guests, don't erase that information.
@@ -135,7 +132,7 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 		return
 	}
 	// Answer the callback in a Gofunc
-	go tgp.answerCallback(cb, txt)
+	safeGo(func() { tgp.answerCallback(cb, txt) })
 
 	if cb.InlineMessageID != "" {
 		tgp.updateEventPosting(event, cb.InlineMessageID)
@@ -147,6 +144,33 @@ func (tgp *TGPlansBot) ui_Attending(usrInfo *userManager.UserInfo, cb *tgbotapi.
 	tgp.updateEventUIAllPostings(event)
 }
 
+// attendChoice works out what the number on an 'attending' button means. Telegram doesn't check that callback data
+// came from a real button, so this makes sure it is one that eventUIButtons offers for this event.
+func attendChoice(event dbInterface.DBEvent, value string) (canAtt dbInterface.CanAttend, people int, ok bool) {
+	num, err := strconv.Atoi(value)
+	if err != nil || num < 0 {
+		return dbInterface.CANATTEND_NO, 0, false
+	}
+
+	if !event.Suitwalk() {
+		return dbInterface.CANATTEND_YES, num, num <= event.MaxGuests()
+	}
+
+	canAtt = dbInterface.CANATTEND_YES
+	people = num
+	if num >= int(dbInterface.CANATTEND_PHOTOGRAPHER) {
+		canAtt = dbInterface.CANATTEND_PHOTOGRAPHER
+		people = num - int(dbInterface.CANATTEND_PHOTOGRAPHER)
+	} else if num >= int(dbInterface.CANATTEND_SUITING) {
+		canAtt = dbInterface.CANATTEND_SUITING
+		people = num - int(dbInterface.CANATTEND_SUITING)
+	}
+	return canAtt, people, people <= suitwalkMaxGuests
+}
+
+// suitwalkMaxGuests is the most guests offered by the buttons on a suitwalk, which don't depend on the event's setting.
+const suitwalkMaxGuests = 2
+
 // Every time the event UI needs to be updated, do it in all the places.
 func (tgp *TGPlansBot) updateEventUIAllPostings(event dbInterface.DBEvent) {
 
@@ -156,8 +180,10 @@ func (tgp *TGPlansBot) updateEventUIAllPostings(event dbInterface.DBEvent) {
 	}
 
 	for i := range postings {
+		posting := postings[i]
+
 		// We do this as a Gofunc so that they can all be updated at once.
-		go func(posting dbInterface.Posting) {
+		safeGo(func() {
 
 			// Make sure this one isn't in the Retry After queue.
 			if posting.InlineMessageID != "" {
@@ -170,7 +196,7 @@ func (tgp *TGPlansBot) updateEventUIAllPostings(event dbInterface.DBEvent) {
 				}
 			}
 
-		}(postings[i])
+		})
 	}
 
 }

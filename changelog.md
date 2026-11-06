@@ -11,6 +11,7 @@ Event pictures are now stored on Telegram, rather than on the server, and are sh
 
 #### Maintenance
 - Upgraded to Go 1.27 and the latest version of the Telegram bot library.
+- Security fixes for event buttons, calendar feeds, the 'Add to Calendar' page and logging.
 
 ### Version 2.6 - Feb 2026
 #### New Features

@@ -60,7 +60,7 @@ func (tgp *TGPlansBot) manage_clickEdit(usrInfo *userManager.UserInfo, cb *tgbot
 	usrInfo.SetData(EDIT_EVENT, event)
 
 	// What thing do they want to edit?
-	go tgp.answerCallback(cb, "")
+	safeGo(func() { tgp.answerCallback(cb, "") })
 
 	// SIMPLE STRING EDIT
 	switch data[2] {

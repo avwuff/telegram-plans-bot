@@ -28,6 +28,7 @@ func (tgp *TGPlansBot) addToQueue(event dbInterface.DBEvent, msgId string, after
 
 	// start a timer to run this again
 	time.AfterFunc(time.Second*time.Duration(after), func() {
+		defer logPanic()
 		log.Printf("Timer elapsed, updating message %v now\n", msgId)
 		loc := localizer.FromLanguage(event.Language())
 		_, err := tgp.makeEventUI(0, event, loc, msgId)
@@ -50,6 +51,7 @@ func (tgp *TGPlansBot) addToQueueRegular(event dbInterface.DBEvent, chatId int64
 
 	// start a timer to run this again
 	time.AfterFunc(time.Second*time.Duration(after), func() {
+		defer logPanic()
 		log.Printf("Timer elapsed, updating message %v %v now\n", chatId, messageId)
 		loc := localizer.FromLanguage(event.Language())
 		_, err := tgp.makeEventUIRegular(chatId, event, loc, messageId)

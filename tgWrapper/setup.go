@@ -2,8 +2,12 @@ package tgWrapper
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"log"
+	"net/http"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -11,6 +15,22 @@ import (
 type Telegram struct {
 	bot *tgbotapi.BotAPI
 	key string
+}
+
+// tokenSafeClient removes the URL from network errors. The bot token is part of every Telegram URL,
+// so these errors would otherwise put it in the logs.
+type tokenSafeClient struct {
+	client tgbotapi.HTTPClient
+}
+
+func (c tokenSafeClient) Do(req *http.Request) (*http.Response, error) {
+	resp, err := c.client.Do(req)
+
+	var urlErr *url.Error
+	if errors.As(err, &urlErr) {
+		return resp, fmt.Errorf("telegram request: %w", urlErr.Err)
+	}
+	return resp, err
 }
 
 func New() *Telegram {
@@ -29,13 +49,11 @@ func (t *Telegram) LoadKeyFromFile(file string) error {
 func (t *Telegram) Init() error {
 	var err error
 	tgbotapi.SetLogger(log.Default())
-	t.bot, err = tgbotapi.NewBotAPI(t.key)
+	t.bot, err = tgbotapi.NewBotAPIWithOptions(t.key, tgbotapi.WithHTTPClient(tokenSafeClient{client: &http.Client{}}))
 
 	if err != nil {
 		return err
 	}
-	// TODO remove this
-	t.bot.Debug = true
 	return nil
 }
 

@@ -82,7 +82,7 @@ func (tgp *TGPlansBot) globalmsg_Send(usrInfo *userManager.UserInfo, msg *tgbota
 
 	// Set up a context that can be canceled.
 	sendContext, sendCancel = context.WithCancel(context.Background())
-	go tgp.startSend(msg.Chat.ID, mUpdate.MessageID, users)
+	safeGo(func() { tgp.startSend(msg.Chat.ID, mUpdate.MessageID, users) })
 
 	// start iterating through all the users.
 	// limit to 20 a second.

@@ -140,6 +140,11 @@ func (c *CommandList) ProcessCallback(usrInfo *userManager.UserInfo, cb *tgbotap
 	for _, cmd := range c.cblist {
 		// Normal commands
 		if (cmd.DataPrefix == sp[0]) && (cmd.Mode == 0 || cmd.Mode == usrInfo.Eph.UserMode || cmd.Public) {
+			// Only public buttons can be on a message posted inline, and the others rely on cb.Message,
+			// which messages posted inline don't have.
+			if !cmd.Public && cb.InlineMessageID != "" {
+				return
+			}
 			cmd.Handler(usrInfo, cb)
 			return
 		}

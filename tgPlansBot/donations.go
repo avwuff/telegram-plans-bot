@@ -106,7 +106,7 @@ func (tgp *TGPlansBot) manage_clickDonate(usrInfo *userManager.UserInfo, cb *tgb
 	usrInfo.SetData(EDIT_EVENT, event)
 
 	// What thing do they want to edit?
-	go tgp.answerCallback(cb, "")
+	safeGo(func() { tgp.answerCallback(cb, "") })
 
 	name := helpers.HtmlEntities(cb.From.FirstName)
 

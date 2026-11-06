@@ -6,11 +6,14 @@ import (
 	"furryplansbot.avbrand.com/helpers"
 	ics "github.com/arran4/golang-ical"
 	"github.com/gorilla/mux"
+	"html"
+	"io"
 	"log"
 	"net/http"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -21,6 +24,37 @@ const layoutIsoFull = "2006-01-02 15:04:05"
 
 // feedRefreshInterval is how often calendar apps should check a feed for changes, as an iCalendar duration.
 const feedRefreshInterval = "PT1H"
+
+// How many requests can run at once on the pages that do the most work. Each route has its own limit, so that
+// a flood of one can't block the others. These don't rely on the client's address, which could be a shared proxy.
+const (
+	// Finding an event by its hash has to check every event in the database.
+	maxAddPageRequests = 4
+	maxNearbyRequests  = 8
+	// Calendar services can fetch a lot of feeds at the same time.
+	maxUserFeedRequests = 32
+)
+
+const (
+	tzFetchTimeout = 5 * time.Second
+	tzMaxSize      = 1 << 20
+	// Time zones rarely change, so a downloaded one can be used for a day.
+	tzCacheTime = 24 * time.Hour
+	// After a failed download, wait a bit before trying again so that feeds aren't slowed down by every attempt.
+	tzRetryTime = 5 * time.Minute
+)
+
+// cachedTimeZone is the downloaded information about a time zone.
+type cachedTimeZone struct {
+	zones     []*ics.VTimezone
+	nextFetch time.Time
+}
+
+var (
+	tzClient    = &http.Client{Timeout: tzFetchTimeout}
+	tzCacheLock sync.Mutex
+	tzCache     = map[string]cachedTimeZone{}
+)
 
 // staticFiles are the only files served from the html folder. The stylesheets are used by the 'add to calendar' page.
 var staticFiles = map[string]string{
@@ -55,10 +89,10 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 func newRouter() *mux.Router {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/add/{key}.html", addToCalendarHandler)
+	r.HandleFunc("/add/{key:[0-9a-fA-F]{32}}.html", limitConcurrent(maxAddPageRequests, addToCalendarHandler))
 	r.HandleFunc("/guests/nameguests.html", nameGuestsHandler)
-	r.HandleFunc("/feed/nearby/{lat}/{lon}/plans.ics", generateNearbyFeed)
-	r.HandleFunc("/feed/{user}/{key}/plans.ics", generateCalFeed)
+	r.HandleFunc("/feed/nearby/{lat}/{lon}/plans.ics", limitConcurrent(maxNearbyRequests, generateNearbyFeed))
+	r.HandleFunc("/feed/{user}/{key}/plans.ics", limitConcurrent(maxUserFeedRequests, generateCalFeed))
 
 	for urlPath, file := range staticFiles {
 		r.HandleFunc(urlPath, func(w http.ResponseWriter, req *http.Request) {
@@ -66,6 +100,21 @@ func newRouter() *mux.Router {
 		})
 	}
 	return r
+}
+
+// limitConcurrent turns away requests when too many are already running, and asks them to try again later.
+func limitConcurrent(limit int, next http.HandlerFunc) http.HandlerFunc {
+	slots := make(chan struct{}, limit)
+	return func(w http.ResponseWriter, r *http.Request) {
+		select {
+		case slots <- struct{}{}:
+			defer func() { <-slots }()
+			next(w, r)
+		default:
+			w.Header().Set("Retry-After", "30")
+			http.Error(w, "Server is busy, try again soon", http.StatusServiceUnavailable)
+		}
+	}
 }
 
 func errorMessage(w http.ResponseWriter, msg string) {
@@ -105,16 +154,22 @@ func addToCalendarHandler(w http.ResponseWriter, r *http.Request) {
 You can add this feed to Google Calendar or other calendars, and events will appear automatically! 
 To get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.`))
 
-	tmpl = strings.ReplaceAll(tmpl, "%INSTRUCTION%", loc.Sprintf("Add '%v' to your Calendar", event.Name()))
+	tmpl = strings.ReplaceAll(tmpl, "%INSTRUCTION%", loc.Sprintf("Add '%v' to your Calendar", pageText(event.Name())))
 	tmpl = strings.ReplaceAll(tmpl, "%DATESTART%", event.DateTime().Format(layoutIsoFull))
 	tmpl = strings.ReplaceAll(tmpl, "%DATEEND%", event.DateTime().Add(time.Hour).Format(layoutIsoFull)) // Just make it one hour long always
-	tmpl = strings.ReplaceAll(tmpl, "%TIMEZONE%", event.TimeZone())
-	tmpl = strings.ReplaceAll(tmpl, "%EVENTNAME%", event.Name())
-	tmpl = strings.ReplaceAll(tmpl, "%NOTES%", event.Notes())
-	tmpl = strings.ReplaceAll(tmpl, "%HOST%", event.OwnerName())
-	tmpl = strings.ReplaceAll(tmpl, "%LOCATION%", event.Location())
+	tmpl = strings.ReplaceAll(tmpl, "%TIMEZONE%", html.EscapeString(event.TimeZone()))
+	tmpl = strings.ReplaceAll(tmpl, "%EVENTNAME%", pageText(event.Name()))
+	tmpl = strings.ReplaceAll(tmpl, "%NOTES%", pageText(event.Notes()))
+	tmpl = strings.ReplaceAll(tmpl, "%HOST%", pageText(event.OwnerName()))
+	tmpl = strings.ReplaceAll(tmpl, "%LOCATION%", pageText(event.Location()))
 
 	w.Write([]byte(tmpl))
+}
+
+// pageText makes text from an event safe to put on a web page. Events are stored as Telegram HTML, which
+// came from the user and might have been saved before links were escaped, so it is turned into plain text.
+func pageText(s string) string {
+	return html.EscapeString(helpers.StripHtmlRegex(s))
 }
 
 func nameGuestsHandler(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +266,7 @@ func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string)
 		event.SetSummary(helpers.StripHtmlRegex(ev.Name()))
 		event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
 		event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))
-		event.SetOrganizer(helpers.StripHtmlRegex(ev.OwnerName()))
+		event.SetOrganizer(icsSingleLine(helpers.StripHtmlRegex(ev.OwnerName())))
 
 		if ev.GetCanAttend() == dbInterface.CANATTEND_MAYBE {
 			event.SetStatus(ics.ObjectStatusTentative)
@@ -219,6 +274,12 @@ func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string)
 	}
 	w.Header().Add("Content-Type", "text/calendar; charset=utf-8")
 	w.Write([]byte(cal.Serialize()))
+}
+
+// icsSingleLine removes line breaks. Unlike the other event fields, the calendar library doesn't escape the
+// organizer, so a line break in the host's name would let them add anything to the calendar.
+func icsSingleLine(s string) string {
+	return strings.NewReplacer("\r\n", " ", "\r", " ", "\n", " ").Replace(s)
 }
 
 func icsTz(start ics.ComponentProperty, dateTime time.Time) ics.ComponentProperty {
@@ -229,21 +290,53 @@ func icsTz(start ics.ComponentProperty, dateTime time.Time) ics.ComponentPropert
 var IcalTimestampFormatTz = "20060102T150405"
 
 func SetTimeZone(calendar *ics.Calendar, location string) {
-	// download current time zone info from tzurl
-	// TODO: replace with a better source
-	url := fmt.Sprintf("https://www.tzurl.org/zoneinfo-outlook/%s", location)
-	res, err := http.Get(url)
-	if err != nil {
-		fmt.Printf("Timezone %v not found", location)
-		return
-	}
-	tzCal, err := ics.ParseCalendar(res.Body)
-	if err != nil {
-		fmt.Printf("Error parsing time zone %v: %v", location, err)
-		return
-	}
-	timeZones := tzCal.Timezones()
-	for _, tz := range timeZones {
+	for _, tz := range timeZoneInfo(location) {
 		calendar.AddVTimezone(tz)
 	}
+}
+
+// timeZoneInfo gets the information about a time zone, only downloading it when the saved copy is out of date.
+// If a download fails, the out of date copy is still better than nothing.
+func timeZoneInfo(location string) []*ics.VTimezone {
+	tzCacheLock.Lock()
+	cached, found := tzCache[location]
+	tzCacheLock.Unlock()
+
+	if found && time.Now().Before(cached.nextFetch) {
+		return cached.zones
+	}
+
+	zones, err := fetchTimeZone(location)
+	if err != nil {
+		log.Printf("Unable to get time zone %v: %v\n", location, err)
+		cached.nextFetch = time.Now().Add(tzRetryTime)
+	} else {
+		cached = cachedTimeZone{zones: zones, nextFetch: time.Now().Add(tzCacheTime)}
+	}
+
+	tzCacheLock.Lock()
+	tzCache[location] = cached
+	tzCacheLock.Unlock()
+
+	return cached.zones
+}
+
+// fetchTimeZone downloads current time zone info from tzurl
+// TODO: replace with a better source
+func fetchTimeZone(location string) ([]*ics.VTimezone, error) {
+	res, err := tzClient.Get(fmt.Sprintf("https://www.tzurl.org/zoneinfo-outlook/%s", location))
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status %v", res.StatusCode)
+	}
+
+	tzCal, err := ics.ParseCalendar(io.LimitReader(res.Body, tzMaxSize))
+	if err != nil {
+		return nil, err
+	}
+	return tzCal.Timezones(), nil
 }

@@ -92,8 +92,8 @@ func setLog() {
 
 	logFileName = fmt.Sprintf("%s.log", time.Now().Format(time.DateOnly))
 
-	_ = os.MkdirAll(filepath.Join(dir, "logs"), 750)
-	logFile, err = os.OpenFile(filepath.Join(dir, "logs", logFileName), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	_ = os.MkdirAll(filepath.Join(dir, "logs"), 0750)
+	logFile, err = os.OpenFile(filepath.Join(dir, "logs", logFileName), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0640)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}

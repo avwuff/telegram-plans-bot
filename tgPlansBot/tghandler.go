@@ -9,6 +9,7 @@ import (
 	"furryplansbot.avbrand.com/userManager"
 	tgbotapi "github.com/OvyFlash/telegram-bot-api"
 	"log"
+	"runtime/debug"
 	"strings"
 	"sync"
 )
@@ -164,7 +165,23 @@ func (tgp *TGPlansBot) unknownHandler(usrInfo *userManager.UserInfo, msg *tgbota
 	_ = tgp.quickReply(msg, usrInfo.Locale.Sprintf("I don't understand that command. Send /help for help."))
 }
 
+// logPanic stops a panic from taking down the whole bot. It must be deferred directly.
+func logPanic() {
+	if r := recover(); r != nil {
+		log.Printf("Recovered from panic: %v\n%s", r, debug.Stack())
+	}
+}
+
+// safeGo runs a function in the background. A panic in a goroutine can't be caught by the code that started it.
+func safeGo(f func()) {
+	go func() {
+		defer logPanic()
+		f()
+	}()
+}
+
 func (tgp *TGPlansBot) handleUpdate(update tgbotapi.Update) {
+	defer logPanic()
 
 	// What kind of update is it?
 	if update.Message != nil {

@@ -83,7 +83,7 @@ func (tgp *TGPlansBot) eventDetails(usrInfo *userManager.UserInfo, chatId int64,
 		t += "\n" + loc.Sprintf("🌎 Event is listed in public directory") + "\n"
 	}
 
-	if event.PictureURL() != "" || event.PictureFileID() != "" {
+	if event.PictureFileID() != "" {
 		t += "\n<i>" + loc.Sprintf("🖼 Event includes a picture") + "</i>\n"
 	}
 	if event.TotalCost() > 0 {

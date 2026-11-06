@@ -355,20 +355,6 @@ func (_m *DBEventMock) OwnerName() string {
 	return r0
 }
 
-// PictureURL provides a mock function with given fields:
-func (_m *DBEventMock) PictureURL() string {
-	ret := _m.Called()
-
-	var r0 string
-	if rf, ok := ret.Get(0).(func() string); ok {
-		r0 = rf()
-	} else {
-		r0 = ret.Get(0).(string)
-	}
-
-	return r0
-}
-
 // PictureFileID provides a mock function with given fields:
 func (_m *DBEventMock) PictureFileID() string {
 	ret := _m.Called()
@@ -666,20 +652,6 @@ func (_m *DBEventMock) SetNotes(t string) error {
 
 // SetOwnerName provides a mock function with given fields: t
 func (_m *DBEventMock) SetOwnerName(t string) error {
-	ret := _m.Called(t)
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(string) error); ok {
-		r0 = rf(t)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
-// SetPictureURL provides a mock function with given fields: t
-func (_m *DBEventMock) SetPictureURL(t string) error {
 	ret := _m.Called(t)
 
 	var r0 error

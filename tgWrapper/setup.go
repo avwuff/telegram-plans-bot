@@ -89,6 +89,3 @@ func (t *Telegram) SetMyCommands(cmds tgbotapi.SetMyCommandsConfig) (*tgbotapi.A
 func (t *Telegram) GetFile(config tgbotapi.FileConfig) (tgbotapi.File, error) {
 	return t.bot.GetFile(config)
 }
-func (t *Telegram) GetFileDirectURL(fileID string) (string, error) {
-	return t.bot.GetFileDirectURL(fileID)
-}

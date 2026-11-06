@@ -1,21 +1,27 @@
 # Dockerfile References: https://docs.docker.com/engine/reference/builder/
 
-# Start from golang alpine base image
-FROM golang:1.27-alpine
+# Build the app in its own stage, so the Go toolchain and build cache don't end up in the final image.
+FROM golang:1.27-alpine AS build
 
-# The latest alpine images don't have some tools like (`git` and `bash`).
-# Adding git, bash and openssh to the image
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+WORKDIR /src
 
-# Set the Current Working Directory inside the container
-WORKDIR /app
-
-# Copy the source from the current directory to the Working Directory inside the container
 COPY . .
 
-# Build the Go app
-RUN go build -o main .
+# The vendor folder has the dependencies. CGO isn't needed, so the result doesn't depend on any system libraries.
+RUN CGO_ENABLED=0 go build -mod=vendor -trimpath -ldflags="-s -w" -o /out/main .
+
+# The final image only has what the bot needs in order to run.
+FROM alpine:3.24
+
+# ca-certificates: needed for HTTPS connections to Telegram.
+# tzdata: needed for time.LoadLocation. The bot panics on startup without it.
+RUN apk add --no-cache ca-certificates tzdata
+
+WORKDIR /app
+
+COPY --from=build /out/main ./main
+COPY html ./html
+COPY dsn.txt salt.txt token.txt ./
 
 # Expose port 8080 to the outside world
 EXPOSE 8080

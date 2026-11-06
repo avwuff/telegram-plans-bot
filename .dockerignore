@@ -1,0 +1,19 @@
+# Data that belongs to the running services, not to the image
+db_data
+logs
+
+# Not needed to build or run the bot
+.git
+.gitignore
+.idea
+imgs
+*.exe
+*.lnk
+*.md
+Dockerfile
+.dockerignore
+docker-compose.yml
+update.sh
+
+# Only token.txt is used by the bot
+token-prod.txt

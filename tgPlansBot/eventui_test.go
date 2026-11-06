@@ -341,3 +341,33 @@ func Test_richPictureOnTheWire(t *testing.T) {
 		check(t)
 	})
 }
+
+func Test_eventPictureInRichMessage(t *testing.T) {
+	pb := &TGPlansBot{}
+	loc := eventUILocalizer()
+
+	t.Run("picture goes at the top", func(t *testing.T) {
+		rich := pb.makeEventUIRichMessage(eventUIEventFull(t, false, "FILE123"), loc)
+
+		assert.True(t, strings.HasPrefix(rich.HTML, `<img src="tg://photo?id=eventpicture"/><p>`), rich.HTML)
+		require.Len(t, rich.Media, 1)
+		assert.Equal(t, "eventpicture", rich.Media[0].ID)
+	})
+
+	t.Run("no picture has no media", func(t *testing.T) {
+		rich := pb.makeEventUIRichMessage(eventUIEvent(t), loc)
+
+		assert.NotContains(t, rich.HTML, "<img")
+		assert.Empty(t, rich.Media)
+	})
+}
+
+func Test_largestPhotoFileID(t *testing.T) {
+	photos := []tgbotapi.PhotoSize{
+		{FileID: "small", Width: 10, Height: 10},
+		{FileID: "big", Width: 100, Height: 100},
+		{FileID: "medium", Width: 50, Height: 50},
+	}
+	assert.Equal(t, "big", largestPhotoFileID(photos))
+	assert.Equal(t, "", largestPhotoFileID(nil))
+}

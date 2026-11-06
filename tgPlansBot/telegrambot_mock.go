@@ -90,30 +90,6 @@ func (_m *TelegramBotMock) GetFile(config tgbotapi.FileConfig) (tgbotapi.File, e
 	return r0, r1
 }
 
-// GetFileDirectURL provides a mock function with given fields: fileID
-func (_m *TelegramBotMock) GetFileDirectURL(fileID string) (string, error) {
-	ret := _m.Called(fileID)
-
-	var r0 string
-	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (string, error)); ok {
-		return rf(fileID)
-	}
-	if rf, ok := ret.Get(0).(func(string) string); ok {
-		r0 = rf(fileID)
-	} else {
-		r0 = ret.Get(0).(string)
-	}
-
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(fileID)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // Init provides a mock function with given fields:
 func (_m *TelegramBotMock) Init() error {
 	ret := _m.Called()

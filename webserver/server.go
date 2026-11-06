@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -18,6 +19,18 @@ var db dbInterface.DBFeatures
 
 const layoutIsoFull = "2006-01-02 15:04:05"
 
+// feedRefreshInterval is how often calendar apps should check a feed for changes, as an iCalendar duration.
+const feedRefreshInterval = "PT1H"
+
+// staticFiles are the only files served from the html folder. The stylesheets are used by the 'add to calendar' page.
+var staticFiles = map[string]string{
+	"/":                   "index.html",
+	"/robots.txt":         "robots.txt",
+	"/normalize.css":      "normalize.css",
+	"/skeleton.css":       "skeleton.css",
+	"/atc-style-blue.css": "atc-style-blue.css",
+}
+
 // StartServer provides a basic web server for handling 'add to calendar'
 // and ICS feeds
 
@@ -25,17 +38,8 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 	saltValue = salt
 	db = useDb
 
-	r := mux.NewRouter()
-
-	// This will serve files under http://localhost:8000/static/<filename>
-	r.HandleFunc("/add/{key}.html", addToCalendarHandler)
-	r.HandleFunc("/guests/nameguests.html", nameGuestsHandler)
-	r.HandleFunc("/feed/nearby/{lat}/{lon}/plans.ics", generateNearbyFeed)
-	r.HandleFunc("/feed/{user}/{key}/plans.ics", generateCalFeed)
-	r.PathPrefix("/").Handler(http.StripPrefix("/", http.FileServer(http.Dir("./html"))))
-
 	srv := &http.Server{
-		Handler: logging(log.Default())(r),
+		Handler: logging(log.Default())(newRouter()),
 		Addr:    ":8080",
 		// Good practice: enforce timeouts for servers you create!
 		WriteTimeout: 15 * time.Second,
@@ -45,6 +49,23 @@ func StartServer(salt string, useDb dbInterface.DBFeatures) {
 	log.Println("Starting listener on", srv.Addr)
 
 	log.Fatal(srv.ListenAndServe())
+}
+
+// newRouter sets up the pages and feeds of the web server.
+func newRouter() *mux.Router {
+	r := mux.NewRouter()
+
+	r.HandleFunc("/add/{key}.html", addToCalendarHandler)
+	r.HandleFunc("/guests/nameguests.html", nameGuestsHandler)
+	r.HandleFunc("/feed/nearby/{lat}/{lon}/plans.ics", generateNearbyFeed)
+	r.HandleFunc("/feed/{user}/{key}/plans.ics", generateCalFeed)
+
+	for urlPath, file := range staticFiles {
+		r.HandleFunc(urlPath, func(w http.ResponseWriter, req *http.Request) {
+			http.ServeFile(w, req, filepath.Join("html", file))
+		})
+	}
+	return r
 }
 
 func errorMessage(w http.ResponseWriter, msg string) {
@@ -155,6 +176,10 @@ func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string)
 	cal.SetName(name)
 	cal.SetDescription("Furry Plans Calendar")
 
+	// Ask calendar apps to check for changes every hour. Not all of them follow this.
+	cal.SetRefreshInterval(feedRefreshInterval)
+	cal.SetXPublishedTTL(feedRefreshInterval)
+
 	// make a list of the time zones in use in the event
 	tzList := map[string]bool{}
 	for _, ev := range events {
@@ -187,8 +212,12 @@ func addEvents(w http.ResponseWriter, events []dbInterface.DBEvent, name string)
 		event.SetLocation(helpers.StripHtmlRegex(ev.Location()))
 		event.SetDescription(helpers.StripHtmlRegex(ev.Notes()))
 		event.SetOrganizer(helpers.StripHtmlRegex(ev.OwnerName()))
+
+		if ev.GetCanAttend() == dbInterface.CANATTEND_MAYBE {
+			event.SetStatus(ics.ObjectStatusTentative)
+		}
 	}
-	w.Header().Add("Content-Type", "text/calendar")
+	w.Header().Add("Content-Type", "text/calendar; charset=utf-8")
 	w.Write([]byte(cal.Serialize()))
 }
 

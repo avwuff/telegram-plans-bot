@@ -706,13 +706,6 @@ func (tgp *TGPlansBot) editPictureItem(usrInfo *userManager.UserInfo, chatId int
 		mObj := tgbotapi.NewPhoto(chatId, tgbotapi.FileID(event.PictureFileID()))
 		mObj.Caption = picPrompt
 		_, _ = tgp.tg.Send(mObj)
-	} else if event.PictureURL() != "" {
-		// An old picture that hasn't been uploaded to Telegram yet.
-		mObj := tgbotapi.NewMessage(chatId, picPrompt)
-		mObj.LinkPreviewOptions.PreferLargeMedia = true
-		mObj.LinkPreviewOptions.ShowAboveText = false
-		mObj.LinkPreviewOptions.URL = event.PictureURL()
-		_, _ = tgp.tg.Send(mObj)
 	}
 
 	mObj := tgbotapi.NewMessage(chatId, prompt)

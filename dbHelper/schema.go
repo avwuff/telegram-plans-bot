@@ -35,7 +35,6 @@ type FurryPlans struct {
 	OwnerName     string       `gorm:"column:ownerName"`
 	Location      string       `gorm:"column:EventLocation"`
 	Notes         string       `gorm:"column:Notes"`
-	PictureURL    string       `gorm:"column:PictureURL"`    // Old pictures served from disk. New pictures use PictureFileID.
 	PictureFileID string       `gorm:"column:PictureFileID"` // The Telegram file ID of the picture
 	Language      string       `gorm:"column:Language"`
 	TotalCost     int          `gorm:"column:TotalCost"`

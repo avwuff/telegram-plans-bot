@@ -4,6 +4,7 @@
 #### New Features
 - Event messages now use Telegram Rich Messages, which allows for much longer event text.
 Event pictures are now stored on Telegram, rather than on the server, and are shown at the top of event messages.
+- In calendar feeds, events you've marked as Maybe now appear as tentative.
 
 #### Maintenance
 - Upgraded to Go 1.27 and the latest version of the Telegram bot library.

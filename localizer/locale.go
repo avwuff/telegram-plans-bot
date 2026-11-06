@@ -19,14 +19,23 @@ const (
 	euTimeFormat     = "15:04"
 	frDateFormat     = "Monday 2 January 2006, 15 h 04"
 	frTimeFormat     = "15 h 04"
+
+	usShortDateFormat     = "Mon, Jan 2, 3:04 PM"
+	usShortDateYearFormat = "Mon, Jan 2, 2006, 3:04 PM"
+	euShortDateFormat     = "Mon, 2. Jan, 15:04"
+	euShortDateYearFormat = "Mon, 2. Jan 2006, 15:04"
+	frShortDateFormat     = "Mon 2 Jan, 15 h 04"
+	frShortDateYearFormat = "Mon 2 Jan 2006, 15 h 04"
 )
 
 type Localizer struct {
-	name       string
-	iso639code string
-	dateFormat string // the date format that is most common in this culture
-	timeFormat string // the time format that is most common in this culture
-	printer    *message.Printer
+	name                string
+	iso639code          string
+	dateFormat          string // the date format that is most common in this culture
+	timeFormat          string // the time format that is most common in this culture
+	shortDateFormat     string // the same as dateFormat with shortened names and no year
+	shortDateYearFormat string // the same as dateFormat with shortened names
+	printer             *message.Printer
 }
 
 var locales map[string]*Localizer
@@ -35,39 +44,49 @@ var timezones map[string]*time.Location
 func InitLang() {
 	locales = map[string]*Localizer{
 		"de-DE": { // German
-			name:       "Deutsch",
-			iso639code: "de",
-			dateFormat: euDateFormat,
-			timeFormat: euTimeFormat,
-			printer:    message.NewPrinter(language.MustParse("de-DE")),
+			name:                "Deutsch",
+			iso639code:          "de",
+			dateFormat:          euDateFormat,
+			shortDateFormat:     euShortDateFormat,
+			shortDateYearFormat: euShortDateYearFormat,
+			timeFormat:          euTimeFormat,
+			printer:             message.NewPrinter(language.MustParse("de-DE")),
 		},
 		"fr-FR": { // France (French)
-			name:       "Français (France)",
-			iso639code: "fr",
-			dateFormat: frDateFormat,
-			timeFormat: frTimeFormat,
-			printer:    message.NewPrinter(language.MustParse("fr-FR")),
+			name:                "Français (France)",
+			iso639code:          "fr",
+			dateFormat:          frDateFormat,
+			shortDateFormat:     frShortDateFormat,
+			shortDateYearFormat: frShortDateYearFormat,
+			timeFormat:          frTimeFormat,
+			printer:             message.NewPrinter(language.MustParse("fr-FR")),
 		},
 		"fr-CA": { // Canada (French)
-			name:       "Français (Québec)",
-			iso639code: "fr",
-			dateFormat: frDateFormat,
-			timeFormat: frTimeFormat,
-			printer:    message.NewPrinter(language.MustParse("fr-CA")),
+			name:                "Français (Québec)",
+			iso639code:          "fr",
+			dateFormat:          frDateFormat,
+			shortDateFormat:     frShortDateFormat,
+			shortDateYearFormat: frShortDateYearFormat,
+			timeFormat:          frTimeFormat,
+			printer:             message.NewPrinter(language.MustParse("fr-CA")),
 		},
 		"en-US": { // United States
-			name:       "English",
-			iso639code: "en",
-			dateFormat: usDateFormat,
-			timeFormat: usTimeFormat,
-			printer:    message.NewPrinter(language.MustParse("en-US")),
+			name:                "English",
+			iso639code:          "en",
+			dateFormat:          usDateFormat,
+			shortDateFormat:     usShortDateFormat,
+			shortDateYearFormat: usShortDateYearFormat,
+			timeFormat:          usTimeFormat,
+			printer:             message.NewPrinter(language.MustParse("en-US")),
 		},
 		"es-PE": { // Spanish
-			name:       "Español",
-			iso639code: "es",
-			dateFormat: usDateFormat,
-			timeFormat: usTimeFormat,
-			printer:    message.NewPrinter(language.MustParse("es-PE")),
+			name:                "Español",
+			iso639code:          "es",
+			dateFormat:          usDateFormat,
+			shortDateFormat:     usShortDateFormat,
+			shortDateYearFormat: usShortDateYearFormat,
+			timeFormat:          usTimeFormat,
+			printer:             message.NewPrinter(language.MustParse("es-PE")),
 		},
 	}
 
@@ -212,6 +231,79 @@ func (l *Localizer) FormatDateAndEndDateForLocale(startTime time.Time, endTime t
 
 	// same day, different time
 	return t + " - " + l.FormatTimeForLocale(endTime)
+}
+
+// FormatShortDateForLocale writes the date with shortened names, and leaves out the year if it is the same as the current one.
+func (l *Localizer) FormatShortDateForLocale(date time.Time, now time.Time) string {
+	layout := l.shortDateFormat
+	if date.Year() != now.In(date.Location()).Year() {
+		layout = l.shortDateYearFormat
+	}
+	formatted := date.Format(layout)
+
+	// The month goes first, since a translated weekday can look like the English name of a month.
+	formatted = strings.ReplaceAll(formatted, date.Format("Jan"), l.shortMonthName(date.Month()))
+	return strings.ReplaceAll(formatted, date.Format("Mon"), l.shortWeekdayName(date.Weekday()))
+}
+
+// FormatShortDateRangeForLocale is the same as FormatShortDateForLocale, and includes when the event ends if it has an end.
+func (l *Localizer) FormatShortDateRangeForLocale(startTime time.Time, endTime time.Time, now time.Time) string {
+	t := l.FormatShortDateForLocale(startTime, now)
+	if endTime.IsZero() || endTime.Equal(startTime) {
+		return t
+	}
+	// Is it a different day?
+	if endTime.Format(usJustDateFormat) != startTime.Format(usJustDateFormat) {
+		return t + " – " + l.FormatShortDateForLocale(endTime, now)
+	}
+	// same day, different time
+	return t + " – " + l.FormatTimeForLocale(endTime)
+}
+
+func (l *Localizer) shortMonthName(month time.Month) string {
+	switch month {
+	case time.January:
+		return l.Sprintf("Jan")
+	case time.February:
+		return l.Sprintf("Feb")
+	case time.March:
+		return l.Sprintf("Mar")
+	case time.April:
+		return l.Sprintf("Apr")
+	case time.May:
+		return l.Sprintf("May")
+	case time.June:
+		return l.Sprintf("Jun")
+	case time.July:
+		return l.Sprintf("Jul")
+	case time.August:
+		return l.Sprintf("Aug")
+	case time.September:
+		return l.Sprintf("Sep")
+	case time.October:
+		return l.Sprintf("Oct")
+	case time.November:
+		return l.Sprintf("Nov")
+	}
+	return l.Sprintf("Dec")
+}
+
+func (l *Localizer) shortWeekdayName(day time.Weekday) string {
+	switch day {
+	case time.Sunday:
+		return l.Sprintf("Sun")
+	case time.Monday:
+		return l.Sprintf("Mon")
+	case time.Tuesday:
+		return l.Sprintf("Tue")
+	case time.Wednesday:
+		return l.Sprintf("Wed")
+	case time.Thursday:
+		return l.Sprintf("Thu")
+	case time.Friday:
+		return l.Sprintf("Fri")
+	}
+	return l.Sprintf("Sat")
 }
 
 func (l *Localizer) FormatTimeForLocale(date time.Time) string {

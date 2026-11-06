@@ -2,6 +2,139 @@
     "language": "en-US",
     "messages": [
         {
+            "id": "Jan",
+            "message": "Jan",
+            "translation": "Jan",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Feb",
+            "message": "Feb",
+            "translation": "Feb",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Mar",
+            "message": "Mar",
+            "translation": "Mar",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Apr",
+            "message": "Apr",
+            "translation": "Apr",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "May",
+            "message": "May",
+            "translation": "May",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Jun",
+            "message": "Jun",
+            "translation": "Jun",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Jul",
+            "message": "Jul",
+            "translation": "Jul",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Aug",
+            "message": "Aug",
+            "translation": "Aug",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sep",
+            "message": "Sep",
+            "translation": "Sep",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Oct",
+            "message": "Oct",
+            "translation": "Oct",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Nov",
+            "message": "Nov",
+            "translation": "Nov",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Dec",
+            "message": "Dec",
+            "translation": "Dec",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sun",
+            "message": "Sun",
+            "translation": "Sun",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Mon",
+            "message": "Mon",
+            "translation": "Mon",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Tue",
+            "message": "Tue",
+            "translation": "Tue",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Wed",
+            "message": "Wed",
+            "translation": "Wed",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Thu",
+            "message": "Thu",
+            "translation": "Thu",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Fri",
+            "message": "Fri",
+            "translation": "Fri",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Sat",
+            "message": "Sat",
+            "translation": "Sat",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "January",
             "message": "January",
             "translation": "January",
@@ -26,13 +159,6 @@
             "id": "April",
             "message": "April",
             "translation": "April",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "May",
-            "message": "May",
-            "translation": "May",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1107,23 +1233,16 @@
             "fuzzy": true
         },
         {
-            "id": "hosted by",
-            "message": "hosted by",
-            "translation": "hosted by",
+            "id": "💰 <b>Fully funded, thank you!</b>",
+            "message": "💰 <b>Fully funded, thank you!</b>",
+            "translation": "💰 <b>Fully funded, thank you!</b>",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
         {
-            "id": "Ends:",
-            "message": "Ends:",
-            "translation": "Ends:",
-            "translatorComment": "Copied from source.",
-            "fuzzy": true
-        },
-        {
-            "id": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
-            "message": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
-            "translation": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "id": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
+            "message": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
+            "translation": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -1146,6 +1265,41 @@
             "fuzzy": true
         },
         {
+            "id": "This event is closed.",
+            "message": "This event is closed.",
+            "translation": "This event is closed.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "This event is full.",
+            "message": "This event is full.",
+            "translation": "This event is full.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "hosted by",
+            "message": "hosted by",
+            "translation": "hosted by",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Ends:",
+            "message": "Ends:",
+            "translation": "Ends:",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
+            "id": "Unable to get list of attending people.",
+            "message": "Unable to get list of attending people.",
+            "translation": "Unable to get list of attending people.",
+            "translatorComment": "Copied from source.",
+            "fuzzy": true
+        },
+        {
             "id": "Suiting: {CSuiting}",
             "message": "Suiting: {CSuiting}",
             "translation": "Suiting: {CSuiting}",
@@ -1157,7 +1311,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cSuiting"
+                    "expr": "people.cSuiting"
                 }
             ],
             "fuzzy": true
@@ -1174,7 +1328,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cPhoto"
+                    "expr": "people.cPhoto"
                 }
             ],
             "fuzzy": true
@@ -1191,7 +1345,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cGoing"
+                    "expr": "people.cGoing"
                 }
             ],
             "fuzzy": true
@@ -1208,49 +1362,124 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cGoing"
+                    "expr": "people.cGoing"
                 }
             ],
             "fuzzy": true
         },
         {
-            "id": "Maybe: {LentMaybe}",
-            "message": "Maybe: {LentMaybe}",
-            "translation": "Maybe: {LentMaybe}",
+            "id": "Maybe: {Maybe}",
+            "message": "Maybe: {Maybe}",
+            "translation": "Maybe: {Maybe}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "LentMaybe",
+                    "id": "Maybe",
                     "string": "%[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "len(tMaybe)"
+                    "expr": "len(people.maybe)"
                 }
             ],
             "fuzzy": true
         },
         {
-            "id": "Can't make it: {LentNot}",
-            "message": "Can't make it: {LentNot}",
-            "translation": "Can't make it: {LentNot}",
+            "id": "Can't make it: {Not}",
+            "message": "Can't make it: {Not}",
+            "translation": "Can't make it: {Not}",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
-                    "id": "LentNot",
+                    "id": "Not",
                     "string": "%[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "len(tNot)"
+                    "expr": "len(people.not)"
                 }
             ],
             "fuzzy": true
         },
         {
-            "id": "Can you go? Use the buttons below.",
-            "message": "Can you go? Use the buttons below.",
-            "translation": "Can you go? Use the buttons below.",
+            "id": "Hosted by {OwnerName}",
+            "message": "Hosted by {OwnerName}",
+            "translation": "Hosted by {OwnerName}",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "OwnerName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.OwnerName()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "message": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "translation": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Coming",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "people.coming()"
+                },
+                {
+                    "id": "MaxAttendees",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxAttendees()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "message": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "translation": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "translatorComment": "Copied from source.",
+            "placeholders": [
+                {
+                    "id": "Coming",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "people.coming()"
+                },
+                {
+                    "id": "MaxAttendees",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxAttendees()"
+                },
+                {
+                    "id": "Coming_1",
+                    "string": "%[3]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "event.MaxAttendees() - people.coming()"
+                }
+            ],
+            "fuzzy": true
+        },
+        {
+            "id": "Be the first!",
+            "message": "Be the first!",
+            "translation": "Be the first!",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1402,9 +1631,9 @@
             "fuzzy": true
         },
         {
-            "id": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "message": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "translation": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "id": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "message": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "translation": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -1441,9 +1670,9 @@
             "fuzzy": true
         },
         {
-            "id": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
-            "message": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
-            "translation": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "id": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "message": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "translation": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
             "translatorComment": "Copied from source.",
             "placeholders": [
                 {
@@ -1545,9 +1774,9 @@
             "fuzzy": true
         },
         {
-            "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "translation": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "id": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "message": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "translation": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1688,9 +1917,9 @@
             "fuzzy": true
         },
         {
-            "id": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
-            "message": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
-            "translation": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
+            "id": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
+            "message": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
+            "translation": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },
@@ -1723,9 +1952,9 @@
             "fuzzy": true
         },
         {
-            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
-            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
-            "translation": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
+            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
+            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
+            "translation": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
             "translatorComment": "Copied from source.",
             "fuzzy": true
         },

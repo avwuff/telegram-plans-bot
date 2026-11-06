@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 
 	"furryplansbot.avbrand.com/dbInterface"
 	"furryplansbot.avbrand.com/helpers"
@@ -233,14 +234,197 @@ const eventPictureMediaID = "eventpicture"
 // collapseListsOver is how many people a list of people can have before a rich message collapses it.
 const collapseListsOver = 50
 
-// makeEventUIText creates the event text for a classic message.
+// richListRowsLimit is how many rows the lists of people can have in total before a rich message shows them as plain lines.
+// Telegram allows 500 blocks per message, counting each list item and anything nested inside it.
+const richListRowsLimit = 200
+
+// eventUIPerson is someone who is coming to an event, along with anyone they're bringing.
+type eventUIPerson struct {
+	link     string
+	plusMany int
+	guests   []string
+}
+
+// label creates the text for this person, without their guests.
+func (p eventUIPerson) label() string {
+	if p.plusMany > 0 {
+		return fmt.Sprintf("%v <b>+%v</b>", p.link, p.plusMany)
+	}
+	return p.link
+}
+
+// eventUIResponses is everyone who has responded to an event.
+type eventUIResponses struct {
+	going, suiting, photo    []eventUIPerson
+	cGoing, cSuiting, cPhoto int
+	maybe, not               []string
+	err                      error
+}
+
+// coming is the number of people taking up a spot at the event, which is how the maximum is enforced.
+func (p eventUIResponses) coming() int {
+	return p.cGoing + p.cSuiting + p.cPhoto
+}
+
+// rows is how many lines the lists of people coming to the event would take up.
+func (p eventUIResponses) rows() int {
+	rows := 0
+	for _, list := range [][]eventUIPerson{p.going, p.suiting, p.photo} {
+		for _, person := range list {
+			rows += 1 + len(person.guests)
+		}
+	}
+	return rows
+}
+
+// gatherEventUIPeople sorts the people responding to an event by their status.
+func gatherEventUIPeople(event dbInterface.DBEvent) eventUIResponses {
+	var people eventUIResponses
+
+	attending, err := event.GetAttending(-1)
+	if err != nil {
+		people.err = err
+		return people
+	}
+
+	for _, attend := range attending {
+		link := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
+
+		switch dbInterface.CanAttend(attend.CanAttend) {
+		case dbInterface.CANATTEND_YES: // Going / Spotting
+			people.going = append(people.going, eventUIPerson{link: link, plusMany: attend.PlusMany, guests: attend.Guests})
+			people.cGoing += 1 + attend.PlusMany
+		case dbInterface.CANATTEND_SUITING:
+			people.suiting = append(people.suiting, eventUIPerson{link: link, plusMany: attend.PlusMany})
+			people.cSuiting += 1 + attend.PlusMany
+		case dbInterface.CANATTEND_PHOTOGRAPHER:
+			people.photo = append(people.photo, eventUIPerson{link: link, plusMany: attend.PlusMany})
+			people.cPhoto += 1 + attend.PlusMany
+		case dbInterface.CANATTEND_MAYBE:
+			people.maybe = append(people.maybe, link)
+		default: // Not going
+			people.not = append(people.not, link)
+		}
+	}
+	return people
+}
+
+// eventIsFull checks if there are no spots left at an event.
+func eventIsFull(event dbInterface.DBEvent, people eventUIResponses) bool {
+	return event.MaxAttendees() > 0 && people.err == nil && people.coming() >= event.MaxAttendees()
+}
+
+// eventIsFunded checks if an event asking for help with its costs has reached its total.
+func eventIsFunded(event dbInterface.DBEvent) bool {
+	donationsSoFar, err := event.GetDonationTotal()
+	return err == nil && donationsSoFar >= float64(event.TotalCost())
+}
+
+// eventUIMapURL creates the link used to look up the location of an event.
+func eventUIMapURL(event dbInterface.DBEvent) string {
+	return fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
+}
+
+// eventUICostText creates the message about the cost of an event. It's empty if the event isn't asking for help with its costs.
+func eventUICostText(event dbInterface.DBEvent, loc *localizer.Localizer) string {
+	if event.TotalCost() <= 0 {
+		return ""
+	}
+	if eventIsFunded(event) {
+		return loc.Sprintf("💰 <b>Fully funded, thank you!</b>")
+	}
+	donationsSoFar, _ := event.GetDonationTotal()
+	return loc.Sprintf("💰 <b>Help cover the cost of this event!</b> We're at <b>%.2f</b> of <b>%d</b>. Use the Donate button below to donate.", donationsSoFar, event.TotalCost())
+}
+
+// eventUIStatusText creates the message shown when people can no longer respond. It's empty if they still can.
+func eventUIStatusText(event dbInterface.DBEvent, people eventUIResponses, loc *localizer.Localizer) string {
+	if event.Closed() {
+		return loc.Sprintf("This event is closed.")
+	}
+	if eventIsFull(event, people) {
+		return loc.Sprintf("This event is full.")
+	}
+	return ""
+}
+
+// makeEventUIText creates the event text for a classic message, in classic Telegram HTML.
 func (tgp *TGPlansBot) makeEventUIText(event dbInterface.DBEvent, loc *localizer.Localizer) string {
-	return tgp.buildEventUIText(event, loc, false)
+	t := "<b>" + event.Name() + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName() + "\n"
+	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateAndEndDateForLocale(event.DateTime(), event.EndDateTime(), "<b>"+loc.Sprintf("Ends:")+"</b> ") + "\n"
+	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + eventUIMapURL(event) + "\">" + event.Location() + "</a>" + "\n"
+	if event.MaxAttendees() > 0 {
+		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees()) + "\n"
+	}
+	if cost := eventUICostText(event, loc); cost != "" {
+		t += cost + "\n"
+	}
+	if event.Notes() != "" {
+		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
+	}
+
+	people := gatherEventUIPeople(event)
+	if people.err != nil {
+		t += loc.Sprintf("Unable to get list of attending people.") + "\n"
+	}
+
+	// Fursuit walks display different event messages
+	if event.Suitwalk() {
+		t += classicPeopleSection(loc.Sprintf("Suiting: %v", people.cSuiting), people.suiting, event.HideNames())
+		t += classicPeopleSection(loc.Sprintf("Photographers: %v", people.cPhoto), people.photo, event.HideNames())
+		t += classicPeopleSection(loc.Sprintf("Spotting: %v", people.cGoing), people.going, event.HideNames())
+	} else {
+		t += classicPeopleSection(loc.Sprintf("Attending: %v", people.cGoing), people.going, event.HideNames())
+	}
+	if len(people.maybe) > 0 {
+		t += classicNamesSection(loc.Sprintf("Maybe: %v", len(people.maybe)), people.maybe, event.HideNames())
+	}
+	if len(people.not) > 0 {
+		t += classicNamesSection(loc.Sprintf("Can't make it: %v", len(people.not)), people.not, event.HideNames())
+	}
+
+	if status := eventUIStatusText(event, people, loc); status != "" {
+		t += "\n<i>" + status + "</i>"
+	}
+	return strings.TrimRight(t, "\n")
+}
+
+// classicPeopleSection creates one of the lists of people coming to the event, with a heading, for a classic message.
+func classicPeopleSection(heading string, list []eventUIPerson, hideNames bool) string {
+	if len(list) == 0 {
+		return ""
+	}
+	t := "\n<b>" + heading + "</b>\n"
+	if hideNames {
+		return t
+	}
+	return t + plainPeopleLines(list) + "\n"
+}
+
+// classicNamesSection creates a list of names with a heading for a classic message.
+func classicNamesSection(heading string, names []string, hideNames bool) string {
+	t := "\n<b>" + heading + "</b>\n"
+	if hideNames {
+		return t
+	}
+	return t + strings.Join(names, ", ") + "\n"
+}
+
+// plainPeopleLines writes out a list of people using only line breaks.
+func plainPeopleLines(list []eventUIPerson) string {
+	var lines []string
+	for _, person := range list {
+		lines = append(lines, " - "+person.label())
+		for _, guest := range person.guests {
+			lines = append(lines, fmt.Sprintf("   - <i>%v</i>", guest))
+		}
+	}
+	return strings.Join(lines, "\n")
 }
 
 // makeEventUIRichHtml creates the event text for a rich message.
 func (tgp *TGPlansBot) makeEventUIRichHtml(event dbInterface.DBEvent, loc *localizer.Localizer) string {
-	return helpers.TelegramHtmlToRichHtml(tgp.buildEventUIText(event, loc, true))
+	return buildEventUIRichHtml(event, loc, time.Now())
 }
 
 // makeEventUIRichMessage creates the rich message for an event, with the picture at the top if it has one.
@@ -255,145 +439,152 @@ func (tgp *TGPlansBot) makeEventUIRichMessage(event dbInterface.DBEvent, loc *lo
 	return rich
 }
 
-// buildEventUIText creates the event text in classic Telegram HTML.
-// If rich is set, it can also include details blocks, which only rich messages support.
-func (tgp *TGPlansBot) buildEventUIText(event dbInterface.DBEvent, loc *localizer.Localizer, rich bool) string {
+// buildEventUIRichHtml creates the event text using rich message blocks. The current time decides how the date is written.
+func buildEventUIRichHtml(event dbInterface.DBEvent, loc *localizer.Localizer, now time.Time) string {
+	people := gatherEventUIPeople(event)
 
-	URL := fmt.Sprintf("https://www.google.com/maps/search/?api=1&query=%v", url.QueryEscape(helpers.StripHtmlRegex(event.Location())))
+	t := "<h1>" + richInline(event.Name()) + "</h1>"
+	t += "<h4>" + richInline(loc.Sprintf("Hosted by %v", event.OwnerName())) + "</h4>"
 
-	t := "<b>" + event.Name() + "</b> " + loc.Sprintf("hosted by") + " " + event.OwnerName() + "\n"
-	t += "<b>" + loc.Sprintf("Date:") + "</b> " + loc.FormatDateAndEndDateForLocale(event.DateTime(), event.EndDateTime(), "<b>"+loc.Sprintf("Ends:")+"</b> ") + "\n"
-	t += "<b>" + loc.Sprintf("Location:") + "</b> <a href=\"" + URL + "\">" + event.Location() + "</a>" + "\n"
-	if event.MaxAttendees() > 0 {
-		t += "<b>" + loc.Sprintf("Max Attendees:") + "</b> " + fmt.Sprintf("%v", event.MaxAttendees()) + "\n"
+	// The event's own time is what matters for an event in person. The countdown is worked out by the viewer's app.
+	dateText := loc.FormatShortDateRangeForLocale(event.DateTime(), event.EndDateTime(), now)
+	countdown := fmt.Sprintf(`<tg-time unix="%d" format="r">%s</tg-time>`, event.DateTime().Unix(), loc.FormatShortDateForLocale(event.DateTime(), now))
+	details := []string{
+		"📅 " + dateText + " · " + countdown,
+		`📍 <a href="` + eventUIMapURL(event) + `">` + richInline(event.Location()) + "</a>",
 	}
-	if event.TotalCost() > 0 {
-		donationsSoFar, _ := event.GetDonationTotal()
+	if event.MaxAttendees() > 0 && people.err == nil {
+		if eventIsFull(event, people) {
+			details = append(details, loc.Sprintf("👥 %d of %d spots taken · Full", people.coming(), event.MaxAttendees()))
+		} else {
+			details = append(details, loc.Sprintf("👥 %d of %d spots taken · %d left", people.coming(), event.MaxAttendees(), event.MaxAttendees()-people.coming()))
+		}
+	}
+	t += "<p>" + strings.Join(details, "<br>") + "</p>"
 
-		t += loc.Sprintf("💰 <b>Help cover the cost of this event!</b> We're at <b>%.2f</b> of <b>%d</b>. Use the Donate button below to donate.", donationsSoFar, event.TotalCost()) + "\n"
+	if cost := eventUICostText(event, loc); cost != "" {
+		t += "<p>" + cost + "</p>"
 	}
 	if event.Notes() != "" {
-		t += "<b>" + loc.Sprintf("Notes:") + "</b>\n" + event.Notes() + "\n"
+		t += helpers.TelegramHtmlToRichQuote(event.Notes())
 	}
 
-	// Get the list of people attending
-	attending, err := event.GetAttending(-1)
-
-	var cGoing, cSuiting, cPhoto int
-	var tGoing, tMaybe, tNot []string
-	var tSuiting, tPhoto []string
-
-	if err != nil {
-		t += "Unable to get list of attending people."
+	if people.err != nil {
+		t += "<p>" + loc.Sprintf("Unable to get list of attending people.") + "</p>"
 	} else {
-
-		for _, attend := range attending {
-
-			switch dbInterface.CanAttend(attend.CanAttend) {
-			case dbInterface.CANATTEND_YES: // Going / Spotting
-
-				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
-				if attend.PlusMany > 0 {
-					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
-				}
-
-				tGoing = append(tGoing, txt)
-
-				// Do we have named guests?
-				for _, guest := range attend.Guests {
-					txtG := fmt.Sprintf(`   - <i>%v</i>`, guest)
-					tGoing = append(tGoing, txtG)
-				}
-
-				cGoing += 1 + attend.PlusMany
-
-			case dbInterface.CANATTEND_SUITING:
-
-				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
-				if attend.PlusMany > 0 {
-					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
-				}
-				tSuiting = append(tSuiting, txt)
-				cSuiting += 1 + attend.PlusMany
-
-			case dbInterface.CANATTEND_PHOTOGRAPHER:
-
-				txt := fmt.Sprintf(` - <a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
-				if attend.PlusMany > 0 {
-					txt += fmt.Sprintf(" <b>+%v</b>", attend.PlusMany)
-				}
-				tPhoto = append(tPhoto, txt)
-				cPhoto += 1 + attend.PlusMany
-
-			case dbInterface.CANATTEND_MAYBE: // Maybe
-
-				txt := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
-				tMaybe = append(tMaybe, txt)
-			default: // Not going
-
-				txt := fmt.Sprintf(`<a href="tg://user?id=%v">%v</a>`, attend.UserID, attend.UserName)
-				tNot = append(tNot, txt)
-			}
-		}
+		t += richPeopleSections(event, people, loc)
 	}
 
-	attendingCollapsed := false
-
-	// Fursuit walks display different event messages
-	if event.Suitwalk() {
-		if len(tSuiting) > 0 {
-			t += "\n" + "<b>" + loc.Sprintf("Suiting: %v", cSuiting) + "</b>\n"
-			if !event.HideNames() {
-				t += strings.Join(tSuiting, "\n") + "\n"
-			}
-		}
-		if len(tPhoto) > 0 {
-			t += "\n" + "<b>" + loc.Sprintf("Photographers: %v", cPhoto) + "</b>\n"
-			if !event.HideNames() {
-				t += strings.Join(tPhoto, "\n") + "\n"
-			}
-		}
-		if len(tGoing) > 0 {
-			t += "\n" + "<b>" + loc.Sprintf("Spotting: %v", cGoing) + "</b>\n"
-			if !event.HideNames() {
-				t += strings.Join(tGoing, "\n") + "\n"
-			}
-		}
-
-	} else {
-		attendingCollapsed = rich && cGoing > collapseListsOver
-		if len(tGoing) > 0 {
-			t += eventUIListSection(loc.Sprintf("Attending: %v", cGoing), tGoing, "\n", event.HideNames(), attendingCollapsed)
-		}
+	if status := eventUIStatusText(event, people, loc); status != "" {
+		t += "<footer>" + status + "</footer>"
 	}
-
-	// Maybe and Can't make it are never left open when Attending is collapsed.
-	if len(tMaybe) > 0 {
-		collapsed := rich && (attendingCollapsed || len(tMaybe) > collapseListsOver)
-		t += eventUIListSection(loc.Sprintf("Maybe: %v", len(tMaybe)), tMaybe, ", ", event.HideNames(), collapsed)
-	}
-
-	if len(tNot) > 0 {
-		collapsed := rich && (attendingCollapsed || len(tNot) > collapseListsOver)
-		t += eventUIListSection(loc.Sprintf("Can't make it: %v", len(tNot)), tNot, ", ", event.HideNames(), collapsed)
-	}
-
-	t += "\n<i>" + loc.Sprintf("Can you go? Use the buttons below.") + "</i>"
 	return t
 }
 
-// eventUIListSection creates one of the lists of people, with a heading.
-// A collapsed list is a details block, which only rich messages support. It has no 'open' attribute, so it starts closed.
-func eventUIListSection(heading string, names []string, separator string, hideNames bool, collapsed bool) string {
+// richInline makes text that was written for a classic message safe to use inside a single rich block.
+func richInline(s string) string {
+	return strings.ReplaceAll(strings.ReplaceAll(s, "\r\n", "\n"), "\n", "<br>")
+}
+
+// richPeopleSections creates all the lists of people for a rich message.
+func richPeopleSections(event dbInterface.DBEvent, people eventUIResponses, loc *localizer.Localizer) string {
+	hide := event.HideNames()
+	plain := people.rows() > richListRowsLimit
+	t := ""
+
+	// Maybe and Can't make it are never left open when a list of people coming is collapsed.
+	anyCollapsed := false
+	section := func(heading string, list []eventUIPerson, count int) {
+		collapsed := count > collapseListsOver
+		anyCollapsed = anyCollapsed || collapsed
+		t += richPeopleSection(heading, list, hide, collapsed, plain)
+	}
+
+	// An empty list invites people to respond, unless the event is closed and they can't.
+	emptyHeading := func(heading string) string {
+		if event.Closed() {
+			return heading
+		}
+		return heading + " · " + loc.Sprintf("Be the first!")
+	}
+
+	// Fursuit walks display different event messages
+	if event.Suitwalk() {
+		if people.coming() == 0 {
+			t += "<p><b>" + emptyHeading(loc.Sprintf("Suiting: %v", people.cSuiting)) + "</b></p>"
+		}
+		if len(people.suiting) > 0 {
+			section(loc.Sprintf("Suiting: %v", people.cSuiting), people.suiting, people.cSuiting)
+		}
+		if len(people.photo) > 0 {
+			section(loc.Sprintf("Photographers: %v", people.cPhoto), people.photo, people.cPhoto)
+		}
+		if len(people.going) > 0 {
+			section(loc.Sprintf("Spotting: %v", people.cGoing), people.going, people.cGoing)
+		}
+	} else if len(people.going) == 0 {
+		t += "<p><b>" + emptyHeading(loc.Sprintf("Attending: %v", people.cGoing)) + "</b></p>"
+	} else {
+		section(loc.Sprintf("Attending: %v", people.cGoing), people.going, people.cGoing)
+	}
+
+	if len(people.maybe) > 0 {
+		t += richNamesSection(loc.Sprintf("Maybe: %v", len(people.maybe)), people.maybe, hide, anyCollapsed)
+	}
+	if len(people.not) > 0 {
+		t += richNamesSection(loc.Sprintf("Can't make it: %v", len(people.not)), people.not, hide, anyCollapsed)
+	}
+	return t
+}
+
+// richPeopleSection creates one of the lists of people coming to the event, with a heading.
+// A collapsed list is a details block. It has no 'open' attribute, so it starts closed.
+func richPeopleSection(heading string, list []eventUIPerson, hideNames bool, collapsed bool, plain bool) string {
 	heading = "<b>" + heading + "</b>"
 	if hideNames {
-		return "\n" + heading + "\n"
+		return "<p>" + heading + "</p>"
 	}
-	list := strings.Join(names, separator)
+
+	var body string
+	if plain {
+		body = helpers.TelegramHtmlToRichHtml(plainPeopleLines(list))
+	} else {
+		body = richPeopleList(list)
+	}
 	if collapsed {
-		return "\n<details><summary>" + heading + "</summary>" + helpers.TelegramHtmlToRichHtml(list) + "</details>\n"
+		return "<details><summary>" + heading + "</summary>" + body + "</details>"
 	}
-	return "\n" + heading + "\n" + list + "\n"
+	return "<p>" + heading + "</p>" + body
+}
+
+// richPeopleList creates a list of people, with any named guests in a list inside the person bringing them.
+func richPeopleList(list []eventUIPerson) string {
+	t := "<ul>"
+	for _, person := range list {
+		t += "<li>" + person.label()
+		if len(person.guests) > 0 {
+			t += "<ul>"
+			for _, guest := range person.guests {
+				t += "<li><i>" + guest + "</i></li>"
+			}
+			t += "</ul>"
+		}
+		t += "</li>"
+	}
+	return t + "</ul>"
+}
+
+// richNamesSection creates a list of names that shares a line with its heading, or a collapsed list if it is long.
+func richNamesSection(heading string, names []string, hideNames bool, forceCollapse bool) string {
+	heading = "<b>" + heading + "</b>"
+	if hideNames {
+		return "<p>" + heading + "</p>"
+	}
+	list := strings.Join(names, ", ")
+	if forceCollapse || len(names) > collapseListsOver {
+		return "<details><summary>" + heading + "</summary><p>" + list + "</p></details>"
+	}
+	return "<p>" + heading + " — " + list + "</p>"
 }
 
 // makeEventUI displays the main event UI.
@@ -532,7 +723,7 @@ func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.
 			row = make([]tgbotapi.InlineKeyboardButton, 0)
 
 			if event.MaxGuests() >= 1 {
-				row = append(row, quickButton(emoji1+loc.Sprintf("Me +1"), fmt.Sprintf("attending:%v:1", event.ID())))
+				row = append(row, quickButton(emoji1+loc.Sprintf("+1"), fmt.Sprintf("attending:%v:1", event.ID())))
 			}
 			if event.MaxGuests() >= 2 {
 				row = append(row, quickButton(emoji2+loc.Sprintf("+2"), fmt.Sprintf("attending:%v:2", event.ID())))
@@ -561,7 +752,7 @@ func (tgp *TGPlansBot) eventUIButtons(event dbInterface.DBEvent, loc *localizer.
 
 	buttons = append(buttons, row)
 
-	if event.TotalCost() > 0 {
+	if event.TotalCost() > 0 && !eventIsFunded(event) {
 
 		row = make([]tgbotapi.InlineKeyboardButton, 0)
 

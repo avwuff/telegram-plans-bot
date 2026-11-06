@@ -105,6 +105,23 @@ func Test_ConvertEntitiesToHTML(t1 *testing.T) {
 	}
 }
 
+func TestTelegramHtmlToRichQuote(t *testing.T) {
+	tests := []struct {
+		name string
+		s    string
+		want string
+	}{
+		{name: "empty", s: "", want: ""},
+		{name: "line breaks", s: "one\n\n two", want: "<blockquote>one<br><br>&nbsp;two</blockquote>"},
+		{name: "pre stays outside the quote", s: "before\n<pre>code</pre>\nafter", want: "<blockquote>before</blockquote><pre>code</pre><blockquote>after</blockquote>"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.want, TelegramHtmlToRichQuote(tt.s))
+		})
+	}
+}
+
 func TestTelegramHtmlToRichHtml(t *testing.T) {
 	tests := []struct {
 		name string

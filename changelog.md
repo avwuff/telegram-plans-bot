@@ -5,6 +5,9 @@
 - Event messages now use Telegram Rich Messages, which allows for much longer event text.
 Event pictures are now stored on Telegram, rather than on the server, and are shown at the top of event messages.
 - In calendar feeds, events you've marked as Maybe now appear as tentative.
+- Event messages have a new layout, with headings, a countdown to the event, spots left, notes in a quote, and real lists of attendees.
+- Events now say when they're closed or full, and stop asking for donations once fully funded.
+- Long lists on fursuit walks now collapse.
 
 #### Maintenance
 - Upgraded to Go 1.27 and the latest version of the Telegram bot library.

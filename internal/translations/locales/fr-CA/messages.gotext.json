@@ -2,6 +2,101 @@
     "language": "fr-CA",
     "messages": [
         {
+            "id": "Jan",
+            "message": "Jan",
+            "translation": "janv."
+        },
+        {
+            "id": "Feb",
+            "message": "Feb",
+            "translation": "févr."
+        },
+        {
+            "id": "Mar",
+            "message": "Mar",
+            "translation": "mars"
+        },
+        {
+            "id": "Apr",
+            "message": "Apr",
+            "translation": "avr."
+        },
+        {
+            "id": "May",
+            "message": "May",
+            "translation": "Mai"
+        },
+        {
+            "id": "Jun",
+            "message": "Jun",
+            "translation": "juin"
+        },
+        {
+            "id": "Jul",
+            "message": "Jul",
+            "translation": "juill."
+        },
+        {
+            "id": "Aug",
+            "message": "Aug",
+            "translation": "août"
+        },
+        {
+            "id": "Sep",
+            "message": "Sep",
+            "translation": "sept."
+        },
+        {
+            "id": "Oct",
+            "message": "Oct",
+            "translation": "oct."
+        },
+        {
+            "id": "Nov",
+            "message": "Nov",
+            "translation": "nov."
+        },
+        {
+            "id": "Dec",
+            "message": "Dec",
+            "translation": "déc."
+        },
+        {
+            "id": "Sun",
+            "message": "Sun",
+            "translation": "dim."
+        },
+        {
+            "id": "Mon",
+            "message": "Mon",
+            "translation": "lun."
+        },
+        {
+            "id": "Tue",
+            "message": "Tue",
+            "translation": "mar."
+        },
+        {
+            "id": "Wed",
+            "message": "Wed",
+            "translation": "mer."
+        },
+        {
+            "id": "Thu",
+            "message": "Thu",
+            "translation": "jeu."
+        },
+        {
+            "id": "Fri",
+            "message": "Fri",
+            "translation": "ven."
+        },
+        {
+            "id": "Sat",
+            "message": "Sat",
+            "translation": "sam."
+        },
+        {
             "id": "January",
             "message": "January",
             "translation": "Janvier"
@@ -20,11 +115,6 @@
             "id": "April",
             "message": "April",
             "translation": "Avril"
-        },
-        {
-            "id": "May",
-            "message": "May",
-            "translation": "Mai"
         },
         {
             "id": "June",
@@ -379,7 +469,7 @@
         {
             "id": "💰 Custom Amount",
             "message": "💰 Custom Amount",
-            "translation": "\uD83D\uDCB0 Montant personnalisé"
+            "translation": "💰 Montant personnalisé"
         },
         {
             "id": "❌ Remove my Donation",
@@ -720,7 +810,7 @@
         {
             "id": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
             "message": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
-            "translation": "\uD83D\uDCB0 Nous acceptons les dons pour couvrir les frais de {TotalCost}. Cliquez sur XXXX pour voir le total.",
+            "translation": "💰 Nous acceptons les dons pour couvrir les frais de {TotalCost}. Cliquez sur XXXX pour voir le total.",
             "placeholders": [
                 {
                     "id": "TotalCost",
@@ -815,7 +905,7 @@
         {
             "id": "💰 Edit recovery information",
             "message": "💰 Edit recovery information",
-            "translation": "\uD83D\uDCB0 Modifier les informations de récupération"
+            "translation": "💰 Modifier les informations de récupération"
         },
         {
             "id": "Back to Event",
@@ -853,19 +943,14 @@
             "translation": "L'événement est fermé, veuillez contacter l'hôte pour plus d'informations."
         },
         {
-            "id": "hosted by",
-            "message": "hosted by",
-            "translation": "organisé par"
+            "id": "💰 <b>Fully funded, thank you!</b>",
+            "message": "💰 <b>Fully funded, thank you!</b>",
+            "translation": "💰 <b>Entièrement financé, merci!</b>"
         },
         {
-            "id": "Ends:",
-            "message": "Ends:",
-            "translation": "Prend fin:"
-        },
-        {
-            "id": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
-            "message": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
-            "translation": "\uD83D\uDCB0 <b>Aidez-nous à couvrir les frais de cet événement!</b> Nous en sommes à <b>{DonationsSoFar}</b> sur <b>{TotalCost}</b>. Utilisez le bouton «Faire un don» ci-dessous pour faire un don.",
+            "id": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
+            "message": "💰 <b>Help cover the cost of this event!</b> We're at <b>{DonationsSoFar}</b> of <b>{TotalCost}</b>. Use the Donate button below to donate.",
+            "translation": "💰 <b>Aidez-nous à couvrir les frais de cet événement!</b> Nous en sommes à <b>{DonationsSoFar}</b> sur <b>{TotalCost}</b>. Utilisez le bouton «Faire un don» ci-dessous pour faire un don.",
             "placeholders": [
                 {
                     "id": "DonationsSoFar",
@@ -886,6 +971,31 @@
             ]
         },
         {
+            "id": "This event is closed.",
+            "message": "This event is closed.",
+            "translation": "Cet événement est fermé."
+        },
+        {
+            "id": "This event is full.",
+            "message": "This event is full.",
+            "translation": "Cet événement est complet."
+        },
+        {
+            "id": "hosted by",
+            "message": "hosted by",
+            "translation": "organisé par"
+        },
+        {
+            "id": "Ends:",
+            "message": "Ends:",
+            "translation": "Prend fin:"
+        },
+        {
+            "id": "Unable to get list of attending people.",
+            "message": "Unable to get list of attending people.",
+            "translation": "Impossible d'obtenir la liste des participants."
+        },
+        {
             "id": "Suiting: {CSuiting}",
             "message": "Suiting: {CSuiting}",
             "translation": "Fursuiters : {CSuiting}",
@@ -896,7 +1006,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cSuiting"
+                    "expr": "people.cSuiting"
                 }
             ]
         },
@@ -911,7 +1021,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cPhoto"
+                    "expr": "people.cPhoto"
                 }
             ]
         },
@@ -926,7 +1036,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cGoing"
+                    "expr": "people.cGoing"
                 }
             ]
         },
@@ -941,44 +1051,113 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cGoing"
+                    "expr": "people.cGoing"
                 }
             ]
         },
         {
-            "id": "Maybe: {LentMaybe}",
-            "message": "Maybe: {LentMaybe}",
-            "translation": "Peut-être : {LentMaybe}",
+            "id": "Maybe: {Maybe}",
+            "message": "Maybe: {Maybe}",
+            "translation": "Peut-être : {Maybe}",
             "placeholders": [
                 {
-                    "id": "LentMaybe",
+                    "id": "Maybe",
                     "string": "%[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "len(tMaybe)"
+                    "expr": "len(people.maybe)"
                 }
             ]
         },
         {
-            "id": "Can't make it: {LentNot}",
-            "message": "Can't make it: {LentNot}",
-            "translation": "Indisponible: {LentNot}",
+            "id": "Can't make it: {Not}",
+            "message": "Can't make it: {Not}",
+            "translation": "Indisponible: {Not}",
             "placeholders": [
                 {
-                    "id": "LentNot",
+                    "id": "Not",
                     "string": "%[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "len(tNot)"
+                    "expr": "len(people.not)"
                 }
             ]
         },
         {
-            "id": "Can you go? Use the buttons below.",
-            "message": "Can you go? Use the buttons below.",
-            "translation": "Peux-tu venir?  Utilise les boutons ci-dessous."
+            "id": "Hosted by {OwnerName}",
+            "message": "Hosted by {OwnerName}",
+            "translation": "Organisé par {OwnerName}",
+            "placeholders": [
+                {
+                    "id": "OwnerName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.OwnerName()"
+                }
+            ]
+        },
+        {
+            "id": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "message": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "translation": "👥 {Coming} places prises sur {MaxAttendees} · Complet",
+            "placeholders": [
+                {
+                    "id": "Coming",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "people.coming()"
+                },
+                {
+                    "id": "MaxAttendees",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxAttendees()"
+                }
+            ]
+        },
+        {
+            "id": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "message": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "translation": "👥 {Coming} places prises sur {MaxAttendees} · {Coming_1} restantes",
+            "placeholders": [
+                {
+                    "id": "Coming",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "people.coming()"
+                },
+                {
+                    "id": "MaxAttendees",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxAttendees()"
+                },
+                {
+                    "id": "Coming_1",
+                    "string": "%[3]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "event.MaxAttendees() - people.coming()"
+                }
+            ]
+        },
+        {
+            "id": "Be the first!",
+            "message": "Be the first!",
+            "translation": "Soyez la première personne!"
         },
         {
             "id": "❌️ Event Closed",
@@ -1063,7 +1242,7 @@
         {
             "id": "💰 Donate! Help Cover Costs!",
             "message": "💰 Donate! Help Cover Costs!",
-            "translation": "\uD83D\uDCB0 Faites un don ! Aidez-nous!"
+            "translation": "💰 Faites un don ! Aidez-nous!"
         },
         {
             "id": "📩 Share to another chat...",
@@ -1086,9 +1265,9 @@
             "translation": "Désolé, mais cet événement ne vous permet pas d'amener d'invités."
         },
         {
-            "id": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "message": "Alright, tell me the name of the first guest you are bringing to \u003cb\u003e{Name}\u003c/b\u003e. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
-            "translation": "Très bien, dites-moi le nom du premier invité que vous amenez à \u003cb\u003e{Name}\u003c/b\u003e. Vous pouvez amener jusqu'à {MaxGuests}.\n\nEnvoyez-moi un nom à la fois, s'il vous plaît!",
+            "id": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "message": "Alright, tell me the name of the first guest you are bringing to <b>{Name}</b>. You can bring up to {MaxGuests}.\n\nSend me one name at a time, please!",
+            "translation": "Très bien, dites-moi le nom du premier invité que vous amenez à <b>{Name}</b>. Vous pouvez amener jusqu'à {MaxGuests}.\n\nEnvoyez-moi un nom à la fois, s'il vous plaît!",
             "placeholders": [
                 {
                     "id": "Name",
@@ -1119,9 +1298,9 @@
             "translation": "J'ai compris. Qui est le prochain invité ? Si c'est le dernier, cliquez sur /done."
         },
         {
-            "id": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
-            "message": "You're all set!  I've added those people as your guests at \u003cb\u003e{Name}\u003c/b\u003e. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
-            "translation": "Vous êtes prêt! J'ai ajouté ces personnes comme invités sur \u003cb\u003e{Name}\u003c/b\u003e. Vous pouvez maintenant revenir au chat dans lequel vous étiez précédemment.\n\nMerci d'utiliser le robot Furry Plans!",
+            "id": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "message": "You're all set!  I've added those people as your guests at <b>{Name}</b>. You can now return to the chat you were in previously.\n\nThanks for using the Furry Plans Bot!",
+            "translation": "Vous êtes prêt! J'ai ajouté ces personnes comme invités sur <b>{Name}</b>. Vous pouvez maintenant revenir au chat dans lequel vous étiez précédemment.\n\nMerci d'utiliser le robot Furry Plans!",
             "placeholders": [
                 {
                     "id": "Name",
@@ -1199,9 +1378,9 @@
             ]
         },
         {
-            "id": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "message": "In which time zone do you live?\nYou can either send one of the time zones on \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ethis\u003c/a\u003e list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
-            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur \u003ca href=\"https://github.com/Lewington-pitsos/golang-time-locations\"\u003ecette\u003c/a\u003e liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
+            "id": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "message": "In which time zone do you live?\nYou can either send one of the time zones on <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">this</a> list,\nor you can send your current 📍 Location by clicking the paperclip and choosing Location.",
+            "translation": "Dans quel fuseau horaire habitez-vous ?\nVous pouvez soit envoyer l'un des fuseaux horaires sur <a href=\"https://github.com/Lewington-pitsos/golang-time-locations\">cette</a> liste,\nou vous pouvez envoyer votre 📍 Emplacement actuel en cliquant sur le trombone et en choisissant Emplacement."
         },
         {
             "id": "Specified Time Zone not found.",
@@ -1304,9 +1483,9 @@
             "translation": "Voici la liste des commandes disponible"
         },
         {
-            "id": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
-            "message": "The Furry Plans bot was created by 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTranslations provided by:",
-            "translation": "Le robot Furry Plans a été créé par 🐕‍🦺\u003cb\u003eAv\u003c/b\u003e (www.avbrand.com)\n\nTraductions fournies par:"
+            "id": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
+            "message": "The Furry Plans bot was created by 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTranslations provided by:",
+            "translation": "Le robot Furry Plans a été créé par 🐕‍🦺<b>Av</b> (www.avbrand.com)\n\nTraductions fournies par:"
         },
         {
             "id": "This project is open source! Learn more at: https://github.com/avwuff/telegram-plans-bot",
@@ -1329,9 +1508,9 @@
             "translation": "Saviez-vous?"
         },
         {
-            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
-            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command \u003cb\u003e/feed\u003c/b\u003e.",
-            "translation": "Le bot Furry Plans fournit un flux iCal de tous les événements que vous avez marqués comme \"Oui\" ou \"Peut-être\".\nVous pouvez ajouter ce flux à Google Agenda ou à d'autres agendas, et les événements apparaîtront automatiquement !\nPour obtenir l'URL du flux, discutez avec @furryplansbot et envoyez la commande \u003cb\u003e/feed\u003c/b\u003e."
+            "id": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
+            "message": "The Furry Plans Bot provides an iCal feed of all events that you've marked as 'Yes' or 'Maybe'.  \nYou can add this feed to Google Calendar or other calendars, and events will appear automatically! \nTo get the feed URL, chat with @furryplansbot and send the command <b>/feed</b>.",
+            "translation": "Le bot Furry Plans fournit un flux iCal de tous les événements que vous avez marqués comme \"Oui\" ou \"Peut-être\".\nVous pouvez ajouter ce flux à Google Agenda ou à d'autres agendas, et les événements apparaîtront automatiquement !\nPour obtenir l'URL du flux, discutez avec @furryplansbot et envoyez la commande <b>/feed</b>."
         },
         {
             "id": "Add '{Name}' to your Calendar",

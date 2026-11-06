@@ -13,8 +13,7 @@ import (
 )
 
 // richPreBlock finds the blocks in the text that can't be in a paragraph, so they are kept as they are.
-// Text from users has its HTML escaped, so the details tag can only come from the bot itself.
-var richPreBlock = regexp.MustCompile(`(?s)<pre>.*?</pre>|<details>.*?</details>`)
+var richPreBlock = regexp.MustCompile(`(?s)<pre>.*?</pre>`)
 
 // Tuple provides a simple 2-item type
 type Tuple struct {
@@ -41,19 +40,29 @@ func StripHtmlRegex(s string) string {
 // Classic messages keep their line breaks and spacing, but rich messages are made of blocks, so the text
 // goes in a paragraph with explicit line breaks. Pre-formatted text can't be in a paragraph, so it gets its own block.
 func TelegramHtmlToRichHtml(s string) string {
+	return richBlocks(s, "<p>", "</p>")
+}
+
+// TelegramHtmlToRichQuote is the same as TelegramHtmlToRichHtml, but the text goes in a quotation block instead.
+func TelegramHtmlToRichQuote(s string) string {
+	return richBlocks(s, "<blockquote>", "</blockquote>")
+}
+
+// richBlocks wraps the text between any pre-formatted blocks with the specified tags.
+func richBlocks(s string, open string, closing string) string {
 	s = strings.ReplaceAll(s, "\r\n", "\n")
 
 	res := ""
 	last := 0
 	for _, loc := range richPreBlock.FindAllStringIndex(s, -1) {
-		res += richParagraph(s[last:loc[0]]) + s[loc[0]:loc[1]]
+		res += richTextBlock(s[last:loc[0]], open, closing) + s[loc[0]:loc[1]]
 		last = loc[1]
 	}
-	return res + richParagraph(s[last:])
+	return res + richTextBlock(s[last:], open, closing)
 }
 
-// richParagraph wraps text in a paragraph, keeping its line breaks and the indentation of each line.
-func richParagraph(s string) string {
+// richTextBlock wraps text in the specified tags, keeping its line breaks and the indentation of each line.
+func richTextBlock(s string, open string, closing string) string {
 	s = strings.Trim(s, "\n")
 	if strings.TrimSpace(s) == "" {
 		return ""
@@ -64,7 +73,7 @@ func richParagraph(s string) string {
 		trimmed := strings.TrimLeft(line, " ")
 		lines[i] = strings.Repeat("&nbsp;", len(line)-len(trimmed)) + trimmed
 	}
-	return "<p>" + strings.Join(lines, "<br>") + "</p>"
+	return open + strings.Join(lines, "<br>") + closing
 }
 
 // HtmlEntities turns characters that can't be represented in ascii into html entities

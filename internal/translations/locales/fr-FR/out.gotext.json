@@ -2,6 +2,101 @@
     "language": "fr-FR",
     "messages": [
         {
+            "id": "Jan",
+            "message": "Jan",
+            "translation": ""
+        },
+        {
+            "id": "Feb",
+            "message": "Feb",
+            "translation": ""
+        },
+        {
+            "id": "Mar",
+            "message": "Mar",
+            "translation": ""
+        },
+        {
+            "id": "Apr",
+            "message": "Apr",
+            "translation": ""
+        },
+        {
+            "id": "May",
+            "message": "May",
+            "translation": ""
+        },
+        {
+            "id": "Jun",
+            "message": "Jun",
+            "translation": ""
+        },
+        {
+            "id": "Jul",
+            "message": "Jul",
+            "translation": ""
+        },
+        {
+            "id": "Aug",
+            "message": "Aug",
+            "translation": ""
+        },
+        {
+            "id": "Sep",
+            "message": "Sep",
+            "translation": ""
+        },
+        {
+            "id": "Oct",
+            "message": "Oct",
+            "translation": ""
+        },
+        {
+            "id": "Nov",
+            "message": "Nov",
+            "translation": ""
+        },
+        {
+            "id": "Dec",
+            "message": "Dec",
+            "translation": ""
+        },
+        {
+            "id": "Sun",
+            "message": "Sun",
+            "translation": ""
+        },
+        {
+            "id": "Mon",
+            "message": "Mon",
+            "translation": ""
+        },
+        {
+            "id": "Tue",
+            "message": "Tue",
+            "translation": ""
+        },
+        {
+            "id": "Wed",
+            "message": "Wed",
+            "translation": ""
+        },
+        {
+            "id": "Thu",
+            "message": "Thu",
+            "translation": ""
+        },
+        {
+            "id": "Fri",
+            "message": "Fri",
+            "translation": ""
+        },
+        {
+            "id": "Sat",
+            "message": "Sat",
+            "translation": ""
+        },
+        {
             "id": "January",
             "message": "January",
             "translation": ""
@@ -19,11 +114,6 @@
         {
             "id": "April",
             "message": "April",
-            "translation": ""
-        },
-        {
-            "id": "May",
-            "message": "May",
             "translation": ""
         },
         {
@@ -202,6 +292,11 @@
             "translation": ""
         },
         {
+            "id": "💰 Recoup Costs",
+            "message": "💰 Recoup Costs",
+            "translation": ""
+        },
+        {
             "id": "🔒 Remove from Directory",
             "message": "🔒 Remove from Directory",
             "translation": ""
@@ -362,6 +457,69 @@
             ]
         },
         {
+            "id": "Sorry, I wasn't able to find the event.  Try again.",
+            "message": "Sorry, I wasn't able to find the event.  Try again.",
+            "translation": ""
+        },
+        {
+            "id": "Sorry, but this event is not requesting donations.",
+            "message": "Sorry, but this event is not requesting donations.",
+            "translation": ""
+        },
+        {
+            "id": "💰 Custom Amount",
+            "message": "💰 Custom Amount",
+            "translation": ""
+        },
+        {
+            "id": "❌ Remove my Donation",
+            "message": "❌ Remove my Donation",
+            "translation": ""
+        },
+        {
+            "id": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "message": "Help recover the costs of {Name}! You can donate to the organizer with the following methods:\n\n{CostInfo}\n\nOnce you have donated, come back here and click one of these buttons. If you have donated previously, indicate the total amount as this will replace your previous donation.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Name",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.Name()"
+                },
+                {
+                    "id": "CostInfo",
+                    "string": "%[2]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 2,
+                    "expr": "event.CostInfo()"
+                }
+            ]
+        },
+        {
+            "id": "How much did you donate?",
+            "message": "How much did you donate?",
+            "translation": ""
+        },
+        {
+            "id": "Thank you for your donation!",
+            "message": "Thank you for your donation!",
+            "translation": ""
+        },
+        {
+            "id": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "message": "I'm not sure what you're saying. Try sending just the number with no commas or currency symbols.",
+            "translation": ""
+        },
+        {
+            "id": "That seems like a bad number.",
+            "message": "That seems like a bad number.",
+            "translation": ""
+        },
+        {
             "id": [
                 "CALEN_DATE_CHOOSE_TEXT",
                 "Got it.  Choose a Date for the event by clicking on the Calendar below and then clicking Continue."
@@ -484,6 +642,21 @@
         {
             "id": "Current picture:",
             "message": "Current picture:",
+            "translation": ""
+        },
+        {
+            "id": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "message": "This feature allows you to recoup some of the costs of your event by asking your guests for donations.  This bot will not accept or handle any funds.  Instead, you will provide information, such as PayPal or Venmo addresses, to allow your guests to pay you.  Afterwards, they can click a button here to indicate that they have paid.  This is on the honor system.",
+            "translation": ""
+        },
+        {
+            "id": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "message": "First, how much money would you like to recoup via donations? Don't include the currency symbol. To disable, send 0",
+            "translation": ""
+        },
+        {
+            "id": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
+            "message": "How can people pay you?  Specify your PayPal, Venmo, Cashapp, Interac E-transfer, Zelle, or other credentials.  What you type here will be shown to your guests when they offer to donate.",
             "translation": ""
         },
         {
@@ -635,6 +808,21 @@
             "translation": ""
         },
         {
+            "id": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "message": "💰 Accepting donations to cover cost of {TotalCost}. Click XXXX for totals",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "TotalCost",
+                    "string": "%[1]v",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.TotalCost()"
+                }
+            ]
+        },
+        {
             "id": "Error listing events: {Err}",
             "message": "Error listing events: {Err}",
             "translation": "",
@@ -680,6 +868,51 @@
             ]
         },
         {
+            "id": "Error getting donors",
+            "message": "Error getting donors",
+            "translation": ""
+        },
+        {
+            "id": "This event is collecting donations in the amount of {TotalCost}.",
+            "message": "This event is collecting donations in the amount of {TotalCost}.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "TotalCost",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "event.TotalCost()"
+                }
+            ]
+        },
+        {
+            "id": "Collected so far:",
+            "message": "Collected so far:",
+            "translation": ""
+        },
+        {
+            "id": "No donations collected yet",
+            "message": "No donations collected yet",
+            "translation": ""
+        },
+        {
+            "id": "Information shown to donors:",
+            "message": "Information shown to donors:",
+            "translation": ""
+        },
+        {
+            "id": "💰 Edit recovery information",
+            "message": "💰 Edit recovery information",
+            "translation": ""
+        },
+        {
+            "id": "Back to Event",
+            "message": "Back to Event",
+            "translation": ""
+        },
+        {
             "id": "Alright, you've been marked as attending.",
             "message": "Alright, you've been marked as attending.",
             "translation": ""
@@ -710,6 +943,44 @@
             "translation": ""
         },
         {
+            "id": "💰 \u003cb\u003eFully funded, thank you!\u003c/b\u003e",
+            "message": "💰 \u003cb\u003eFully funded, thank you!\u003c/b\u003e",
+            "translation": ""
+        },
+        {
+            "id": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "message": "💰 \u003cb\u003eHelp cover the cost of this event!\u003c/b\u003e We're at \u003cb\u003e{DonationsSoFar}\u003c/b\u003e of \u003cb\u003e{TotalCost}\u003c/b\u003e. Use the Donate button below to donate.",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "DonationsSoFar",
+                    "string": "%.2[1]f",
+                    "type": "float64",
+                    "underlyingType": "float64",
+                    "argNum": 1,
+                    "expr": "donationsSoFar"
+                },
+                {
+                    "id": "TotalCost",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.TotalCost()"
+                }
+            ]
+        },
+        {
+            "id": "This event is closed.",
+            "message": "This event is closed.",
+            "translation": ""
+        },
+        {
+            "id": "This event is full.",
+            "message": "This event is full.",
+            "translation": ""
+        },
+        {
             "id": "hosted by",
             "message": "hosted by",
             "translation": ""
@@ -717,6 +988,11 @@
         {
             "id": "Ends:",
             "message": "Ends:",
+            "translation": ""
+        },
+        {
+            "id": "Unable to get list of attending people.",
+            "message": "Unable to get list of attending people.",
             "translation": ""
         },
         {
@@ -730,7 +1006,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cSuiting"
+                    "expr": "people.cSuiting"
                 }
             ]
         },
@@ -745,7 +1021,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cPhoto"
+                    "expr": "people.cPhoto"
                 }
             ]
         },
@@ -760,7 +1036,7 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cGoing"
+                    "expr": "people.cGoing"
                 }
             ]
         },
@@ -775,43 +1051,112 @@
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "cGoing"
+                    "expr": "people.cGoing"
                 }
             ]
         },
         {
-            "id": "Maybe: {LentMaybe}",
-            "message": "Maybe: {LentMaybe}",
+            "id": "Maybe: {Maybe}",
+            "message": "Maybe: {Maybe}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "LentMaybe",
+                    "id": "Maybe",
                     "string": "%[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "len(tMaybe)"
+                    "expr": "len(people.maybe)"
                 }
             ]
         },
         {
-            "id": "Can't make it: {LentNot}",
-            "message": "Can't make it: {LentNot}",
+            "id": "Can't make it: {Not}",
+            "message": "Can't make it: {Not}",
             "translation": "",
             "placeholders": [
                 {
-                    "id": "LentNot",
+                    "id": "Not",
                     "string": "%[1]v",
                     "type": "int",
                     "underlyingType": "int",
                     "argNum": 1,
-                    "expr": "len(tNot)"
+                    "expr": "len(people.not)"
                 }
             ]
         },
         {
-            "id": "Can you go? Use the buttons below.",
-            "message": "Can you go? Use the buttons below.",
+            "id": "Hosted by {OwnerName}",
+            "message": "Hosted by {OwnerName}",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "OwnerName",
+                    "string": "%[1]v",
+                    "type": "string",
+                    "underlyingType": "string",
+                    "argNum": 1,
+                    "expr": "event.OwnerName()"
+                }
+            ]
+        },
+        {
+            "id": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "message": "👥 {Coming} of {MaxAttendees} spots taken · Full",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Coming",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "people.coming()"
+                },
+                {
+                    "id": "MaxAttendees",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxAttendees()"
+                }
+            ]
+        },
+        {
+            "id": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "message": "👥 {Coming} of {MaxAttendees} spots taken · {Coming_1} left",
+            "translation": "",
+            "placeholders": [
+                {
+                    "id": "Coming",
+                    "string": "%[1]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 1,
+                    "expr": "people.coming()"
+                },
+                {
+                    "id": "MaxAttendees",
+                    "string": "%[2]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 2,
+                    "expr": "event.MaxAttendees()"
+                },
+                {
+                    "id": "Coming_1",
+                    "string": "%[3]d",
+                    "type": "int",
+                    "underlyingType": "int",
+                    "argNum": 3,
+                    "expr": "event.MaxAttendees() - people.coming()"
+                }
+            ]
+        },
+        {
+            "id": "Be the first!",
+            "message": "Be the first!",
             "translation": ""
         },
         {
@@ -895,6 +1240,11 @@
             "translation": ""
         },
         {
+            "id": "💰 Donate! Help Cover Costs!",
+            "message": "💰 Donate! Help Cover Costs!",
+            "translation": ""
+        },
+        {
             "id": "📩 Share to another chat...",
             "message": "📩 Share to another chat...",
             "translation": ""
@@ -907,11 +1257,6 @@
         {
             "id": "Not an event you are attending.",
             "message": "Not an event you are attending.",
-            "translation": ""
-        },
-        {
-            "id": "Sorry, I wasn't able to find the event.  Try again.",
-            "message": "Sorry, I wasn't able to find the event.  Try again.",
             "translation": ""
         },
         {
@@ -966,6 +1311,11 @@
                     "expr": "event.Name()"
                 }
             ]
+        },
+        {
+            "id": "Click here for donation information...",
+            "message": "Click here for donation information...",
+            "translation": ""
         },
         {
             "id": "Click here to specify Guest names...",

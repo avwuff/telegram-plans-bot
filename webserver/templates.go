@@ -18,6 +18,8 @@ const ADDTOCALENDAR_PAGE = `<!DOCTYPE html>
   <style>
     /* Long labels have to wrap on a phone, which the normal Skeleton buttons don't do. */
     .button { height: auto; padding: 10px 20px; line-height: 1.4; white-space: normal; }
+    /* Browsers can wrap a line after a slash, which would split the /feed command in two. */
+    b { white-space: nowrap; }
   </style>
 </head>
 <body>
